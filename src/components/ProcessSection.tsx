@@ -1,0 +1,108 @@
+import React from 'react'
+import { Search, Palette, Code, Rocket, CheckCircle } from 'lucide-react'
+
+const ProcessSection = () => {
+  const steps = [
+    {
+      icon: <Search className="h-8 w-8 text-orange-500" />,
+      title: "Audyt i Strategia",
+      description: "Analizuję Twój biznes, konkurencję i cele. Definiujemy strategię konwersji i pozycjonowania.",
+      duration: "1-2 tygodnie"
+    },
+    {
+      icon: <Palette className="h-8 w-8 text-orange-500" />,
+      title: "Projektowanie UX/UI",
+      description: "Tworzę design skupiony na konwersji, optymalizowany pod Twoją grupę docelową.",
+      duration: "2-3 tygodnie"
+    },
+    {
+      icon: <Code className="h-8 w-8 text-orange-500" />,
+      title: "Development i SEO",
+      description: "Koduję stronę z naciskiem na wydajność, bezpieczeństwo i optymalizację pod wyszukiwarki.",
+      duration: "3-4 tygodnie"
+    },
+    {
+      icon: <Rocket className="h-8 w-8 text-orange-500" />,
+      title: "Testy i Wdrożenie",
+      description: "Testujemy wszystkie funkcjonalności, uruchamiamy stronę i przekazujemy Ci pełną kontrolę.",
+      duration: "1 tydzień"
+    },
+    {
+      icon: <CheckCircle className="h-8 w-8 text-orange-500" />,
+      title: "Wsparcie i Optymalizacja",
+      description: "3 miesiące bezpłatnego wsparcia technicznego i optymalizacji wyników.",
+      duration: "3 miesiące"
+    }
+  ]
+
+  return (
+    <section className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            Mój proces: Strategia, która zamienia odwiedzających w klientów
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Sprawdzony 5-etapowy proces, który gwarantuje rezultaty. 
+            Żaden element nie jest pozostawiony przypadkowi.
+          </p>
+        </div>
+
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="hidden lg:block absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-orange-200"></div>
+
+          <div className="space-y-12">
+            {steps.map((step, index) => (
+              <div
+                key={index}
+                className={`flex flex-col lg:flex-row items-center ${
+                  index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
+                }`}
+              >
+                {/* Content */}
+                <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-12' : 'lg:pl-12'}`}>
+                  <div className="bg-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <div className="flex items-center space-x-4 mb-4">
+                      {step.icon}
+                      <div>
+                        <h3 className="text-2xl font-bold text-gray-900">{step.title}</h3>
+                        <p className="text-orange-500 font-semibold">{step.duration}</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-600 leading-relaxed text-lg">
+                      {step.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Step number */}
+                <div className="hidden lg:flex w-16 h-16 bg-orange-500 text-white rounded-full items-center justify-center text-2xl font-bold z-10 shadow-lg my-8">
+                  {index + 1}
+                </div>
+
+                {/* Mobile step number */}
+                <div className="lg:hidden w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
+                  {index + 1}
+                </div>
+
+                {/* Spacer for alternating layout */}
+                <div className="hidden lg:block flex-1"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="text-center mt-16">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto">
+            <p className="text-green-800 font-semibold text-lg">
+              ✅ Rezultat: Strona, która pracuje na Twój sukces 24/7/365
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default ProcessSection
