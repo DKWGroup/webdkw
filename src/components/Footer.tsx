@@ -12,7 +12,7 @@ const Footer = () => {
           {/* Logo and description */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <img src="/images/webdkw-logo.svg" alt="WebDKW Logo" className="h-6 w-auto" />
+              <img src="/images/webdkw-logo-white.svg" alt="WebDKW Logo" className="h-6 w-auto" />
             </div>
             <p className="text-gray-300 leading-relaxed mb-6 max-w-md">
               Projektuję strony i sklepy internetowe, które są fundamentem skutecznego 
