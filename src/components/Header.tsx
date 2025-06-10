@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Menu, X, Code, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 
 const Header = () => {
@@ -32,8 +32,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <Code className="h-8 w-8 text-orange-500" />
-            <span className="text-xl font-bold text-gray-900">WebExpert</span>
+            <img src="/webdkw-logo.svg" alt="WebDKW Logo" className="h-8 w-8" />
           </Link>
 
           {/* Desktop Navigation */}

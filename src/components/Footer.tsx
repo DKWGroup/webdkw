@@ -116,8 +116,7 @@ const Footer = () => {
               <div className="flex items-center space-x-2 text-gray-400 text-sm">
                 <span>Wspierane przez</span>
                 <div className="flex items-center space-x-1">
-                  <Code className="h-4 w-4 text-orange-500" />
-                  <span className="font-semibold text-orange-500">TechStack Solutions</span>
+                  <img src="/images/dkwgroup-logo.png" alt="DKWGroup Logo" className="h-8 w-8" />
                 </div>
               </div>
             </div>
