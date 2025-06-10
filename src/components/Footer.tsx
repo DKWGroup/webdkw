@@ -116,7 +116,7 @@ const Footer = () => {
               <div className="flex items-center space-x-2 text-gray-400 text-sm">
                 <span>Wspierane przez</span>
                 <div className="flex items-center space-x-1">
-                  <img src="/images/dkwgroup-logo.png" alt="DKWGroup Logo" className="h-8 w-8" />
+                  <img src="/images/dkwgroup-logo.png" alt="DKWGroup Logo" className="h-8 w-auto" />
                 </div>
               </div>
             </div>

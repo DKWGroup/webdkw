@@ -32,7 +32,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
-            <img src="/webdkw-logo.svg" alt="WebDKW Logo" className="h-8 w-8" />
+            <img src="/images/webdkw-logo.svg" alt="WebDKW Logo" className="h-8 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
