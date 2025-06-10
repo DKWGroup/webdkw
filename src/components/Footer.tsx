@@ -60,8 +60,18 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/lead-magnet" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Darmowa Checklista
+                <Link to="/o-nas" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  O nas
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link to="/kontakt" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Kontakt
                 </Link>
               </li>
             </ul>
@@ -83,26 +93,14 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    const element = document.getElementById('o-mnie')
-                    if (element) element.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
-                >
-                  O mnie
-                </button>
+                <Link to="/lead-magnet" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Darmowa Checklista
+                </Link>
               </li>
               <li>
-                <button
-                  onClick={() => {
-                    const element = document.getElementById('kontakt')
-                    if (element) element.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                  className="text-gray-300 hover:text-orange-500 transition-colors"
-                >
-                  Kontakt
-                </button>
+                <Link to="/admin" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  Panel CMS
+                </Link>
               </li>
             </ul>
           </div>

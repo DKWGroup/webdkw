@@ -1,5 +1,6 @@
 import React from 'react'
 import { Check, ArrowRight, Star } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const ServicesSection = () => {
   const packages = [
@@ -39,13 +40,6 @@ const ServicesSection = () => {
       additionalInfo: "Czas realizacji: 6-10 tygodni"
     }
   ]
-
-  const scrollToContact = () => {
-    const element = document.getElementById('kontakt')
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
 
   return (
     <section id="uslugi" className="py-20 bg-gray-50">
@@ -100,8 +94,8 @@ const ServicesSection = () => {
 
                 <div className="text-center">
                   <p className="text-sm text-gray-500 mb-6">{pkg.additionalInfo}</p>
-                  <button
-                    onClick={scrollToContact}
+                  <Link
+                    to="/kontakt"
                     className={`w-full py-4 px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
                       pkg.popular
                         ? 'bg-orange-500 text-white hover:bg-orange-600 shadow-lg hover:shadow-xl'
@@ -110,7 +104,7 @@ const ServicesSection = () => {
                   >
                     <span>Umów konsultację</span>
                     <ArrowRight className="h-5 w-5" />
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -118,12 +112,20 @@ const ServicesSection = () => {
         </div>
 
         <div className="text-center mt-12">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 max-w-3xl mx-auto">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 max-w-3xl mx-auto mb-8">
             <p className="text-yellow-800 font-semibold">
               🎯 <strong>Pamiętaj:</strong> Najtańsza opcja to często najdroższa inwestycja. 
               Inwestycja w jakość zwraca się wielokrotnie w postaci lepszych wyników biznesowych.
             </p>
           </div>
+          
+          <Link
+            to="/uslugi"
+            className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            <span>Zobacz wszystkie usługi</span>
+            <ArrowRight className="h-5 w-5" />
+          </Link>
         </div>
       </div>
     </section>

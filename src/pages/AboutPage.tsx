@@ -1,0 +1,259 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { ArrowLeft, Award, Users, TrendingUp, Coffee, Target, Code, Heart } from 'lucide-react'
+import Header from '../components/Header'
+import Footer from '../components/Footer'
+
+const AboutPage = () => {
+  const stats = [
+    { icon: <Award className="h-8 w-8" />, number: "5+", label: "Lat doświadczenia" },
+    { icon: <Users className="h-8 w-8" />, number: "50+", label: "Zadowolonych klientów" },
+    { icon: <TrendingUp className="h-8 w-8" />, number: "300%", label: "Średni wzrost konwersji" },
+    { icon: <Coffee className="h-8 w-8" />, number: "1000+", label: "Kawy wypitych przy kodowaniu" }
+  ]
+
+  const values = [
+    {
+      icon: <Target className="h-12 w-12 text-orange-500" />,
+      title: "Strategiczne podejście",
+      description: "Każdy projekt rozpoczynam od dogłębnej analizy biznesu i celów. Nie tworzę 'ładnych stron' - tworzę narzędzia sprzedażowe."
+    },
+    {
+      icon: <Code className="h-12 w-12 text-orange-500" />,
+      title: "Jakość bez kompromisów",
+      description: "Używam najnowszych technologii i najlepszych praktyk. Każda linia kodu jest przemyślana i zoptymalizowana."
+    },
+    {
+      icon: <Heart className="h-12 w-12 text-orange-500" />,
+      title: "Długoterminowe partnerstwo",
+      description: "Nie jestem tylko wykonawcą - jestem partnerem w rozwoju Twojego biznesu. Dbam o Twój sukces jak o swój własny."
+    }
+  ]
+
+  const journey = [
+    {
+      year: "2019",
+      title: "Początek przygody",
+      description: "Pierwsze kroki w web developmencie. Fascynacja możliwościami, jakie daje internet w budowaniu biznesu."
+    },
+    {
+      year: "2020",
+      title: "Pierwsi klienci",
+      description: "Realizacja pierwszych projektów komercyjnych. Nauka, że piękny design to dopiero początek - liczy się konwersja."
+    },
+    {
+      year: "2021",
+      title: "Specjalizacja w SEO",
+      description: "Pogłębienie wiedzy o pozycjonowaniu. Zrozumienie, że najlepsza strona nic nie znaczy, jeśli nikt jej nie znajdzie."
+    },
+    {
+      year: "2022",
+      title: "Focus na ROI",
+      description: "Przejście od 'ładnych stron' do 'stron, które sprzedają'. Każdy projekt musi się zwracać finansowo."
+    },
+    {
+      year: "2023-2024",
+      title: "Ekspert premium",
+      description: "Pozycjonowanie jako ekspert dla firm B2B. Współpraca z klientami, którzy inwestują w jakość i oczekują rezultatów."
+    }
+  ]
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <main className="pt-20">
+        {/* Header section */}
+        <section className="bg-white py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center space-x-4 mb-8">
+              <Link
+                to="/"
+                className="flex items-center space-x-2 text-gray-600 hover:text-orange-500 transition-colors"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                <span>Powrót na stronę główną</span>
+              </Link>
+            </div>
+            
+            <div className="text-center max-w-4xl mx-auto">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                O nas
+              </h1>
+              <p className="text-xl text-gray-600 leading-relaxed">
+                Poznaj historię, wartości i filozofię pracy, która stoi za każdym projektem WebExpert.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Main about section */}
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              {/* Content */}
+              <div>
+                <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                  Partner w rozwoju Twojego biznesu, 
+                  <span className="text-orange-500"> nie tylko wykonawca</span>
+                </h2>
+                
+                <div className="space-y-6 text-lg text-gray-600 leading-relaxed mb-8">
+                  <p>
+                    Nazywam się <strong>Marcin Kowalski</strong> i od ponad 5 lat pomagam firmom 
+                    budować ich obecność online w sposób, który rzeczywiście przekłada się 
+                    na wyniki biznesowe.
+                  </p>
+                  
+                  <p>
+                    Moja filozofia jest prosta: <strong>każda strona internetowa musi się zwracać</strong>. 
+                    Nie tworzę "ładnych stron" - tworzę narzędzia sprzedażowe, które pracują 
+                    na Twój sukces 24 godziny na dobę.
+                  </p>
+                  
+                  <p>
+                    Specjalizuję się w projektach dla firm B2B i usługowych, gdzie każdy 
+                    lead ma wysoką wartość, a jakość jest ważniejsza niż ilość. 
+                    Moi klienci to firmy, które <strong>inwestują w jakość</strong> i oczekują 
+                    mierzalnych rezultatów.
+                  </p>
+                </div>
+
+                {/* Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                  {stats.map((stat, index) => (
+                    <div key={index} className="text-center">
+                      <div className="flex justify-center mb-3 text-orange-500">
+                        {stat.icon}
+                      </div>
+                      <div className="text-3xl font-bold text-gray-900 mb-1">
+                        {stat.number}
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Image */}
+              <div className="relative">
+                <div className="relative">
+                  <img
+                    src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
+                    alt="Marcin Kowalski - Web Developer"
+                    className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
+                  <div className="absolute bottom-6 left-6 text-white">
+                    <h3 className="text-2xl font-bold">Marcin Kowalski</h3>
+                    <p className="text-orange-300">Senior Web Developer & SEO Strategist</p>
+                  </div>
+                </div>
+
+                {/* Floating card */}
+                <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-orange-500 mb-1">5.0</div>
+                    <div className="flex justify-center mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <span key={i} className="text-yellow-400">★</span>
+                      ))}
+                    </div>
+                    <div className="text-sm text-gray-600">Średnia ocena</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Values section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Nasze wartości
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {values.map((value, index) => (
+                <div key={index} className="text-center">
+                  <div className="flex justify-center mb-6">
+                    {value.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    {value.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">
+                    {value.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Journey section */}
+        <section className="py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Moja droga do ekspertyzy
+            </h2>
+            <div className="space-y-8">
+              {journey.map((item, index) => (
+                <div key={index} className="flex items-start space-x-6">
+                  <div className="flex-shrink-0">
+                    <div className="w-16 h-16 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
+                      {item.year}
+                    </div>
+                  </div>
+                  <div className="flex-1 bg-white p-6 rounded-lg shadow-lg">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-600">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Quote section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <blockquote className="text-2xl md:text-3xl font-bold text-gray-900 max-w-4xl mx-auto">
+              "Nie chodzi o to, żeby mieć najładniejszą stronę w internecie. 
+              Chodzi o to, żeby mieć stronę, która <span className="text-orange-500">najlepiej sprzedaje</span>."
+            </blockquote>
+            <cite className="text-gray-600 text-lg mt-4 block">- Marcin Kowalski</cite>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-16 bg-gradient-to-r from-orange-500 to-orange-600">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              Gotowy na współpracę z ekspertem?
+            </h2>
+            <p className="text-xl text-white/90 mb-8">
+              Porozmawiajmy o Twoim projekcie i wspólnie stwórzmy coś wyjątkowego.
+            </p>
+            <Link
+              to="/kontakt"
+              className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
+              Umów bezpłatną konsultację
+            </Link>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
+  )
+}
+
+export default AboutPage

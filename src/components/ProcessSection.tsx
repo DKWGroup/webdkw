@@ -1,5 +1,6 @@
 import React from 'react'
-import { Search, Palette, Code, Rocket, CheckCircle } from 'lucide-react'
+import { Search, Palette, Code, Rocket, CheckCircle, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const ProcessSection = () => {
   const steps = [
@@ -94,11 +95,19 @@ const ProcessSection = () => {
         </div>
 
         <div className="text-center mt-16">
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto mb-8">
             <p className="text-green-800 font-semibold text-lg">
               ✅ Rezultat: Strona, która pracuje na Twój sukces 24/7/365
             </p>
           </div>
+          
+          <Link
+            to="/proces-realizacji"
+            className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            <span>Zobacz szczegółowy proces</span>
+            <ArrowRight className="h-5 w-5" />
+          </Link>
         </div>
       </div>
     </section>

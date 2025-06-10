@@ -1,5 +1,6 @@
 import React from 'react'
-import { ExternalLink, TrendingUp, Users, DollarSign } from 'lucide-react'
+import { ExternalLink, TrendingUp, Users, DollarSign, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const PortfolioSection = () => {
   const caseStudies = [
@@ -130,11 +131,19 @@ const PortfolioSection = () => {
         </div>
 
         <div className="text-center mt-16">
-          <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto mb-8">
             <p className="text-green-800 font-semibold text-lg">
               🚀 Twój projekt może być następny w tej galerii sukcesów
             </p>
           </div>
+          
+          <Link
+            to="/portfolio"
+            className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            <span>Zobacz pełne portfolio</span>
+            <ArrowRight className="h-5 w-5" />
+          </Link>
         </div>
       </div>
     </section>

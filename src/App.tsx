@@ -11,11 +11,17 @@ import SEOPage from './pages/services/SEOPage'
 import MarketingPage from './pages/services/MarketingPage'
 import PortfolioPage from './pages/PortfolioPage'
 import ProcessPage from './pages/ProcessPage'
+import AboutPage from './pages/AboutPage'
+import FAQPage from './pages/FAQPage'
+import ContactPage from './pages/ContactPage'
+import AdminPage from './pages/AdminPage'
 import NotFoundPage from './pages/NotFoundPage'
+import ScrollToTop from './components/ScrollToTop'
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogPage />} />
@@ -28,6 +34,10 @@ function App() {
         <Route path="/uslugi/marketing" element={<MarketingPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/proces-realizacji" element={<ProcessPage />} />
+        <Route path="/o-nas" element={<AboutPage />} />
+        <Route path="/faq" element={<FAQPage />} />
+        <Route path="/kontakt" element={<ContactPage />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>

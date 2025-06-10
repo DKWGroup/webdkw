@@ -29,3 +29,23 @@ export interface ContactSubmission {
   lead_magnet?: boolean
   created_at: string
 }
+
+export interface Project {
+  id: string
+  title: string
+  slug: string
+  category: string
+  industry: string
+  description: string
+  image_url: string
+  technologies: string[]
+  results: {
+    metric: string
+    value: string
+  }[]
+  completion_date: string
+  project_url?: string
+  featured: boolean
+  created_at: string
+  updated_at: string
+}
