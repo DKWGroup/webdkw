@@ -6,31 +6,31 @@ const ProcessSection = () => {
   const steps = [
     {
       icon: <Search className="h-8 w-8 text-orange-500" />,
-      title: "Audyt i Strategia",
+      title: "Audyt strategiczny i analiza konkurencji",
       description: "Analizuję Twój biznes, konkurencję i cele. Definiujemy strategię konwersji i pozycjonowania.",
       duration: "1-2 tygodnie"
     },
     {
       icon: <Palette className="h-8 w-8 text-orange-500" />,
-      title: "Projektowanie UX/UI",
+      title: "Projektowanie UX/UI zoptymalizowane pod konwersję",
       description: "Tworzę design skupiony na konwersji, optymalizowany pod Twoją grupę docelową.",
       duration: "2-3 tygodnie"
     },
     {
       icon: <Code className="h-8 w-8 text-orange-500" />,
-      title: "Development i SEO",
+      title: "Programowanie i optymalizacja SEO",
       description: "Koduję stronę z naciskiem na wydajność, bezpieczeństwo i optymalizację pod wyszukiwarki.",
       duration: "3-4 tygodnie"
     },
     {
       icon: <Rocket className="h-8 w-8 text-orange-500" />,
-      title: "Testy i Wdrożenie",
+      title: "Testy i wdrożenie",
       description: "Testujemy wszystkie funkcjonalności, uruchamiamy stronę i przekazujemy Ci pełną kontrolę.",
       duration: "1 tydzień"
     },
     {
       icon: <CheckCircle className="h-8 w-8 text-orange-500" />,
-      title: "Wsparcie i Optymalizacja",
+      title: "Wsparcie i optymalizacja wyników",
       description: "3 miesiące bezpłatnego wsparcia technicznego i optymalizacji wyników.",
       duration: "3 miesiące"
     }
@@ -41,11 +41,10 @@ const ProcessSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Mój proces: Strategia, która zamienia odwiedzających w klientów
+          Sprawdzony proces tworzenia stron internetowych, który gwarantuje rezultaty
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Sprawdzony 5-etapowy proces, który gwarantuje rezultaty. 
-            Żaden element nie jest pozostawiony przypadkowi.
+          5 etapów współpracy, które zamieniają Twoją inwestycję w maszynkę do generowania klientów:
           </p>
         </div>
 
@@ -97,7 +96,7 @@ const ProcessSection = () => {
         <div className="text-center mt-16">
           <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto mb-8">
             <p className="text-green-800 font-semibold text-lg">
-              ✅ Rezultat: Strona, która pracuje na Twój sukces 24/7/365
+              ✅ Rezultat: Strona, która pracuje na Twój sukces 24/7
             </p>
           </div>
           
@@ -105,7 +104,7 @@ const ProcessSection = () => {
             to="/proces-realizacji"
             className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            <span>Zobacz szczegółowy proces</span>
+            <span>Zobacz szczegółowy opis procesu współpracy</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>

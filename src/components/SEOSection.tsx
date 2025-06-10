@@ -37,7 +37,7 @@ const SEOSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Strona to dopiero początek. 
+          Pozycjonowanie stron w Google - zdominuj konkurencję w wyszukiwarkach 
             <span className="text-orange-400"> Zdominujmy razem wyniki wyszukiwania.</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -63,10 +63,10 @@ const SEOSection = () => {
 
         <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-3xl p-8 md:p-12 text-center">
           <h3 className="text-3xl md:text-4xl font-bold mb-6">
-            Twoja strona + Profesjonalne SEO = Dominacja w Google
+          💪 Rezultat: Twoja strona + Profesjonalne SEO = Dominacja w Google
           </h3>
           <p className="text-xl mb-8 opacity-90">
-            Pakiet strony internetowej z SEO to najlepsza inwestycja w długoterminowy sukces online
+          Pakiet: Strona internetowa + SEO to najlepsza inwestycja w długoterminowy sukces online
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-8">
@@ -90,7 +90,7 @@ const SEOSection = () => {
             onClick={scrollToContact}
             className="bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            Porozmawiajmy o SEO dla Twojej branży
+            Bezpłatny audyt SEO Twojej strony
           </button>
         </div>
       </div>

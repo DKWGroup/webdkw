@@ -24,13 +24,12 @@ const HeroSection = () => {
           </div>
 
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-            Twoja nowa strona internetowa.{' '}
-            <span className="text-orange-500">Najlepszy sprzedawca</span>, który pracuje 24/7.
+          Profesjonalne strony internetowe dla firm -{' '}
+          Twój <span className="text-orange-500">najlepszy sprzedawca</span> 24/7.
           </h1>
 
           <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
-            Projektuję strony i sklepy internetowe, które są fundamentem skutecznego marketingu – 
-            zoptymalizowane pod SEO, kampanie reklamowe i realne cele biznesowe Twojej firmy.
+            Tworzenie stron www i sklepów internetowych z gwarancją rezultatów. Zoptymalizowane pod SEO, Google Ads i realne cele biznesowe Twojej firmy.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
@@ -38,7 +37,7 @@ const HeroSection = () => {
               onClick={scrollToContact}
               className="bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
-              <span>Odbierz bezpłatną konsultację strategiczną</span>
+              <span>Bezpłatna konsultacja + wycena w 24h</span>
               <ArrowRight className="h-5 w-5" />
             </button>
             <div className="text-sm text-gray-500">

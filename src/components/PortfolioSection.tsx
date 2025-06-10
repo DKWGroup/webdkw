@@ -50,11 +50,11 @@ const PortfolioSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Projekty, które generują wyniki
+          Portfolio - strony internetowe, które generują konkretne wyniki
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Liczby nie kłamią. Zobacz jak moje rozwiązania przekładają się na 
-            konkretne korzyści biznesowe moich klientów.
+            Liczby nie kłamią. Zobacz jak nasze rozwiązania przekładają się na 
+            konkretne korzyści biznesowe naszych klientów.
           </p>
         </div>
 
@@ -133,7 +133,7 @@ const PortfolioSection = () => {
         <div className="text-center mt-16">
           <div className="bg-green-50 border border-green-200 rounded-lg p-6 max-w-2xl mx-auto mb-8">
             <p className="text-green-800 font-semibold text-lg">
-              🚀 Twój projekt może być następny w tej galerii sukcesów
+            🚀 Twój projekt może być następny w tej galerii sukcesów
             </p>
           </div>
           
@@ -141,7 +141,7 @@ const PortfolioSection = () => {
             to="/portfolio"
             className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            <span>Zobacz pełne portfolio</span>
+            <span>Zobacz wszystkie realizacje i case studies</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>

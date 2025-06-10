@@ -5,23 +5,23 @@ const ProblemSection = () => {
   const problems = [
     {
       icon: <TrendingDown className="h-8 w-8 text-red-500" />,
-      title: "Twoja obecna strona nie generuje zapytań?",
-      description: "Masz ruch, ale brak konwersji. Odwiedzający szybko opuszczają stronę bez kontaktu."
+      title: "Twoja strona nie generuje zapytań ofertowych?",
+      description: "Masz ruch na stronie, ale zero kontaktów. Potencjalni klienci uciekają do konkurencji, która lepiej prezentuje swoją ofertę."
     },
     {
       icon: <DollarSign className="h-8 w-8 text-red-500" />,
-      title: "Obawiasz się przepalić budżet na reklamy?",
-      description: "Nie masz pewności, czy Twoja strona jest przygotowana na płatny ruch reklamowy."
+      title: "Boisz się spalić budżet na reklamach Google Ads?",
+      description: "Nie masz pewności, czy Twoja strona jest przygotowana na płatny ruch reklamowy i czy inwestycja się zwróci."
     },
     {
       icon: <AlertTriangle className="h-8 w-8 text-red-500" />,
-      title: "Nie ufasz tanich ofert z rynku?",
-      description: "Doświadczyłeś już niskiej jakości usług lub obawiasz się ukrytych kosztów."
+      title: 'Masz dość tanich "profesjonalnych" stron za 500 zł?',
+      description: "Doświadczyłeś już niskiej jakości usług, ukrytych kosztów i stron, które wyglądają jak z 2010 roku."
     },
     {
       icon: <Clock className="h-8 w-8 text-red-500" />,
-      title: "Czas ucieka, a konkurencja wyprzedza?",
-      description: "Każdy dzień zwłoki to stracone okazje biznesowe i przewaga konkurencji."
+      title: "Konkurencja wyprzedza Cię w Google?",
+      description: "Każdy dzień zwłoki to stracone zapytania, które trafiają do Twoich konkurentów z lepiej zoptymalizowanymi stronami."
     }
   ]
 
@@ -30,11 +30,10 @@ const ProblemSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Brzmi znajomo?
+          Czy Twoja strona internetowa zarabia dla Ciebie pieniądze?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Te problemy dotykają 90% firm, które próbują konkurować online. 
-            Ale nie musi tak być.
+          Te problemy dotykają 90% małych i średnich firm w Polsce. Sprawdź, czy to również Twój case:
           </p>
         </div>
 

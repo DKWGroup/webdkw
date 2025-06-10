@@ -46,15 +46,14 @@ const ServicesSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Wybierz fundament dla Twojego biznesu online
+          Cennik stron internetowych - transparentne ceny, bez ukrytych kosztów
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Dwa sprawdzone pakiety dostosowane do różnych potrzeb i budżetów. 
-            Każda wycena jest indywidualna po przeprowadzeniu bezpłatnej konsultacji.
+            Pakiety dostosowane do różnych potrzeb i budżetów. 
           </p>
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
             <p className="text-blue-800 font-semibold">
-              💰 Wszystkie ceny są orientacyjne i ustalane indywidualnie po analizie projektu
+            💰 Wszystkie ceny ustalane indywidualnie po bezpłatnej konsultacji
             </p>
           </div>
         </div>
@@ -114,8 +113,7 @@ const ServicesSection = () => {
         <div className="text-center mt-12">
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 max-w-3xl mx-auto mb-8">
             <p className="text-yellow-800 font-semibold">
-              🎯 <strong>Pamiętaj:</strong> Najtańsza opcja to często najdroższa inwestycja. 
-              Inwestycja w jakość zwraca się wielokrotnie w postaci lepszych wyników biznesowych.
+            🎯 <strong>Pamiętaj:</strong> Najtańsza opcja to często najdroższa inwestycja. Jakość zwraca się wielokrotnie w lepszych wynikach biznesowych.
             </p>
           </div>
           
@@ -123,7 +121,7 @@ const ServicesSection = () => {
             to="/uslugi"
             className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            <span>Zobacz wszystkie usługi</span>
+            <span>Sprawdź wszystkie pakiety i cennik</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>
