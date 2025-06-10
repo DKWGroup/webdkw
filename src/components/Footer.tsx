@@ -12,8 +12,7 @@ const Footer = () => {
           {/* Logo and description */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <Code className="h-8 w-8 text-orange-500" />
-              <span className="text-2xl font-bold">WebExpert</span>
+              <img src="/images/webdkw-logo.svg" alt="WebDKW Logo" className="h-6 w-auto" />
             </div>
             <p className="text-gray-300 leading-relaxed mb-6 max-w-md">
               Projektuję strony i sklepy internetowe, które są fundamentem skutecznego 
@@ -111,7 +110,7 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-4">
               <p className="text-gray-400 text-sm">
-                © {currentYear} WebExpert. Wszystkie prawa zastrzeżone.
+                © {currentYear} WebDKW. Wszystkie prawa zastrzeżone.
               </p>
               <div className="flex items-center space-x-2 text-gray-400 text-sm">
                 <span>Wspierane przez</span>
