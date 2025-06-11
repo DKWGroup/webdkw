@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import BlogPage from './pages/BlogPage'
+import BlogPostPage from './pages/BlogPostPage'
 import LeadMagnetPage from './pages/LeadMagnetPage'
 import ServicesPage from './pages/ServicesPage'
 import WebsiteCreationPage from './pages/services/WebsiteCreationPage'
@@ -14,6 +15,7 @@ import ProcessPage from './pages/ProcessPage'
 import AboutPage from './pages/AboutPage'
 import FAQPage from './pages/FAQPage'
 import ContactPage from './pages/ContactPage'
+import AdminLoginPage from './pages/AdminLoginPage'
 import AdminPage from './pages/AdminPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ScrollToTop from './components/ScrollToTop'
@@ -25,6 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="/lead-magnet" element={<LeadMagnetPage />} />
         <Route path="/uslugi" element={<ServicesPage />} />
         <Route path="/uslugi/tworzenie-stron" element={<WebsiteCreationPage />} />
@@ -37,6 +40,7 @@ function App() {
         <Route path="/o-nas" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/kontakt" element={<ContactPage />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

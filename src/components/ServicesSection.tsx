@@ -1,43 +1,43 @@
 import React from 'react'
-import { Check, ArrowRight, Star } from 'lucide-react'
+import { ArrowRight, Globe, Database, ShoppingCart, Search, TrendingUp } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const ServicesSection = () => {
-  const packages = [
+  const services = [
     {
-      name: "Professional WordPress",
-      price: "od 6 000 PLN netto",
-      description: "Idealne dla małych i średnich firm, które potrzebują profesjonalnej obecności online",
-      features: [
-        "Responsywny design dostosowany do marki",
-        "Optymalizacja SEO na stronie",
-        "Integracja z Google Analytics",
-        "Formularz kontaktowy z powiadomieniami",
-        "Panel administracyjny WordPress",
-        "3 miesiące wsparcia technicznego",
-        "Szkolenie z obsługi systemu",
-        "Certyfikat SSL i podstawowe zabezpieczenia"
-      ],
-      popular: false,
-      additionalInfo: "Czas realizacji: 4-6 tygodni"
+      icon: <Globe className="h-12 w-12 text-orange-500" />,
+      title: "Tworzenie stron internetowych",
+      description: "Profesjonalne strony wizytówkowe i landing page'y zoptymalizowane pod konwersję. Responsywny design, SEO i panel administracyjny w standardzie.",
+      link: "/uslugi/tworzenie-stron",
+      features: ["Responsywny design", "Optymalizacja SEO", "Panel CMS"]
     },
     {
-      name: "Custom Performance",
-      price: "od 15 000 PLN netto",
-      description: "Dedykowane rozwiązanie dla firm, które stawiają na maksymalną wydajność i unikalne funkcjonalności",
-      features: [
-        "Wszystko z pakietu Professional",
-        "Dedykowany kod napisany od podstaw",
-        "Zaawansowane optymalizacje wydajności",
-        "Integracje z systemami zewnętrznymi",
-        "Zaawansowana analityka i tracking",
-        "A/B testy i optymalizacja konwersji",
-        "6 miesięcy wsparcia technicznego",
-        "Miesięczne raporty i optymalizacje",
-        "Backup i monitoring 24/7"
-      ],
-      popular: true,
-      additionalInfo: "Czas realizacji: 6-10 tygodni"
+      icon: <Database className="h-12 w-12 text-orange-500" />,
+      title: "Platformy internetowe",
+      description: "Zaawansowane systemy i aplikacje webowe dostosowane do specyficznych potrzeb Twojego biznesu. Od CRM po platformy edukacyjne.",
+      link: "/uslugi/platformy-internetowe",
+      features: ["Dedykowany kod", "Zaawansowane funkcje", "Skalowalność"]
+    },
+    {
+      icon: <ShoppingCart className="h-12 w-12 text-orange-500" />,
+      title: "Sklepy internetowe",
+      description: "Kompleksowe sklepy e-commerce z systemami płatności, zarządzaniem produktami i integracjami z kurierami. Gotowe do sprzedaży.",
+      link: "/uslugi/sklepy-internetowe",
+      features: ["Systemy płatności", "Zarządzanie produktami", "Integracje"]
+    },
+    {
+      icon: <Search className="h-12 w-12 text-orange-500" />,
+      title: "Optymalizacja SEO",
+      description: "Kompleksowa optymalizacja SEO zwiększająca widoczność w Google. Audyt, optymalizacja techniczna i content marketing.",
+      link: "/uslugi/seo",
+      features: ["Audyt SEO", "Content marketing", "Link building"]
+    },
+    {
+      icon: <TrendingUp className="h-12 w-12 text-orange-500" />,
+      title: "Marketing i kampanie reklamowe",
+      description: "Profesjonalne kampanie Google Ads i Facebook Ads generujące wysokiej jakości leady z mierzalnym ROI.",
+      link: "/uslugi/marketing",
+      features: ["Google Ads", "Facebook Ads", "Optymalizacja ROI"]
     }
   ]
 
@@ -46,74 +46,62 @@ const ServicesSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          Cennik stron internetowych - transparentne ceny, bez ukrytych kosztów
+            Nasze usługi - kompleksowe rozwiązania internetowe
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            Pakiety dostosowane do różnych potrzeb i budżetów. 
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Od prostych stron wizytówkowych po zaawansowane platformy e-commerce. 
+            Każde rozwiązanie dostosowane do Twoich potrzeb biznesowych.
           </p>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-2xl mx-auto">
-            <p className="text-blue-800 font-semibold">
-            💰 Wszystkie ceny ustalane indywidualnie po bezpłatnej konsultacji
-            </p>
-          </div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {packages.map((pkg, index) => (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          {services.map((service, index) => (
             <div
               key={index}
-              className={`relative bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 ${
-                pkg.popular ? 'ring-2 ring-orange-500 transform lg:scale-105' : ''
-              }`}
+              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
             >
-              {pkg.popular && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-orange-500 text-white px-6 py-2 rounded-full text-sm font-bold flex items-center space-x-1">
-                    <Star className="h-4 w-4 fill-current" />
-                    <span>NAJPOPULARNIEJSZY</span>
+              <div className="p-8">
+                <div className="flex justify-center mb-6">
+                  {service.icon}
+                </div>
+                
+                <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                  {service.title}
+                </h3>
+                
+                <p className="text-gray-600 leading-relaxed mb-6">
+                  {service.description}
+                </p>
+
+                <div className="mb-6">
+                  <div className="flex flex-wrap gap-2">
+                    {service.features.map((feature, idx) => (
+                      <span
+                        key={idx}
+                        className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium"
+                      >
+                        {feature}
+                      </span>
+                    ))}
                   </div>
                 </div>
-              )}
 
-              <div className="p-8">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
-                  <div className="text-4xl font-bold text-orange-500 mb-4">{pkg.price}</div>
-                  <p className="text-gray-600">{pkg.description}</p>
-                </div>
-
-                <ul className="space-y-4 mb-8">
-                  {pkg.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start space-x-3">
-                      <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="text-center">
-                  <p className="text-sm text-gray-500 mb-6">{pkg.additionalInfo}</p>
-                  <Link
-                    to="/kontakt"
-                    className={`w-full py-4 px-6 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
-                      pkg.popular
-                        ? 'bg-orange-500 text-white hover:bg-orange-600 shadow-lg hover:shadow-xl'
-                        : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                    }`}
-                  >
-                    <span>Umów konsultację</span>
-                    <ArrowRight className="h-5 w-5" />
-                  </Link>
-                </div>
+                <Link
+                  to={service.link}
+                  className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300 flex items-center justify-center space-x-2 group-hover:transform group-hover:-translate-y-1"
+                >
+                  <span>Dowiedz się więcej</span>
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 max-w-3xl mx-auto mb-8">
-            <p className="text-yellow-800 font-semibold">
-            🎯 <strong>Pamiętaj:</strong> Najtańsza opcja to często najdroższa inwestycja. Jakość zwraca się wielokrotnie w lepszych wynikach biznesowych.
+        <div className="text-center">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 max-w-2xl mx-auto mb-8">
+            <p className="text-blue-800 font-semibold">
+              💡 Nie wiesz, która usługa jest dla Ciebie? Umów się na bezpłatną konsultację!
             </p>
           </div>
           
@@ -121,7 +109,7 @@ const ServicesSection = () => {
             to="/uslugi"
             className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
-            <span>Sprawdź wszystkie pakiety i cennik</span>
+            <span>Zobacz wszystkie usługi i cennik</span>
             <ArrowRight className="h-5 w-5" />
           </Link>
         </div>

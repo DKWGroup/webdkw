@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, Plus, Edit, Trash2, Eye, Save, X } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { ArrowLeft, Plus, Edit, Trash2, Save, X, LogOut } from 'lucide-react'
 import { supabase, BlogPost, Project } from '../lib/supabase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 const AdminPage = () => {
+  const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<'blog' | 'projects'>('blog')
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
   const [projects, setProjects] = useState<Project[]>([])
   const [isEditing, setIsEditing] = useState(false)
   const [editingItem, setEditingItem] = useState<BlogPost | Project | null>(null)
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
   const [blogForm, setBlogForm] = useState({
     title: '',
@@ -38,9 +40,39 @@ const AdminPage = () => {
     featured: false
   })
 
+  // Check authentication on component mount
   useEffect(() => {
-    fetchData()
-  }, [])
+    const checkAuth = () => {
+      const isAuthenticated = localStorage.getItem('adminAuthenticated')
+      const authTime = localStorage.getItem('adminAuthTime')
+      
+      if (!isAuthenticated || !authTime) {
+        navigate('/admin/login')
+        return
+      }
+
+      // Check if session is older than 24 hours
+      const sessionAge = Date.now() - parseInt(authTime)
+      const maxAge = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
+      
+      if (sessionAge > maxAge) {
+        localStorage.removeItem('adminAuthenticated')
+        localStorage.removeItem('adminAuthTime')
+        navigate('/admin/login')
+        return
+      }
+
+      fetchData()
+    }
+
+    checkAuth()
+  }, [navigate])
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminAuthenticated')
+    localStorage.removeItem('adminAuthTime')
+    navigate('/admin/login')
+  }
 
   const fetchData = async () => {
     setLoading(true)
@@ -54,65 +86,106 @@ const AdminPage = () => {
       if (projectsResponse.data) setProjects(projectsResponse.data)
     } catch (error) {
       console.error('Error fetching data:', error)
+      alert('Błąd podczas ładowania danych')
     } finally {
       setLoading(false)
     }
   }
 
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim()
+  }
+
   const handleBlogSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSaving(true)
     
-    const blogData = {
-      ...blogForm,
-      tags: blogForm.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-      slug: blogForm.slug || blogForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
-    }
-
     try {
+      const blogData = {
+        ...blogForm,
+        tags: blogForm.tags ? blogForm.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
+        slug: blogForm.slug || generateSlug(blogForm.title)
+      }
+
+      let result
       if (editingItem && 'content' in editingItem) {
-        const { error } = await supabase
+        result = await supabase
           .from('blog_posts')
           .update(blogData)
           .eq('id', editingItem.id)
+          .select()
       } else {
-        const { error } = await supabase
+        result = await supabase
           .from('blog_posts')
           .insert([blogData])
+          .select()
       }
 
+      if (result.error) {
+        throw result.error
+      }
+
+      alert('Post został zapisany pomyślnie!')
       resetForm()
-      fetchData()
+      await fetchData()
     } catch (error) {
       console.error('Error saving blog post:', error)
+      alert('Błąd podczas zapisywania posta: ' + (error as Error).message)
+    } finally {
+      setSaving(false)
     }
   }
 
   const handleProjectSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSaving(true)
     
-    const projectData = {
-      ...projectForm,
-      technologies: projectForm.technologies.split(',').map(tech => tech.trim()).filter(tech => tech),
-      results: JSON.parse(projectForm.results || '[]'),
-      slug: projectForm.slug || projectForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')
-    }
-
     try {
+      let resultsData
+      try {
+        resultsData = projectForm.results ? JSON.parse(projectForm.results) : []
+      } catch {
+        throw new Error('Nieprawidłowy format JSON w polu rezultaty')
+      }
+
+      const projectData = {
+        ...projectForm,
+        technologies: projectForm.technologies ? projectForm.technologies.split(',').map(tech => tech.trim()).filter(tech => tech) : [],
+        results: resultsData,
+        slug: projectForm.slug || generateSlug(projectForm.title)
+      }
+
+      let result
       if (editingItem && 'category' in editingItem) {
-        const { error } = await supabase
+        result = await supabase
           .from('projects')
           .update(projectData)
           .eq('id', editingItem.id)
+          .select()
       } else {
-        const { error } = await supabase
+        result = await supabase
           .from('projects')
           .insert([projectData])
+          .select()
       }
 
+      if (result.error) {
+        throw result.error
+      }
+
+      alert('Projekt został zapisany pomyślnie!')
       resetForm()
-      fetchData()
+      await fetchData()
     } catch (error) {
       console.error('Error saving project:', error)
+      alert('Błąd podczas zapisywania projektu: ' + (error as Error).message)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -153,10 +226,15 @@ const AdminPage = () => {
 
     try {
       const table = type === 'blog' ? 'blog_posts' : 'projects'
-      await supabase.from(table).delete().eq('id', id)
-      fetchData()
+      const { error } = await supabase.from(table).delete().eq('id', id)
+      
+      if (error) throw error
+      
+      alert('Element został usunięty')
+      await fetchData()
     } catch (error) {
       console.error('Error deleting item:', error)
+      alert('Błąd podczas usuwania: ' + (error as Error).message)
     }
   }
 
@@ -207,14 +285,24 @@ const AdminPage = () => {
         {/* Header section */}
         <section className="bg-white py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center space-x-4 mb-8">
-              <Link
-                to="/"
-                className="flex items-center space-x-2 text-gray-600 hover:text-orange-500 transition-colors"
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center space-x-4">
+                <Link
+                  to="/"
+                  className="flex items-center space-x-2 text-gray-600 hover:text-orange-500 transition-colors"
+                >
+                  <ArrowLeft className="h-5 w-5" />
+                  <span>Powrót na stronę główną</span>
+                </Link>
+              </div>
+              
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors"
               >
-                <ArrowLeft className="h-5 w-5" />
-                <span>Powrót na stronę główną</span>
-              </Link>
+                <LogOut className="h-5 w-5" />
+                <span>Wyloguj</span>
+              </button>
             </div>
             
             <div className="text-center max-w-4xl mx-auto">
@@ -309,6 +397,7 @@ const AdminPage = () => {
                           value={blogForm.slug}
                           onChange={(e) => setBlogForm({...blogForm, slug: e.target.value})}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                          placeholder="Zostanie wygenerowany automatycznie"
                         />
                       </div>
                     </div>
@@ -377,10 +466,11 @@ const AdminPage = () => {
 
                     <button
                       type="submit"
-                      className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2"
+                      disabled={saving}
+                      className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2 disabled:opacity-50"
                     >
                       <Save className="h-5 w-5" />
-                      <span>Zapisz post</span>
+                      <span>{saving ? 'Zapisywanie...' : 'Zapisz post'}</span>
                     </button>
                   </form>
                 ) : (
@@ -521,10 +611,11 @@ const AdminPage = () => {
 
                     <button
                       type="submit"
-                      className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2"
+                      disabled={saving}
+                      className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2 disabled:opacity-50"
                     >
                       <Save className="h-5 w-5" />
-                      <span>Zapisz projekt</span>
+                      <span>{saving ? 'Zapisywanie...' : 'Zapisz projekt'}</span>
                     </button>
                   </form>
                 )}
