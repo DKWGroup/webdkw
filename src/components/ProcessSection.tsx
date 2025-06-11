@@ -8,19 +8,19 @@ const ProcessSection = () => {
       icon: <Search className="h-8 w-8 text-orange-500" />,
       title: "Audyt strategiczny i analiza konkurencji",
       description: "Analizuję Twój biznes, konkurencję i cele. Definiujemy strategię konwersji i pozycjonowania.",
-      duration: "1-2 tygodnie"
+      duration: "1 tydzień"
     },
     {
       icon: <Palette className="h-8 w-8 text-orange-500" />,
       title: "Projektowanie UX/UI zoptymalizowane pod konwersję",
       description: "Tworzę design skupiony na konwersji, optymalizowany pod Twoją grupę docelową.",
-      duration: "2-3 tygodnie"
+      duration: "1-2 tygodnie"
     },
     {
       icon: <Code className="h-8 w-8 text-orange-500" />,
       title: "Programowanie i optymalizacja SEO",
       description: "Koduję stronę z naciskiem na wydajność, bezpieczeństwo i optymalizację pod wyszukiwarki.",
-      duration: "3-4 tygodnie"
+      duration: "2-3 tygodnie"
     },
     {
       icon: <Rocket className="h-8 w-8 text-orange-500" />,
@@ -61,7 +61,7 @@ const ProcessSection = () => {
                 }`}
               >
                 {/* Content */}
-                <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-12' : 'lg:pl-12'}`}>
+                <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-4' : 'lg:pl-4'}`}>
                   <div className="bg-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
                     <div className="flex items-center space-x-4 mb-4">
                       {step.icon}

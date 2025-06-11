@@ -15,20 +15,19 @@ const Footer = () => {
               <img src="/images/webdkw-logo-white.svg" alt="WebDKW Logo" className="h-6 w-auto" />
             </div>
             <p className="text-gray-300 leading-relaxed mb-6 max-w-md">
-              Projektuję strony i sklepy internetowe, które są fundamentem skutecznego 
-              marketingu – zoptymalizowane pod SEO, kampanie reklamowe i realne cele biznesowe.
+            Projektuję profesjonalne strony internetowe i sklepy online dla firm z całej Polski. Każdy projekt zoptymalizowany pod SEO, kampanie reklamowe i realne cele biznesowe. Sprawna komunikacja, szybka realizacja, gwarancja efektów.
             </p>
             <div className="space-y-2">
               <div className="flex items-center space-x-3">
                 <Mail className="h-5 w-5 text-orange-500" />
-                <a href="mailto:marcin@webexpert.pl" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  marcin@webexpert.pl
+                <a href="mailto:contact.dkwgroup@gmail.com" className="text-gray-300 hover:text-orange-500 transition-colors">
+                contact.dkwgroup@gmail.com
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-5 w-5 text-orange-500" />
-                <a href="tel:+48123456789" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  +48 123 456 789
+                <a href="tel:+48881 046 689" className="text-gray-300 hover:text-orange-500 transition-colors">
+                  +48 881 046 689
                 </a>
               </div>
             </div>
@@ -122,9 +121,6 @@ const Footer = () => {
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-orange-500 text-sm transition-colors">
                 Polityka prywatności
-              </a>
-              <a href="#" className="text-gray-400 hover:text-orange-500 text-sm transition-colors">
-                Regulamin
               </a>
             </div>
           </div>

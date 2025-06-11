@@ -3,10 +3,10 @@ import { Award, Users, TrendingUp, Coffee } from 'lucide-react'
 
 const AboutSection = () => {
   const stats = [
-    { icon: <Award className="h-8 w-8" />, number: "5+", label: "Lat doświadczenia" },
-    { icon: <Users className="h-8 w-8" />, number: "50+", label: "Zadowolonych klientów" },
-    { icon: <TrendingUp className="h-8 w-8" />, number: "300%", label: "Średni wzrost konwersji" },
-    { icon: <Coffee className="h-8 w-8" />, number: "1000+", label: "Kawy wypitych przy kodowaniu" }
+    { icon: <Award className="h-8 w-8" />, number: "4+", label: "Lat doświadczenia" },
+    { icon: <Users className="h-8 w-8" />, number: "20+", label: "Zadowolonych klientów" },
+    { icon: <TrendingUp className="h-8 w-8" />, number: "250%", label: "Średni wzrost konwersji" },
+    { icon: <Coffee className="h-8 w-8" />, number: "500+", label: "Kawy wypitych przy kodowaniu" }
   ]
 
   return (
@@ -22,9 +22,7 @@ const AboutSection = () => {
             
             <div className="space-y-6 text-lg text-gray-600 leading-relaxed mb-8">
               <p>
-                Nazywam się <strong>Marcin Kowalski</strong> i od ponad 5 lat pomagam firmom 
-                budować ich obecność online w sposób, który rzeczywiście przekłada się 
-                na wyniki biznesowe.
+                Nazywam się <strong>Kamil Krukowski</strong> i od 4 lat pomagam wdrażać strony internetowe dla firm w sposób, który rzeczywiście przekłada się na wyniki biznesowe.
               </p>
               
               <p>
@@ -64,13 +62,13 @@ const AboutSection = () => {
             <div className="relative">
               <img
                 src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
-                alt="Marcin Kowalski - Web Developer"
+                alt="Kamil Krukowski - Web Developer"
                 className="w-full h-96 object-cover rounded-2xl shadow-2xl"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
               <div className="absolute bottom-6 left-6 text-white">
-                <h3 className="text-2xl font-bold">Marcin Kowalski</h3>
-                <p className="text-orange-300">Senior Web Developer & SEO Strategist</p>
+                <h3 className="text-2xl font-bold">Kamil Krukowski</h3>
+                <p className="text-orange-300">Web Developer & SEO Strategist</p>
               </div>
             </div>
 
@@ -95,7 +93,7 @@ const AboutSection = () => {
             "Nie chodzi o to, żeby mieć najładniejszą stronę w internecie. 
             Chodzi o to, żeby mieć stronę, która <span className="text-orange-500">najlepiej sprzedaje</span>."
           </blockquote>
-          <cite className="text-gray-600 text-lg mt-4 block">- Marcin Kowalski</cite>
+          <cite className="text-gray-600 text-lg mt-4 block">- Kamil Krukowski</cite>
         </div>
       </div>
     </section>

@@ -247,8 +247,8 @@ const ContactPage = () => {
                       <Mail className="h-6 w-6 text-orange-500 mt-1" />
                       <div>
                         <div className="font-semibold text-gray-900">Email</div>
-                        <a href="mailto:marcin@webexpert.pl" className="text-orange-500 hover:text-orange-600">
-                          marcin@webexpert.pl
+                        <a href="mailto:contact.dkwgroup@gmail.com" className="text-orange-500 hover:text-orange-600">
+                        contact.dkwgroup@gmail.com
                         </a>
                         <p className="text-sm text-gray-500 mt-1">Odpowiedź w ciągu 24h</p>
                       </div>
@@ -258,8 +258,8 @@ const ContactPage = () => {
                       <Phone className="h-6 w-6 text-orange-500 mt-1" />
                       <div>
                         <div className="font-semibold text-gray-900">Telefon</div>
-                        <a href="tel:+48123456789" className="text-orange-500 hover:text-orange-600">
-                          +48 123 456 789
+                        <a href="tel:+48881046689" className="text-orange-500 hover:text-orange-600">
+                          +48 881 046 689
                         </a>
                         <p className="text-sm text-gray-500 mt-1">W pilnych sprawach</p>
                       </div>

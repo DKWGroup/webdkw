@@ -11,7 +11,7 @@ const FAQSection = () => {
     },
     {
       question: "Jak długo trwa realizacja projektu?",
-      answer: "Pakiet Professional WordPress: 4-6 tygodni. Pakiet Custom Performance: 6-10 tygodni. Czas zależy od zakresu projektu i szybkości przekazywania materiałów przez klienta. Każdy projekt rozpoczynam od szczegółowej analizy i harmonogramu, który otrzymujesz przed rozpoczęciem prac."
+      answer: "Czas zależy od zakresu projektu i szybkości przekazywania materiałów przez klienta. Każdy projekt rozpoczynam od szczegółowej analizy i harmonogramu, który otrzymujesz przed rozpoczęciem prac."
     },
     {
       question: "Co wliczone jest w cenę pakietu?",
@@ -23,7 +23,7 @@ const FAQSection = () => {
     },
     {
       question: "Jak wygląda wsparcie techniczne po wdrożeniu?",
-      answer: "Professional WordPress: 3 miesiące bezpłatnego wsparcia. Custom Performance: 6 miesięcy. Wsparcie obejmuje poprawki błędów, aktualizacje bezpieczeństwa i konsultacje. Po tym okresie oferuję abonamenty serwisowe lub wsparcie na godziny według potrzeb."
+      answer: "Przy Wordpress to 3 miesiące bezpłatnego wsparcia. Wsparcie obejmuje poprawki błędów, aktualizacje bezpieczeństwa i konsultacje. Po tym okresie oferuję abonamenty serwisowe lub wsparcie na godziny według potrzeb."
     },
     {
       question: "Czy gwarantujesz rezultaty biznesowe?",
@@ -31,7 +31,7 @@ const FAQSection = () => {
     },
     {
       question: "Czy tworzysz sklepy internetowe?",
-      answer: "Tak, specjalizuję się w sklepach e-commerce opartych na WooCommerce lub rozwiązaniach custom. Każdy sklep optymalizuję pod konwersję, integruje z systemami płatności, logistyki i analityki. Ceny sklepów ustalamy indywidualnie po analizie wymagań."
+      answer: "Tak, wykonuję e-commerce opartych na WooCommerce lub rozwiązaniach custom. Każdy sklep optymalizuję pod konwersję, integruje z systemami płatności, logistyki i analityki. Ceny sklepów ustalamy indywidualnie po analizie wymagań."
     },
     {
       question: "Jak przygotować się do współpracy?",

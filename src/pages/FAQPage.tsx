@@ -17,7 +17,7 @@ const FAQPage = () => {
         },
         {
           question: "Jak długo trwa realizacja projektu?",
-          answer: "Pakiet Professional WordPress: 4-6 tygodni. Pakiet Custom Performance: 6-10 tygodni. Czas zależy od zakresu projektu i szybkości przekazywania materiałów przez klienta. Każdy projekt rozpoczynam od szczegółowej analizy i harmonogramu, który otrzymujesz przed rozpoczęciem prac."
+          answer: "Czas zależy od zakresu projektu i szybkości przekazywania materiałów przez klienta. Każdy projekt rozpoczynam od szczegółowej analizy i harmonogramu, który otrzymujesz przed rozpoczęciem prac."
         },
         {
           question: "Co wliczone jest w cenę pakietu?",
@@ -34,7 +34,7 @@ const FAQPage = () => {
         },
         {
           question: "Jak wygląda wsparcie techniczne po wdrożeniu?",
-          answer: "Professional WordPress: 3 miesiące bezpłatnego wsparcia. Custom Performance: 6 miesięcy. Wsparcie obejmuje poprawki błędów, aktualizacje bezpieczeństwa i konsultacje. Po tym okresie oferuję abonamenty serwisowe lub wsparcie na godziny według potrzeb."
+          answer: "3 miesiące bezpłatnego wsparcia przy Wordpress. Wsparcie obejmuje poprawki błędów, aktualizacje bezpieczeństwa i konsultacje. Po tym okresie oferuję abonamenty serwisowe lub wsparcie na godziny według potrzeb."
         },
         {
           question: "Czy strona będzie szybka i zoptymalizowana?",
@@ -51,7 +51,7 @@ const FAQPage = () => {
         },
         {
           question: "Czy tworzysz sklepy internetowe?",
-          answer: "Tak, specjalizuję się w sklepach e-commerce opartych na WooCommerce lub rozwiązaniach custom. Każdy sklep optymalizuję pod konwersję, integruje z systemami płatności, logistyki i analityki. Ceny sklepów ustalamy indywidualnie po analizie wymagań."
+          answer: "Tak, wykonuję sklepy e-commerce opartych na WooCommerce lub rozwiązaniach custom. Każdy sklep optymalizuję pod konwersję, integruje z systemami płatności, logistyki i analityki. Ceny sklepów ustalamy indywidualnie po analizie wymagań."
         },
         {
           question: "Jak przygotować się do współpracy?",
@@ -68,7 +68,7 @@ const FAQPage = () => {
         },
         {
           question: "Czy oferujesz kampanie reklamowe Google Ads?",
-          answer: "Tak! Oferuję kompleksowe zarządzanie kampaniami Google Ads i Facebook Ads. Pakiet setup od 2500 PLN, zarządzanie miesięczne od 1500 PLN. Każda kampania jest optymalizowana pod ROI i generowanie leadów."
+          answer: "Tak! Oferuję kompleksowe zarządzanie kampaniami Google Ads i Facebook Ads. Pakiety zaczynają się już od 600zł. Każda kampania jest optymalizowana pod ROI i generowanie leadów."
         },
         {
           question: "Jak długo trzeba czekać na efekty SEO?",

@@ -6,10 +6,10 @@ import Footer from '../components/Footer'
 
 const AboutPage = () => {
   const stats = [
-    { icon: <Award className="h-8 w-8" />, number: "5+", label: "Lat doświadczenia" },
-    { icon: <Users className="h-8 w-8" />, number: "50+", label: "Zadowolonych klientów" },
-    { icon: <TrendingUp className="h-8 w-8" />, number: "300%", label: "Średni wzrost konwersji" },
-    { icon: <Coffee className="h-8 w-8" />, number: "1000+", label: "Kawy wypitych przy kodowaniu" }
+    { icon: <Award className="h-8 w-8" />, number: "4+", label: "Lat doświadczenia" },
+    { icon: <Users className="h-8 w-8" />, number: "20+", label: "Zadowolonych klientów" },
+    { icon: <TrendingUp className="h-8 w-8" />, number: "250%", label: "Średni wzrost konwersji" },
+    { icon: <Coffee className="h-8 w-8" />, number: "500+", label: "Kawy wypitych przy kodowaniu" }
   ]
 
   const values = [
@@ -27,34 +27,6 @@ const AboutPage = () => {
       icon: <Heart className="h-12 w-12 text-orange-500" />,
       title: "Długoterminowe partnerstwo",
       description: "Nie jestem tylko wykonawcą - jestem partnerem w rozwoju Twojego biznesu. Dbam o Twój sukces jak o swój własny."
-    }
-  ]
-
-  const journey = [
-    {
-      year: "2019",
-      title: "Początek przygody",
-      description: "Pierwsze kroki w web developmencie. Fascynacja możliwościami, jakie daje internet w budowaniu biznesu."
-    },
-    {
-      year: "2020",
-      title: "Pierwsi klienci",
-      description: "Realizacja pierwszych projektów komercyjnych. Nauka, że piękny design to dopiero początek - liczy się konwersja."
-    },
-    {
-      year: "2021",
-      title: "Specjalizacja w SEO",
-      description: "Pogłębienie wiedzy o pozycjonowaniu. Zrozumienie, że najlepsza strona nic nie znaczy, jeśli nikt jej nie znajdzie."
-    },
-    {
-      year: "2022",
-      title: "Focus na ROI",
-      description: "Przejście od 'ładnych stron' do 'stron, które sprzedają'. Każdy projekt musi się zwracać finansowo."
-    },
-    {
-      year: "2023-2024",
-      title: "Ekspert premium",
-      description: "Pozycjonowanie jako ekspert dla firm B2B. Współpraca z klientami, którzy inwestują w jakość i oczekują rezultatów."
     }
   ]
 
@@ -100,22 +72,15 @@ const AboutPage = () => {
                 
                 <div className="space-y-6 text-lg text-gray-600 leading-relaxed mb-8">
                   <p>
-                    Nazywam się <strong>Marcin Kowalski</strong> i od ponad 5 lat pomagam firmom 
-                    budować ich obecność online w sposób, który rzeczywiście przekłada się 
-                    na wyniki biznesowe.
+                    Nazywam się <strong>Marcin Kowalski</strong> i jako ekspert WebDKW, należącego do DKW Group, od ponad 4 lat pomagam firmom B2B i usługowym budować silną i skuteczną obecność w internecie. Moim celem jest, aby Twoja inwestycja w stronę internetową przynosiła realne zyski.
                   </p>
                   
                   <p>
-                    Moja filozofia jest prosta: <strong>każda strona internetowa musi się zwracać</strong>. 
-                    Nie tworzę "ładnych stron" - tworzę narzędzia sprzedażowe, które pracują 
-                    na Twój sukces 24 godziny na dobę.
+                  Zapomnij o "ładnych stronach", które nie generują leadów. Tworzę narzędzia sprzedażowe, które pracują dla Ciebie 24/7, generując wartościowe zapytania i zwiększając Twoją sprzedaż.
                   </p>
                   
                   <p>
-                    Specjalizuję się w projektach dla firm B2B i usługowych, gdzie każdy 
-                    lead ma wysoką wartość, a jakość jest ważniejsza niż ilość. 
-                    Moi klienci to firmy, które <strong>inwestują w jakość</strong> i oczekują 
-                    mierzalnych rezultatów.
+                  Specjalizuję się w tworzeniu stron internetowych i optymalizacji SEO dla firm, które cenią sobie jakość leadów nad ich ilość. Jeśli szukasz partnera, który rozumie specyfikę rynku B2B i potrafi przełożyć Twoje cele biznesowe na konkretne działania w internecie, zapraszam do współpracy. Inwestycja w moją wiedzę i doświadczenie to gwarancja mierzalnych rezultatów i zwrotu z inwestycji.
                   </p>
                 </div>
 
@@ -142,13 +107,13 @@ const AboutPage = () => {
                 <div className="relative">
                   <img
                     src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
-                    alt="Marcin Kowalski - Web Developer"
+                    alt="Kamil Krukowski - Web Developer"
                     className="w-full h-96 object-cover rounded-2xl shadow-2xl"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
                   <div className="absolute bottom-6 left-6 text-white">
-                    <h3 className="text-2xl font-bold">Marcin Kowalski</h3>
-                    <p className="text-orange-300">Senior Web Developer & SEO Strategist</p>
+                    <h3 className="text-2xl font-bold">Kamil Krukowski</h3>
+                    <p className="text-orange-300">Web Developer & SEO Strategist</p>
                   </div>
                 </div>
 
@@ -187,34 +152,6 @@ const AboutPage = () => {
                   <p className="text-gray-600 leading-relaxed">
                     {value.description}
                   </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Journey section */}
-        <section className="py-16">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
-              Moja droga do ekspertyzy
-            </h2>
-            <div className="space-y-8">
-              {journey.map((item, index) => (
-                <div key={index} className="flex items-start space-x-6">
-                  <div className="flex-shrink-0">
-                    <div className="w-16 h-16 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
-                      {item.year}
-                    </div>
-                  </div>
-                  <div className="flex-1 bg-white p-6 rounded-lg shadow-lg">
-                    <h3 className="text-xl font-bold text-gray-900 mb-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-gray-600">
-                      {item.description}
-                    </p>
-                  </div>
                 </div>
               ))}
             </div>

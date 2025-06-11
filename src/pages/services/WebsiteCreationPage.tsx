@@ -125,9 +125,12 @@ const WebsiteCreationPage = () => {
         {/* Benefits section */}
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
               Dlaczego warto zainwestować w profesjonalną stronę?
             </h2>
+            <p className="text-xl text-gray-600 leading-relaxed mb-12">
+            W dzisiejszych czasach strona internetowa to podstawa obecności w sieci. To właśnie ona jest wizytówką Twojej firmy, buduje zaufanie i pozwala dotrzeć do nowych odbiorców. Profesjonalnie zaprojektowana strona internetowa:
+              </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {benefits.map((benefit, index) => (
                 <div key={index} className="bg-white p-6 rounded-xl shadow-lg text-center">
@@ -213,9 +216,12 @@ const WebsiteCreationPage = () => {
         {/* Process section */}
         <section className="py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
               Proces realizacji
             </h2>
+            <p className="text-xl text-gray-600 leading-relaxed mb-12">
+            Każdy projekt realizujemy kompleksowo – od analizy potrzeb, przez projekt graficzny, aż po wdrożenie i optymalizację SEO. Nasz proces obejmuje:
+              </p>
             <div className="space-y-4">
               {process.map((step, index) => (
                 <div key={index} className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow">
