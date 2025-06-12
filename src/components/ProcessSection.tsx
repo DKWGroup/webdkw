@@ -61,7 +61,7 @@ const ProcessSection = () => {
                 }`}
               >
                 {/* Content */}
-                <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-4' : 'lg:pl-4'}`}>
+                <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-8' : 'lg:pl-8'}`}>
                   <div className="bg-gray-50 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
                     <div className="flex items-center space-x-4 mb-4">
                       {step.icon}
@@ -76,8 +76,8 @@ const ProcessSection = () => {
                   </div>
                 </div>
 
-                {/* Step number */}
-                <div className="hidden lg:flex w-16 h-16 bg-orange-500 text-white rounded-full items-center justify-center text-2xl font-bold z-10 shadow-lg my-8">
+                {/* Step number - centered on timeline */}
+                <div className="hidden lg:flex w-16 h-16 bg-orange-500 text-white rounded-full items-center justify-center text-2xl font-bold z-10 shadow-lg my-8 flex-shrink-0">
                   {index + 1}
                 </div>
 
@@ -87,7 +87,7 @@ const ProcessSection = () => {
                 </div>
 
                 {/* Spacer for alternating layout */}
-                <div className="hidden lg:block flex-1"></div>
+                <div className={`hidden lg:block flex-1 ${index % 2 === 0 ? 'lg:pl-8' : 'lg:pr-8'}`}></div>
               </div>
             ))}
           </div>

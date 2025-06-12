@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Check, Globe, Smartphone, Search, Shield, BarChart, Headphones } from 'lucide-react'
+import { ArrowLeft, Check, Globe, Smartphone, Search, Shield, BarChart, Headphones, Plus, Minus, ExternalLink } from 'lucide-react'
+import { supabase, Project } from '../../lib/supabase'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
 const WebsiteCreationPage = () => {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [openProcess, setOpenProcess] = useState<number | null>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .in('category', ['Strona firmowa', 'Landing page', 'Strona wizytówka'])
+        .limit(3)
+
+      if (error) throw error
+      setProjects(data || [])
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    }
+  }
+
   const packages = [
     {
       name: "Strona Wizytówka",
@@ -80,13 +104,109 @@ const WebsiteCreationPage = () => {
     }
   ]
 
-  const process = [
-    "Konsultacja i analiza potrzeb",
-    "Przygotowanie koncepcji i wireframes",
-    "Projektowanie graficzne",
-    "Kodowanie i implementacja",
-    "Testy i optymalizacja",
-    "Wdrożenie i szkolenie"
+  const processSteps = [
+    {
+      title: "Konsultacja i analiza potrzeb",
+      details: [
+        "Szczegółowa rozmowa o celach biznesowych",
+        "Analiza grupy docelowej i konkurencji",
+        "Określenie funkcjonalności i zakresu projektu",
+        "Ustalenie harmonogramu i budżetu",
+        "Przygotowanie briefu projektowego"
+      ]
+    },
+    {
+      title: "Przygotowanie koncepcji i wireframes",
+      details: [
+        "Projektowanie architektury informacji",
+        "Tworzenie wireframes dla kluczowych stron",
+        "Planowanie ścieżek użytkownika (user journey)",
+        "Optymalizacja pod konwersję",
+        "Prezentacja i iteracje na podstawie feedbacku"
+      ]
+    },
+    {
+      title: "Projektowanie graficzne",
+      details: [
+        "Tworzenie unikalnego designu zgodnego z brandingiem",
+        "Projektowanie responsywnych layoutów",
+        "Dobór kolorystyki, typografii i elementów graficznych",
+        "Tworzenie komponentów UI i style guide",
+        "Optymalizacja pod kątem UX i konwersji"
+      ]
+    },
+    {
+      title: "Kodowanie i implementacja",
+      details: [
+        "Kodowanie front-endu z użyciem najnowszych technologii",
+        "Implementacja systemu zarządzania treścią (CMS)",
+        "Integracja z narzędziami analitycznymi",
+        "Optymalizacja wydajności i szybkości ładowania",
+        "Implementacja podstawowych funkcji SEO"
+      ]
+    },
+    {
+      title: "Testy i optymalizacja",
+      details: [
+        "Testy funkcjonalności na różnych urządzeniach",
+        "Testy wydajności i optymalizacja szybkości",
+        "Sprawdzenie kompatybilności z przeglądarkami",
+        "Testy formularzy i integracji",
+        "Optymalizacja SEO on-page"
+      ]
+    },
+    {
+      title: "Wdrożenie i szkolenie",
+      details: [
+        "Konfiguracja hostingu i domeny",
+        "Wdrożenie strony na środowisko produkcyjne",
+        "Konfiguracja narzędzi analitycznych",
+        "Szkolenie z obsługi panelu CMS",
+        "Przekazanie dokumentacji i materiałów"
+      ]
+    }
+  ]
+
+  const uniqueFeatures = [
+    {
+      title: "Strategiczne podejście do konwersji",
+      description: "Każdy element strony projektujemy z myślą o maksymalizacji konwersji i generowaniu leadów."
+    },
+    {
+      title: "Optymalizacja pod Google Ads",
+      description: "Strony przygotowane pod kampanie reklamowe z odpowiednimi landing page'ami i trackingiem."
+    },
+    {
+      title: "Zaawansowana analityka",
+      description: "Implementujemy narzędzia do śledzenia zachowań użytkowników i optymalizacji wyników."
+    },
+    {
+      title: "Mobilne pierwszeństwo",
+      description: "Projektujemy najpierw na urządzenia mobilne, zapewniając doskonałe doświadczenie na każdym ekranie."
+    }
+  ]
+
+  const faqs = [
+    {
+      question: "Ile czasu zajmuje stworzenie strony internetowej?",
+      answer: "Czas realizacji zależy od złożoności projektu. Prosta strona wizytówka to 2-3 tygodnie, landing page 2-4 tygodnie, a kompleksowa strona firmowa 4-6 tygodni. Dokładny harmonogram ustalamy na etapie konsultacji."
+    },
+    {
+      question: "Czy mogę samodzielnie zarządzać treścią na stronie?",
+      answer: "Tak! Każda strona wyposażona jest w intuicyjny panel CMS, który pozwala na łatwe zarządzanie treścią. Dodatkowo przeprowadzamy szkolenie z obsługi systemu."
+    },
+    {
+      question: "Czy strona będzie zoptymalizowana pod SEO?",
+      answer: "Absolutnie. Każda strona jest podstawowo zoptymalizowana pod SEO (meta tagi, struktura URL, szybkość ładowania). Dla lepszych rezultatów oferujemy również zaawansowane pakiety SEO."
+    },
+    {
+      question: "Co się dzieje po zakończeniu projektu?",
+      answer: "Otrzymujesz pełne wsparcie techniczne przez okres określony w pakiecie (1-3 miesiące). Obejmuje to poprawki błędów, aktualizacje bezpieczeństwa i pomoc techniczną."
+    },
+    {
+      question: "Czy strona będzie działać na urządzeniach mobilnych?",
+      answer: "Tak, wszystkie nasze strony są w pełni responsywne i zoptymalizowane pod urządzenia mobilne. Projektujemy z podejściem 'mobile-first'."
+    }
   ]
 
   return (
@@ -128,7 +248,7 @@ const WebsiteCreationPage = () => {
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
               Dlaczego warto zainwestować w profesjonalną stronę?
             </h2>
-            <p className="text-xl text-gray-600 leading-relaxed mb-12">
+            <p className="text-xl text-gray-600 leading-relaxed mb-12 text-center">
             W dzisiejszych czasach strona internetowa to podstawa obecności w sieci. To właśnie ona jest wizytówką Twojej firmy, buduje zaufanie i pozwala dotrzeć do nowych odbiorców. Profesjonalnie zaprojektowana strona internetowa:
               </p>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -148,6 +268,69 @@ const WebsiteCreationPage = () => {
             </div>
           </div>
         </section>
+
+        {/* What makes our websites unique */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Co wyróżnia nasze strony internetowe?
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {uniqueFeatures.map((feature, index) => (
+                <div key={index} className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Portfolio projects */}
+        {projects.length > 0 && (
+          <section className="py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                Przykłady naszych realizacji
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project) => (
+                  <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div className="relative group">
+                      <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        {project.project_url && (
+                          <a
+                            href={project.project_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white text-gray-900 px-4 py-2 rounded-lg font-semibold flex items-center space-x-2"
+                          >
+                            <span>Zobacz projekt</span>
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                      <p className="text-orange-500 font-semibold mb-3">{project.industry}</p>
+                      <p className="text-gray-600 text-sm">{project.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Packages section */}
         <section className="py-16 bg-white">
@@ -219,16 +402,45 @@ const WebsiteCreationPage = () => {
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-4">
               Proces realizacji
             </h2>
-            <p className="text-xl text-gray-600 leading-relaxed mb-12">
+            <p className="text-xl text-gray-600 leading-relaxed mb-12 text-center">
             Każdy projekt realizujemy kompleksowo – od analizy potrzeb, przez projekt graficzny, aż po wdrożenie i optymalizację SEO. Nasz proces obejmuje:
               </p>
             <div className="space-y-4">
-              {process.map((step, index) => (
-                <div key={index} className="flex items-center space-x-4 bg-white p-4 rounded-lg shadow">
-                  <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
-                    {index + 1}
-                  </div>
-                  <span className="text-gray-700 font-medium">{step}</span>
+              {processSteps.map((step, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg">
+                  <button
+                    onClick={() => setOpenProcess(openProcess === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
+                        {index + 1}
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900">{step.title}</h3>
+                    </div>
+                    <div className="flex-shrink-0">
+                      {openProcess === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openProcess === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <ul className="space-y-2">
+                          {step.details.map((detail, idx) => (
+                            <li key={idx} className="flex items-start space-x-3">
+                              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <span className="text-gray-600">{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -260,6 +472,46 @@ const WebsiteCreationPage = () => {
                   oraz pomoc w przypadku problemów.
                 </p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Często zadawane pytania
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <h3 className="text-lg font-bold text-gray-900 pr-4">
+                      {faq.question}
+                    </h3>
+                    <div className="flex-shrink-0">
+                      {openFaq === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openFaq === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </section>

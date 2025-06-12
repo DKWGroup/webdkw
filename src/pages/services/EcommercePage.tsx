@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Check, ShoppingCart, CreditCard, Package, BarChart3, Shield, Truck } from 'lucide-react'
+import { ArrowLeft, Check, ShoppingCart, CreditCard, Package, BarChart3, Shield, Truck, Plus, Minus, ExternalLink } from 'lucide-react'
+import { supabase, Project } from '../../lib/supabase'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
 const EcommercePage = () => {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [openProcess, setOpenProcess] = useState<number | null>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .in('category', ['Sklep internetowy', 'E-commerce', 'Sklep B2B'])
+        .limit(3)
+
+      if (error) throw error
+      setProjects(data || [])
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    }
+  }
+
   const packages = [
     {
       name: "Sklep Podstawowy",
@@ -98,6 +122,111 @@ const EcommercePage = () => {
     "Szczegółowa analityka i raportowanie"
   ]
 
+  const processSteps = [
+    {
+      title: "Analiza biznesu i strategia e-commerce",
+      details: [
+        "Analiza modelu biznesowego i grupy docelowej",
+        "Badanie konkurencji w branży e-commerce",
+        "Określenie strategii sprzedaży online",
+        "Planowanie struktury produktów i kategorii",
+        "Wybór platformy e-commerce (WooCommerce, Shopify, custom)"
+      ]
+    },
+    {
+      title: "Projektowanie sklepu i UX",
+      details: [
+        "Projektowanie ścieżki zakupowej (customer journey)",
+        "Optymalizacja procesu checkout",
+        "Projektowanie kart produktów",
+        "Planowanie filtrów i wyszukiwarki",
+        "Responsive design dla urządzeń mobilnych"
+      ]
+    },
+    {
+      title: "Konfiguracja platformy e-commerce",
+      details: [
+        "Instalacja i konfiguracja platformy",
+        "Konfiguracja metod płatności",
+        "Integracja z kurierami i dostawą",
+        "Konfiguracja podatków i fakturowania",
+        "Ustawienie powiadomień email"
+      ]
+    },
+    {
+      title: "Import produktów i treści",
+      details: [
+        "Import bazy produktów",
+        "Optymalizacja opisów produktów pod SEO",
+        "Dodanie zdjęć produktów",
+        "Konfiguracja wariantów i opcji",
+        "Ustawienie stanów magazynowych"
+      ]
+    },
+    {
+      title: "Integracje i automatyzacja",
+      details: [
+        "Integracja z systemami magazynowymi",
+        "Połączenie z narzędziami analitycznymi",
+        "Konfiguracja remarketing i pixel tracking",
+        "Automatyzacja procesów biznesowych",
+        "Integracja z systemami księgowymi"
+      ]
+    },
+    {
+      title: "Testy i uruchomienie",
+      details: [
+        "Testy procesu zakupowego",
+        "Testy płatności i dostaw",
+        "Optymalizacja wydajności",
+        "Szkolenie z obsługi sklepu",
+        "Uruchomienie i monitoring"
+      ]
+    }
+  ]
+
+  const uniqueFeatures = [
+    {
+      title: "Optymalizacja konwersji",
+      description: "Każdy element sklepu projektujemy z myślą o maksymalizacji sprzedaży i redukcji porzucania koszyka."
+    },
+    {
+      title: "Zaawansowana analityka",
+      description: "Implementujemy narzędzia do śledzenia zachowań klientów i optymalizacji sprzedaży."
+    },
+    {
+      title: "Automatyzacja procesów",
+      description: "Automatyzujemy zarządzanie zamówieniami, magazynem i komunikacją z klientami."
+    },
+    {
+      title: "Skalowalność",
+      description: "Sklepy projektujemy tak, aby mogły rosnąć wraz z Twoim biznesem."
+    }
+  ]
+
+  const faqs = [
+    {
+      question: "Jaką platformę e-commerce polecacie?",
+      answer: "Wybór platformy zależy od specyfiki biznesu. Dla małych i średnich sklepów polecamy WooCommerce, dla szybkiego startu Shopify, a dla dużych projektów rozwiązania custom. Pomożemy wybrać najlepszą opcję."
+    },
+    {
+      question: "Czy sklep będzie zintegrowany z systemami płatności?",
+      answer: "Tak, integrujemy sklep z popularnymi systemami płatności w Polsce: PayU, Przelewy24, PayPal, BLIK, płatności kartą. Wybieramy najlepsze opcje dla Twojej branży."
+    },
+    {
+      question: "Jak długo trwa stworzenie sklepu internetowego?",
+      answer: "Podstawowy sklep to 4-6 tygodni, profesjonalny 6-10 tygodni, a enterprise 10+ tygodni. Czas zależy od liczby produktów, integracji i złożoności funkcjonalności."
+    },
+    {
+      question: "Czy sklep będzie zoptymalizowany pod SEO?",
+      answer: "Absolutnie. Każdy sklep optymalizujemy pod SEO: struktura URL, meta tagi, opisy produktów, szybkość ładowania. Dodatkowo oferujemy zaawansowane pakiety SEO dla e-commerce."
+    },
+    {
+      question: "Jakie wsparcie otrzymam po uruchomieniu sklepu?",
+      answer: "Oferujemy wsparcie techniczne przez okres określony w pakiecie (3-12 miesięcy). Obejmuje to pomoc techniczną, aktualizacje, szkolenia i optymalizację sprzedaży."
+    }
+  ]
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -154,6 +283,69 @@ const EcommercePage = () => {
             </div>
           </div>
         </section>
+
+        {/* What makes our stores unique */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Co wyróżnia nasze sklepy internetowe?
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {uniqueFeatures.map((feature, index) => (
+                <div key={index} className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Portfolio projects */}
+        {projects.length > 0 && (
+          <section className="py-16">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                Przykłady naszych realizacji
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project) => (
+                  <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div className="relative group">
+                      <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        {project.project_url && (
+                          <a
+                            href={project.project_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white text-gray-900 px-4 py-2 rounded-lg font-semibold flex items-center space-x-2"
+                          >
+                            <span>Zobacz projekt</span>
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                      <p className="text-orange-500 font-semibold mb-3">{project.industry}</p>
+                      <p className="text-gray-600 text-sm">{project.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Packages section */}
         <section className="py-16 bg-white">
@@ -219,8 +411,56 @@ const EcommercePage = () => {
           </div>
         </section>
 
-        {/* Integrations section */}
+        {/* Process section */}
         <section className="py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Proces tworzenia sklepu internetowego
+            </h2>
+            <div className="space-y-4">
+              {processSteps.map((step, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg">
+                  <button
+                    onClick={() => setOpenProcess(openProcess === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
+                        {index + 1}
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900">{step.title}</h3>
+                    </div>
+                    <div className="flex-shrink-0">
+                      {openProcess === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openProcess === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <ul className="space-y-2">
+                          {step.details.map((detail, idx) => (
+                            <li key={idx} className="flex items-start space-x-3">
+                              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <span className="text-gray-600">{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Integrations section */}
+        <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12">
               <div>
@@ -255,7 +495,7 @@ const EcommercePage = () => {
         </section>
 
         {/* Security section */}
-        <section className="py-16 bg-white">
+        <section className="py-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-gradient-to-r from-green-50 to-blue-50 p-8 rounded-2xl">
               <div className="flex items-start space-x-4">
@@ -286,6 +526,46 @@ const EcommercePage = () => {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Często zadawane pytania
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <h3 className="text-lg font-bold text-gray-900 pr-4">
+                      {faq.question}
+                    </h3>
+                    <div className="flex-shrink-0">
+                      {openFaq === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openFaq === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </section>

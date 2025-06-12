@@ -1,5 +1,6 @@
 import React from 'react'
-import { Award, Users, TrendingUp, Coffee } from 'lucide-react'
+import { Award, Users, TrendingUp, Coffee, ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const AboutSection = () => {
   const stats = [
@@ -40,7 +41,7 @@ const AboutSection = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="flex justify-center mb-3 text-orange-500">
@@ -54,6 +55,17 @@ const AboutSection = () => {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* CTA Button */}
+            <div className="text-center lg:text-left">
+              <Link
+                to="/o-nas"
+                className="inline-flex items-center space-x-2 bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
+                <span>Poznaj mnie lepiej</span>
+                <ArrowRight className="h-5 w-5" />
+              </Link>
             </div>
           </div>
 

@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Check, Database, Code, Zap, Users, Shield, Cog } from 'lucide-react'
+import { ArrowLeft, Check, Database, Code, Zap, Users, Shield, Cog, Plus, Minus, ExternalLink } from 'lucide-react'
+import { supabase, Project } from '../../lib/supabase'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
 const PlatformDevelopmentPage = () => {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [openProcess, setOpenProcess] = useState<number | null>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .in('category', ['Platforma B2B', 'System rezerwacji', 'Platforma edukacyjna', 'Platforma internetowa'])
+        .limit(3)
+
+      if (error) throw error
+      setProjects(data || [])
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    }
+  }
+
   const packages = [
     {
       name: "Platforma Startowa",
@@ -107,6 +131,111 @@ const PlatformDevelopmentPage = () => {
     }
   ]
 
+  const processSteps = [
+    {
+      title: "Analiza wymagań i planowanie",
+      details: [
+        "Szczegółowa analiza potrzeb biznesowych",
+        "Mapowanie procesów i workflow",
+        "Określenie funkcjonalności i zakresu",
+        "Wybór technologii i architektury",
+        "Przygotowanie specyfikacji technicznej"
+      ]
+    },
+    {
+      title: "Projektowanie architektury systemu",
+      details: [
+        "Projektowanie bazy danych",
+        "Architektura aplikacji i API",
+        "Planowanie integracji zewnętrznych",
+        "Projektowanie systemu bezpieczeństwa",
+        "Dokumentacja techniczna"
+      ]
+    },
+    {
+      title: "Projektowanie UX/UI",
+      details: [
+        "Analiza użytkowników i ich potrzeb",
+        "Tworzenie wireframes i prototypów",
+        "Projektowanie interfejsu użytkownika",
+        "Testowanie użyteczności",
+        "Responsive design dla wszystkich urządzeń"
+      ]
+    },
+    {
+      title: "Development i implementacja",
+      details: [
+        "Kodowanie back-endu i API",
+        "Implementacja front-endu",
+        "Integracje z systemami zewnętrznymi",
+        "Implementacja systemu bezpieczeństwa",
+        "Testy jednostkowe i integracyjne"
+      ]
+    },
+    {
+      title: "Testy i optymalizacja",
+      details: [
+        "Testy funkcjonalne i wydajnościowe",
+        "Testy bezpieczeństwa",
+        "Testy obciążeniowe",
+        "Optymalizacja wydajności",
+        "Testy akceptacyjne z klientem"
+      ]
+    },
+    {
+      title: "Wdrożenie i szkolenia",
+      details: [
+        "Konfiguracja środowiska produkcyjnego",
+        "Migracja danych",
+        "Szkolenia użytkowników",
+        "Dokumentacja użytkownika",
+        "Wsparcie po wdrożeniu"
+      ]
+    }
+  ]
+
+  const uniqueFeatures = [
+    {
+      title: "Skalowalna architektura",
+      description: "Projektujemy systemy, które rosną razem z Twoim biznesem, obsługując rosnącą liczbę użytkowników."
+    },
+    {
+      title: "Zaawansowane integracje",
+      description: "Łączymy Twoją platformę z istniejącymi systemami i zewnętrznymi API."
+    },
+    {
+      title: "Bezpieczeństwo enterprise",
+      description: "Implementujemy najwyższe standardy bezpieczeństwa i zgodności z regulacjami."
+    },
+    {
+      title: "Analityka i raportowanie",
+      description: "Wbudowane narzędzia do analizy danych i generowania szczegółowych raportów."
+    }
+  ]
+
+  const faqs = [
+    {
+      question: "Jakie technologie używacie do tworzenia platform?",
+      answer: "Używamy nowoczesnych technologii takich jak React, Node.js, Python, PostgreSQL, MongoDB. Wybór technologii zależy od specyfiki projektu i wymagań biznesowych."
+    },
+    {
+      question: "Czy platforma będzie skalowalna?",
+      answer: "Tak, projektujemy wszystkie platformy z myślą o skalowalności. Używamy architektury mikrousług i rozwiązań chmurowych, które pozwalają na łatwe skalowanie wraz z rozwojem biznesu."
+    },
+    {
+      question: "Jak długo trwa stworzenie platformy internetowej?",
+      answer: "Czas realizacji zależy od złożoności projektu. Podstawowa platforma to 6-8 tygodni, zaawansowana 8-12 tygodni, a enterprise 12+ tygodni. Dokładny harmonogram ustalamy po analizie wymagań."
+    },
+    {
+      question: "Czy mogę integrować platformę z istniejącymi systemami?",
+      answer: "Absolutnie. Specjalizujemy się w integracjach z systemami ERP, CRM, płatnościami, API zewnętrznymi i innymi narzędziami biznesowymi."
+    },
+    {
+      question: "Jakie wsparcie otrzymam po wdrożeniu?",
+      answer: "Oferujemy wsparcie techniczne przez okres określony w pakiecie (3-12 miesięcy). Obejmuje to poprawki błędów, aktualizacje, monitoring i pomoc techniczną."
+    }
+  ]
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -164,15 +293,36 @@ const PlatformDevelopmentPage = () => {
           </div>
         </section>
 
-        {/* Use cases section */}
+        {/* What makes our platforms unique */}
         <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Co wyróżnia nasze platformy internetowe?
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {uniqueFeatures.map((feature, index) => (
+                <div key={index} className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Use cases section */}
+        <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
               Przykłady platform, które tworzymy
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {useCases.map((useCase, index) => (
-                <div key={index} className="bg-gray-50 p-6 rounded-xl hover:bg-orange-50 transition-all duration-300">
+                <div key={index} className="bg-white p-6 rounded-xl hover:bg-orange-50 transition-all duration-300 shadow-lg">
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     {useCase.title}
                   </h3>
@@ -184,6 +334,48 @@ const PlatformDevelopmentPage = () => {
             </div>
           </div>
         </section>
+
+        {/* Portfolio projects */}
+        {projects.length > 0 && (
+          <section className="py-16 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                Przykłady naszych realizacji
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project) => (
+                  <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div className="relative group">
+                      <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        {project.project_url && (
+                          <a
+                            href={project.project_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white text-gray-900 px-4 py-2 rounded-lg font-semibold flex items-center space-x-2"
+                          >
+                            <span>Zobacz projekt</span>
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                      <p className="text-orange-500 font-semibold mb-3">{project.industry}</p>
+                      <p className="text-gray-600 text-sm">{project.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Packages section */}
         <section className="py-16">
@@ -249,38 +441,90 @@ const PlatformDevelopmentPage = () => {
           </div>
         </section>
 
-        {/* Additional info */}
+        {/* Process section */}
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-2xl">
-              <div className="flex items-start space-x-4">
-                <Cog className="h-12 w-12 text-blue-500 flex-shrink-0" />
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Proces tworzenia platformy
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Faza planowania:</h4>
-                      <ul className="text-gray-600 space-y-1">
-                        <li>• Analiza wymagań biznesowych</li>
-                        <li>• Projektowanie architektury</li>
-                        <li>• Wybór technologii</li>
-                        <li>• Planowanie harmonogramu</li>
-                      </ul>
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Proces tworzenia platformy
+            </h2>
+            <div className="space-y-4">
+              {processSteps.map((step, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200">
+                  <button
+                    onClick={() => setOpenProcess(openProcess === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
+                        {index + 1}
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900">{step.title}</h3>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-gray-900 mb-2">Faza realizacji:</h4>
-                      <ul className="text-gray-600 space-y-1">
-                        <li>• Iteracyjny development</li>
-                        <li>• Regularne testy</li>
-                        <li>• Code review</li>
-                        <li>• Wdrożenie i monitoring</li>
-                      </ul>
+                    <div className="flex-shrink-0">
+                      {openProcess === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
                     </div>
-                  </div>
+                  </button>
+                  
+                  {openProcess === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <ul className="space-y-2">
+                          {step.details.map((detail, idx) => (
+                            <li key={idx} className="flex items-start space-x-3">
+                              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <span className="text-gray-600">{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Często zadawane pytania
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <h3 className="text-lg font-bold text-gray-900 pr-4">
+                      {faq.question}
+                    </h3>
+                    <div className="flex-shrink-0">
+                      {openFaq === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openFaq === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </section>

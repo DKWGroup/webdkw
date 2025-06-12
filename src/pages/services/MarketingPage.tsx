@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Check, TrendingUp, Target, Users, BarChart3, Zap, DollarSign } from 'lucide-react'
+import { ArrowLeft, Check, TrendingUp, Target, Users, BarChart3, Zap, DollarSign, Plus, Minus, ExternalLink } from 'lucide-react'
+import { supabase, Project } from '../../lib/supabase'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
 
 const MarketingPage = () => {
+  const [projects, setProjects] = useState<Project[]>([])
+  const [openProcess, setOpenProcess] = useState<number | null>(null)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
+  useEffect(() => {
+    fetchProjects()
+  }, [])
+
+  const fetchProjects = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('*')
+        .ilike('description', '%marketing%')
+        .limit(3)
+
+      if (error) throw error
+      setProjects(data || [])
+    } catch (error) {
+      console.error('Error fetching projects:', error)
+    }
+  }
+
   const packages = [
     {
       name: "Setup Kampanii",
@@ -110,14 +134,109 @@ const MarketingPage = () => {
     }
   ]
 
-  const process = [
-    "Analiza biznesu i grupy docelowej",
-    "Badanie konkurencji i rynku",
-    "Opracowanie strategii kampanii",
-    "Przygotowanie kreacji reklamowych",
-    "Konfiguracja i uruchomienie kampanii",
-    "Monitoring i optymalizacja wyników",
-    "Raportowanie i skalowanie"
+  const processSteps = [
+    {
+      title: "Analiza biznesu i grupy docelowej",
+      details: [
+        "Szczegółowa analiza modelu biznesowego",
+        "Identyfikacja idealnego klienta (buyer persona)",
+        "Analiza konkurencji i ich strategii reklamowych",
+        "Określenie celów kampanii i KPI",
+        "Ustalenie budżetu i strategii bidowania"
+      ]
+    },
+    {
+      title: "Badanie konkurencji i rynku",
+      details: [
+        "Analiza reklam konkurencji",
+        "Badanie słów kluczowych w branży",
+        "Analiza landing pages konkurentów",
+        "Identyfikacja luk w rynku",
+        "Benchmarking kosztów i wyników"
+      ]
+    },
+    {
+      title: "Opracowanie strategii kampanii",
+      details: [
+        "Wybór odpowiednich platform reklamowych",
+        "Strategia targetowania i segmentacji",
+        "Planowanie budżetu i harmonogramu",
+        "Określenie struktury kampanii",
+        "Strategia testowania i optymalizacji"
+      ]
+    },
+    {
+      title: "Przygotowanie kreacji reklamowych",
+      details: [
+        "Tworzenie tekstów reklamowych",
+        "Projektowanie grafik i bannerów",
+        "Przygotowanie materiałów wideo",
+        "A/B testing różnych wersji",
+        "Optymalizacja pod konwersję"
+      ]
+    },
+    {
+      title: "Konfiguracja i uruchomienie kampanii",
+      details: [
+        "Konfiguracja kont reklamowych",
+        "Implementacja pixel tracking",
+        "Ustawienie konwersji i celów",
+        "Konfiguracja remarketing",
+        "Uruchomienie kampanii testowych"
+      ]
+    },
+    {
+      title: "Monitoring i optymalizacja wyników",
+      details: [
+        "Codzienne monitorowanie wyników",
+        "Optymalizacja bidów i budżetów",
+        "Testowanie nowych kreacji",
+        "Analiza i raportowanie ROI",
+        "Skalowanie skutecznych kampanii"
+      ]
+    }
+  ]
+
+  const uniqueFeatures = [
+    {
+      title: "Data-driven approach",
+      description: "Wszystkie decyzje podejmujemy na podstawie danych i testów, nie intuicji."
+    },
+    {
+      title: "Transparentne raportowanie",
+      description: "Otrzymujesz szczegółowe raporty z jasno określonym ROI i wpływem na sprzedaż."
+    },
+    {
+      title: "Ciągła optymalizacja",
+      description: "Nieustannie testujemy i optymalizujemy kampanie dla maksymalnych wyników."
+    },
+    {
+      title: "Holistyczne podejście",
+      description: "Łączymy różne kanały reklamowe w spójną strategię marketingową."
+    }
+  ]
+
+  const faqs = [
+    {
+      question: "Jaki budżet reklamowy powinienem przeznaczyć?",
+      answer: "Budżet zależy od branży, konkurencji i celów. Zalecamy start od 3000-5000 PLN miesięcznie dla testów, a następnie skalowanie skutecznych kampanii. Pomożemy określić optymalny budżet dla Twojego biznesu."
+    },
+    {
+      question: "Jak szybko zobaczę pierwsze rezultaty?",
+      answer: "Pierwsze rezultaty widać już w ciągu 24-48 godzin od uruchomienia kampanii. Optymalne wyniki osiągamy po 2-4 tygodniach testowania i optymalizacji."
+    },
+    {
+      question: "Czy Google Ads jest lepsze od Facebook Ads?",
+      answer: "To zależy od Twojego biznesu. Google Ads świetnie sprawdza się dla usług B2B i wysokiej intencji zakupu. Facebook Ads lepiej działa dla produktów B2C i budowania świadomości marki. Często łączymy oba kanały."
+    },
+    {
+      question: "Jak mierzicie skuteczność kampanii?",
+      answer: "Mierzymy ROI, koszt pozyskania klienta (CAC), współczynnik konwersji, CTR i inne KPI. Otrzymujesz miesięczne raporty z jasno określonym wpływem na sprzedaż."
+    },
+    {
+      question: "Czy mogę samodzielnie zarządzać kampaniami?",
+      answer: "Tak, oferujemy szkolenia i przekazanie kampanii. Jednak profesjonalne zarządzanie wymaga doświadczenia i czasu - często lepiej skupić się na biznesie, a kampanie zostawić ekspertom."
+    }
   ]
 
   return (
@@ -177,15 +296,36 @@ const MarketingPage = () => {
           </div>
         </section>
 
-        {/* Metrics section */}
+        {/* What makes our marketing unique */}
         <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Co wyróżnia nasze kampanie reklamowe?
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {uniqueFeatures.map((feature, index) => (
+                <div key={index} className="bg-gray-50 p-6 rounded-xl">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Metrics section */}
+        <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
               Nasze wyniki mówią same za siebie
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {metrics.map((metric, index) => (
-                <div key={index} className="text-center">
+                <div key={index} className="text-center bg-white p-6 rounded-xl shadow-lg">
                   <div className="flex justify-center mb-4">
                     {metric.icon}
                   </div>
@@ -200,6 +340,48 @@ const MarketingPage = () => {
             </div>
           </div>
         </section>
+
+        {/* Portfolio projects */}
+        {projects.length > 0 && (
+          <section className="py-16 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+                Przykłady naszych kampanii marketingowych
+              </h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project) => (
+                  <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div className="relative group">
+                      <img
+                        src={project.image_url}
+                        alt={project.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        {project.project_url && (
+                          <a
+                            href={project.project_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-white text-gray-900 px-4 py-2 rounded-lg font-semibold flex items-center space-x-2"
+                          >
+                            <span>Zobacz projekt</span>
+                            <ExternalLink className="h-4 w-4" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                      <p className="text-orange-500 font-semibold mb-3">{project.industry}</p>
+                      <p className="text-gray-600 text-sm">{project.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Packages section */}
         <section className="py-16">
@@ -275,12 +457,41 @@ const MarketingPage = () => {
               Proces tworzenia kampanii
             </h2>
             <div className="space-y-4">
-              {process.map((step, index) => (
-                <div key={index} className="flex items-center space-x-4 bg-gray-50 p-4 rounded-lg">
-                  <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
-                    {index + 1}
-                  </div>
-                  <span className="text-gray-700 font-medium">{step}</span>
+              {processSteps.map((step, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200">
+                  <button
+                    onClick={() => setOpenProcess(openProcess === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <div className="flex items-center space-x-4">
+                      <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
+                        {index + 1}
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900">{step.title}</h3>
+                    </div>
+                    <div className="flex-shrink-0">
+                      {openProcess === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openProcess === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <ul className="space-y-2">
+                          {step.details.map((detail, idx) => (
+                            <li key={idx} className="flex items-start space-x-3">
+                              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                              <span className="text-gray-600">{detail}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -311,6 +522,46 @@ const MarketingPage = () => {
                 3-8 złotych przychodu. Nasze kampanie są projektowane z myślą o maksymalizacji ROI, 
                 nie o wydawaniu budżetu.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+              Często zadawane pytania
+            </h2>
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200">
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <h3 className="text-lg font-bold text-gray-900 pr-4">
+                      {faq.question}
+                    </h3>
+                    <div className="flex-shrink-0">
+                      {openFaq === index ? (
+                        <Minus className="h-6 w-6 text-orange-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-orange-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openFaq === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </section>
