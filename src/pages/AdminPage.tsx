@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, Edit, Trash2, Save, X, LogOut } from 'lucide-react'
+import { ArrowLeft, Plus, Edit, Trash2, Save, X, LogOut, Image, Bold, Italic, List, Heading1, Heading2, Heading3 } from 'lucide-react'
 import { supabase, BlogPost, Project } from '../lib/supabase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -14,6 +14,7 @@ const AdminPage = () => {
   const [editingItem, setEditingItem] = useState<BlogPost | Project | null>(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
+  const [user, setUser] = useState<any>(null)
 
   const [blogForm, setBlogForm] = useState({
     title: '',
@@ -33,45 +34,55 @@ const AdminPage = () => {
     industry: '',
     description: '',
     image_url: '',
-    technologies: '',
-    results: '',
+    technologies: [] as string[],
+    results: [] as { metric: string; value: string }[],
     completion_date: '',
     project_url: '',
     featured: false
   })
 
+  const projectCategories = [
+    'Strona firmowa',
+    'Landing page',
+    'Strona wizytówka',
+    'Platforma B2B',
+    'System rezerwacji',
+    'Platforma edukacyjna',
+    'Platforma internetowa',
+    'Sklep internetowy',
+    'E-commerce',
+    'Sklep B2B'
+  ]
+
   // Check authentication on component mount
   useEffect(() => {
-    const checkAuth = () => {
-      const isAuthenticated = localStorage.getItem('adminAuthenticated')
-      const authTime = localStorage.getItem('adminAuthTime')
-      
-      if (!isAuthenticated || !authTime) {
-        navigate('/admin/login')
-        return
-      }
+    const checkAuth = async () => {
+      try {
+        const { data: { user }, error } = await supabase.auth.getUser()
+        
+        if (error || !user) {
+          navigate('/admin/login')
+          return
+        }
 
-      // Check if session is older than 24 hours
-      const sessionAge = Date.now() - parseInt(authTime)
-      const maxAge = 24 * 60 * 60 * 1000 // 24 hours in milliseconds
-      
-      if (sessionAge > maxAge) {
-        localStorage.removeItem('adminAuthenticated')
-        localStorage.removeItem('adminAuthTime')
+        setUser(user)
+        await fetchData()
+      } catch (error) {
+        console.error('Error checking auth:', error)
         navigate('/admin/login')
-        return
       }
-
-      fetchData()
     }
 
     checkAuth()
   }, [navigate])
 
-  const handleLogout = () => {
-    localStorage.removeItem('adminAuthenticated')
-    localStorage.removeItem('adminAuthTime')
-    navigate('/admin/login')
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut()
+      navigate('/admin/login')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
   }
 
   const fetchData = async () => {
@@ -99,6 +110,63 @@ const AdminPage = () => {
       .replace(/\s+/g, '-')
       .replace(/-+/g, '-')
       .trim()
+  }
+
+  const insertTextAtCursor = (textarea: HTMLTextAreaElement, text: string) => {
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const value = textarea.value
+    const newValue = value.substring(0, start) + text + value.substring(end)
+    
+    setBlogForm(prev => ({ ...prev, content: newValue }))
+    
+    // Set cursor position after inserted text
+    setTimeout(() => {
+      textarea.focus()
+      textarea.setSelectionRange(start + text.length, start + text.length)
+    }, 0)
+  }
+
+  const formatText = (format: string) => {
+    const textarea = document.getElementById('content') as HTMLTextAreaElement
+    if (!textarea) return
+
+    const start = textarea.selectionStart
+    const end = textarea.selectionEnd
+    const selectedText = textarea.value.substring(start, end)
+
+    let formattedText = ''
+    switch (format) {
+      case 'bold':
+        formattedText = `**${selectedText || 'pogrubiony tekst'}**`
+        break
+      case 'italic':
+        formattedText = `*${selectedText || 'kursywa'}*`
+        break
+      case 'h1':
+        formattedText = `# ${selectedText || 'Nagłówek 1'}`
+        break
+      case 'h2':
+        formattedText = `## ${selectedText || 'Nagłówek 2'}`
+        break
+      case 'h3':
+        formattedText = `### ${selectedText || 'Nagłówek 3'}`
+        break
+      case 'list':
+        formattedText = `- ${selectedText || 'Element listy'}`
+        break
+      case 'image':
+        const imageUrl = prompt('Wprowadź URL obrazka:')
+        const imageCaption = prompt('Wprowadź podpis obrazka (opcjonalnie):')
+        if (imageUrl) {
+          formattedText = `![${imageCaption || 'Opis obrazka'}](${imageUrl})`
+        }
+        break
+    }
+
+    if (formattedText) {
+      insertTextAtCursor(textarea, formattedText)
+    }
   }
 
   const handleBlogSubmit = async (e: React.FormEvent) => {
@@ -146,18 +214,10 @@ const AdminPage = () => {
     setSaving(true)
     
     try {
-      let resultsData
-      try {
-        resultsData = projectForm.results ? JSON.parse(projectForm.results) : []
-      } catch {
-        throw new Error('Nieprawidłowy format JSON w polu rezultaty')
-      }
-
       const projectData = {
         ...projectForm,
-        technologies: projectForm.technologies ? projectForm.technologies.split(',').map(tech => tech.trim()).filter(tech => tech) : [],
-        results: resultsData,
-        slug: projectForm.slug || generateSlug(projectForm.title)
+        slug: projectForm.slug || generateSlug(projectForm.title),
+        results: projectForm.results
       }
 
       let result
@@ -212,8 +272,8 @@ const AdminPage = () => {
         industry: item.industry,
         description: item.description,
         image_url: item.image_url,
-        technologies: item.technologies.join(', '),
-        results: JSON.stringify(item.results, null, 2),
+        technologies: item.technologies || [],
+        results: Array.isArray(item.results) ? item.results : [],
         completion_date: item.completion_date,
         project_url: item.project_url || '',
         featured: item.featured
@@ -258,12 +318,56 @@ const AdminPage = () => {
       industry: '',
       description: '',
       image_url: '',
-      technologies: '',
-      results: '',
+      technologies: [],
+      results: [],
       completion_date: '',
       project_url: '',
       featured: false
     })
+  }
+
+  const addTechnology = () => {
+    setProjectForm(prev => ({
+      ...prev,
+      technologies: [...prev.technologies, '']
+    }))
+  }
+
+  const updateTechnology = (index: number, value: string) => {
+    setProjectForm(prev => ({
+      ...prev,
+      technologies: prev.technologies.map((tech, i) => i === index ? value : tech)
+    }))
+  }
+
+  const removeTechnology = (index: number) => {
+    setProjectForm(prev => ({
+      ...prev,
+      technologies: prev.technologies.filter((_, i) => i !== index)
+    }))
+  }
+
+  const addResult = () => {
+    setProjectForm(prev => ({
+      ...prev,
+      results: [...prev.results, { metric: '', value: '' }]
+    }))
+  }
+
+  const updateResult = (index: number, field: 'metric' | 'value', value: string) => {
+    setProjectForm(prev => ({
+      ...prev,
+      results: prev.results.map((result, i) => 
+        i === index ? { ...result, [field]: value } : result
+      )
+    }))
+  }
+
+  const removeResult = (index: number) => {
+    setProjectForm(prev => ({
+      ...prev,
+      results: prev.results.filter((_, i) => i !== index)
+    }))
   }
 
   if (loading) {
@@ -296,13 +400,16 @@ const AdminPage = () => {
                 </Link>
               </div>
               
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors"
-              >
-                <LogOut className="h-5 w-5" />
-                <span>Wyloguj</span>
-              </button>
+              <div className="flex items-center space-x-4">
+                <span className="text-gray-600">Zalogowany jako: {user?.email}</span>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors"
+                >
+                  <LogOut className="h-5 w-5" />
+                  <span>Wyloguj</span>
+                </button>
+              </div>
             </div>
             
             <div className="text-center max-w-4xl mx-auto">
@@ -418,13 +525,82 @@ const AdminPage = () => {
                       <label className="block text-sm font-bold text-gray-900 mb-2">
                         Treść *
                       </label>
+                      
+                      {/* Formatting toolbar */}
+                      <div className="flex flex-wrap gap-2 mb-3 p-3 bg-gray-50 rounded-lg border">
+                        <button
+                          type="button"
+                          onClick={() => formatText('bold')}
+                          className="p-2 hover:bg-gray-200 rounded"
+                          title="Pogrubienie"
+                        >
+                          <Bold className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => formatText('italic')}
+                          className="p-2 hover:bg-gray-200 rounded"
+                          title="Kursywa"
+                        >
+                          <Italic className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => formatText('h1')}
+                          className="p-2 hover:bg-gray-200 rounded"
+                          title="Nagłówek 1"
+                        >
+                          <Heading1 className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => formatText('h2')}
+                          className="p-2 hover:bg-gray-200 rounded"
+                          title="Nagłówek 2"
+                        >
+                          <Heading2 className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => formatText('h3')}
+                          className="p-2 hover:bg-gray-200 rounded"
+                          title="Nagłówek 3"
+                        >
+                          <Heading3 className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => formatText('list')}
+                          className="p-2 hover:bg-gray-200 rounded"
+                          title="Lista"
+                        >
+                          <List className="h-4 w-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => formatText('image')}
+                          className="p-2 hover:bg-gray-200 rounded"
+                          title="Dodaj obrazek"
+                        >
+                          <Image className="h-4 w-4" />
+                        </button>
+                      </div>
+
                       <textarea
-                        rows={10}
+                        id="content"
+                        rows={15}
                         required
                         value={blogForm.content}
                         onChange={(e) => setBlogForm({...blogForm, content: e.target.value})}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-mono text-sm"
+                        placeholder="Treść artykułu... Użyj przycisków powyżej do formatowania."
                       />
+                      
+                      <div className="mt-2 text-sm text-gray-500">
+                        <p><strong>Formatowanie:</strong></p>
+                        <p>**pogrubiony tekst** | *kursywa* | # Nagłówek 1 | ## Nagłówek 2 | ### Nagłówek 3</p>
+                        <p>![Podpis obrazka](URL_obrazka) | - Element listy</p>
+                      </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6">
@@ -492,13 +668,19 @@ const AdminPage = () => {
                         <label className="block text-sm font-bold text-gray-900 mb-2">
                           Kategoria *
                         </label>
-                        <input
-                          type="text"
+                        <select
                           required
                           value={projectForm.category}
                           onChange={(e) => setProjectForm({...projectForm, category: e.target.value})}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                        />
+                        >
+                          <option value="">Wybierz kategorię</option>
+                          {projectCategories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     </div>
 
@@ -569,32 +751,89 @@ const AdminPage = () => {
                       </div>
                     </div>
 
+                    {/* Technologies */}
                     <div>
-                      <label className="block text-sm font-bold text-gray-900 mb-2">
-                        Technologie (oddzielone przecinkami) *
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        value={projectForm.technologies}
-                        onChange={(e) => setProjectForm({...projectForm, technologies: e.target.value})}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                        placeholder="React, Node.js, PostgreSQL"
-                      />
+                      <div className="flex justify-between items-center mb-3">
+                        <label className="block text-sm font-bold text-gray-900">
+                          Technologie *
+                        </label>
+                        <button
+                          type="button"
+                          onClick={addTechnology}
+                          className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                        >
+                          + Dodaj technologię
+                        </button>
+                      </div>
+                      <div className="space-y-2">
+                        {projectForm.technologies.map((tech, index) => (
+                          <div key={index} className="flex gap-2">
+                            <input
+                              type="text"
+                              value={tech}
+                              onChange={(e) => updateTechnology(index, e.target.value)}
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-500"
+                              placeholder="np. React, Node.js"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeTechnology(index)}
+                              className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600"
+                            >
+                              Usuń
+                            </button>
+                          </div>
+                        ))}
+                        {projectForm.technologies.length === 0 && (
+                          <p className="text-gray-500 text-sm">Kliknij "Dodaj technologię" aby dodać pierwszą technologię</p>
+                        )}
+                      </div>
                     </div>
 
+                    {/* Results */}
                     <div>
-                      <label className="block text-sm font-bold text-gray-900 mb-2">
-                        Rezultaty (JSON format) *
-                      </label>
-                      <textarea
-                        rows={6}
-                        required
-                        value={projectForm.results}
-                        onChange={(e) => setProjectForm({...projectForm, results: e.target.value})}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-mono text-sm"
-                        placeholder='[{"metric": "Wzrost konwersji", "value": "+340%"}]'
-                      />
+                      <div className="flex justify-between items-center mb-3">
+                        <label className="block text-sm font-bold text-gray-900">
+                          Rezultaty *
+                        </label>
+                        <button
+                          type="button"
+                          onClick={addResult}
+                          className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
+                        >
+                          + Dodaj rezultat
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {projectForm.results.map((result, index) => (
+                          <div key={index} className="flex gap-2">
+                            <input
+                              type="text"
+                              value={result.metric}
+                              onChange={(e) => updateResult(index, 'metric', e.target.value)}
+                              className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-500"
+                              placeholder="np. Wzrost konwersji"
+                            />
+                            <input
+                              type="text"
+                              value={result.value}
+                              onChange={(e) => updateResult(index, 'value', e.target.value)}
+                              className="w-32 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-500"
+                              placeholder="np. +340%"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => removeResult(index)}
+                              className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600"
+                            >
+                              Usuń
+                            </button>
+                          </div>
+                        ))}
+                        {projectForm.results.length === 0 && (
+                          <p className="text-gray-500 text-sm">Kliknij "Dodaj rezultat" aby dodać pierwszy rezultat</p>
+                        )}
+                      </div>
                     </div>
 
                     <div className="flex items-center space-x-4">

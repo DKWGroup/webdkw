@@ -1,37 +1,40 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Lock, Eye, EyeOff } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
 const AdminLoginPage = () => {
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
 
-  // Simple password - in production, use proper authentication
-  const ADMIN_PASSWORD = 'webdkw2024admin'
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
-    // Simulate loading time
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
 
-    if (password === ADMIN_PASSWORD) {
-      // Store authentication in localStorage
-      localStorage.setItem('adminAuthenticated', 'true')
-      localStorage.setItem('adminAuthTime', Date.now().toString())
-      navigate('/admin')
-    } else {
-      setError('Nieprawidłowe hasło')
+      if (error) throw error
+
+      if (data.user) {
+        navigate('/admin')
+      }
+    } catch (error: any) {
+      console.error('Error signing in:', error)
+      setError(error.message || 'Błąd podczas logowania')
+    } finally {
+      setIsLoading(false)
     }
-    
-    setIsLoading(false)
   }
 
   return (
@@ -62,14 +65,29 @@ const AdminLoginPage = () => {
                   Panel Administracyjny
                 </h1>
                 <p className="text-gray-600">
-                  Wprowadź hasło, aby uzyskać dostęp do CMS
+                  Zaloguj się, aby uzyskać dostęp do CMS
                 </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
+                  <label htmlFor="email" className="block text-sm font-bold text-gray-900 mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
+                    placeholder="admin@example.com"
+                    required
+                  />
+                </div>
+
+                <div>
                   <label htmlFor="password" className="block text-sm font-bold text-gray-900 mb-2">
-                    Hasło administratora
+                    Hasło
                   </label>
                   <div className="relative">
                     <input
@@ -105,7 +123,7 @@ const AdminLoginPage = () => {
                   {isLoading ? (
                     <>
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                      <span>Sprawdzanie...</span>
+                      <span>Logowanie...</span>
                     </>
                   ) : (
                     <>
@@ -118,7 +136,7 @@ const AdminLoginPage = () => {
 
               <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                 <p className="text-blue-800 text-sm">
-                  <strong>Demo:</strong> Hasło to "webdkw2024admin"
+                  <strong>Demo:</strong> Użyj danych logowania Supabase
                 </p>
               </div>
             </div>

@@ -65,6 +65,34 @@ const BlogPostPage = () => {
     }
   }
 
+  const formatContent = (content: string) => {
+    // Convert markdown-like formatting to HTML
+    let formattedContent = content
+      // Bold text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Italic text
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      // Headers
+      .replace(/^### (.*$)/gm, '<h3 class="text-2xl font-bold text-gray-900 mt-8 mb-4">$1</h3>')
+      .replace(/^## (.*$)/gm, '<h2 class="text-3xl font-bold text-gray-900 mt-10 mb-6">$1</h2>')
+      .replace(/^# (.*$)/gm, '<h1 class="text-4xl font-bold text-gray-900 mt-12 mb-8">$1</h1>')
+      // Images with captions
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<figure class="my-8"><img src="$2" alt="$1" class="w-full rounded-lg shadow-lg"><figcaption class="text-center text-gray-600 mt-3 italic">$1</figcaption></figure>')
+      // Lists
+      .replace(/^- (.*$)/gm, '<li class="mb-2">$1</li>')
+      // Wrap consecutive list items in ul
+      .replace(/(<li.*<\/li>\s*)+/g, '<ul class="list-disc list-inside my-6 space-y-2">$&</ul>')
+      // Paragraphs
+      .replace(/\n\n/g, '</p><p class="mb-6">')
+
+    // Wrap in paragraph tags if not already wrapped
+    if (!formattedContent.startsWith('<')) {
+      formattedContent = '<p class="mb-6">' + formattedContent + '</p>'
+    }
+
+    return formattedContent
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -184,10 +212,8 @@ const BlogPostPage = () => {
               <div className="prose prose-lg max-w-none">
                 <div 
                   className="text-gray-700 leading-relaxed"
-                  style={{ whiteSpace: 'pre-wrap' }}
-                >
-                  {post.content}
-                </div>
+                  dangerouslySetInnerHTML={{ __html: formatContent(post.content) }}
+                />
               </div>
             </article>
           </div>
