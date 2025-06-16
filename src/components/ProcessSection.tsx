@@ -61,7 +61,7 @@ const ProcessSection = () => {
                 }`}
               >
                 {/* Mobile step number */}
-                <div className="lg:hidden mt-4 w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
+                <div className="lg:hidden w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center text-xl font-bold mb-4">
                   {index + 1}
                 </div>
                 
