@@ -77,7 +77,7 @@ const ProcessSection = () => {
                 </div>
 
                 {/* Step number - centered on timeline */}
-                <div className="hidden lg:flex w-16 h-16 bg-orange-500 text-white rounded-full items-center justify-center text-2xl font-bold z-10 shadow-lg my-8 mt-4 lg:mb-0 flex-shrink-0">
+                <div className="hidden lg:flex w-16 h-16 bg-orange-500 text-white rounded-full items-center justify-center text-2xl font-bold z-10 shadow-lg my-8 mt-4 flex-shrink-0">
                   {index + 1}
                 </div>
 
