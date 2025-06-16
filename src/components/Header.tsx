@@ -75,10 +75,22 @@ const Header = () => {
               Portfolio
             </Link>
             <Link
+              to="/case-studies"
+              className="text-gray-700 hover:text-orange-500 transition-colors"
+            >
+              Case Studies
+            </Link>
+            <Link
               to="/blog"
               className="text-gray-700 hover:text-orange-500 transition-colors"
             >
               Blog
+            </Link>
+            <Link
+              to="/proces-realizacji"
+              className="text-gray-700 hover:text-orange-500 transition-colors"
+            >
+              Proces realizacji
             </Link>
             <Link
               to="/o-nas"
@@ -110,54 +122,70 @@ const Header = () => {
         </div>
 
         {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-100">
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="py-4 border-t border-gray-100">
             <nav className="flex flex-col space-y-4">
               <Link
                 to="/uslugi"
-                className="text-left text-gray-700 hover:text-orange-500 transition-colors"
+                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Usługi
               </Link>
               <Link
                 to="/portfolio"
-                className="text-left text-gray-700 hover:text-orange-500 transition-colors"
+                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Portfolio
               </Link>
               <Link
+                to="/case-studies"
+                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Case Studies
+              </Link>
+              <Link
                 to="/blog"
-                className="text-left text-gray-700 hover:text-orange-500 transition-colors"
+                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Blog
               </Link>
               <Link
+                to="/proces-realizacji"
+                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Proces realizacji
+              </Link>
+              <Link
                 to="/o-nas"
-                className="text-left text-gray-700 hover:text-orange-500 transition-colors"
+                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 O nas
               </Link>
               <Link
                 to="/faq"
-                className="text-left text-gray-700 hover:text-orange-500 transition-colors"
+                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 FAQ
               </Link>
               <Link
                 to="/kontakt"
-                className="text-left bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors w-fit"
+                className="text-left bg-orange-500 text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-all duration-200 w-fit transform hover:scale-105"
                 onClick={() => setIsMenuOpen(false)}
               >
                 Kontakt
               </Link>
             </nav>
           </div>
-        )}
+        </div>
       </div>
     </header>
   )

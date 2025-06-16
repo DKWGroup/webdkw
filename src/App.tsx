@@ -11,6 +11,8 @@ import EcommercePage from './pages/services/EcommercePage'
 import SEOPage from './pages/services/SEOPage'
 import MarketingPage from './pages/services/MarketingPage'
 import PortfolioPage from './pages/PortfolioPage'
+import CaseStudiesPage from './pages/CaseStudiesPage'
+import CaseStudyPage from './pages/CaseStudyPage'
 import ProcessPage from './pages/ProcessPage'
 import AboutPage from './pages/AboutPage'
 import FAQPage from './pages/FAQPage'
@@ -36,6 +38,8 @@ function App() {
         <Route path="/uslugi/seo" element={<SEOPage />} />
         <Route path="/uslugi/marketing" element={<MarketingPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/case-studies" element={<CaseStudiesPage />} />
+        <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
         <Route path="/proces-realizacji" element={<ProcessPage />} />
         <Route path="/o-nas" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />

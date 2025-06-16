@@ -48,4 +48,12 @@ export interface Project {
   featured: boolean
   created_at: string
   updated_at: string
+  case_study?: boolean
+  case_study_header?: string
+  case_study_introduction?: string
+  case_study_goals?: string
+  case_study_implementation?: string
+  case_study_results?: string
+  case_study_summary?: string
+  case_study_cta?: string
 }

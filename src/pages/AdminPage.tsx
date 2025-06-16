@@ -38,7 +38,15 @@ const AdminPage = () => {
     results: [] as { metric: string; value: string }[],
     completion_date: '',
     project_url: '',
-    featured: false
+    featured: false,
+    case_study: false,
+    case_study_header: '',
+    case_study_introduction: '',
+    case_study_goals: '',
+    case_study_implementation: '',
+    case_study_results: '',
+    case_study_summary: '',
+    case_study_cta: ''
   })
 
   const projectCategories = [
@@ -276,7 +284,15 @@ const AdminPage = () => {
         results: Array.isArray(item.results) ? item.results : [],
         completion_date: item.completion_date,
         project_url: item.project_url || '',
-        featured: item.featured
+        featured: item.featured,
+        case_study: item.case_study || false,
+        case_study_header: item.case_study_header || '',
+        case_study_introduction: item.case_study_introduction || '',
+        case_study_goals: item.case_study_goals || '',
+        case_study_implementation: item.case_study_implementation || '',
+        case_study_results: item.case_study_results || '',
+        case_study_summary: item.case_study_summary || '',
+        case_study_cta: item.case_study_cta || ''
       })
     }
   }
@@ -322,7 +338,15 @@ const AdminPage = () => {
       results: [],
       completion_date: '',
       project_url: '',
-      featured: false
+      featured: false,
+      case_study: false,
+      case_study_header: '',
+      case_study_introduction: '',
+      case_study_goals: '',
+      case_study_implementation: '',
+      case_study_results: '',
+      case_study_summary: '',
+      case_study_cta: ''
     })
   }
 
@@ -846,7 +870,114 @@ const AdminPage = () => {
                         />
                         Projekt wyróżniony
                       </label>
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={projectForm.case_study}
+                          onChange={(e) => setProjectForm({...projectForm, case_study: e.target.checked})}
+                          className="mr-2"
+                        />
+                        Case Study
+                      </label>
                     </div>
+
+                    {/* Case Study Fields */}
+                    {projectForm.case_study && (
+                      <div className="border-t pt-6 space-y-6">
+                        <h3 className="text-lg font-bold text-gray-900">Pola Case Study</h3>
+                        
+                        <div>
+                          <label className="block text-sm font-bold text-gray-900 mb-2">
+                            Nagłówek Case Study
+                          </label>
+                          <input
+                            type="text"
+                            value={projectForm.case_study_header}
+                            onChange={(e) => setProjectForm({...projectForm, case_study_header: e.target.value})}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                            placeholder="Jeśli puste, użyty zostanie tytuł projektu"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-gray-900 mb-2">
+                            Wprowadzenie
+                          </label>
+                          <textarea
+                            rows={4}
+                            value={projectForm.case_study_introduction}
+                            onChange={(e) => setProjectForm({...projectForm, case_study_introduction: e.target.value})}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                            placeholder="Wprowadzenie do case study..."
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-gray-900 mb-2">
+                            Cele projektu
+                          </label>
+                          <textarea
+                            rows={4}
+                            value={projectForm.case_study_goals}
+                            onChange={(e) => setProjectForm({...projectForm, case_study_goals: e.target.value})}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                            placeholder="Jakie były cele projektu..."
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-gray-900 mb-2">
+                            Realizacja projektu
+                          </label>
+                          <textarea
+                            rows={6}
+                            value={projectForm.case_study_implementation}
+                            onChange={(e) => setProjectForm({...projectForm, case_study_implementation: e.target.value})}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                            placeholder="Jak przebiegała realizacja projektu..."
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-gray-900 mb-2">
+                            Szczegółowy opis wyników
+                          </label>
+                          <textarea
+                            rows={4}
+                            value={projectForm.case_study_results}
+                            onChange={(e) => setProjectForm({...projectForm, case_study_results: e.target.value})}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                            placeholder="Szczegółowy opis osiągniętych wyników..."
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-gray-900 mb-2">
+                            Podsumowanie i wnioski
+                          </label>
+                          <textarea
+                            rows={4}
+                            value={projectForm.case_study_summary}
+                            onChange={(e) => setProjectForm({...projectForm, case_study_summary: e.target.value})}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                            placeholder="Podsumowanie projektu i wnioski..."
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-bold text-gray-900 mb-2">
+                            CTA (Call to Action)
+                          </label>
+                          <input
+                            type="text"
+                            value={projectForm.case_study_cta}
+                            onChange={(e) => setProjectForm({...projectForm, case_study_cta: e.target.value})}
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
+                            placeholder="Jeśli puste, użyty zostanie domyślny CTA"
+                          />
+                        </div>
+                      </div>
+                    )}
 
                     <button
                       type="submit"
@@ -923,6 +1054,11 @@ const AdminPage = () => {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">{project.title}</div>
                             <div className="text-sm text-gray-500">{project.industry}</div>
+                            {project.case_study && (
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                Case Study
+                              </span>
+                            )}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">

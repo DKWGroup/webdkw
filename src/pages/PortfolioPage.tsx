@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ExternalLink, TrendingUp, Users, DollarSign, Calendar, Tag } from 'lucide-react'
+import { ArrowLeft, ExternalLink, TrendingUp, Users, DollarSign, Calendar, Tag, FileText } from 'lucide-react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
@@ -21,7 +21,9 @@ const PortfolioPage = () => {
       ],
       completionDate: "2024",
       url: "#",
-      featured: true
+      featured: true,
+      hasCaseStudy: true,
+      caseStudySlug: "techstart-solutions"
     },
     {
       id: 2,
@@ -37,7 +39,9 @@ const PortfolioPage = () => {
         { metric: "Nowi klienci", value: "+120%", icon: <DollarSign className="h-5 w-5" /> }
       ],
       completionDate: "2024",
-      url: "#"
+      url: "#",
+      hasCaseStudy: true,
+      caseStudySlug: "ecogreen-consulting"
     },
     {
       id: 3,
@@ -240,7 +244,7 @@ const PortfolioPage = () => {
                       </div>
 
                       {/* Results */}
-                      <div>
+                      <div className="mb-6">
                         <h4 className="font-bold text-gray-900 mb-4">Rezultaty:</h4>
                         <div className={`grid ${project.featured ? 'grid-cols-3' : 'grid-cols-1'} gap-4`}>
                           {project.results.map((result, idx) => (
@@ -258,6 +262,19 @@ const PortfolioPage = () => {
                           ))}
                         </div>
                       </div>
+
+                      {/* Case Study Link */}
+                      {project.hasCaseStudy && (
+                        <div className="mb-4">
+                          <Link
+                            to={`/case-studies/${project.caseStudySlug}`}
+                            className="inline-flex items-center space-x-2 text-orange-500 hover:text-orange-600 font-semibold transition-colors"
+                          >
+                            <FileText className="h-4 w-4" />
+                            <span>Przeczytaj szczegółowy case study</span>
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
