@@ -196,7 +196,7 @@ const PortfolioSection = () => {
           
           <Link
             to="/portfolio"
-            className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 mr-4"
+            className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 mr-4 mb-4"
           >
             <span>Zobacz wszystkie realizacje</span>
             <ArrowRight className="h-5 w-5" />
