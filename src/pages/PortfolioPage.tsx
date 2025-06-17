@@ -118,6 +118,13 @@ const PortfolioPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEOHead 
+          title="Portfolio | Strony Internetowe, Sklepy Online, SEO"
+          description="Zobacz nasze realizacje! Prezentujemy portfolio stron internetowych, sklepów online i projektów SEO. Przekonaj się o naszym doświadczeniu i jakości!"
+          keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
+          url="https://webdkw.pl"
+        />
+      
       <Header />
       
       <main className="pt-20">
