@@ -91,7 +91,7 @@ const HeroSection = () => {
 
           {/* Client carousel */}
           <div className="border-t border-gray-200 pt-8">
-            <p className="text-gray-500 text-sm mb-6">Zaufali mi:</p>
+            <p className="text-gray-500 text-sm mb-6">Zaufali nam:</p>
             <div className="relative">
               <div className="overflow-hidden">
                 <div 
