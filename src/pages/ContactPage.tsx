@@ -62,6 +62,13 @@ const ContactPage = () => {
   if (isSubmitted) {
     return (
       <div className="min-h-screen bg-gray-50">
+        <SEOHead 
+          title="Kontakt | Tworzenie Stron, SEO, Marketing Internetowy"
+          description="Skontaktuj się z nami! Zapytaj o tworzenie stron internetowych, sklepów online, optymalizację SEO i skuteczne kampanie marketingowe. Czekamy na Twój kontakt!"
+          keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy, Warszawa"
+          url="https://webdkw.pl"
+        />
+        
         <Header />
         <main className="pt-20">
           <section className="py-20">
