@@ -79,7 +79,7 @@ const AboutPage = () => {
                 
                 <div className="space-y-6 text-lg text-gray-600 leading-relaxed mb-8">
                   <p>
-                    Nazywam się <strong>Marcin Kowalski</strong> i jako ekspert WebDKW, należącego do DKW Group, od ponad 4 lat pomagam firmom B2B i usługowym budować silną i skuteczną obecność w internecie. Moim celem jest, aby Twoja inwestycja w stronę internetową przynosiła realne zyski.
+                    Nazywam się <strong>Kamil Krukowski</strong> i jako ekspert WebDKW, należącego do DKW Group, od ponad 4 lat pomagam firmom B2B i usługowym budować silną i skuteczną obecność w internecie. Moim celem jest, aby Twoja inwestycja w stronę internetową przynosiła realne zyski.
                   </p>
                   
                   <p>
