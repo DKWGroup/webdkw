@@ -228,7 +228,7 @@ const ContactSection = () => {
 
             {/* Calendar booking */}
             <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white text-center">
-              <h3 className="text-2xl font-bold mb-4">
+              <h3 classNamdde="text-2xl font-bold mb-4">
                 Umów się na bezpłatną konsultację
               </h3>
               <p className="mb-6 opacity-90">
