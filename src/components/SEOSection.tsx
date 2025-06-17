@@ -37,7 +37,7 @@ const SEOSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
-          Pozycjonowanie stron w Google - zdominuj konkurencję w wyszukiwarkach 
+          Pozycjonowanie stron w Google -
             <span className="text-orange-400"> Zdominujmy razem wyniki wyszukiwania.</span>
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">

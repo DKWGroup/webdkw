@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Search, Palette, Code, Rocket, CheckCircle, Clock, Users, FileText } from 'lucide-react'
+import { HelmetProvider } from 'react-helmet-async'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
@@ -138,7 +139,8 @@ const ProcessPage = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <HelmetProvider>
+      <div className="min-h-screen bg-gray-50">
       <SEOHead 
           title="Proces Tworzenia Stron | Projektowanie, SEO, Marketing"
           description="Poznaj nasz proces tworzenia stron internetowych i sklepów online. Od projektu, przez optymalizację SEO, po skuteczne kampanie marketingowe. Zobacz, jak pracujemy!"
@@ -334,6 +336,7 @@ const ProcessPage = () => {
 
       <Footer />
     </div>
+    </HelmetProvider>
   )
 }
 

@@ -4,6 +4,7 @@ import { ArrowLeft, Plus, Minus, MessageCircle } from 'lucide-react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
+import { HelmetProvider } from 'react-helmet-async'
 
 const FAQPage = () => {
   const [openItem, setOpenItem] = useState<number | null>(0)
@@ -86,7 +87,8 @@ const FAQPage = () => {
   let questionIndex = 0
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <HelmetProvider>
+      <div className="min-h-screen bg-gray-50">
       <SEOHead 
           title="FAQ | Tworzenie Stron Internetowych, SEO, Marketing"
           description="Masz pytania? Sprawdź nasze FAQ dotyczące tworzenia stron internetowych, sklepów online, optymalizacji SEO i marketingu. Znajdź odpowiedzi na nurtujące Cię kwestie!"
@@ -205,6 +207,7 @@ const FAQPage = () => {
 
       <Footer />
     </div>
+    </HelmetProvider>
   )
 }
 

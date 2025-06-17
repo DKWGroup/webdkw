@@ -4,6 +4,8 @@ import { ArrowLeft, Check, Database, Code, Zap, Users, Shield, Cog, Plus, Minus,
 import { supabase, Project } from '../../lib/supabase'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
+import SEOHead from '../../components/SEOHead'
+import { HelmetProvider } from 'react-helmet-async'
 
 const PlatformDevelopmentPage = () => {
   const [projects, setProjects] = useState<Project[]>([])
@@ -32,7 +34,7 @@ const PlatformDevelopmentPage = () => {
   const packages = [
     {
       name: "Platforma Startowa",
-      price: "15 000 - 25 000 PLN",
+      price: "od 9 000 PLN",
       description: "Podstawowa platforma z kluczowymi funkcjami",
       features: [
         "System logowania użytkowników",
@@ -44,11 +46,11 @@ const PlatformDevelopmentPage = () => {
         "Podstawowe zabezpieczenia",
         "3 miesiące wsparcia"
       ],
-      timeframe: "6-8 tygodni"
+      timeframe: "4 tygodnie"
     },
     {
-      name: "Platforma Biznesowa",
-      price: "25 000 - 50 000 PLN",
+      name: "Zaawansowana platforma",
+      price: "od 14 000 zł",
       description: "Zaawansowana platforma z rozszerzonymi funkcjami",
       features: [
         "Wszystko z pakietu Startowego",
@@ -60,12 +62,12 @@ const PlatformDevelopmentPage = () => {
         "Backup i monitoring",
         "6 miesięcy wsparcia"
       ],
-      timeframe: "8-12 tygodni",
+      timeframe: "6 tygodni",
       popular: true
     },
     {
       name: "Platforma Enterprise",
-      price: "50 000+ PLN",
+      price: "od 20 000 zł",
       description: "Kompleksowe rozwiązanie dla dużych organizacji",
       features: [
         "Wszystko z pakietu Biznesowego",
@@ -77,7 +79,7 @@ const PlatformDevelopmentPage = () => {
         "SLA i monitoring 24/7",
         "12 miesięcy wsparcia"
       ],
-      timeframe: "12+ tygodni"
+      timeframe: "10 tygodni"
     }
   ]
 
@@ -237,7 +239,14 @@ const PlatformDevelopmentPage = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <HelmetProvider>
+      <div className="min-h-screen bg-gray-50">
+      <SEOHead 
+          title="Platformy internetowe | Tworzenie Stron Internetowych"
+          description="Zaawansowane systemy i aplikacje webowe dostosowane do specyficznych potrzeb Twojego biznesu. Od prostych narzędzi po kompleksowe platformy enterprise."
+          keywords="platformy internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
+          url="https://webdkw.pl"
+        />
       <Header />
       
       <main className="pt-20">
@@ -550,6 +559,7 @@ const PlatformDevelopmentPage = () => {
 
       <Footer />
     </div>
+    </HelmetProvider>
   )
 }
 

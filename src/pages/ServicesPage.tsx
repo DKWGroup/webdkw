@@ -14,8 +14,8 @@ const ServicesPage = () => {
       title: "Tworzenie stron internetowych",
       subtitle: "Landing page / Wizytówka",
       description: "Profesjonalne strony wizytówkowe i landing page'y zoptymalizowane pod konwersję",
-      priceRange: "od 3 000 PLN",
-      timeframe: "2-4 tygodnie",
+      priceRange: "od 4 000 zł",
+      timeframe: "1 tydzień",
       features: ["Responsywny design", "Optymalizacja SEO", "Formularz kontaktowy", "Panel administracyjny"],
       link: "/uslugi/tworzenie-stron"
     },
@@ -24,8 +24,8 @@ const ServicesPage = () => {
       title: "Platformy internetowe",
       subtitle: "Systemy i aplikacje web",
       description: "Zaawansowane platformy internetowe i systemy zarządzania dostosowane do Twoich potrzeb",
-      priceRange: "od 15 000 PLN",
-      timeframe: "6-12 tygodni",
+      priceRange: "od 9 000 zł",
+      timeframe: "od 4 tygodni",
       features: ["Dedykowany kod", "Zaawansowane funkcje", "Integracje API", "Skalowalność"],
       link: "/uslugi/platformy-internetowe"
     },
@@ -34,8 +34,8 @@ const ServicesPage = () => {
       title: "Sklepy internetowe",
       subtitle: "E-commerce",
       description: "Kompleksowe sklepy internetowe z systemami płatności i zarządzania zamówieniami",
-      priceRange: "od 8 000 PLN",
-      timeframe: "4-8 tygodni",
+      priceRange: "od 4 000 zł",
+      timeframe: "od 2 tygodni",
       features: ["WooCommerce/Custom", "Systemy płatności", "Zarządzanie produktami", "Analityka sprzedaży"],
       link: "/uslugi/sklepy-internetowe"
     },
@@ -44,8 +44,8 @@ const ServicesPage = () => {
       title: "Optymalizacja SEO",
       subtitle: "Pozycjonowanie w Google",
       description: "Kompleksowa optymalizacja SEO zwiększająca widoczność w wyszukiwarkach",
-      priceRange: "od 2 000 PLN/mies",
-      timeframe: "3-6 miesięcy",
+      priceRange: "od 1 200 zł/mies",
+      timeframe: "rezulataty po miesiącu",
       features: ["Audyt SEO", "Optymalizacja techniczna", "Content marketing", "Link building"],
       link: "/uslugi/seo"
     },
@@ -54,8 +54,8 @@ const ServicesPage = () => {
       title: "Marketing i reklamy",
       subtitle: "Google Ads / Facebook Ads",
       description: "Profesjonalne kampanie reklamowe generujące wysokiej jakości leady",
-      priceRange: "od 1 500 PLN/mies",
-      timeframe: "1-2 tygodnie setup",
+      priceRange: "od 600 zł/mies",
+      timeframe: "od tygodnia",
       features: ["Google Ads", "Facebook/Instagram Ads", "Optymalizacja konwersji", "Raportowanie"],
       link: "/uslugi/marketing"
     }

@@ -85,7 +85,7 @@ const AboutSection = () => {
             </div>
 
             {/* Floating card */}
-            <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
+            {/* <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border border-gray-100">
               <div className="text-center">
                 <div className="text-3xl font-bold text-orange-500 mb-1">5.0</div>
                 <div className="flex justify-center mb-2">
@@ -95,7 +95,7 @@ const AboutSection = () => {
                 </div>
                 <div className="text-sm text-gray-600">Średnia ocena</div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
 

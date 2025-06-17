@@ -4,10 +4,12 @@ import { Home, ArrowLeft, Search, Code } from 'lucide-react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
+import { HelmetProvider } from 'react-helmet-async'
 
 const NotFoundPage = () => {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <HelmetProvider>
+        <div className="min-h-screen bg-gray-50 flex flex-col">
       <SEOHead 
           title="Strona nie znaleziona (404) | Tworzenie Stron Internetowych"
           description="Ups! Strona nie istnieje. Wróć na stronę główną i sprawdź naszą ofertę tworzenia stron internetowych, sklepów online i optymalizacji SEO."
@@ -129,6 +131,7 @@ const NotFoundPage = () => {
 
       <Footer />
     </div>
+    </HelmetProvider>
   )
 }
 

@@ -32,7 +32,7 @@ const MarketingPage = () => {
   const packages = [
     {
       name: "Setup Kampanii",
-      price: "2 500 PLN",
+      price: "od 1 000 zł",
       description: "Jednorazowe przygotowanie kampanii reklamowych",
       features: [
         "Analiza grupy docelowej",
@@ -43,12 +43,12 @@ const MarketingPage = () => {
         "Pierwsze kampanie testowe",
         "Szkolenie z obsługi"
       ],
-      timeframe: "1-2 tygodnie",
+      timeframe: "1 tydzień",
       oneTime: true
     },
     {
       name: "Zarządzanie Miesięczne",
-      price: "1 500 - 3 000 PLN/mies",
+      price: "od 600 zł",
       description: "Profesjonalne zarządzanie kampaniami reklamowymi",
       features: [
         "Zarządzanie Google Ads",
@@ -63,8 +63,8 @@ const MarketingPage = () => {
       popular: true
     },
     {
-      name: "Marketing 360°",
-      price: "4 000+ PLN/mies",
+      name: "Marketing PRO",
+      price: "od 3000 zł",
       description: "Kompleksowa strategia marketingu cyfrowego",
       features: [
         "Wszystko z pakietu Miesięcznego",

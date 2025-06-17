@@ -107,15 +107,12 @@ const HeroSection = () => {
                         {clients.slice(slideIndex * itemsToShow, (slideIndex + 1) * itemsToShow).map((client, index) => (
                           <div 
                             key={index}
-                            className="group transition-all duration-300 hover:scale-110 flex items-center justify-center"
+                            className="group transition-all duration-300 flex items-center justify-center"
                           >
                             <img 
                               src={client.logo} 
                               alt={client.name} 
-                              className="h-12 sm:h-16 w-auto filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain" 
-                              style={{
-                                filter: client.logo.includes('inp.svg') ? 'brightness(0) invert(1) grayscale(1)' : undefined
-                              }}
+                              className="h-12 sm:h-16 w-auto filter grayscale invert transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain" 
                             />
                           </div>
                         ))}

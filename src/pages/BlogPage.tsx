@@ -48,50 +48,7 @@ const BlogPage = () => {
     return `${minutes} min czytania`
   }
 
-  // Sample blog posts for demonstration
-  const samplePosts: BlogPost[] = [
-    {
-      id: '1',
-      title: 'WordPress vs. Strona "szyta na miarę" – kiedy warto dopłacić za dedykowane rozwiązanie?',
-      slug: 'wordpress-vs-custom-website',
-      excerpt: 'Czy zawsze warto inwestować w drogie rozwiązania custom? Dowiedz się, kiedy WordPress wystarcza, a kiedy potrzebujesz czegoś więcej.',
-      content: 'Kompletny przewodnik porównujący WordPress z rozwiązaniami custom...',
-      published: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      author: 'Marcin Kowalski',
-      image_url: 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800',
-      tags: ['WordPress', 'Development', 'Porady']
-    },
-    {
-      id: '2',
-      title: '5 powodów, dla których Twoja strona internetowa nie sprzedaje (i jak to naprawić)',
-      slug: '5-powodow-dlaczego-strona-nie-sprzedaje',
-      excerpt: 'Masz ruch na stronie, ale brak konwersji? Sprawdź najczęstsze błędy, które blokują sprzedaż i dowiedz się, jak je naprawić.',
-      content: 'Szczegółowa analiza problemów z konwersją...',
-      published: true,
-      created_at: new Date(Date.now() - 86400000).toISOString(),
-      updated_at: new Date(Date.now() - 86400000).toISOString(),
-      author: 'Marcin Kowalski',
-      image_url: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800',
-      tags: ['Konwersja', 'UX', 'Marketing']
-    },
-    {
-      id: '3',
-      title: 'Jak przygotować się do stworzenia strony internetowej? Checklist dla przedsiębiorcy',
-      slug: 'checklist-tworzenie-strony-internetowej',
-      excerpt: 'Przygotowanie to podstawa sukcesu. Zobacz, co musisz przygotować przed rozmową z web developerem, żeby projekt przebiegł sprawnie.',
-      content: 'Kompletny checklist do przygotowania projektu strony...',
-      published: true,
-      created_at: new Date(Date.now() - 172800000).toISOString(),
-      updated_at: new Date(Date.now() - 172800000).toISOString(),
-      author: 'Marcin Kowalski',
-      image_url: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800',
-      tags: ['Planowanie', 'Biznes', 'Porady']
-    }
-  ]
-
-  const displayPosts = posts.length > 0 ? posts : samplePosts
+  const displayPosts = posts
 
   const breadcrumbData = [
     { name: "Strona główna", url: "https://webdkw.pl" },
@@ -152,13 +109,30 @@ const BlogPage = () => {
           <section className="py-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               {displayPosts.length === 0 ? (
-                <div className="text-center py-12">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    Blog będzie wkrótce dostępny
-                  </h2>
-                  <p className="text-gray-600">
-                    Pracuję nad pierwszymi artykułami. Wróć wkrótce!
-                  </p>
+                <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
+                  <div className="max-w-2xl mx-auto px-4">
+                    <div className="text-6xl mb-6">📝</div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                      Blog będzie wkrótce dostępny
+                    </h2>
+                    <p className="text-gray-600 mb-8">
+                      Pracuję nad pierwszymi artykułami, które pomogą Ci lepiej zrozumieć proces tworzenia stron internetowych i marketingu online.
+                    </p>
+                    <div className="flex justify-center space-x-4">
+                      <Link
+                        to="/#kontakt"
+                        className="inline-flex items-center px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                      >
+                        Skontaktuj się ze mną
+                      </Link>
+                      <Link
+                        to="/"
+                        className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                      >
+                        Wróć na stronę główną
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               ) : (
                 <div className="grid lg:grid-cols-3 gap-8">

@@ -30,51 +30,7 @@ const CaseStudiesPage = () => {
     }
   }
 
-  // Fallback case studies for demonstration
-  const fallbackCaseStudies: Project[] = [
-    {
-      id: '1',
-      title: "TechStart Solutions - Jak zwiększyliśmy konwersję o 340%",
-      slug: "techstart-solutions",
-      category: "Platforma B2B",
-      industry: "Technologie B2B",
-      description: "Kompleksowa platforma do zarządzania projektami technologicznymi z zaawansowanym systemem CRM.",
-      image_url: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800",
-      technologies: ["React", "Node.js", "PostgreSQL", "AWS"],
-      results: [
-        { metric: "Wzrost konwersji", value: "+340%" },
-        { metric: "Zapytania miesięcznie", value: "85+" },
-        { metric: "ROI w 6 miesięcy", value: "450%" }
-      ],
-      completion_date: "2024",
-      project_url: "#",
-      featured: true,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '2',
-      title: "EcoGreen Consulting - Dominacja w wynikach wyszukiwania",
-      slug: "ecogreen-consulting",
-      category: "Strona firmowa + SEO",
-      industry: "Doradztwo ekologiczne",
-      description: "Profesjonalna strona firmowa z kompleksową strategią SEO i content marketingiem.",
-      image_url: "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800",
-      technologies: ["WordPress", "Custom Theme", "SEO", "Analytics"],
-      results: [
-        { metric: "Wzrost ruchu SEO", value: "+280%" },
-        { metric: "Pozycje TOP 3", value: "47" },
-        { metric: "Nowi klienci", value: "+120%" }
-      ],
-      completion_date: "2024",
-      project_url: "#",
-      featured: false,
-      created_at: new Date(Date.now() - 86400000).toISOString(),
-      updated_at: new Date(Date.now() - 86400000).toISOString()
-    }
-  ]
-
-  const displayCaseStudies = caseStudies.length > 0 ? caseStudies : fallbackCaseStudies
+  const displayCaseStudies = caseStudies
 
   if (loading) {
     return (
@@ -121,13 +77,30 @@ const CaseStudiesPage = () => {
         <section className="py-16">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {displayCaseStudies.length === 0 ? (
-              <div className="text-center py-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  Case studies będą wkrótce dostępne
-                </h2>
-                <p className="text-gray-600">
-                  Pracujemy nad szczegółowymi opisami naszych projektów. Wróć wkrótce!
-                </p>
+              <div className="text-center py-16 bg-white rounded-2xl shadow-lg">
+                <div className="max-w-2xl mx-auto px-4">
+                  <div className="text-6xl mb-6">📊</div>
+                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                    Case studies będą wkrótce dostępne
+                  </h2>
+                  <p className="text-gray-600 mb-8">
+                    Pracuję nad szczegółowymi opisami naszych projektów, które pokażą Ci, jak pomagamy firmom osiągać ich cele biznesowe poprzez nowoczesne rozwiązania internetowe.
+                  </p>
+                  <div className="flex justify-center space-x-4">
+                    <Link
+                      to="/portfolio"
+                      className="inline-flex items-center px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
+                    >
+                      Zobacz portfolio
+                    </Link>
+                    <Link
+                      to="/#kontakt"
+                      className="inline-flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
+                    >
+                      Skontaktuj się ze mną
+                    </Link>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="grid lg:grid-cols-2 gap-8">

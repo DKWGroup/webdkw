@@ -75,7 +75,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Resources */}
+          {/* Resources
           <div>
             <h3 className="text-lg font-bold mb-4">Zasoby</h3>
             <ul className="space-y-3">
@@ -101,7 +101,7 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
 
         {/* Bottom section */}
