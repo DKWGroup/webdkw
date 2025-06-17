@@ -227,8 +227,8 @@ const ContactSection = () => {
             </div>
 
             {/* Calendar booking */}
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white text-center">
-              <h3 classNamdde="text-2xl font-bold mb-4">
+            {/* <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white text-center">
+              <h3 className="text-2xl font-bold mb-4">
                 Umów się na bezpłatną konsultację
               </h3>
               <p className="mb-6 opacity-90">
@@ -246,7 +246,7 @@ const ContactSection = () => {
               <p className="text-sm mt-4 opacity-80">
                 ⚡ Najszybsze terminy dostępne już jutro
               </p>
-            </div>
+            </div> */}
 
             {/* Response time guarantee */}
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">

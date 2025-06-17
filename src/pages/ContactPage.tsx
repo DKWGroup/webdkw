@@ -4,6 +4,7 @@ import { ArrowLeft, Mail, Phone, Clock, ArrowRight, CheckCircle, MapPin, Calenda
 import { supabase } from '../lib/supabase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import SEOHead from '../components/SEOHead'
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -293,7 +294,7 @@ const ContactPage = () => {
                 </div>
 
                 {/* Calendar booking */}
-                <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white">
+                {/* <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white">
                   <Calendar className="h-12 w-12 mb-4" />
                   <h3 className="text-2xl font-bold mb-4">
                     Umów się na bezpłatną konsultację
@@ -313,7 +314,7 @@ const ContactPage = () => {
                   <p className="text-sm mt-4 opacity-80">
                     ⚡ Najszybsze terminy dostępne już jutro
                   </p>
-                </div>
+                </div> */}
 
                 {/* Response guarantee */}
                 <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">

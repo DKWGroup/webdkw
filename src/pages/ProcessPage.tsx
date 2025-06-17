@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, Search, Palette, Code, Rocket, CheckCircle, Clock, Users, FileText } from 'lucide-react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import SEOHead from '../components/SEOHead'
 
 const ProcessPage = () => {
   const phases = [

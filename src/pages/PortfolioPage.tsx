@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, ExternalLink, TrendingUp, Users, DollarSign, Calendar, Tag, FileText } from 'lucide-react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import SEOHead from '../components/SEOHead'
 
 const PortfolioPage = () => {
   const projects = [

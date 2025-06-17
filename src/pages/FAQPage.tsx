@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ArrowLeft, Plus, Minus, MessageCircle } from 'lucide-react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import SEOHead from '../components/SEOHead'
 
 const FAQPage = () => {
   const [openItem, setOpenItem] = useState<number | null>(0)
