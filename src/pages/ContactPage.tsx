@@ -83,7 +83,7 @@ const ContactPage = () => {
                   Sprawdź skrzynkę email (również spam) w poszukiwaniu mojej odpowiedzi.
                 </p>
                 <p className="text-gray-500 mb-8">
-                  W pilnych sprawach dzwoń: <strong>+48 123 456 789</strong>
+                  W pilnych sprawach dzwoń: <strong>+48 881 046 689</strong>
                 </p>
                 <Link
                   to="/"
@@ -285,7 +285,7 @@ const ContactPage = () => {
                       <MapPin className="h-6 w-6 text-orange-500 mt-1" />
                       <div>
                         <div className="font-semibold text-gray-900">Lokalizacja</div>
-                        <div className="text-gray-600">Warszawa, Polska</div>
+                        <div className="text-gray-600">Katowice, Polska</div>
                         <p className="text-sm text-gray-500 mt-1">Spotkania online i stacjonarne</p>
                       </div>
                     </div>
