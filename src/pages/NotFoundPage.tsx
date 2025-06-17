@@ -7,6 +7,13 @@ import Footer from '../components/Footer'
 const NotFoundPage = () => {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <SEOHead 
+          title="Strona nie znaleziona (404) | Tworzenie Stron Internetowych"
+          description="Ups! Strona nie istnieje. Wróć na stronę główną i sprawdź naszą ofertę tworzenia stron internetowych, sklepów online i optymalizacji SEO."
+          keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
+          url="https://webdkw.pl"
+        />
+    
       <Header />
       
       <main className="flex-1 flex items-center justify-center pt-20">
