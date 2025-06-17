@@ -10,10 +10,10 @@ const ProcessPage = () => {
   const phases = [
     {
       phase: "Faza 1",
-      title: "Audyt i Strategia",
+      title: "Audyt strategiczny i analiza konkurencji",
       icon: <Search className="h-12 w-12 text-orange-500" />,
-      duration: "1-2 tygodnie",
-      description: "Dogłębna analiza Twojego biznesu, konkurencji i grupy docelowej",
+      duration: "1 tydzień",
+      description: "Analizuję Twój biznes, konkurencję i cele. Definiujemy strategię konwersji i pozycjonowania.",
       steps: [
         "Konsultacja strategiczna i analiza potrzeb biznesowych",
         "Badanie konkurencji i analizy rynku",
@@ -32,16 +32,16 @@ const ProcessPage = () => {
     },
     {
       phase: "Faza 2", 
-      title: "Projektowanie UX/UI",
+      title: "Projektowanie UX/UI zoptymalizowane pod konwersję",
       icon: <Palette className="h-12 w-12 text-orange-500" />,
-      duration: "2-3 tygodnie",
-      description: "Tworzenie intuicyjnego designu zoptymalizowanego pod konwersję",
+      duration: "1-2 tygodnie",
+      description: "Tworzę design skupiony na konwersji, optymalizowany pod Twoją grupę docelową.",
       steps: [
         "Tworzenie wireframes i prototypów",
         "Projektowanie architektury informacji",
         "Opracowanie systemu designu i brandingu",
         "Projektowanie interfejsu użytkownika (UI)",
-        "Optymalizacja  ścieżek konwersji",
+        "Optymalizacja ścieżek konwersji",
         "Projektowanie wersji mobilnej (responsive)",
         "Prezentacja i iteracje na podstawie feedbacku"
       ],
@@ -54,10 +54,10 @@ const ProcessPage = () => {
     },
     {
       phase: "Faza 3",
-      title: "Development i SEO", 
+      title: "Programowanie i optymalizacja SEO", 
       icon: <Code className="h-12 w-12 text-orange-500" />,
-      duration: "3-6 tygodni",
-      description: "Kodowanie strony z naciskiem na wydajność i optymalizację SEO",
+      duration: "2-3 tygodnie",
+      description: "Koduję stronę z naciskiem na wydajność, bezpieczeństwo i optymalizację pod wyszukiwarki.",
       steps: [
         "Konfiguracja środowiska deweloperskiego",
         "Kodowanie front-endu zgodnie z designem",
@@ -76,10 +76,10 @@ const ProcessPage = () => {
     },
     {
       phase: "Faza 4",
-      title: "Testy i Wdrożenie",
+      title: "Testy i wdrożenie",
       icon: <Rocket className="h-12 w-12 text-orange-500" />,
-      duration: "1-2 tygodnie", 
-      description: "Kompleksowe testowanie i uruchomienie strony na produkcji",
+      duration: "1 tydzień", 
+      description: "Testujemy wszystkie funkcjonalności, uruchamiamy stronę i przekazujemy Ci pełną kontrolę.",
       steps: [
         "Testy funkcjonalności na różnych urządzeniach",
         "Testy wydajności i optymalizacji",
@@ -98,10 +98,10 @@ const ProcessPage = () => {
     },
     {
       phase: "Faza 5",
-      title: "Wsparcie i Optymalizacja",
+      title: "Wsparcie i optymalizacja wyników",
       icon: <CheckCircle className="h-12 w-12 text-orange-500" />,
-      duration: "3-12 miesięcy",
-      description: "Bieżące wsparcie techniczne i optymalizacja wyników",
+      duration: "3 miesiące",
+      description: "3 miesiące bezpłatnego wsparcia technicznego i optymalizacji wyników.",
       steps: [
         "Monitoring wydajności i dostępności",
         "Regularne aktualizacje bezpieczeństwa",
