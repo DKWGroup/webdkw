@@ -86,6 +86,13 @@ const FAQPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEOHead 
+          title="FAQ | Tworzenie Stron Internetowych, SEO, Marketing"
+          description="Masz pytania? Sprawdź nasze FAQ dotyczące tworzenia stron internetowych, sklepów online, optymalizacji SEO i marketingu. Znajdź odpowiedzi na nurtujące Cię kwestie!"
+          keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
+          url="https://webdkw.pl"
+        />
+      
       <Header />
       
       <main className="pt-20">
