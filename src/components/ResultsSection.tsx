@@ -31,22 +31,22 @@ const ResultsSection = () => {
 
   const caseExamples = [
     {
-      company: "TechStart Solutions",
-      industry: "B2B Software",
-      result: "340% wzrost leadów w 4 miesiące",
+      company: "MK Helicopterss",
+      industry: "Lotnictwo helikopterowe",
+      result: "370% wzrostu kliknięć w stronę",
       description: "Przeprojektowanie strony i optymalizacja ścieżki konwersji"
     },
     {
-      company: "EcoGreen Consulting",
-      industry: "Doradztwo ekologiczne", 
-      result: "280% wzrost ruchu organicznego",
-      description: "Kompleksowa strategia SEO i content marketing"
+      company: "Paweł Węglarz",
+      industry: "Trener personalny", 
+      result: "145% wzrostu sprzedaży",
+      description: "Kompleksowa strategia kampanii reklamowych"
     },
     {
-      company: "LuxuryHome Design",
-      industry: "Projektowanie wnętrz",
-      result: "85% wzrost wartości zamówień",
-      description: "Premium design z focus na high-end klientów"
+      company: "Vis Naturae",
+      industry: "Masaż i Refleksologia",
+      result: "50 pozyskiwanych klientów miesięcznie",
+      description: "Tworzenie strony i dostosowanie pod konwersję"
     }
   ]
 
