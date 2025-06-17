@@ -18,4 +18,3 @@ Allow: /o-nas/
 Allow: /faq/
 Allow: /proces-realizacji/
 Allow: /case-studies/
-Allow: /lead-magnet/
