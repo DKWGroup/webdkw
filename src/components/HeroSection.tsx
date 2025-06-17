@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ArrowRight, Star } from 'lucide-react'
+import { ArrowRight, Star, ChevronLeft, ChevronRight } from 'lucide-react'
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -14,12 +14,47 @@ const HeroSection = () => {
     { name: "WellDone", logo: "/images/clients/welldone.webp" }
   ]
 
+  const itemsPerSlide = {
+    mobile: 2,
+    tablet: 3,
+    desktop: 4
+  }
+
+  const getItemsPerSlide = () => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 640) return itemsPerSlide.mobile
+      if (window.innerWidth < 1024) return itemsPerSlide.tablet
+      return itemsPerSlide.desktop
+    }
+    return itemsPerSlide.desktop
+  }
+
+  const [itemsToShow, setItemsToShow] = useState(getItemsPerSlide())
+  const totalSlides = Math.ceil(clients.length / itemsToShow)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsToShow(getItemsPerSlide())
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % Math.ceil(clients.length / 4))
-    }, 3000)
+      setCurrentSlide((prev) => (prev + 1) % totalSlides)
+    }, 4000)
     return () => clearInterval(timer)
-  }, [clients.length])
+  }, [totalSlides])
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % totalSlides)
+  }
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + totalSlides) % totalSlides)
+  }
 
   const scrollToContact = () => {
     const element = document.getElementById('kontakt')
@@ -57,39 +92,61 @@ const HeroSection = () => {
           {/* Client carousel */}
           <div className="border-t border-gray-200 pt-8">
             <p className="text-gray-500 text-sm mb-6">Zaufali mi:</p>
-            <div className="relative overflow-hidden">
-              <div 
-                className="flex transition-transform duration-500 ease-in-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {Array.from({ length: Math.ceil(clients.length / 4) }).map((_, slideIndex) => (
-                  <div key={slideIndex} className="w-full flex-shrink-0">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
-                      {clients.slice(slideIndex * 4, (slideIndex + 1) * 4).map((client, index) => (
-                        <div 
-                          key={index}
-                          className="group transition-all duration-300 hover:scale-110"
-                        >
-                          <img 
-                            src={client.logo} 
-                            alt={client.name} 
-                            className="h-16 w-auto filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100" 
-                          />
-                        </div>
-                      ))}
+            <div className="relative">
+              <div className="overflow-hidden">
+                <div 
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+                    <div key={slideIndex} className="w-full flex-shrink-0">
+                      <div className={`grid gap-8 justify-items-center ${
+                        itemsToShow === 2 ? 'grid-cols-2' :
+                        itemsToShow === 3 ? 'grid-cols-3' : 'grid-cols-4'
+                      }`}>
+                        {clients.slice(slideIndex * itemsToShow, (slideIndex + 1) * itemsToShow).map((client, index) => (
+                          <div 
+                            key={index}
+                            className="group transition-all duration-300 hover:scale-110 flex items-center justify-center"
+                          >
+                            <img 
+                              src={client.logo} 
+                              alt={client.name} 
+                              className="h-12 sm:h-16 w-auto filter grayscale group-hover:grayscale-0 transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain" 
+                              style={{
+                                filter: client.logo.includes('inp.svg') ? 'brightness(0) invert(1) grayscale(1)' : undefined
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
+              
+              {/* Navigation arrows - hidden on mobile */}
+              <button
+                onClick={prevSlide}
+                className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              >
+                <ChevronLeft className="h-4 w-4 text-gray-600" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              >
+                <ChevronRight className="h-4 w-4 text-gray-600" />
+              </button>
               
               {/* Carousel indicators */}
               <div className="flex justify-center space-x-2 mt-6">
-                {Array.from({ length: Math.ceil(clients.length / 4) }).map((_, index) => (
+                {Array.from({ length: totalSlides }).map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentSlide(index)}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                      currentSlide === index ? 'bg-orange-500' : 'bg-gray-300'
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentSlide === index ? 'bg-orange-500 w-6' : 'bg-gray-300 w-2'
                     }`}
                   />
                 ))}
