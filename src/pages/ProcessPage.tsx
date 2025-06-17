@@ -138,6 +138,13 @@ const ProcessPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <SEOHead 
+          title="Proces Tworzenia Stron | Projektowanie, SEO, Marketing"
+          description="Poznaj nasz proces tworzenia stron internetowych i sklepów online. Od projektu, przez optymalizację SEO, po skuteczne kampanie marketingowe. Zobacz, jak pracujemy!"
+          keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
+          url="https://webdkw.pl"
+        />
+      
       <Header />
       
       <main className="pt-20">
