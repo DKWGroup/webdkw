@@ -1,20 +1,7 @@
 User-agent: *
 Allow: /
-
-# Sitemap
-Sitemap: https://webdkw.pl/sitemap.xml
-
-# Disallow admin pages
 Disallow: /admin/
 Disallow: /admin/login
 
-# Allow all other pages
-Allow: /
-Allow: /uslugi/
-Allow: /portfolio/
-Allow: /blog/
-Allow: /kontakt/
-Allow: /o-nas/
-Allow: /faq/
-Allow: /proces-realizacji/
-Allow: /case-studies/
+# Sitemap
+Sitemap: https://webdkw.net/sitemap.xml
