@@ -2,92 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://webdkw.net/</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://webdkw.net/uslugi</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://webdkw.net/uslugi/tworzenie-stron</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://webdkw.net/uslugi/platformy-internetowe</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://webdkw.net/uslugi/sklepy-internetowe</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://webdkw.net/uslugi/seo</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://webdkw.net/uslugi/marketing</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://webdkw.net/portfolio</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://webdkw.net/case-studies</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://webdkw.net/blog</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://webdkw.net/proces-realizacji</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://webdkw.net/o-nas</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://webdkw.net/faq</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://webdkw.net/kontakt</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://webdkw.net/lead-magnet</loc>
-    <lastmod>2024-12-16</lastmod>
-    <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 </urlset>
