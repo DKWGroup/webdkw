@@ -114,7 +114,7 @@ const BlogPostPage = () => {
           <SEOHead 
             title="Artykuł nie został znaleziony"
             description="Przepraszamy, ale artykuł o podanym adresie nie istnieje lub został usunięty."
-            url={`https://webdkw.pl/blog/${slug}`}
+            url={`https://webdkw.net/blog/${slug}`}
           />
           <Header />
           <main className="pt-20">
@@ -141,9 +141,9 @@ const BlogPostPage = () => {
   }
 
   const breadcrumbData = [
-    { name: "Strona główna", url: "https://webdkw.pl" },
-    { name: "Blog", url: "https://webdkw.pl/blog" },
-    { name: post.title, url: `https://webdkw.pl/blog/${post.slug}` }
+    { name: "Strona główna", url: "https://webdkw.net" },
+    { name: "Blog", url: "https://webdkw.net/blog" },
+    { name: post.title, url: `https://webdkw.net/blog/${post.slug}` }
   ]
 
   const articleData = {
@@ -153,7 +153,7 @@ const BlogPostPage = () => {
     author: post.author,
     publishedTime: post.created_at,
     modifiedTime: post.updated_at,
-    url: `https://webdkw.pl/blog/${post.slug}`
+    url: `https://webdkw.net/blog/${post.slug}`
   }
 
   return (
@@ -164,7 +164,7 @@ const BlogPostPage = () => {
           description={post.excerpt || post.title}
           keywords={post.tags?.join(', ') || 'blog, porady, strony internetowe'}
           image={post.image_url}
-          url={`https://webdkw.pl/blog/${post.slug}`}
+          url={`https://webdkw.net/blog/${post.slug}`}
           type="article"
           author={post.author}
           publishedTime={post.created_at}

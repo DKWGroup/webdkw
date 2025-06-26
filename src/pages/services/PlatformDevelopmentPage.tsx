@@ -245,7 +245,7 @@ const PlatformDevelopmentPage = () => {
           title="Platformy internetowe | Tworzenie Stron Internetowych"
           description="Zaawansowane systemy i aplikacje webowe dostosowane do specyficznych potrzeb Twojego biznesu. Od prostych narzędzi po kompleksowe platformy enterprise."
           keywords="platformy internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
-          url="https://webdkw.pl"
+          url="https://webdkw.net"
         />
       <Header />
       

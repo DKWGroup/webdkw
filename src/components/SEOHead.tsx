@@ -17,10 +17,10 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   title = "WebDKW - Profesjonalne strony internetowe dla firm",
   description = "Tworzenie stron internetowych i sklepów online z gwarancją rezultatów. Zoptymalizowane pod SEO, Google Ads i realne cele biznesowe Twojej firmy.",
   keywords = "strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy",
-  image = "https://webdkw.pl/images/og-image.jpg",
-  url = "https://webdkw.pl",
+  image = "https://webdkw.net/images/webdkw-open-graph.png",
+  url = "https://webdkw.net",
   type = "website",
-  author = "Marcin Kowalski",
+  author = "Kamil Krukowski",
   publishedTime,
   modifiedTime
 }) => {
@@ -77,8 +77,8 @@ const SEOHead: React.FC<SEOHeadProps> = ({
           "@type": "Organization",
           "name": "WebDKW",
           "description": "Profesjonalne strony internetowe dla firm",
-          "url": "https://webdkw.pl",
-          "logo": "https://webdkw.pl/images/webdkw-logo.svg",
+          "url": "https://webdkw.net",
+          "logo": "https://webdkw.net/images/webdkw-logo.svg",
           "contactPoint": {
             "@type": "ContactPoint",
             "telephone": "+48-881-046-689",

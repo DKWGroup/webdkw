@@ -69,7 +69,7 @@ const ContactPage = () => {
             title="Kontakt | Tworzenie Stron, SEO, Marketing Internetowy"
             description="Skontaktuj się z nami! Zapytaj o tworzenie stron internetowych, sklepów online, optymalizację SEO i skuteczne kampanie marketingowe. Czekamy na Twój kontakt!"
             keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
-            url="https://webdkw.pl"
+            url="https://webdkw.net"
           />
           
           <Header />
@@ -111,7 +111,7 @@ const ContactPage = () => {
           title="Kontakt | Tworzenie Stron, SEO, Marketing Internetowy"
           description="Skontaktuj się z nami! Zapytaj o tworzenie stron internetowych, sklepów online, optymalizację SEO i skuteczne kampanie marketingowe. Czekamy na Twój kontakt!"
           keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
-          url="https://webdkw.pl"
+          url="https://webdkw.net"
         />
         
         <Header />

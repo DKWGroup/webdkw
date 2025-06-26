@@ -14,7 +14,7 @@ const NotFoundPage = () => {
           title="Strona nie znaleziona (404) | Tworzenie Stron Internetowych"
           description="Ups! Strona nie istnieje. Wróć na stronę główną i sprawdź naszą ofertę tworzenia stron internetowych, sklepów online i optymalizacji SEO."
           keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
-          url="https://webdkw.pl"
+          url="https://webdkw.net"
         />
     
       <Header />

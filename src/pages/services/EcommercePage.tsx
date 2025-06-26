@@ -236,7 +236,7 @@ const EcommercePage = () => {
           title="Sklepy Internetowe | WebDKW"
           description="Profesjonalne sklepy internetowe i rozwiązania e-commerce. Zwiększ sprzedaż online z naszymi zaawansowanymi rozwiązaniami."
           keywords="sklep internetowy, e-commerce, sprzedaż online, WooCommerce, Shopify"
-          url="https://webdkw.pl/uslugi/sklep-internetowy"
+          url="https://webdkw.net/uslugi/sklep-internetowy"
         />
         <Header />
         

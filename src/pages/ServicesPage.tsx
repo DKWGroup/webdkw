@@ -62,8 +62,8 @@ const ServicesPage = () => {
   ]
 
   const breadcrumbData = [
-    { name: "Strona główna", url: "https://webdkw.pl" },
-    { name: "Usługi", url: "https://webdkw.pl/uslugi" }
+    { name: "Strona główna", url: "https://webdkw.net" },
+    { name: "Usługi", url: "https://webdkw.net/uslugi" }
   ]
 
   const servicesStructuredData = services.map(service => ({
@@ -88,7 +88,7 @@ const ServicesPage = () => {
           title="Usługi WebDKW - Strony internetowe, SEO, Marketing"
           description="Kompleksowe rozwiązania internetowe dla Twojego biznesu. Od prostych stron wizytówkowych po zaawansowane platformy e-commerce."
           keywords="usługi, strony internetowe, sklepy online, SEO, pozycjonowanie, Google Ads, marketing internetowy"
-          url="https://webdkw.pl/uslugi"
+          url="https://webdkw.net/uslugi"
         />
         <StructuredData type="breadcrumb" data={breadcrumbData} />
         <StructuredData 

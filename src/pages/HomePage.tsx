@@ -18,7 +18,7 @@ import StructuredData from '../components/StructuredData'
 
 const HomePage = () => {
   const breadcrumbData = [
-    { name: "Strona główna", url: "https://webdkw.pl" }
+    { name: "Strona główna", url: "https://webdkw.net" }
   ]
 
   const faqData = [
@@ -43,7 +43,7 @@ const HomePage = () => {
           title="WebDKW - Profesjonalne strony internetowe dla firm"
           description="Tworzenie stron internetowych i sklepów online z gwarancją rezultatów. Zoptymalizowane pod SEO, Google Ads i realne cele biznesowe Twojej firmy."
           keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy, Warszawa"
-          url="https://webdkw.pl"
+          url="https://webdkw.net"
         />
         <StructuredData type="website" data={{}} />
         <StructuredData type="breadcrumb" data={breadcrumbData} />

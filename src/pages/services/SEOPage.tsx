@@ -234,7 +234,7 @@ const SEOPage = () => {
           title="SEO i Pozycjonowanie Stron | WebDKW"
           description="Profesjonalne usługi SEO i pozycjonowania stron internetowych. Zwiększ widoczność w Google i generuj więcej klientów."
           keywords="SEO, pozycjonowanie, Google, optymalizacja, marketing internetowy"
-          url="https://webdkw.pl/uslugi/seo"
+          url="https://webdkw.net/uslugi/seo"
         />
         <Header />
         

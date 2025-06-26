@@ -51,8 +51,8 @@ const BlogPage = () => {
   const displayPosts = posts
 
   const breadcrumbData = [
-    { name: "Strona główna", url: "https://webdkw.pl" },
-    { name: "Blog", url: "https://webdkw.pl/blog" }
+    { name: "Strona główna", url: "https://webdkw.net" },
+    { name: "Blog", url: "https://webdkw.net/blog" }
   ]
 
   if (loading) {
@@ -73,7 +73,7 @@ const BlogPage = () => {
           title="Blog WebDKW - Porady o stronach internetowych i marketingu"
           description="Praktyczne porady, case studies i najnowsze trendy w tworzeniu stron internetowych. Wiedza, która pomaga budować lepsze rozwiązania online."
           keywords="blog, porady, strony internetowe, SEO, marketing internetowy, case studies"
-          url="https://webdkw.pl/blog"
+          url="https://webdkw.net/blog"
         />
         <StructuredData type="breadcrumb" data={breadcrumbData} />
         

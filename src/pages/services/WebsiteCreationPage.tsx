@@ -218,7 +218,7 @@ const WebsiteCreationPage = () => {
           title="Tworzenie Stron Internetowych | WebDKW"
           description="Profesjonalne strony internetowe i landing page'y. Buduj zaufanie i zwiększ konwersje z naszymi rozwiązaniami."
           keywords="strona internetowa, landing page, web design, responsywna strona"
-          url="https://webdkw.pl/uslugi/tworzenie-stron"
+          url="https://webdkw.net/uslugi/tworzenie-stron"
         />
         <Header />
         

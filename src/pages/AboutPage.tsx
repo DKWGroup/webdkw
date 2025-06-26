@@ -39,7 +39,7 @@ const AboutPage = () => {
           title="Tworzenie Stron i Sklepów Internetowych | Profesjonalne Usługi"
           description="Zaufaj ekspertom w tworzeniu stron i sklepów internetowych. Oferujemy kompleksowe usługi, od projektu po optymalizację SEO i marketing. Sprawdź nas!"
           keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy, Warszawa"
-          url="https://webdkw.pl"
+          url="https://webdkw.net"
         />
         
         <Header />

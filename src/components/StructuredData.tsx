@@ -14,11 +14,11 @@ const StructuredData: React.FC<StructuredDataProps> = ({ type, data }) => {
           "@context": "https://schema.org",
           "@type": "WebSite",
           "name": "WebDKW",
-          "url": "https://webdkw.pl",
+          "url": "https://webdkw.net",
           "description": "Profesjonalne strony internetowe dla firm",
           "potentialAction": {
             "@type": "SearchAction",
-            "target": "https://webdkw.pl/search?q={search_term_string}",
+            "target": "https://webdkw.net/search?q={search_term_string}",
             "query-input": "required name=search_term_string"
           }
         }
@@ -39,7 +39,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({ type, data }) => {
             "name": "WebDKW",
             "logo": {
               "@type": "ImageObject",
-              "url": "https://webdkw.pl/images/webdkw-logo.svg"
+              "url": "https://webdkw.net/images/webdkw-logo.svg"
             }
           },
           "datePublished": data.publishedTime,
@@ -59,7 +59,7 @@ const StructuredData: React.FC<StructuredDataProps> = ({ type, data }) => {
           "provider": {
             "@type": "Organization",
             "name": "WebDKW",
-            "url": "https://webdkw.pl"
+            "url": "https://webdkw.net"
           },
           "areaServed": {
             "@type": "Country",
