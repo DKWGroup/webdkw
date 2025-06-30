@@ -21,7 +21,7 @@ const LeadMagnetPage = () => {
     setError('')
 
     try {
-      // Save to database
+      // Save to database first (this is the most important part)
       const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert([
@@ -36,26 +36,29 @@ const LeadMagnetPage = () => {
 
       if (dbError) throw dbError
 
-      // Send emails via edge function
-      const emailResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          company: formData.company,
-          message: 'Pobranie Lead Magnet - Checklista 15 elementów skutecznej strony',
-          lead_magnet: true
+      // Try to send emails via edge function (optional - if it fails, form is still submitted)
+      try {
+        const emailResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            message: 'Pobranie Lead Magnet - Checklista 15 elementów skutecznej strony',
+            lead_magnet: true
+          })
         })
-      })
 
-      if (!emailResponse.ok) {
-        const errorData = await emailResponse.json()
-        console.error('Email sending failed:', errorData)
-        // Don't throw error - form submission was successful even if email failed
+        if (!emailResponse.ok) {
+          console.warn('Email sending failed, but form was submitted successfully')
+        }
+      } catch (emailError) {
+        console.warn('Email function error:', emailError)
+        // Don't throw - form submission was successful
       }
 
       setIsSubmitted(true)
