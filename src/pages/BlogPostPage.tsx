@@ -436,6 +436,47 @@ const BlogPostPage = () => {
       }))
     : null
 
+  // Process markdown to add table of contents
+  const processedContent = React.useMemo(() => {
+    // Only add TOC if there are at least 2 h2 headings
+    const h2Count = (post.content.match(/^## /gm) || []).length;
+    
+    if (h2Count >= 2) {
+      // Find all h2 and h3 headings
+      const headings: { level: number; text: string; id: string }[] = [];
+      const lines = post.content.split('\n');
+      
+      lines.forEach(line => {
+        if (line.startsWith('## ')) {
+          const text = line.replace(/^## /, '');
+          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+          headings.push({ level: 2, text, id });
+        } else if (line.startsWith('### ')) {
+          const text = line.replace(/^### /, '');
+          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+          headings.push({ level: 3, text, id });
+        }
+      });
+      
+      if (headings.length > 0) {
+        let toc = '## Spis treści\n\n';
+        
+        headings.forEach(heading => {
+          const indent = heading.level === 3 ? '  ' : '';
+          toc += `${indent}- [${heading.text}](#${heading.id})\n`;
+        });
+        
+        // Find the first h2 heading and insert TOC before it
+        const firstH2Index = post.content.indexOf('## ');
+        if (firstH2Index !== -1) {
+          return post.content.slice(0, firstH2Index) + toc + '\n\n' + post.content.slice(firstH2Index);
+        }
+      }
+    }
+    
+    return post.content;
+  }, [post.content]);
+
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
@@ -586,7 +627,7 @@ const BlogPostPage = () => {
                     rehypePlugins={[rehypeRaw, rehypeSanitize]}
                     components={MarkdownComponents}
                   >
-                    {post.content}
+                    {processedContent}
                   </ReactMarkdown>
                 </div>
                 

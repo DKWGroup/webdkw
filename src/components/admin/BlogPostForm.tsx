@@ -5,6 +5,10 @@ import { FormValidator } from './FormValidation'
 import FileUpload from './FileUpload'
 import MarkdownEditor from './MarkdownEditor'
 import Select from 'react-select'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
+import rehypeSanitize from 'rehype-sanitize'
 
 interface BlogPostFormProps {
   post?: BlogPost | null
@@ -190,10 +194,18 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
         })
       }, 100)
 
-      // In real implementation, upload to storage service
-      // For now, create a local URL
+      // Create a temporary URL for preview
       const imageUrl = URL.createObjectURL(file)
       
+      // In a real implementation, you would upload to Supabase Storage
+      // For example:
+      // const { data, error } = await supabase.storage
+      //   .from('blog-images')
+      //   .upload(`${Date.now()}-${file.name}`, file)
+      
+      // if (error) throw error
+      // const imageUrl = supabase.storage.from('blog-images').getPublicUrl(data.path).publicURL
+
       setFormData(prev => ({ ...prev, image_url: imageUrl }))
       setUploadProgress(100)
       
@@ -358,6 +370,243 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
       setIsSubmitting(false)
     }
   }
+
+  // Custom components for markdown rendering in preview
+  const components = {
+    // Custom code block with syntax highlighting
+    code({ node, inline, className, children, ...props }: any) {
+      const match = /language-(\w+)/.exec(className || '');
+      return !inline && match ? (
+        <div className="rounded-lg my-4 overflow-hidden">
+          <pre className={`language-${match[1]} p-4 bg-gray-800 text-white overflow-auto`}>
+            <code {...props}>
+              {String(children).replace(/\n$/, '')}
+            </code>
+          </pre>
+        </div>
+      ) : (
+        <code className="bg-gray-100 px-1 py-0.5 rounded text-red-600" {...props}>
+          {children}
+        </code>
+      );
+    },
+    
+    // Add IDs to headings for TOC
+    h2({ node, children, ...props }: any) {
+      const id = children
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]/g, '');
+      
+      return (
+        <h2 id={id} className="text-3xl font-bold text-gray-900 mt-10 mb-6" {...props}>
+          {children}
+        </h2>
+      );
+    },
+    
+    h3({ node, children, ...props }: any) {
+      const id = children
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]/g, '');
+      
+      return (
+        <h3 id={id} className="text-2xl font-bold text-gray-900 mt-8 mb-4" {...props}>
+          {children}
+        </h3>
+      );
+    },
+    
+    // Style paragraphs
+    p({ node, children, ...props }: any) {
+      // Check for CTA syntax
+      const child = children?.[0];
+      
+      if (typeof child === 'string' && child.startsWith('[CTA:') && child.endsWith(']')) {
+        try {
+          const ctaContent = child.slice(5, -1);
+          const params = new Map();
+          
+          ctaContent.split(',').forEach(param => {
+            const [key, value] = param.split('=');
+            if (key && value) {
+              params.set(key.trim(), value.trim());
+            }
+          });
+          
+          const title = params.get('title') || 'Click Here';
+          const url = params.get('url') || '#';
+          const color = params.get('color') || 'orange';
+          
+          const colorClasses: Record<string, string> = {
+            orange: 'bg-orange-500 hover:bg-orange-600 text-white',
+            blue: 'bg-blue-500 hover:bg-blue-600 text-white',
+            green: 'bg-green-500 hover:bg-green-600 text-white',
+            red: 'bg-red-500 hover:bg-red-600 text-white',
+            gray: 'bg-gray-500 hover:bg-gray-600 text-white',
+          };
+          
+          const buttonClass = colorClasses[color] || colorClasses.orange;
+          
+          return (
+            <div className="my-6 text-center">
+              <a 
+                href={url}
+                className={`inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-colors ${buttonClass}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {title}
+              </a>
+            </div>
+          );
+        } catch (error) {
+          console.error('Error parsing CTA:', error);
+          return <p {...props}>{children}</p>;
+        }
+      }
+      
+      return <p className="text-gray-700 leading-relaxed mb-6" {...props}>{children}</p>;
+    },
+    
+    // Style links
+    a({ node, children, ...props }: any) {
+      return (
+        <a 
+          className="text-orange-500 hover:text-orange-700 underline" 
+          target="_blank"
+          rel="noopener noreferrer"
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    },
+    
+    // Style blockquotes
+    blockquote({ node, children, ...props }: any) {
+      return (
+        <blockquote 
+          className="border-l-4 border-orange-500 pl-4 py-2 my-6 bg-orange-50 rounded-r-lg text-gray-700 italic"
+          {...props}
+        >
+          {children}
+        </blockquote>
+      );
+    },
+    
+    // Style lists
+    ul({ node, children, ...props }: any) {
+      return (
+        <ul className="list-disc list-inside mb-6 space-y-2" {...props}>
+          {children}
+        </ul>
+      );
+    },
+    
+    ol({ node, children, ...props }: any) {
+      return (
+        <ol className="list-decimal list-inside mb-6 space-y-2" {...props}>
+          {children}
+        </ol>
+      );
+    },
+    
+    // Style tables
+    table({ node, children, ...props }: any) {
+      return (
+        <div className="overflow-x-auto my-6">
+          <table className="min-w-full border border-gray-300 rounded-lg" {...props}>
+            {children}
+          </table>
+        </div>
+      );
+    },
+    
+    thead({ node, children, ...props }: any) {
+      return (
+        <thead className="bg-gray-100" {...props}>
+          {children}
+        </thead>
+      );
+    },
+    
+    tbody({ node, children, ...props }: any) {
+      return (
+        <tbody className="divide-y divide-gray-300" {...props}>
+          {children}
+        </tbody>
+      );
+    },
+    
+    tr({ node, children, ...props }: any) {
+      return (
+        <tr className="hover:bg-gray-50" {...props}>
+          {children}
+        </tr>
+      );
+    },
+    
+    th({ node, children, ...props }: any) {
+      return (
+        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700" {...props}>
+          {children}
+        </th>
+      );
+    },
+    
+    td({ node, children, ...props }: any) {
+      return (
+        <td className="px-4 py-3 text-sm text-gray-700 border-t border-gray-300" {...props}>
+          {children}
+        </td>
+      );
+    }
+  };
+
+  // Process markdown to add table of contents
+  const processedMarkdown = (markdown: string) => {
+    // Only add TOC if there are at least 2 h2 headings
+    const h2Count = (markdown.match(/^## /gm) || []).length;
+    
+    if (h2Count >= 2) {
+      // Find all h2 and h3 headings
+      const headings: { level: number; text: string; id: string }[] = [];
+      const lines = markdown.split('\n');
+      
+      lines.forEach(line => {
+        if (line.startsWith('## ')) {
+          const text = line.replace(/^## /, '');
+          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+          headings.push({ level: 2, text, id });
+        } else if (line.startsWith('### ')) {
+          const text = line.replace(/^### /, '');
+          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+          headings.push({ level: 3, text, id });
+        }
+      });
+      
+      if (headings.length > 0) {
+        let toc = '## Spis treści\n\n';
+        
+        headings.forEach(heading => {
+          const indent = heading.level === 3 ? '  ' : '';
+          toc += `${indent}- [${heading.text}](#${heading.id})\n`;
+        });
+        
+        // Find the first h2 heading and insert TOC before it
+        const firstH2Index = markdown.indexOf('## ');
+        if (firstH2Index !== -1) {
+          return markdown.slice(0, firstH2Index) + toc + '\n\n' + markdown.slice(firstH2Index);
+        }
+      }
+    }
+    
+    return markdown;
+  };
 
   if (!isOpen) return null
 
@@ -967,6 +1216,131 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
               </div>
             </form>
           </div>
+
+          {/* Preview */}
+          {showPreview && (
+            <div className="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                  <h3 className="text-xl font-bold text-gray-900">Podgląd artykułu</h3>
+                  <button
+                    onClick={() => setShowPreview(false)}
+                    className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+                </div>
+                
+                <div className="p-6">
+                  <div className="prose prose-lg max-w-none">
+                    {/* Featured Image */}
+                    {formData.image_url && (
+                      <img
+                        src={formData.image_url}
+                        alt={formData.title}
+                        className="w-full h-64 object-cover rounded-xl mb-6"
+                      />
+                    )}
+                    
+                    {/* Title */}
+                    <h1 className="text-3xl font-bold text-gray-900 mb-4">{formData.title}</h1>
+                    
+                    {/* Author & Date */}
+                    <div className="flex items-center text-sm text-gray-500 mb-6">
+                      <span>By {formData.author} • {new Date().toLocaleDateString()}</span>
+                    </div>
+                    
+                    {/* Tags */}
+                    {formData.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {formData.tags.map((tag, index) => (
+                          <span
+                            key={index}
+                            className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    
+                    {/* TLDR Section */}
+                    {(formData.tldr_summary || formData.tldr_takeaways.length > 0) && (
+                      <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+                        <h2 className="text-xl font-bold text-blue-900 mb-3">TL;DR - W skrócie</h2>
+                        {formData.tldr_summary && (
+                          <p className="text-blue-800 mb-4">{formData.tldr_summary}</p>
+                        )}
+                        {formData.tldr_takeaways.length > 0 && (
+                          <div className="space-y-2">
+                            {formData.tldr_takeaways.map((takeaway, index) => (
+                              <div key={index} className="flex items-start space-x-2">
+                                <span className="text-green-500 font-bold">✓</span>
+                                <span className="text-blue-800">{takeaway}</span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    
+                    {/* Content */}
+                    <ReactMarkdown
+                      remarkPlugins={[remarkGfm]}
+                      rehypePlugins={[rehypeRaw, rehypeSanitize]}
+                      components={components}
+                    >
+                      {processedMarkdown(formData.content)}
+                    </ReactMarkdown>
+                    
+                    {/* FAQ Section */}
+                    {formData.faqs.length > 0 && formData.faqs[0].question && (
+                      <div className="mt-8 border-t border-gray-200 pt-8">
+                        <h2 className="text-2xl font-bold text-gray-900 mb-6">Najczęściej zadawane pytania</h2>
+                        <div className="space-y-4">
+                          {formData.faqs.filter(faq => faq.question && faq.answer).map((faq, index) => (
+                            <div key={index} className="bg-gray-50 rounded-lg p-4">
+                              <h3 className="text-lg font-bold text-gray-900 mb-2">{faq.question}</h3>
+                              <p className="text-gray-700">{faq.answer}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* CTA Buttons */}
+                    {formData.ctas.length > 0 && formData.ctas[0].title && (
+                      <div className="mt-8 flex flex-wrap gap-4 justify-center">
+                        {formData.ctas.filter(cta => cta.title && cta.url).map((cta, index) => {
+                          const colorClasses: Record<string, string> = {
+                            orange: 'bg-orange-500 hover:bg-orange-600 text-white',
+                            blue: 'bg-blue-500 hover:bg-blue-600 text-white',
+                            green: 'bg-green-500 hover:bg-green-600 text-white',
+                            red: 'bg-red-500 hover:bg-red-600 text-white',
+                            gray: 'bg-gray-500 hover:bg-gray-600 text-white',
+                          };
+                          
+                          const buttonClass = colorClasses[cta.color] || colorClasses.orange;
+                          
+                          return (
+                            <a 
+                              key={index}
+                              href={cta.url}
+                              className={`inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-colors ${buttonClass}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              {cta.title}
+                            </a>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Footer */}
           <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">
