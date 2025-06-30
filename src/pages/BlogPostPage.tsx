@@ -394,21 +394,6 @@ const BlogPostPage = () => {
           headings.push({ level: 3, text, id });
         }
       });
-      
-      if (headings.length > 0) {
-        let toc = '## Spis treści\n\n';
-        
-        headings.forEach(heading => {
-          const indent = heading.level === 3 ? '  ' : '';
-          toc += `${indent}- [${heading.text}](#${heading.id})\n`;
-        });
-        
-        // Find the first h2 heading and insert TOC before it
-        const firstH2Index = post.content.indexOf('## ');
-        if (firstH2Index !== -1) {
-          return post.content.slice(0, firstH2Index) + toc + '\n\n' + post.content.slice(firstH2Index);
-        }
-      }
     }
     
     return post.content;
