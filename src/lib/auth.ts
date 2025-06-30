@@ -338,8 +338,21 @@ class AuthSecurity {
   async isAuthenticated(): Promise<boolean> {
     try {
       const { data: { user }, error } = await supabase.auth.getUser()
-      return !error && !!user
+      
+      if (error) {
+        // Clear any stale session data when there's an authentication error
+        await supabase.auth.signOut()
+        return false
+      }
+      
+      return !!user
     } catch (error) {
+      // Clear any stale session data on any error
+      try {
+        await supabase.auth.signOut()
+      } catch (signOutError) {
+        console.error('Error clearing stale session:', signOutError)
+      }
       return false
     }
   }
