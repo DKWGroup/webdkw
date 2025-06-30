@@ -127,21 +127,6 @@ const AdminPage = () => {
     }
   }
 
-  const handleAddArticle = () => {
-    setCurrentArticle(null)
-    setShowArticleForm(true)
-  }
-
-  const handleEditArticle = (article: BlogPost) => {
-    setCurrentArticle(article)
-    setShowArticleForm(true)
-  }
-
-  const handleSaveArticle = (article: BlogPost) => {
-    fetchData() // Refresh data after save
-    setShowArticleForm(false)
-  }
-
   const handleAddBlogPost = () => {
     setCurrentBlogPost(null)
     setShowBlogPostForm(true)
@@ -152,7 +137,7 @@ const AdminPage = () => {
     setShowBlogPostForm(true)
   }
 
-  const handleSaveBlogPost = (post: BlogPost) => {
+  const handleSaveBlogPost = () => {
     fetchData() // Refresh data after save
     setShowBlogPostForm(false)
   }
@@ -167,7 +152,7 @@ const AdminPage = () => {
     setShowProjectForm(true)
   }
 
-  const handleSaveProject = (project: Project) => {
+  const handleSaveProject = () => {
     fetchData() // Refresh data after save
     setShowProjectForm(false)
   }
@@ -383,7 +368,7 @@ const AdminPage = () => {
         article={currentArticle}
         isOpen={showArticleForm}
         onClose={() => setShowArticleForm(false)}
-        onSave={handleSaveArticle}
+        onSave={handleSaveBlogPost}
       />
 
       {/* Blog Post Form Modal with Markdown Editor */}
