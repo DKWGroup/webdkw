@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { X, Save, Eye, Calendar, Tag, Plus, Trash2 } from 'lucide-react'
+import { X, Save, Eye, Calendar, Tag, AlertCircle, Plus, Trash2 } from 'lucide-react'
 import { supabase, Project } from '../../lib/supabase'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -90,14 +90,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
     'MySQL', 'PostgreSQL', 'MongoDB', 'Firebase', 'Supabase',
     'AWS', 'Vercel', 'Netlify', 'Docker', 'Git'
   ]
-
-  // Status projektu
-  // const projectStatuses: SelectOption[] = [
-  //   { value: 'W realizacji', label: 'W realizacji' },
-  //   { value: 'Zakończony', label: 'Zakończony' },
-  //   { value: 'Wstrzymany', label: 'Wstrzymany' },
-  //   { value: 'Anulowany', label: 'Anulowany' }
-  // ]
 
   // Quill editor modules and formats
   const modules = {
@@ -391,6 +383,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
                     <div className="flex justify-between mt-1">
                       {errors.title && (
                         <span className="text-red-500 text-sm flex items-center">
+                          <AlertCircle className="h-4 w-4 mr-1" />
                           {errors.title}
                         </span>
                       )}
@@ -416,6 +409,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
                     />
                     {errors.industry && (
                       <span className="text-red-500 text-sm flex items-center mt-1">
+                        <AlertCircle className="h-4 w-4 mr-1" />
                         {errors.industry}
                       </span>
                     )}
@@ -443,6 +437,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
                   </div>
                   {errors.slug && (
                     <span className="text-red-500 text-sm flex items-center mt-1">
+                      <AlertCircle className="h-4 w-4 mr-1" />
                       {errors.slug}
                     </span>
                   )}
@@ -463,6 +458,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
                   />
                   {errors.category && (
                     <span className="text-red-500 text-sm flex items-center mt-1">
+                      <AlertCircle className="h-4 w-4 mr-1" />
                       {errors.category}
                     </span>
                   )}
@@ -487,6 +483,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
                   </div>
                   {errors.description && (
                     <span className="text-red-500 text-sm flex items-center mt-1">
+                      <AlertCircle className="h-4 w-4 mr-1" />
                       {errors.description}
                     </span>
                   )}
@@ -549,6 +546,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
 
                     {errors.image_url && (
                       <span className="text-red-500 text-sm flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" />
                         {errors.image_url}
                       </span>
                     )}

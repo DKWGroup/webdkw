@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { X, Save, Eye, Calendar } from 'lucide-react'
+import { X, Save, Eye, Tag, AlertCircle } from 'lucide-react'
 import { supabase, BlogPost } from '../../lib/supabase'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
@@ -311,6 +311,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   <div className="flex justify-between mt-1">
                     {errors.title && (
                       <span className="text-red-500 text-sm flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" />
                         {errors.title}
                       </span>
                     )}
@@ -341,6 +342,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   </div>
                   {errors.slug && (
                     <span className="text-red-500 text-sm flex items-center mt-1">
+                      <AlertCircle className="h-4 w-4 mr-1" />
                       {errors.slug}
                     </span>
                   )}
@@ -365,6 +367,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   </div>
                   {errors.content && (
                     <span className="text-red-500 text-sm flex items-center mt-1">
+                      <AlertCircle className="h-4 w-4 mr-1" />
                       {errors.content}
                     </span>
                   )}
@@ -433,6 +436,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
 
                     {errors.image_url && (
                       <span className="text-red-500 text-sm flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" />
                         {errors.image_url}
                       </span>
                     )}
@@ -527,6 +531,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   <div className="flex justify-between mt-1">
                     {errors.meta_description && (
                       <span className="text-red-500 text-sm flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" />
                         {errors.meta_description}
                       </span>
                     )}
@@ -552,7 +557,6 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                         showYearDropdown
                         dropdownMode="select"
                       />
-                      <Calendar className="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
                     </div>
                   </div>
 

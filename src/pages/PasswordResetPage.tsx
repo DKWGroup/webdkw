@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Lock, Eye, EyeOff, Shield, AlertTriangle, CheckCircle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { authSecurity } from '../lib/auth'
@@ -20,7 +20,6 @@ const PasswordResetPage = () => {
     isValid: false,
     errors: []
   })
-  const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
   useEffect(() => {

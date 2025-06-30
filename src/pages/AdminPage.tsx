@@ -352,7 +352,7 @@ const AdminPage = () => {
 
           {/* Content Area */}
           <div className="p-4 lg:p-6">
-            {activeTab === 'dashboard' && <DashboardContent stats={stats} />}
+            {activeTab === 'dashboard' && <DashboardContent stats={stats} onAddArticle={handleAddBlogPost} onAddProject={handleAddProject} />}
             {activeTab === 'posts' && (
               <PostsContent 
                 posts={blogPosts} 
@@ -406,7 +406,7 @@ const AdminPage = () => {
 }
 
 // Dashboard Component
-const DashboardContent = ({ stats }: { stats: any }) => (
+const DashboardContent = ({ stats, onAddArticle, onAddProject }: { stats: any, onAddArticle: () => void, onAddProject: () => void }) => (
   <div className="space-y-6">
     {/* Stats Grid */}
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -420,9 +420,23 @@ const DashboardContent = ({ stats }: { stats: any }) => (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">Szybkie akcje</h3>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <QuickActionCard title="Nowy artykuł" description="Dodaj nowy post na blog" icon={Plus} />
-        <QuickActionCard title="Nowy projekt" description="Dodaj projekt do portfolio" icon={Upload} />
-        <QuickActionCard title="Eksportuj dane" description="Pobierz raporty" icon={Download} />
+        <QuickActionCard 
+          title="Nowy artykuł" 
+          description="Dodaj nowy post na blog" 
+          icon={Plus} 
+          onClick={onAddArticle}
+        />
+        <QuickActionCard 
+          title="Nowy projekt" 
+          description="Dodaj projekt do portfolio" 
+          icon={Upload} 
+          onClick={onAddProject}
+        />
+        <QuickActionCard 
+          title="Eksportuj dane" 
+          description="Pobierz raporty" 
+          icon={Download} 
+        />
       </div>
     </div>
   </div>
@@ -734,7 +748,7 @@ const ContactsContent = ({ contacts, searchTerm, setSearchTerm }: any) => (
 
 // Utility Components
 const StatCard = ({ title, value, icon: Icon, color }: any) => {
-  const colorClasses = {
+  const colorClasses: Record<string, string> = {
     blue: 'bg-blue-500',
     green: 'bg-green-500',
     purple: 'bg-purple-500',
@@ -756,8 +770,11 @@ const StatCard = ({ title, value, icon: Icon, color }: any) => {
   )
 }
 
-const QuickActionCard = ({ title, description, icon: Icon }: any) => (
-  <button className="text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+const QuickActionCard = ({ title, description, icon: Icon, onClick }: any) => (
+  <button 
+    className="text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+    onClick={onClick}
+  >
     <div className="flex items-center space-x-3">
       <div className="p-2 bg-orange-100 rounded-lg">
         <Icon className="h-5 w-5 text-orange-600" />
