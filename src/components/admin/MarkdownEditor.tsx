@@ -448,7 +448,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
             <div><code>- Tekst</code> - Lista</div>
             <div><code>1. Tekst</code> - Lista numerowana</div>
             <div><code>```kod```</code> - Blok kodu</div>
-            <div><code>> Tekst</code> - Cytat</div>
+            <div><code>{'>'} Tekst</code> - Cytat</div>
             <div><code>|a|b|</code> - Tabela</div>
           </div>
           <p className="mt-2 text-blue-700">
