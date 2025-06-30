@@ -855,10 +855,10 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
                     rows={2}
                     placeholder="Krótkie podsumowanie artykułu w 1-2 zdaniach"
-                    maxLength={500}
+                    maxLength={1000}
                   />
                   <span className="text-gray-500 text-sm">
-                    {formData.tldr_summary.length}/500
+                    {formData.tldr_summary.length}/1000
                   </span>
                 </div>
                 
