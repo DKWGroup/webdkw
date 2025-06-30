@@ -6,6 +6,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { FormValidator } from './FormValidation';
 import FileUpload from './FileUpload';
 import MarkdownEditor from './MarkdownEditor';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import rehypeSanitize from 'rehype-sanitize';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface BlogPostFormProps {
   post?: BlogPost | null;
