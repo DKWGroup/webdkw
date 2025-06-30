@@ -1,4 +1,4 @@
-import { Mail, Phone, ExternalLink } from 'lucide-react'
+import { Mail, Phone } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const Footer = () => {

@@ -1,23 +1,23 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Menu, X, ChevronDown } from 'lucide-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isServicesOpen, setIsServicesOpen] = useState(false)
-  const location = useLocation()
+  // const location = useLocation()
 
-  const scrollToSection = (sectionId: string) => {
-    if (location.pathname !== '/') {
-      window.location.href = `/#${sectionId}`
-      return
-    }
-    const element = document.getElementById(sectionId)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-    setIsMenuOpen(false)
-  }
+  // const scrollToSection = (sectionId: string) => {
+  //   if (location.pathname !== '/') {
+  //     window.location.href = `/#${sectionId}`
+  //     return
+  //   }
+  //   const element = document.getElementById(sectionId)
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: 'smooth' })
+  //   }
+  //   setIsMenuOpen(false)
+  // }
 
   const services = [
     { name: 'Tworzenie stron', path: '/uslugi/tworzenie-stron' },

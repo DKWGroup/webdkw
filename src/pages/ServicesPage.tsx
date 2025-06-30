@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { ArrowLeft, ArrowRight, Globe, Database, ShoppingCart, Search, TrendingUp, Clock, DollarSign } from 'lucide-react'
@@ -66,20 +65,20 @@ const ServicesPage = () => {
     { name: "Usługi", url: "https://webdkw.net/uslugi" }
   ]
 
-  const servicesStructuredData = services.map(service => ({
-    "@type": "Service",
-    "name": service.title,
-    "description": service.description,
-    "provider": {
-      "@type": "Organization",
-      "name": "WebDKW"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": service.priceRange,
-      "priceCurrency": "PLN"
-    }
-  }))
+  // const servicesStructuredData = services.map(service => ({
+  //   "@type": "Service",
+  //   "name": service.title,
+  //   "description": service.description,
+  //   "provider": {
+  //     "@type": "Organization",
+  //     "name": "WebDKW"
+  //   },
+  //   "offers": {
+  //     "@type": "Offer",
+  //     "price": service.priceRange,
+  //     "priceCurrency": "PLN"
+  //   }
+  // }))
 
   return (
     <HelmetProvider>

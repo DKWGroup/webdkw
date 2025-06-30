@@ -92,12 +92,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
   ]
 
   // Status projektu
-  const projectStatuses: SelectOption[] = [
-    { value: 'W realizacji', label: 'W realizacji' },
-    { value: 'Zakończony', label: 'Zakończony' },
-    { value: 'Wstrzymany', label: 'Wstrzymany' },
-    { value: 'Anulowany', label: 'Anulowany' }
-  ]
+  // const projectStatuses: SelectOption[] = [
+  //   { value: 'W realizacji', label: 'W realizacji' },
+  //   { value: 'Zakończony', label: 'Zakończony' },
+  //   { value: 'Wstrzymany', label: 'Wstrzymany' },
+  //   { value: 'Anulowany', label: 'Anulowany' }
+  // ]
 
   // Quill editor modules and formats
   const modules = {
