@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Bold, Italic, List, ListOrdered, Quote, Code, Link, Image, Heading1, Heading2, Heading3, Table, Eye, EyeOff, Save, AlertCircle, HelpCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Bold, Italic, List, ListOrdered, Quote, Code, Link, Image, Heading1, Heading2, Heading3, Table, Eye, EyeOff, Save, HelpCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -317,47 +317,6 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
     }
   };
 
-  // Process markdown to add table of contents
-  const processedMarkdown = React.useMemo(() => {
-    // Only add TOC if there are at least 2 h2 headings
-    const h2Count = (markdown.match(/^## /gm) || []).length;
-    
-    if (h2Count >= 2) {
-      // Find all h2 and h3 headings
-      const headings: { level: number; text: string; id: string }[] = [];
-      const lines = markdown.split('\n');
-      
-      lines.forEach(line => {
-        if (line.startsWith('## ')) {
-          const text = line.replace(/^## /, '');
-          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-          headings.push({ level: 2, text, id });
-        } else if (line.startsWith('### ')) {
-          const text = line.replace(/^### /, '');
-          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
-          headings.push({ level: 3, text, id });
-        }
-      });
-      
-      if (headings.length > 0) {
-        let toc = '## Spis treści\n\n';
-        
-        headings.forEach(heading => {
-          const indent = heading.level === 3 ? '  ' : '';
-          toc += `${indent}- [${heading.text}](#${heading.id})\n`;
-        });
-        
-        // Find the first h2 heading and insert TOC before it
-        const firstH2Index = markdown.indexOf('## ');
-        if (firstH2Index !== -1) {
-          return markdown.slice(0, firstH2Index) + toc + '\n\n' + markdown.slice(firstH2Index);
-        }
-      }
-    }
-    
-    return markdown;
-  }, [markdown]);
-
   return (
     <div className="flex flex-col border border-gray-300 rounded-lg overflow-hidden">
       {/* Toolbar */}
@@ -487,7 +446,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
                 rehypePlugins={[rehypeRaw, rehypeSanitize]}
                 components={components}
               >
-                {processedMarkdown}
+                {markdown}
               </ReactMarkdown>
             </div>
           </div>

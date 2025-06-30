@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { 
   Menu, 
@@ -12,11 +12,9 @@ import {
   Edit,
   Trash2,
   Search,
-  Filter,
   Download,
   Upload,
   Eye,
-  MoreVertical,
   ChevronDown,
   Bell,
   User
@@ -34,7 +32,6 @@ const AdminPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeTab, setActiveTab] = useState('dashboard')
   const [searchTerm, setSearchTerm] = useState('')
-  const [filterOpen, setFilterOpen] = useState(false)
   
   // Data states
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])

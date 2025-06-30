@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { ArrowLeft, Award, Users, TrendingUp, Coffee, Target, Code, Heart } from 'lucide-react'

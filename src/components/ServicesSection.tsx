@@ -1,4 +1,3 @@
-import React from 'react'
 import { ArrowRight, Globe, Database, ShoppingCart, Search, TrendingUp } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
