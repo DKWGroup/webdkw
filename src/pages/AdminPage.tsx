@@ -1,1231 +1,573 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Plus, Edit, Trash2, Save, X, LogOut, Image, Bold, Italic, List, Heading1, Heading2, Heading3, Shield, AlertTriangle } from 'lucide-react'
-import { supabase, BlogPost, Project } from '../lib/supabase'
+import { useNavigate } from 'react-router-dom'
+import { 
+  Menu, 
+  X, 
+  Home, 
+  FileText, 
+  Users, 
+  Settings, 
+  LogOut, 
+  Plus,
+  Edit,
+  Trash2,
+  Search,
+  Filter,
+  Download,
+  Upload,
+  Eye,
+  MoreVertical,
+  ChevronDown,
+  Bell,
+  User
+} from 'lucide-react'
+import { supabase, BlogPost, ContactSubmission, Project } from '../lib/supabase'
 import { authSecurity } from '../lib/auth'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import SEOHead from '../components/SEOHead'
-import { HelmetProvider } from 'react-helmet-async'
 
 const AdminPage = () => {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState<'blog' | 'projects' | 'security'>('blog')
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
-  const [projects, setProjects] = useState<Project[]>([])
-  const [securityLogs, setSecurityLogs] = useState<any[]>([])
-  const [isEditing, setIsEditing] = useState(false)
-  const [editingItem, setEditingItem] = useState<BlogPost | Project | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [user, setUser] = useState<any>(null)
-
-  const [blogForm, setBlogForm] = useState({
-    title: '',
-    slug: '',
-    excerpt: '',
-    content: '',
-    published: false,
-    author: 'Marcin Kowalski',
-    image_url: '',
-    tags: ''
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState('dashboard')
+  const [searchTerm, setSearchTerm] = useState('')
+  const [filterOpen, setFilterOpen] = useState(false)
+  
+  // Data states
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
+  const [contacts, setContacts] = useState<ContactSubmission[]>([])
+  const [projects, setProjects] = useState<Project[]>([])
+  const [stats, setStats] = useState({
+    totalPosts: 0,
+    totalContacts: 0,
+    totalProjects: 0,
+    recentContacts: 0
   })
 
-  const [projectForm, setProjectForm] = useState({
-    title: '',
-    slug: '',
-    category: '',
-    industry: '',
-    description: '',
-    image_url: '',
-    technologies: [] as string[],
-    results: [] as { metric: string; value: string }[],
-    completion_date: '',
-    project_url: '',
-    featured: false,
-    case_study: false,
-    case_study_header: '',
-    case_study_introduction: '',
-    case_study_goals: '',
-    case_study_implementation: '',
-    case_study_results: '',
-    case_study_summary: '',
-    case_study_cta: ''
-  })
-
-  const projectCategories = [
-    'Strona firmowa',
-    'Landing page',
-    'Strona wizytówka',
-    'Platforma B2B',
-    'System rezerwacji',
-    'Platforma edukacyjna',
-    'Platforma internetowa',
-    'Sklep internetowy',
-    'E-commerce',
-    'Sklep B2B'
-  ]
-
-  // Check authentication on component mount
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const isAuth = await authSecurity.isAuthenticated()
-        
-        if (!isAuth) {
-          navigate('/admin/login')
-          return
-        }
+    checkAuthentication()
+  }, [])
 
-        const { data: { user }, error } = await supabase.auth.getUser()
-        
-        if (error || !user) {
-          navigate('/admin/login')
-          return
-        }
-
-        setUser(user)
-        await fetchData()
-      } catch (error) {
-        console.error('Error checking auth:', error)
-        navigate('/admin/login')
-      }
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchData()
     }
+  }, [isAuthenticated, activeTab])
 
-    checkAuth()
-  }, [navigate])
+  const checkAuthentication = async () => {
+    try {
+      const authenticated = await authSecurity.isAuthenticated()
+      if (!authenticated) {
+        navigate('/admin/login')
+        return
+      }
+      setIsAuthenticated(true)
+    } catch (error) {
+      console.error('Auth check error:', error)
+      navigate('/admin/login')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchData = async () => {
+    try {
+      // Fetch blog posts
+      const { data: postsData } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('created_at', { ascending: false })
+      setBlogPosts(postsData || [])
+
+      // Fetch contacts
+      const { data: contactsData } = await supabase
+        .from('contact_submissions')
+        .select('*')
+        .order('created_at', { ascending: false })
+      setContacts(contactsData || [])
+
+      // Fetch projects
+      const { data: projectsData } = await supabase
+        .from('projects')
+        .select('*')
+        .order('created_at', { ascending: false })
+      setProjects(projectsData || [])
+
+      // Calculate stats
+      const recentDate = new Date()
+      recentDate.setDate(recentDate.getDate() - 7)
+      const recentContacts = contactsData?.filter(
+        contact => new Date(contact.created_at) > recentDate
+      ).length || 0
+
+      setStats({
+        totalPosts: postsData?.length || 0,
+        totalContacts: contactsData?.length || 0,
+        totalProjects: projectsData?.length || 0,
+        recentContacts
+      })
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
 
   const handleLogout = async () => {
     try {
       await authSecurity.logout('manual')
       navigate('/admin/login')
     } catch (error) {
-      console.error('Error signing out:', error)
+      console.error('Logout error:', error)
     }
   }
 
-  const fetchData = async () => {
-    setLoading(true)
-    try {
-      const [blogResponse, projectsResponse, securityResponse] = await Promise.all([
-        supabase.from('blog_posts').select('*').order('created_at', { ascending: false }),
-        supabase.from('projects').select('*').order('created_at', { ascending: false }),
-        supabase.from('security_logs').select('*').order('timestamp', { ascending: false }).limit(50)
-      ])
-
-      if (blogResponse.data) setBlogPosts(blogResponse.data)
-      if (projectsResponse.data) setProjects(projectsResponse.data)
-      if (securityResponse.data) setSecurityLogs(securityResponse.data)
-    } catch (error) {
-      console.error('Error fetching data:', error)
-      alert('Błąd podczas ładowania danych')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const generateSlug = (title: string) => {
-    return title
-      .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '')
-      .replace(/\s+/g, '-')
-      .replace(/-+/g, '-')
-      .trim()
-  }
-
-  const insertTextAtCursor = (textarea: HTMLTextAreaElement, text: string) => {
-    const start = textarea.selectionStart
-    const end = textarea.selectionEnd
-    const value = textarea.value
-    const newValue = value.substring(0, start) + text + value.substring(end)
-    
-    setBlogForm(prev => ({ ...prev, content: newValue }))
-    
-    // Set cursor position after inserted text
-    setTimeout(() => {
-      textarea.focus()
-      textarea.setSelectionRange(start + text.length, start + text.length)
-    }, 0)
-  }
-
-  const formatText = (format: string) => {
-    const textarea = document.getElementById('content') as HTMLTextAreaElement
-    if (!textarea) return
-
-    const start = textarea.selectionStart
-    const end = textarea.selectionEnd
-    const selectedText = textarea.value.substring(start, end)
-
-    let formattedText = ''
-    switch (format) {
-      case 'bold':
-        formattedText = `**${selectedText || 'pogrubiony tekst'}**`
-        break
-      case 'italic':
-        formattedText = `*${selectedText || 'kursywa'}*`
-        break
-      case 'h1':
-        formattedText = `# ${selectedText || 'Nagłówek 1'}`
-        break
-      case 'h2':
-        formattedText = `## ${selectedText || 'Nagłówek 2'}`
-        break
-      case 'h3':
-        formattedText = `### ${selectedText || 'Nagłówek 3'}`
-        break
-      case 'list':
-        formattedText = `- ${selectedText || 'Element listy'}`
-        break
-      case 'image':
-        const imageUrl = prompt('Wprowadź URL obrazka:')
-        const imageCaption = prompt('Wprowadź podpis obrazka (opcjonalnie):')
-        if (imageUrl) {
-          formattedText = `![${imageCaption || 'Opis obrazka'}](${imageUrl})`
-        }
-        break
-    }
-
-    if (formattedText) {
-      insertTextAtCursor(textarea, formattedText)
-    }
-  }
-
-  const handleBlogSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
-    
-    try {
-      const blogData = {
-        ...blogForm,
-        tags: blogForm.tags ? blogForm.tags.split(',').map(tag => tag.trim()).filter(tag => tag) : [],
-        slug: blogForm.slug || generateSlug(blogForm.title)
-      }
-
-      let result
-      if (editingItem && 'content' in editingItem) {
-        result = await supabase
-          .from('blog_posts')
-          .update(blogData)
-          .eq('id', editingItem.id)
-          .select()
-      } else {
-        result = await supabase
-          .from('blog_posts')
-          .insert([blogData])
-          .select()
-      }
-
-      if (result.error) {
-        throw result.error
-      }
-
-      alert('Post został zapisany pomyślnie!')
-      resetForm()
-      await fetchData()
-    } catch (error) {
-      console.error('Error saving blog post:', error)
-      alert('Błąd podczas zapisywania posta: ' + (error as Error).message)
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const handleProjectSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
-    
-    try {
-      const projectData = {
-        ...projectForm,
-        slug: projectForm.slug || generateSlug(projectForm.title),
-        results: projectForm.results
-      }
-
-      let result
-      if (editingItem && 'category' in editingItem) {
-        result = await supabase
-          .from('projects')
-          .update(projectData)
-          .eq('id', editingItem.id)
-          .select()
-      } else {
-        result = await supabase
-          .from('projects')
-          .insert([projectData])
-          .select()
-      }
-
-      if (result.error) {
-        throw result.error
-      }
-
-      alert('Projekt został zapisany pomyślnie!')
-      resetForm()
-      await fetchData()
-    } catch (error) {
-      console.error('Error saving project:', error)
-      alert('Błąd podczas zapisywania projektu: ' + (error as Error).message)
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  const handleEdit = (item: BlogPost | Project) => {
-    setEditingItem(item)
-    setIsEditing(true)
-    
-    if ('content' in item) {
-      setBlogForm({
-        title: item.title,
-        slug: item.slug,
-        excerpt: item.excerpt || '',
-        content: item.content,
-        published: item.published,
-        author: item.author,
-        image_url: item.image_url || '',
-        tags: item.tags?.join(', ') || ''
-      })
-    } else {
-      setProjectForm({
-        title: item.title,
-        slug: item.slug,
-        category: item.category,
-        industry: item.industry,
-        description: item.description,
-        image_url: item.image_url,
-        technologies: item.technologies || [],
-        results: Array.isArray(item.results) ? item.results : [],
-        completion_date: item.completion_date,
-        project_url: item.project_url || '',
-        featured: item.featured,
-        case_study: item.case_study || false,
-        case_study_header: item.case_study_header || '',
-        case_study_introduction: item.case_study_introduction || '',
-        case_study_goals: item.case_study_goals || '',
-        case_study_implementation: item.case_study_implementation || '',
-        case_study_results: item.case_study_results || '',
-        case_study_summary: item.case_study_summary || '',
-        case_study_cta: item.case_study_cta || ''
-      })
-    }
-  }
-
-  const handleDelete = async (id: string, type: 'blog' | 'project') => {
-    if (!confirm('Czy na pewno chcesz usunąć ten element?')) return
-
-    try {
-      const table = type === 'blog' ? 'blog_posts' : 'projects'
-      const { error } = await supabase.from(table).delete().eq('id', id)
-      
-      if (error) throw error
-      
-      alert('Element został usunięty')
-      await fetchData()
-    } catch (error) {
-      console.error('Error deleting item:', error)
-      alert('Błąd podczas usuwania: ' + (error as Error).message)
-    }
-  }
-
-  const resetForm = () => {
-    setIsEditing(false)
-    setEditingItem(null)
-    setBlogForm({
-      title: '',
-      slug: '',
-      excerpt: '',
-      content: '',
-      published: false,
-      author: 'Marcin Kowalski',
-      image_url: '',
-      tags: ''
-    })
-    setProjectForm({
-      title: '',
-      slug: '',
-      category: '',
-      industry: '',
-      description: '',
-      image_url: '',
-      technologies: [],
-      results: [],
-      completion_date: '',
-      project_url: '',
-      featured: false,
-      case_study: false,
-      case_study_header: '',
-      case_study_introduction: '',
-      case_study_goals: '',
-      case_study_implementation: '',
-      case_study_results: '',
-      case_study_summary: '',
-      case_study_cta: ''
-    })
-  }
-
-  const addTechnology = () => {
-    setProjectForm(prev => ({
-      ...prev,
-      technologies: [...prev.technologies, '']
-    }))
-  }
-
-  const updateTechnology = (index: number, value: string) => {
-    setProjectForm(prev => ({
-      ...prev,
-      technologies: prev.technologies.map((tech, i) => i === index ? value : tech)
-    }))
-  }
-
-  const removeTechnology = (index: number) => {
-    setProjectForm(prev => ({
-      ...prev,
-      technologies: prev.technologies.filter((_, i) => i !== index)
-    }))
-  }
-
-  const addResult = () => {
-    setProjectForm(prev => ({
-      ...prev,
-      results: [...prev.results, { metric: '', value: '' }]
-    }))
-  }
-
-  const updateResult = (index: number, field: 'metric' | 'value', value: string) => {
-    setProjectForm(prev => ({
-      ...prev,
-      results: prev.results.map((result, i) => 
-        i === index ? { ...result, [field]: value } : result
-      )
-    }))
-  }
-
-  const removeResult = (index: number) => {
-    setProjectForm(prev => ({
-      ...prev,
-      results: prev.results.filter((_, i) => i !== index)
-    }))
-  }
-
-  const formatEventType = (eventType: string) => {
-    const types: { [key: string]: string } = {
-      'login_attempt': 'Próba logowania',
-      'login_success': 'Udane logowanie',
-      'login_failure': 'Nieudane logowanie',
-      'logout': 'Wylogowanie',
-      'session_timeout': 'Timeout sesji',
-      'password_reset': 'Reset hasła'
-    }
-    return types[eventType] || eventType
-  }
-
-  const getEventTypeColor = (eventType: string) => {
-    switch (eventType) {
-      case 'login_success':
-        return 'text-green-600 bg-green-100'
-      case 'login_failure':
-        return 'text-red-600 bg-red-100'
-      case 'logout':
-        return 'text-blue-600 bg-blue-100'
-      case 'session_timeout':
-        return 'text-yellow-600 bg-yellow-100'
-      case 'password_reset':
-        return 'text-purple-600 bg-purple-100'
-      default:
-        return 'text-gray-600 bg-gray-100'
-    }
-  }
+  const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: Home },
+    { id: 'posts', label: 'Artykuły', icon: FileText },
+    { id: 'projects', label: 'Projekty', icon: Settings },
+    { id: 'contacts', label: 'Kontakty', icon: Users },
+  ]
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Ładowanie panelu CMS...</p>
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
       </div>
     )
   }
 
   return (
-    <HelmetProvider>
-      <div className="min-h-screen bg-gray-50">
-        <SEOHead 
-          title="Panel CMS - Administracja"
-          description="Panel administracyjny systemu zarządzania treścią"
-          keywords=""
-          url={`${window.location.origin}/admin`}
-        />
-        
-        {/* Meta tagi bezpieczeństwa */}
-        <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
-        <meta name="googlebot" content="noindex, nofollow" />
-        
-        <Header />
-        
-        <main className="pt-20">
-          {/* Header section */}
-          <section className="bg-white py-16 border-b">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center space-x-4">
-                  <Link
-                    to="/"
-                    className="flex items-center space-x-2 text-gray-600 hover:text-orange-500 transition-colors"
-                  >
-                    <ArrowLeft className="h-5 w-5" />
-                    <span>Powrót na stronę główną</span>
-                  </Link>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
-                    <Shield className="h-4 w-4" />
-                    <span>Sesja zabezpieczona</span>
-                  </div>
-                  <span className="text-gray-600">Zalogowany jako: {user?.email}</span>
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors"
-                  >
-                    <LogOut className="h-5 w-5" />
-                    <span>Wyloguj</span>
-                  </button>
-                </div>
-              </div>
-              
-              <div className="text-center max-w-4xl mx-auto">
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                  Panel CMS
+    <div className="admin-panel min-h-screen bg-gray-50">
+      {/* Mobile Header */}
+      <div className="lg:hidden bg-white shadow-sm border-b border-gray-200 px-4 py-3 flex items-center justify-between">
+        <button
+          onClick={() => setSidebarOpen(true)}
+          className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+          aria-label="Otwórz menu"
+        >
+          <Menu className="h-6 w-6" />
+        </button>
+        <h1 className="text-lg font-semibold text-gray-900">Panel Admin</h1>
+        <div className="flex items-center space-x-2">
+          <button className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+            <Bell className="h-5 w-5" />
+          </button>
+          <button className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+            <User className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
+      <div className="flex">
+        {/* Sidebar Overlay for Mobile */}
+        {sidebarOpen && (
+          <div 
+            className="lg:hidden fixed inset-0 z-40 bg-black bg-opacity-50"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
+        {/* Sidebar */}
+        <div className={`
+          fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out
+          ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}>
+          {/* Sidebar Header */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <h2 className="text-xl font-bold text-gray-900">WebDKW Admin</h2>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-1 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+              aria-label="Zamknij menu"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+
+          {/* Navigation Menu */}
+          <nav className="flex-1 px-4 py-6 space-y-2">
+            {menuItems.map((item) => {
+              const Icon = item.icon
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    setActiveTab(item.id)
+                    setSidebarOpen(false)
+                  }}
+                  className={`
+                    w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors
+                    ${activeTab === item.id 
+                      ? 'bg-orange-100 text-orange-700 font-medium' 
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    }
+                  `}
+                >
+                  <Icon className="h-5 w-5 flex-shrink-0" />
+                  <span className="truncate">{item.label}</span>
+                </button>
+              )
+            })}
+          </nav>
+
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t border-gray-200">
+            <button
+              onClick={handleLogout}
+              className="w-full flex items-center space-x-3 px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            >
+              <LogOut className="h-5 w-5" />
+              <span>Wyloguj</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 lg:ml-0">
+          {/* Desktop Header */}
+          <div className="hidden lg:block bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900 capitalize">
+                  {activeTab === 'dashboard' ? 'Dashboard' : menuItems.find(item => item.id === activeTab)?.label}
                 </h1>
-                <p className="text-xl text-gray-600 leading-relaxed">
-                  Bezpieczny system zarządzania treścią bloga i projektami portfolio
+                <p className="text-sm text-gray-600 mt-1">
+                  Zarządzaj zawartością swojej strony
                 </p>
               </div>
-            </div>
-          </section>
-
-          {/* Tabs */}
-          <section className="py-8 bg-white border-b">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex space-x-8">
-                <button
-                  onClick={() => setActiveTab('blog')}
-                  className={`pb-4 border-b-2 font-semibold ${
-                    activeTab === 'blog'
-                      ? 'border-orange-500 text-orange-500'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Blog Posts
+              <div className="flex items-center space-x-4">
+                <button className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors">
+                  <Bell className="h-5 w-5" />
                 </button>
-                <button
-                  onClick={() => setActiveTab('projects')}
-                  className={`pb-4 border-b-2 font-semibold ${
-                    activeTab === 'projects'
-                      ? 'border-orange-500 text-orange-500'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  Portfolio Projects
-                </button>
-                <button
-                  onClick={() => setActiveTab('security')}
-                  className={`pb-4 border-b-2 font-semibold ${
-                    activeTab === 'security'
-                      ? 'border-orange-500 text-orange-500'
-                      : 'border-transparent text-gray-500 hover:text-gray-700'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <Shield className="h-4 w-4" />
-                    <span>Logi Bezpieczeństwa</span>
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+                    <User className="h-4 w-4 text-white" />
                   </div>
+                  <span className="text-sm font-medium text-gray-700">Admin</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Content Area */}
+          <div className="p-4 lg:p-6">
+            {activeTab === 'dashboard' && <DashboardContent stats={stats} />}
+            {activeTab === 'posts' && <PostsContent posts={blogPosts} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
+            {activeTab === 'projects' && <ProjectsContent projects={projects} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
+            {activeTab === 'contacts' && <ContactsContent contacts={contacts} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Dashboard Component
+const DashboardContent = ({ stats }: { stats: any }) => (
+  <div className="space-y-6">
+    {/* Stats Grid */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+      <StatCard title="Artykuły" value={stats.totalPosts} icon={FileText} color="blue" />
+      <StatCard title="Projekty" value={stats.totalProjects} icon={Settings} color="green" />
+      <StatCard title="Kontakty" value={stats.totalContacts} icon={Users} color="purple" />
+      <StatCard title="Nowe (7 dni)" value={stats.recentContacts} icon={Bell} color="orange" />
+    </div>
+
+    {/* Quick Actions */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+      <h3 className="text-lg font-semibold text-gray-900 mb-4">Szybkie akcje</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <QuickActionCard title="Nowy artykuł" description="Dodaj nowy post na blog" icon={Plus} />
+        <QuickActionCard title="Nowy projekt" description="Dodaj projekt do portfolio" icon={Upload} />
+        <QuickActionCard title="Eksportuj dane" description="Pobierz raporty" icon={Download} />
+      </div>
+    </div>
+  </div>
+)
+
+// Posts Content Component
+const PostsContent = ({ posts, searchTerm, setSearchTerm }: any) => (
+  <div className="space-y-6">
+    {/* Search and Actions */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+        <div className="flex-1 max-w-md">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Szukaj artykułów..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+        <div className="flex items-center space-x-3">
+          <button className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+            <Plus className="h-4 w-4" />
+            <span className="hidden sm:inline">Nowy artykuł</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Posts Table */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Tytuł
+              </th>
+              <th className="hidden md:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Status
+              </th>
+              <th className="hidden lg:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Data utworzenia
+              </th>
+              <th className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Akcje
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {posts.slice(0, 10).map((post: BlogPost) => (
+              <tr key={post.id} className="hover:bg-gray-50">
+                <td className="px-4 lg:px-6 py-4">
+                  <div>
+                    <div className="text-sm font-medium text-gray-900 truncate max-w-xs lg:max-w-none">
+                      {post.title}
+                    </div>
+                    <div className="text-sm text-gray-500 md:hidden">
+                      {post.published ? 'Opublikowany' : 'Szkic'}
+                    </div>
+                  </div>
+                </td>
+                <td className="hidden md:table-cell px-4 lg:px-6 py-4 whitespace-nowrap">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    post.published 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {post.published ? 'Opublikowany' : 'Szkic'}
+                  </span>
+                </td>
+                <td className="hidden lg:table-cell px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {new Date(post.created_at).toLocaleDateString('pl-PL')}
+                </td>
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div className="flex items-center justify-end space-x-2">
+                    <button className="text-orange-600 hover:text-orange-900 p-1">
+                      <Eye className="h-4 w-4" />
+                    </button>
+                    <button className="text-blue-600 hover:text-blue-900 p-1">
+                      <Edit className="h-4 w-4" />
+                    </button>
+                    <button className="text-red-600 hover:text-red-900 p-1">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+)
+
+// Projects Content Component
+const ProjectsContent = ({ projects, searchTerm, setSearchTerm }: any) => (
+  <div className="space-y-6">
+    {/* Search and Actions */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+        <div className="flex-1 max-w-md">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Szukaj projektów..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+        <div className="flex items-center space-x-3">
+          <button className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
+            <Plus className="h-4 w-4" />
+            <span className="hidden sm:inline">Nowy projekt</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Projects Grid */}
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+      {projects.slice(0, 9).map((project: Project) => (
+        <div key={project.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+          <div className="aspect-video bg-gray-200 relative">
+            <img 
+              src={project.image_url} 
+              alt={project.title}
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute top-2 right-2">
+              <button className="p-1 bg-white rounded-full shadow-sm">
+                <MoreVertical className="h-4 w-4 text-gray-600" />
+              </button>
+            </div>
+          </div>
+          <div className="p-4">
+            <h3 className="font-semibold text-gray-900 truncate">{project.title}</h3>
+            <p className="text-sm text-gray-600 mt-1">{project.category}</p>
+            <div className="flex items-center justify-between mt-4">
+              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                project.featured 
+                  ? 'bg-orange-100 text-orange-800' 
+                  : 'bg-gray-100 text-gray-800'
+              }`}>
+                {project.featured ? 'Wyróżniony' : 'Standardowy'}
+              </span>
+              <div className="flex items-center space-x-2">
+                <button className="text-blue-600 hover:text-blue-900 p-1">
+                  <Edit className="h-4 w-4" />
+                </button>
+                <button className="text-red-600 hover:text-red-900 p-1">
+                  <Trash2 className="h-4 w-4" />
                 </button>
               </div>
             </div>
-          </section>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)
 
-          {/* Content */}
-          <section className="py-16">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {activeTab === 'security' ? (
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Logi Bezpieczeństwa</h2>
-                  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead className="bg-gray-50">
-                          <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Data/Czas
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Typ zdarzenia
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              IP Address
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Email
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              User Agent
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {securityLogs.map((log) => (
-                            <tr key={log.id}>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {new Date(log.timestamp).toLocaleString('pl-PL')}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap">
-                                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getEventTypeColor(log.event_type)}`}>
-                                  {formatEventType(log.event_type)}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {log.ip_address}
-                              </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {log.email || '-'}
-                              </td>
-                              <td className="px-6 py-4 text-sm text-gray-900 max-w-xs truncate">
-                                {log.user_agent}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
+// Contacts Content Component
+const ContactsContent = ({ contacts, searchTerm, setSearchTerm }: any) => (
+  <div className="space-y-6">
+    {/* Search and Actions */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+        <div className="flex-1 max-w-md">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Szukaj kontaktów..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+        <div className="flex items-center space-x-3">
+          <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <Download className="h-4 w-4" />
+            <span className="hidden sm:inline">Eksportuj</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Contacts Table */}
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Kontakt
+              </th>
+              <th className="hidden md:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Firma
+              </th>
+              <th className="hidden lg:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Data
+              </th>
+              <th className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Akcje
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {contacts.slice(0, 10).map((contact: ContactSubmission) => (
+              <tr key={contact.id} className="hover:bg-gray-50">
+                <td className="px-4 lg:px-6 py-4">
+                  <div>
+                    <div className="text-sm font-medium text-gray-900">{contact.name}</div>
+                    <div className="text-sm text-gray-500">{contact.email}</div>
+                    {contact.phone && (
+                      <div className="text-sm text-gray-500 md:hidden">{contact.phone}</div>
+                    )}
                   </div>
-                </div>
-              ) : (
-                <>
-                  {/* Add new button */}
-                  <div className="mb-8">
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2"
-                    >
-                      <Plus className="h-5 w-5" />
-                      <span>Dodaj {activeTab === 'blog' ? 'post' : 'projekt'}</span>
+                </td>
+                <td className="hidden md:table-cell px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {contact.company || '-'}
+                </td>
+                <td className="hidden lg:table-cell px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {new Date(contact.created_at).toLocaleDateString('pl-PL')}
+                </td>
+                <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <div className="flex items-center justify-end space-x-2">
+                    <button className="text-orange-600 hover:text-orange-900 p-1">
+                      <Eye className="h-4 w-4" />
+                    </button>
+                    <button className="text-red-600 hover:text-red-900 p-1">
+                      <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
-
-                  {/* Form */}
-                  {isEditing && (
-                    <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-                      <div className="flex justify-between items-center mb-6">
-                        <h2 className="text-2xl font-bold text-gray-900">
-                          {editingItem ? 'Edytuj' : 'Dodaj'} {activeTab === 'blog' ? 'post' : 'projekt'}
-                        </h2>
-                        <button
-                          onClick={resetForm}
-                          className="text-gray-500 hover:text-gray-700"
-                        >
-                          <X className="h-6 w-6" />
-                        </button>
-                      </div>
-
-                      {activeTab === 'blog' ? (
-                        <form onSubmit={handleBlogSubmit} className="space-y-6">
-                          <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                Tytuł *
-                              </label>
-                              <input
-                                type="text"
-                                required
-                                value={blogForm.title}
-                                onChange={(e) => setBlogForm({...blogForm, title: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                Slug
-                              </label>
-                              <input
-                                type="text"
-                                value={blogForm.slug}
-                                onChange={(e) => setBlogForm({...blogForm, slug: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                placeholder="Zostanie wygenerowany automatycznie"
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-2">
-                              Excerpt
-                            </label>
-                            <textarea
-                              rows={3}
-                              value={blogForm.excerpt}
-                              onChange={(e) => setBlogForm({...blogForm, excerpt: e.target.value})}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                            />
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-2">
-                              Treść *
-                            </label>
-                            
-                            {/* Formatting toolbar */}
-                            <div className="flex flex-wrap gap-2 mb-3 p-3 bg-gray-50 rounded-lg border">
-                              <button
-                                type="button"
-                                onClick={() => formatText('bold')}
-                                className="p-2 hover:bg-gray-200 rounded"
-                                title="Pogrubienie"
-                              >
-                                <Bold className="h-4 w-4" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => formatText('italic')}
-                                className="p-2 hover:bg-gray-200 rounded"
-                                title="Kursywa"
-                              >
-                                <Italic className="h-4 w-4" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => formatText('h1')}
-                                className="p-2 hover:bg-gray-200 rounded"
-                                title="Nagłówek 1"
-                              >
-                                <Heading1 className="h-4 w-4" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => formatText('h2')}
-                                className="p-2 hover:bg-gray-200 rounded"
-                                title="Nagłówek 2"
-                              >
-                                <Heading2 className="h-4 w-4" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => formatText('h3')}
-                                className="p-2 hover:bg-gray-200 rounded"
-                                title="Nagłówek 3"
-                              >
-                                <Heading3 className="h-4 w-4" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => formatText('list')}
-                                className="p-2 hover:bg-gray-200 rounded"
-                                title="Lista"
-                              >
-                                <List className="h-4 w-4" />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => formatText('image')}
-                                className="p-2 hover:bg-gray-200 rounded"
-                                title="Dodaj obrazek"
-                              >
-                                <Image className="h-4 w-4" />
-                              </button>
-                            </div>
-
-                            <textarea
-                              id="content"
-                              rows={15}
-                              required
-                              value={blogForm.content}
-                              onChange={(e) => setBlogForm({...blogForm, content: e.target.value})}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 font-mono text-sm"
-                              placeholder="Treść artykułu... Użyj przycisków powyżej do formatowania."
-                            />
-                            
-                            <div className="mt-2 text-sm text-gray-500">
-                              <p><strong>Formatowanie:</strong></p>
-                              <p>**pogrubiony tekst** | *kursywa* | # Nagłówek 1 | ## Nagłówek 2 | ### Nagłówek 3</p>
-                              <p>![Podpis obrazka](URL_obrazka) | - Element listy</p>
-                            </div>
-                          </div>
-
-                          <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                URL obrazka
-                              </label>
-                              <input
-                                type="url"
-                                value={blogForm.image_url}
-                                onChange={(e) => setBlogForm({...blogForm, image_url: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                Tagi (oddzielone przecinkami)
-                              </label>
-                              <input
-                                type="text"
-                                value={blogForm.tags}
-                                onChange={(e) => setBlogForm({...blogForm, tags: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              />
-                            </div>
-                          </div>
-
-                          <div className="flex items-center space-x-4">
-                            <label className="flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={blogForm.published}
-                                onChange={(e) => setBlogForm({...blogForm, published: e.target.checked})}
-                                className="mr-2"
-                              />
-                              Opublikowany
-                            </label>
-                          </div>
-
-                          <button
-                            type="submit"
-                            disabled={saving}
-                            className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2 disabled:opacity-50"
-                          >
-                            <Save className="h-5 w-5" />
-                            <span>{saving ? 'Zapisywanie...' : 'Zapisz post'}</span>
-                          </button>
-                        </form>
-                      ) : (
-                        <form onSubmit={handleProjectSubmit} className="space-y-6">
-                          <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                Tytuł *
-                              </label>
-                              <input
-                                type="text"
-                                required
-                                value={projectForm.title}
-                                onChange={(e) => setProjectForm({...projectForm, title: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                Kategoria *
-                              </label>
-                              <select
-                                required
-                                value={projectForm.category}
-                                onChange={(e) => setProjectForm({...projectForm, category: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              >
-                                <option value="">Wybierz kategorię</option>
-                                {projectCategories.map((category) => (
-                                  <option key={category} value={category}>
-                                    {category}
-                                  </option>
-                                ))}
-                              </select>
-                            </div>
-                          </div>
-
-                          <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                Branża *
-                              </label>
-                              <input
-                                type="text"
-                                required
-                                value={projectForm.industry}
-                                onChange={(e) => setProjectForm({...projectForm, industry: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                Data ukończenia *
-                              </label>
-                              <input
-                                type="text"
-                                required
-                                value={projectForm.completion_date}
-                                onChange={(e) => setProjectForm({...projectForm, completion_date: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                placeholder="2024"
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <label className="block text-sm font-bold text-gray-900 mb-2">
-                              Opis *
-                            </label>
-                            <textarea
-                              rows={4}
-                              required
-                              value={projectForm.description}
-                              onChange={(e) => setProjectForm({...projectForm, description: e.target.value})}
-                              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                            />
-                          </div>
-
-                          <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                URL obrazka *
-                              </label>
-                              <input
-                                type="url"
-                                required
-                                value={projectForm.image_url}
-                                onChange={(e) => setProjectForm({...projectForm, image_url: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-sm font-bold text-gray-900 mb-2">
-                                URL projektu
-                              </label>
-                              <input
-                                type="url"
-                                value={projectForm.project_url}
-                                onChange={(e) => setProjectForm({...projectForm, project_url: e.target.value})}
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                              />
-                            </div>
-                          </div>
-
-                          {/* Technologies */}
-                          <div>
-                            <div className="flex justify-between items-center mb-3">
-                              <label className="block text-sm font-bold text-gray-900">
-                                Technologie *
-                              </label>
-                              <button
-                                type="button"
-                                onClick={addTechnology}
-                                className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
-                              >
-                                + Dodaj technologię
-                              </button>
-                            </div>
-                            <div className="space-y-2">
-                              {projectForm.technologies.map((tech, index) => (
-                                <div key={index} className="flex gap-2">
-                                  <input
-                                    type="text"
-                                    value={tech}
-                                    onChange={(e) => updateTechnology(index, e.target.value)}
-                                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-500"
-                                    placeholder="np. React, Node.js"
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={() => removeTechnology(index)}
-                                    className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600"
-                                  >
-                                    Usuń
-                                  </button>
-                                </div>
-                              ))}
-                              {projectForm.technologies.length === 0 && (
-                                <p className="text-gray-500 text-sm">Kliknij "Dodaj technologię" aby dodać pierwszą technologię</p>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Results */}
-                          <div>
-                            <div className="flex justify-between items-center mb-3">
-                              <label className="block text-sm font-bold text-gray-900">
-                                Rezultaty *
-                              </label>
-                              <button
-                                type="button"
-                                onClick={addResult}
-                                className="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600"
-                              >
-                                + Dodaj rezultat
-                              </button>
-                            </div>
-                            <div className="space-y-3">
-                              {projectForm.results.map((result, index) => (
-                                <div key={index} className="flex gap-2">
-                                  <input
-                                    type="text"
-                                    value={result.metric}
-                                    onChange={(e) => updateResult(index, 'metric', e.target.value)}
-                                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-500"
-                                    placeholder="np. Wzrost konwersji"
-                                  />
-                                  <input
-                                    type="text"
-                                    value={result.value}
-                                    onChange={(e) => updateResult(index, 'value', e.target.value)}
-                                    className="w-32 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-orange-500"
-                                    placeholder="np. +340%"
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={() => removeResult(index)}
-                                    className="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600"
-                                  >
-                                    Usuń
-                                  </button>
-                                </div>
-                              ))}
-                              {projectForm.results.length === 0 && (
-                                <p className="text-gray-500 text-sm">Kliknij "Dodaj rezultat" aby dodać pierwszy rezultat</p>
-                              )}
-                            </div>
-                          </div>
-
-                          <div className="flex items-center space-x-4">
-                            <label className="flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={projectForm.featured}
-                                onChange={(e) => setProjectForm({...projectForm, featured: e.target.checked})}
-                                className="mr-2"
-                              />
-                              Projekt wyróżniony
-                            </label>
-                            <label className="flex items-center">
-                              <input
-                                type="checkbox"
-                                checked={projectForm.case_study}
-                                onChange={(e) => setProjectForm({...projectForm, case_study: e.target.checked})}
-                                className="mr-2"
-                              />
-                              Case Study
-                            </label>
-                          </div>
-
-                          {/* Case Study Fields */}
-                          {projectForm.case_study && (
-                            <div className="border-t pt-6 space-y-6">
-                              <h3 className="text-lg font-bold text-gray-900">Pola Case Study</h3>
-                              
-                              <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-2">
-                                  Nagłówek Case Study
-                                </label>
-                                <input
-                                  type="text"
-                                  value={projectForm.case_study_header}
-                                  onChange={(e) => setProjectForm({...projectForm, case_study_header: e.target.value})}
-                                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                  placeholder="Jeśli puste, użyty zostanie tytuł projektu"
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-2">
-                                  Wprowadzenie
-                                </label>
-                                <textarea
-                                  rows={4}
-                                  value={projectForm.case_study_introduction}
-                                  onChange={(e) => setProjectForm({...projectForm, case_study_introduction: e.target.value})}
-                                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                  placeholder="Wprowadzenie do case study..."
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-2">
-                                  Cele projektu
-                                </label>
-                                <textarea
-                                  rows={4}
-                                  value={projectForm.case_study_goals}
-                                  onChange={(e) => setProjectForm({...projectForm, case_study_goals: e.target.value})}
-                                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                  placeholder="Jakie były cele projektu..."
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-2">
-                                  Realizacja projektu
-                                </label>
-                                <textarea
-                                  rows={6}
-                                  value={projectForm.case_study_implementation}
-                                  onChange={(e) => setProjectForm({...projectForm, case_study_implementation: e.target.value})}
-                                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                  placeholder="Jak przebiegała realizacja projektu..."
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-2">
-                                  Szczegółowy opis wyników
-                                </label>
-                                <textarea
-                                  rows={4}
-                                  value={projectForm.case_study_results}
-                                  onChange={(e) => setProjectForm({...projectForm, case_study_results: e.target.value})}
-                                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                  placeholder="Szczegółowy opis osiągniętych wyników..."
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-2">
-                                  Podsumowanie i wnioski
-                                </label>
-                                <textarea
-                                  rows={4}
-                                  value={projectForm.case_study_summary}
-                                  onChange={(e) => setProjectForm({...projectForm, case_study_summary: e.target.value})}
-                                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                  placeholder="Podsumowanie projektu i wnioski..."
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-bold text-gray-900 mb-2">
-                                  CTA (Call to Action)
-                                </label>
-                                <input
-                                  type="text"
-                                  value={projectForm.case_study_cta}
-                                  onChange={(e) => setProjectForm({...projectForm, case_study_cta: e.target.value})}
-                                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500"
-                                  placeholder="Jeśli puste, użyty zostanie domyślny CTA"
-                                />
-                              </div>
-                            </div>
-                          )}
-
-                          <button
-                            type="submit"
-                            disabled={saving}
-                            className="bg-orange-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors flex items-center space-x-2 disabled:opacity-50"
-                          >
-                            <Save className="h-5 w-5" />
-                            <span>{saving ? 'Zapisywanie...' : 'Zapisz projekt'}</span>
-                          </button>
-                        </form>
-                      )}
-                    </div>
-                  )}
-
-                  {/* List */}
-                  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead className="bg-gray-50">
-                          <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Tytuł
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              {activeTab === 'blog' ? 'Status' : 'Kategoria'}
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Data
-                            </th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                              Akcje
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                          {activeTab === 'blog' ? (
-                            blogPosts.map((post) => (
-                              <tr key={post.id}>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                  <div className="text-sm font-medium text-gray-900">{post.title}</div>
-                                  <div className="text-sm text-gray-500">{post.excerpt}</div>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                    post.published ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                                  }`}>
-                                    {post.published ? 'Opublikowany' : 'Szkic'}
-                                  </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {new Date(post.created_at).toLocaleDateString('pl-PL')}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                  <div className="flex space-x-2">
-                                    <button
-                                      onClick={() => handleEdit(post)}
-                                      className="text-orange-600 hover:text-orange-900"
-                                    >
-                                      <Edit className="h-4 w-4" />
-                                    </button>
-                                    <button
-                                      onClick={() => handleDelete(post.id, 'blog')}
-                                      className="text-red-600 hover:text-red-900"
-                                    >
-                                      <Trash2 className="h-4 w-4" />
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))
-                          ) : (
-                            projects.map((project) => (
-                              <tr key={project.id}>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                  <div className="text-sm font-medium text-gray-900">{project.title}</div>
-                                  <div className="text-sm text-gray-500">{project.industry}</div>
-                                  {project.case_study && (
-                                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-1">
-                                      Case Study
-                                    </span>
-                                  )}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap">
-                                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    {project.category}
-                                  </span>
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                  {project.completion_date}
-                                </td>
-                                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                  <div className="flex space-x-2">
-                                    <button
-                                      onClick={() => handleEdit(project)}
-                                      className="text-orange-600 hover:text-orange-900"
-                                    >
-                                      <Edit className="h-4 w-4" />
-                                    </button>
-                                    <button
-                                      onClick={() => handleDelete(project.id, 'project')}
-                                      className="text-red-600 hover:text-red-900"
-                                    >
-                                      <Trash2 className="h-4 w-4" />
-                                    </button>
-                                  </div>
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </section>
-        </main>
-
-        <Footer />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
-    </HelmetProvider>
+    </div>
+  </div>
+)
+
+// Utility Components
+const StatCard = ({ title, value, icon: Icon, color }: any) => {
+  const colorClasses = {
+    blue: 'bg-blue-500',
+    green: 'bg-green-500',
+    purple: 'bg-purple-500',
+    orange: 'bg-orange-500'
+  }
+
+  return (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+      <div className="flex items-center">
+        <div className={`p-3 rounded-lg ${colorClasses[color]} text-white`}>
+          <Icon className="h-6 w-6" />
+        </div>
+        <div className="ml-4">
+          <p className="text-sm font-medium text-gray-600">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">{value}</p>
+        </div>
+      </div>
+    </div>
   )
 }
+
+const QuickActionCard = ({ title, description, icon: Icon }: any) => (
+  <button className="text-left p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+    <div className="flex items-center space-x-3">
+      <div className="p-2 bg-orange-100 rounded-lg">
+        <Icon className="h-5 w-5 text-orange-600" />
+      </div>
+      <div>
+        <h4 className="text-sm font-medium text-gray-900">{title}</h4>
+        <p className="text-xs text-gray-500">{description}</p>
+      </div>
+    </div>
+  </button>
+)
 
 export default AdminPage

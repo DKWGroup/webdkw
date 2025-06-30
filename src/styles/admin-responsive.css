@@ -1,0 +1,494 @@
+/* 
+  RESPONSYWNY PANEL ADMINISTRACYJNY - SYSTEM CSS
+  Autor: WebDKW Team
+  Data: 2024
+  
+  SPIS TREŚCI:
+  1. Zmienne CSS i system breakpointów
+  2. Mobile-first media queries
+  3. Flexbox/Grid optymalizacje
+  4. Fluid typography
+  5. Spacing system
+  6. Komponenty responsywne
+*/
+
+/* ===== 1. ZMIENNE CSS I SYSTEM BREAKPOINTÓW ===== */
+:root {
+  /* Breakpoints - Mobile First Approach */
+  --bp-mobile: 320px;
+  --bp-mobile-lg: 480px;
+  --bp-tablet: 768px;
+  --bp-tablet-lg: 1024px;
+  --bp-desktop: 1280px;
+  --bp-desktop-lg: 1536px;
+  
+  /* Spacing System - 8px base */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  
+  /* Fluid Typography Scale */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 1.875rem);
+  --text-3xl: clamp(1.875rem, 1.6rem + 1.375vw, 2.25rem);
+  
+  /* Layout Variables */
+  --sidebar-width: 16rem;
+  --header-height: 4rem;
+  --mobile-header-height: 3.5rem;
+  
+  /* Animation Variables */
+  --transition-fast: 150ms ease-in-out;
+  --transition-normal: 300ms ease-in-out;
+  --transition-slow: 500ms ease-in-out;
+  
+  /* Z-index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+/* ===== 2. MOBILE-FIRST MEDIA QUERIES ===== */
+
+/* Base styles - Mobile (320px+) */
+.admin-panel {
+  font-size: var(--text-base);
+  line-height: 1.5;
+}
+
+/* Sidebar responsywny */
+.admin-panel .sidebar {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-modal);
+  transform: translateX(-100%);
+  transition: transform var(--transition-normal);
+}
+
+.admin-panel .sidebar.open {
+  transform: translateX(0);
+}
+
+/* Mobile Large (480px+) */
+@media (min-width: 480px) {
+  .admin-panel {
+    font-size: var(--text-sm);
+  }
+  
+  /* Zwiększone padding dla większych ekranów mobilnych */
+  .admin-panel .content-padding {
+    padding: var(--space-5);
+  }
+  
+  /* Lepsze proporcje dla kart */
+  .admin-panel .stat-card {
+    min-height: 120px;
+  }
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+  .admin-panel {
+    font-size: var(--text-base);
+  }
+  
+  /* Tabele - pokazuj więcej kolumn */
+  .admin-panel .table-responsive .hidden-mobile {
+    display: table-cell;
+  }
+  
+  /* Grid layout dla większych ekranów */
+  .admin-panel .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+  
+  /* Formularze - layout horyzontalny */
+  .admin-panel .form-horizontal {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+}
+
+/* Tablet Large / Desktop Small (1024px+) */
+@media (min-width: 1024px) {
+  /* Sidebar stały */
+  .admin-panel .sidebar {
+    position: static;
+    width: var(--sidebar-width);
+    transform: translateX(0);
+    height: 100vh;
+  }
+  
+  /* Layout dwukolumnowy */
+  .admin-panel .main-layout {
+    display: flex;
+  }
+  
+  .admin-panel .content-area {
+    flex: 1;
+    margin-left: 0;
+  }
+  
+  /* Stats grid - 4 kolumny */
+  .admin-panel .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  /* Tabele - pełna funkcjonalność */
+  .admin-panel .table-responsive .hidden-tablet {
+    display: table-cell;
+  }
+}
+
+/* Desktop (1280px+) */
+@media (min-width: 1280px) {
+  .admin-panel {
+    font-size: var(--text-lg);
+  }
+  
+  /* Większe odstępy */
+  .admin-panel .content-padding {
+    padding: var(--space-8);
+  }
+  
+  /* Projekty - 3 kolumny */
+  .admin-panel .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Desktop Large (1536px+) */
+@media (min-width: 1536px) {
+  /* Maksymalna szerokość contentu */
+  .admin-panel .content-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  /* Projekty - 4 kolumny dla bardzo dużych ekranów */
+  .admin-panel .projects-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== 3. FLEXBOX/GRID OPTYMALIZACJE ===== */
+
+/* Flexbox utilities */
+.admin-panel .flex-responsive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .admin-panel .flex-responsive {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+/* Grid utilities */
+.admin-panel .grid-responsive {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 480px) {
+  .admin-panel .grid-responsive.cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .admin-panel .grid-responsive.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-panel .grid-responsive.cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== 4. FLUID TYPOGRAPHY ===== */
+
+.admin-panel h1 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-4);
+}
+
+.admin-panel h2 {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: var(--space-3);
+}
+
+.admin-panel h3 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: var(--space-2);
+}
+
+.admin-panel .text-small {
+  font-size: var(--text-sm);
+}
+
+.admin-panel .text-tiny {
+  font-size: var(--text-xs);
+}
+
+/* ===== 5. SPACING SYSTEM ===== */
+
+/* Margin utilities */
+.admin-panel .m-1 { margin: var(--space-1); }
+.admin-panel .m-2 { margin: var(--space-2); }
+.admin-panel .m-3 { margin: var(--space-3); }
+.admin-panel .m-4 { margin: var(--space-4); }
+.admin-panel .m-5 { margin: var(--space-5); }
+.admin-panel .m-6 { margin: var(--space-6); }
+.admin-panel .m-8 { margin: var(--space-8); }
+
+/* Padding utilities */
+.admin-panel .p-1 { padding: var(--space-1); }
+.admin-panel .p-2 { padding: var(--space-2); }
+.admin-panel .p-3 { padding: var(--space-3); }
+.admin-panel .p-4 { padding: var(--space-4); }
+.admin-panel .p-5 { padding: var(--space-5); }
+.admin-panel .p-6 { padding: var(--space-6); }
+.admin-panel .p-8 { padding: var(--space-8); }
+
+/* Gap utilities */
+.admin-panel .gap-1 { gap: var(--space-1); }
+.admin-panel .gap-2 { gap: var(--space-2); }
+.admin-panel .gap-3 { gap: var(--space-3); }
+.admin-panel .gap-4 { gap: var(--space-4); }
+.admin-panel .gap-5 { gap: var(--space-5); }
+.admin-panel .gap-6 { gap: var(--space-6); }
+.admin-panel .gap-8 { gap: var(--space-8); }
+
+/* ===== 6. KOMPONENTY RESPONSYWNE ===== */
+
+/* Przyciski responsywne */
+.admin-panel .btn-responsive {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  border-radius: 0.5rem;
+  transition: all var(--transition-fast);
+  
+  /* Minimum tap target 44px dla mobile */
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@media (min-width: 768px) {
+  .admin-panel .btn-responsive {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-base);
+  }
+}
+
+/* Karty responsywne */
+.admin-panel .card-responsive {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: var(--space-4);
+  transition: box-shadow var(--transition-normal);
+}
+
+@media (min-width: 768px) {
+  .admin-panel .card-responsive {
+    padding: var(--space-6);
+  }
+}
+
+.admin-panel .card-responsive:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabele responsywne */
+.admin-panel .table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-panel .table-responsive table {
+  min-width: 600px;
+  width: 100%;
+}
+
+/* Ukrywanie kolumn na mniejszych ekranach */
+@media (max-width: 767px) {
+  .admin-panel .table-responsive .hidden-mobile {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) {
+  .admin-panel .table-responsive .hidden-tablet {
+    display: none;
+  }
+}
+
+/* Formularze responsywne */
+.admin-panel .form-responsive {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .admin-panel .form-responsive.horizontal {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .admin-panel .form-responsive.horizontal .form-field {
+    flex: 1;
+  }
+}
+
+/* Input fields */
+.admin-panel .input-responsive {
+  width: 100%;
+  padding: var(--space-3);
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: var(--text-base);
+  transition: border-color var(--transition-fast);
+  
+  /* Minimum height dla touch targets */
+  min-height: 44px;
+}
+
+.admin-panel .input-responsive:focus {
+  outline: none;
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+/* Modalne okna responsywne */
+.admin-panel .modal-responsive {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.admin-panel .modal-content {
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .admin-panel .modal-content {
+    max-width: 600px;
+    padding: var(--space-8);
+  }
+}
+
+/* ===== 7. ACCESSIBILITY IMPROVEMENTS ===== */
+
+/* Focus states */
+.admin-panel *:focus {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .admin-panel * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .admin-panel {
+    --text-color: #000000;
+    --bg-color: #ffffff;
+    --border-color: #000000;
+  }
+}
+
+/* ===== 8. PRINT STYLES ===== */
+@media print {
+  .admin-panel .sidebar,
+  .admin-panel .mobile-header,
+  .admin-panel .action-buttons {
+    display: none !important;
+  }
+  
+  .admin-panel .content-area {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  
+  .admin-panel .card-responsive {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+  }
+}
+
+/* ===== 9. PERFORMANCE OPTIMIZATIONS ===== */
+
+/* GPU acceleration dla animacji */
+.admin-panel .sidebar,
+.admin-panel .modal-responsive {
+  will-change: transform;
+}
+
+/* Optymalizacja scroll */
+.admin-panel .table-responsive {
+  scroll-behavior: smooth;
+}
+
+/* ===== 10. DARK MODE SUPPORT (OPCJONALNE) ===== */
+@media (prefers-color-scheme: dark) {
+  .admin-panel.dark-mode {
+    --bg-primary: #1f2937;
+    --bg-secondary: #374151;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --border-color: #4b5563;
+  }
+}
