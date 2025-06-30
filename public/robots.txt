@@ -2,6 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /admin/login
+Disallow: /admin/*
 
 # Sitemap
 Sitemap: https://webdkw.net/sitemap.xml
