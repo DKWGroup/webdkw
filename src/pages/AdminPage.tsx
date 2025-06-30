@@ -23,6 +23,8 @@ import {
 } from 'lucide-react'
 import { supabase, BlogPost, ContactSubmission, Project } from '../lib/supabase'
 import { authSecurity } from '../lib/auth'
+import ArticleForm from '../components/admin/ArticleForm'
+import ProjectForm from '../components/admin/ProjectForm'
 
 const AdminPage = () => {
   const navigate = useNavigate()
@@ -43,6 +45,12 @@ const AdminPage = () => {
     totalProjects: 0,
     recentContacts: 0
   })
+
+  // Form states
+  const [showArticleForm, setShowArticleForm] = useState(false)
+  const [showProjectForm, setShowProjectForm] = useState(false)
+  const [currentArticle, setCurrentArticle] = useState<BlogPost | null>(null)
+  const [currentProject, setCurrentProject] = useState<Project | null>(null)
 
   useEffect(() => {
     checkAuthentication()
@@ -117,6 +125,86 @@ const AdminPage = () => {
       navigate('/admin/login')
     } catch (error) {
       console.error('Logout error:', error)
+    }
+  }
+
+  const handleAddArticle = () => {
+    setCurrentArticle(null)
+    setShowArticleForm(true)
+  }
+
+  const handleEditArticle = (article: BlogPost) => {
+    setCurrentArticle(article)
+    setShowArticleForm(true)
+  }
+
+  const handleSaveArticle = (article: BlogPost) => {
+    fetchData() // Refresh data after save
+    setShowArticleForm(false)
+  }
+
+  const handleAddProject = () => {
+    setCurrentProject(null)
+    setShowProjectForm(true)
+  }
+
+  const handleEditProject = (project: Project) => {
+    setCurrentProject(project)
+    setShowProjectForm(true)
+  }
+
+  const handleSaveProject = (project: Project) => {
+    fetchData() // Refresh data after save
+    setShowProjectForm(false)
+  }
+
+  const handleDeleteArticle = async (id: string) => {
+    if (window.confirm('Czy na pewno chcesz usunąć ten artykuł?')) {
+      try {
+        const { error } = await supabase
+          .from('blog_posts')
+          .delete()
+          .eq('id', id)
+        
+        if (error) throw error
+        
+        // Update local state
+        setBlogPosts(prevPosts => prevPosts.filter(post => post.id !== id))
+        
+        // Update stats
+        setStats(prev => ({
+          ...prev,
+          totalPosts: prev.totalPosts - 1
+        }))
+      } catch (error) {
+        console.error('Error deleting article:', error)
+        alert('Wystąpił błąd podczas usuwania artykułu')
+      }
+    }
+  }
+
+  const handleDeleteProject = async (id: string) => {
+    if (window.confirm('Czy na pewno chcesz usunąć ten projekt?')) {
+      try {
+        const { error } = await supabase
+          .from('projects')
+          .delete()
+          .eq('id', id)
+        
+        if (error) throw error
+        
+        // Update local state
+        setProjects(prevProjects => prevProjects.filter(project => project.id !== id))
+        
+        // Update stats
+        setStats(prev => ({
+          ...prev,
+          totalProjects: prev.totalProjects - 1
+        }))
+      } catch (error) {
+        console.error('Error deleting project:', error)
+        alert('Wystąpił błąd podczas usuwania projektu')
+      }
     }
   }
 
@@ -251,12 +339,46 @@ const AdminPage = () => {
           {/* Content Area */}
           <div className="p-4 lg:p-6">
             {activeTab === 'dashboard' && <DashboardContent stats={stats} />}
-            {activeTab === 'posts' && <PostsContent posts={blogPosts} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
-            {activeTab === 'projects' && <ProjectsContent projects={projects} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
+            {activeTab === 'posts' && (
+              <PostsContent 
+                posts={blogPosts} 
+                searchTerm={searchTerm} 
+                setSearchTerm={setSearchTerm} 
+                onAddArticle={handleAddArticle}
+                onEditArticle={handleEditArticle}
+                onDeleteArticle={handleDeleteArticle}
+              />
+            )}
+            {activeTab === 'projects' && (
+              <ProjectsContent 
+                projects={projects} 
+                searchTerm={searchTerm} 
+                setSearchTerm={setSearchTerm} 
+                onAddProject={handleAddProject}
+                onEditProject={handleEditProject}
+                onDeleteProject={handleDeleteProject}
+              />
+            )}
             {activeTab === 'contacts' && <ContactsContent contacts={contacts} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
           </div>
         </div>
       </div>
+
+      {/* Article Form Modal */}
+      <ArticleForm 
+        article={currentArticle}
+        isOpen={showArticleForm}
+        onClose={() => setShowArticleForm(false)}
+        onSave={handleSaveArticle}
+      />
+
+      {/* Project Form Modal */}
+      <ProjectForm
+        project={currentProject}
+        isOpen={showProjectForm}
+        onClose={() => setShowProjectForm(false)}
+        onSave={handleSaveProject}
+      />
     </div>
   )
 }
@@ -285,168 +407,224 @@ const DashboardContent = ({ stats }: { stats: any }) => (
 )
 
 // Posts Content Component
-const PostsContent = ({ posts, searchTerm, setSearchTerm }: any) => (
-  <div className="space-y-6">
-    {/* Search and Actions */}
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <div className="flex-1 max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Szukaj artykułów..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            />
+const PostsContent = ({ posts, searchTerm, setSearchTerm, onAddArticle, onEditArticle, onDeleteArticle }: any) => {
+  const filteredPosts = posts.filter((post: BlogPost) => 
+    post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (post.tags && post.tags.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase())))
+  )
+
+  return (
+    <div className="space-y-6">
+      {/* Search and Actions */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+          <div className="flex-1 max-w-md">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Szukaj artykułów..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
+          </div>
+          <div className="flex items-center space-x-3">
+            <button 
+              onClick={onAddArticle}
+              className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Nowy artykuł</span>
+            </button>
           </div>
         </div>
-        <div className="flex items-center space-x-3">
-          <button className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
-            <Plus className="h-4 w-4" />
-            <span className="hidden sm:inline">Nowy artykuł</span>
-          </button>
+      </div>
+
+      {/* Posts Table */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Tytuł
+                </th>
+                <th className="hidden md:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="hidden lg:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Data utworzenia
+                </th>
+                <th className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Akcje
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {filteredPosts.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="px-4 lg:px-6 py-8 text-center text-gray-500">
+                    {searchTerm ? 'Nie znaleziono artykułów pasujących do wyszukiwania' : 'Brak artykułów'}
+                  </td>
+                </tr>
+              ) : (
+                filteredPosts.map((post: BlogPost) => (
+                  <tr key={post.id} className="hover:bg-gray-50">
+                    <td className="px-4 lg:px-6 py-4">
+                      <div>
+                        <div className="text-sm font-medium text-gray-900 truncate max-w-xs lg:max-w-none">
+                          {post.title}
+                        </div>
+                        <div className="text-sm text-gray-500 md:hidden">
+                          {post.published ? 'Opublikowany' : 'Szkic'}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="hidden md:table-cell px-4 lg:px-6 py-4 whitespace-nowrap">
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        post.published 
+                          ? 'bg-green-100 text-green-800' 
+                          : 'bg-yellow-100 text-yellow-800'
+                      }`}>
+                        {post.published ? 'Opublikowany' : 'Szkic'}
+                      </span>
+                    </td>
+                    <td className="hidden lg:table-cell px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {new Date(post.created_at).toLocaleDateString('pl-PL')}
+                    </td>
+                    <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex items-center justify-end space-x-2">
+                        <button 
+                          className="text-orange-600 hover:text-orange-900 p-1"
+                          onClick={() => window.open(`/blog/${post.slug}`, '_blank')}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </button>
+                        <button 
+                          className="text-blue-600 hover:text-blue-900 p-1"
+                          onClick={() => onEditArticle(post)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </button>
+                        <button 
+                          className="text-red-600 hover:text-red-900 p-1"
+                          onClick={() => onDeleteArticle(post.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
-
-    {/* Posts Table */}
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Tytuł
-              </th>
-              <th className="hidden md:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="hidden lg:table-cell px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Data utworzenia
-              </th>
-              <th className="px-4 lg:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Akcje
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {posts.slice(0, 10).map((post: BlogPost) => (
-              <tr key={post.id} className="hover:bg-gray-50">
-                <td className="px-4 lg:px-6 py-4">
-                  <div>
-                    <div className="text-sm font-medium text-gray-900 truncate max-w-xs lg:max-w-none">
-                      {post.title}
-                    </div>
-                    <div className="text-sm text-gray-500 md:hidden">
-                      {post.published ? 'Opublikowany' : 'Szkic'}
-                    </div>
-                  </div>
-                </td>
-                <td className="hidden md:table-cell px-4 lg:px-6 py-4 whitespace-nowrap">
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                    post.published 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {post.published ? 'Opublikowany' : 'Szkic'}
-                  </span>
-                </td>
-                <td className="hidden lg:table-cell px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(post.created_at).toLocaleDateString('pl-PL')}
-                </td>
-                <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div className="flex items-center justify-end space-x-2">
-                    <button className="text-orange-600 hover:text-orange-900 p-1">
-                      <Eye className="h-4 w-4" />
-                    </button>
-                    <button className="text-blue-600 hover:text-blue-900 p-1">
-                      <Edit className="h-4 w-4" />
-                    </button>
-                    <button className="text-red-600 hover:text-red-900 p-1">
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-)
+  )
+}
 
 // Projects Content Component
-const ProjectsContent = ({ projects, searchTerm, setSearchTerm }: any) => (
-  <div className="space-y-6">
-    {/* Search and Actions */}
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <div className="flex-1 max-w-md">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Szukaj projektów..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            />
+const ProjectsContent = ({ projects, searchTerm, setSearchTerm, onAddProject, onEditProject, onDeleteProject }: any) => {
+  const filteredProjects = projects.filter((project: Project) => 
+    project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    project.industry.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    project.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (project.technologies && project.technologies.some((tech: string) => tech.toLowerCase().includes(searchTerm.toLowerCase())))
+  )
+
+  return (
+    <div className="space-y-6">
+      {/* Search and Actions */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+          <div className="flex-1 max-w-md">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Szukaj projektów..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-3">
-          <button className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors">
-            <Plus className="h-4 w-4" />
-            <span className="hidden sm:inline">Nowy projekt</span>
-          </button>
+          <div className="flex items-center space-x-3">
+            <button 
+              onClick={onAddProject}
+              className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+            >
+              <Plus className="h-4 w-4" />
+              <span className="hidden sm:inline">Nowy projekt</span>
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    {/* Projects Grid */}
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
-      {projects.slice(0, 9).map((project: Project) => (
-        <div key={project.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <div className="aspect-video bg-gray-200 relative">
-            <img 
-              src={project.image_url} 
-              alt={project.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute top-2 right-2">
-              <button className="p-1 bg-white rounded-full shadow-sm">
-                <MoreVertical className="h-4 w-4 text-gray-600" />
-              </button>
-            </div>
+      {/* Projects Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6">
+        {filteredProjects.length === 0 ? (
+          <div className="col-span-full bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500">
+            {searchTerm ? 'Nie znaleziono projektów pasujących do wyszukiwania' : 'Brak projektów'}
           </div>
-          <div className="p-4">
-            <h3 className="font-semibold text-gray-900 truncate">{project.title}</h3>
-            <p className="text-sm text-gray-600 mt-1">{project.category}</p>
-            <div className="flex items-center justify-between mt-4">
-              <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                project.featured 
-                  ? 'bg-orange-100 text-orange-800' 
-                  : 'bg-gray-100 text-gray-800'
-              }`}>
-                {project.featured ? 'Wyróżniony' : 'Standardowy'}
-              </span>
-              <div className="flex items-center space-x-2">
-                <button className="text-blue-600 hover:text-blue-900 p-1">
-                  <Edit className="h-4 w-4" />
-                </button>
-                <button className="text-red-600 hover:text-red-900 p-1">
-                  <Trash2 className="h-4 w-4" />
-                </button>
+        ) : (
+          filteredProjects.map((project: Project) => (
+            <div key={project.id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+              <div className="aspect-video bg-gray-200 relative">
+                <img 
+                  src={project.image_url} 
+                  alt={project.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-2 right-2 flex space-x-1">
+                  <button 
+                    className="p-1 bg-white rounded-full shadow-sm hover:bg-gray-100"
+                    onClick={() => onEditProject(project)}
+                  >
+                    <Edit className="h-4 w-4 text-blue-600" />
+                  </button>
+                  <button 
+                    className="p-1 bg-white rounded-full shadow-sm hover:bg-gray-100"
+                    onClick={() => onDeleteProject(project.id)}
+                  >
+                    <Trash2 className="h-4 w-4 text-red-600" />
+                  </button>
+                </div>
+              </div>
+              <div className="p-4">
+                <h3 className="font-semibold text-gray-900 truncate">{project.title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{project.category}</p>
+                <div className="flex items-center justify-between mt-4">
+                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                    project.featured 
+                      ? 'bg-orange-100 text-orange-800' 
+                      : 'bg-gray-100 text-gray-800'
+                  }`}>
+                    {project.featured ? 'Wyróżniony' : 'Standardowy'}
+                  </span>
+                  <div className="flex items-center space-x-2">
+                    <button 
+                      className="text-orange-600 hover:text-orange-900 p-1"
+                      onClick={() => window.open(`/portfolio/${project.slug}`, '_blank')}
+                    >
+                      <Eye className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      ))}
+          ))
+        )}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 // Contacts Content Component
 const ContactsContent = ({ contacts, searchTerm, setSearchTerm }: any) => (
