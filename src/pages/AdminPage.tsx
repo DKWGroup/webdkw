@@ -47,7 +47,7 @@ const AdminPage = () => {
   const [showArticleForm, setShowArticleForm] = useState(false)
   const [showProjectForm, setShowProjectForm] = useState(false)
   const [showBlogPostForm, setShowBlogPostForm] = useState(false)
-  const [currentArticle, setCurrentArticle] = useState<BlogPost | null>(null)
+  // Removed unused setCurrentArticle state
   const [currentProject, setCurrentProject] = useState<Project | null>(null)
   const [currentBlogPost, setCurrentBlogPost] = useState<BlogPost | null>(null)
 
@@ -365,7 +365,7 @@ const AdminPage = () => {
 
       {/* Article Form Modal */}
       <ArticleForm 
-        article={currentArticle}
+        article={null}
         isOpen={showArticleForm}
         onClose={() => setShowArticleForm(false)}
         onSave={handleSaveBlogPost}
