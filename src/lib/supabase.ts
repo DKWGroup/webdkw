@@ -17,6 +17,13 @@ export interface BlogPost {
   author: string
   image_url?: string
   tags?: string[]
+  meta_description?: string
+  categories?: string[]
+  tldr_summary?: string
+  tldr_takeaways?: string[]
+  faqs?: Array<{ question: string; answer: string }>
+  ctas?: Array<{ title: string; url: string; color: string }>
+  seo_score?: number
 }
 
 export interface ContactSubmission {

@@ -25,6 +25,7 @@ import { supabase, BlogPost, ContactSubmission, Project } from '../lib/supabase'
 import { authSecurity } from '../lib/auth'
 import ArticleForm from '../components/admin/ArticleForm'
 import ProjectForm from '../components/admin/ProjectForm'
+import BlogPostForm from '../components/admin/BlogPostForm'
 
 const AdminPage = () => {
   const navigate = useNavigate()
@@ -49,8 +50,10 @@ const AdminPage = () => {
   // Form states
   const [showArticleForm, setShowArticleForm] = useState(false)
   const [showProjectForm, setShowProjectForm] = useState(false)
+  const [showBlogPostForm, setShowBlogPostForm] = useState(false)
   const [currentArticle, setCurrentArticle] = useState<BlogPost | null>(null)
   const [currentProject, setCurrentProject] = useState<Project | null>(null)
+  const [currentBlogPost, setCurrentBlogPost] = useState<BlogPost | null>(null)
 
   useEffect(() => {
     checkAuthentication()
@@ -141,6 +144,21 @@ const AdminPage = () => {
   const handleSaveArticle = (article: BlogPost) => {
     fetchData() // Refresh data after save
     setShowArticleForm(false)
+  }
+
+  const handleAddBlogPost = () => {
+    setCurrentBlogPost(null)
+    setShowBlogPostForm(true)
+  }
+
+  const handleEditBlogPost = (post: BlogPost) => {
+    setCurrentBlogPost(post)
+    setShowBlogPostForm(true)
+  }
+
+  const handleSaveBlogPost = (post: BlogPost) => {
+    fetchData() // Refresh data after save
+    setShowBlogPostForm(false)
   }
 
   const handleAddProject = () => {
@@ -344,8 +362,8 @@ const AdminPage = () => {
                 posts={blogPosts} 
                 searchTerm={searchTerm} 
                 setSearchTerm={setSearchTerm} 
-                onAddArticle={handleAddArticle}
-                onEditArticle={handleEditArticle}
+                onAddArticle={handleAddBlogPost}
+                onEditArticle={handleEditBlogPost}
                 onDeleteArticle={handleDeleteArticle}
               />
             )}
@@ -370,6 +388,14 @@ const AdminPage = () => {
         isOpen={showArticleForm}
         onClose={() => setShowArticleForm(false)}
         onSave={handleSaveArticle}
+      />
+
+      {/* Blog Post Form Modal with Markdown Editor */}
+      <BlogPostForm 
+        post={currentBlogPost}
+        isOpen={showBlogPostForm}
+        onClose={() => setShowBlogPostForm(false)}
+        onSave={handleSaveBlogPost}
       />
 
       {/* Project Form Modal */}
