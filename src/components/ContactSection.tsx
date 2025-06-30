@@ -54,7 +54,10 @@ const ContactSection = () => {
           })
         })
 
-        if (!emailResponse.ok) {
+        if (emailResponse.ok) {
+          const result = await emailResponse.json()
+          console.log('Email function result:', result)
+        } else {
           console.warn('Email sending failed, but form was submitted successfully')
         }
       } catch (emailError) {
@@ -62,6 +65,7 @@ const ContactSection = () => {
         // Don't throw - form submission was successful
       }
 
+      // Show success message regardless of email status
       setIsSubmitted(true)
       setFormData({
         name: '',

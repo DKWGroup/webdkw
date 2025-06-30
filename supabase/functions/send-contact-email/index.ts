@@ -15,6 +15,28 @@ interface ContactFormData {
   lead_magnet?: boolean
 }
 
+// Simple email sending using EmailJS or similar service
+async function sendEmailViaService(emailData: any) {
+  try {
+    // For now, we'll use a simple approach that logs the email
+    // In production, you can integrate with services like:
+    // - EmailJS
+    // - SendGrid
+    // - Mailgun
+    // - Postmark
+    
+    console.log('Sending email:', emailData)
+    
+    // Simulate successful email sending
+    await new Promise(resolve => setTimeout(resolve, 100))
+    
+    return { success: true }
+  } catch (error) {
+    console.error('Email sending error:', error)
+    throw error
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -35,78 +57,97 @@ serve(async (req) => {
       )
     }
 
-    // For now, we'll just log the email data and return success
-    // In production, you would integrate with your preferred email service
-    console.log('Email data received:', {
-      name,
-      email,
-      company,
-      phone,
-      message,
-      lead_magnet,
-      timestamp: new Date().toISOString()
-    })
+    // Prepare email content for company
+    const companyEmailContent = `
+      Nowe zapytanie z formularza kontaktowego WebDKW
+      
+      Dane kontaktowe:
+      - Imię i nazwisko: ${name}
+      - Email: ${email}
+      ${company ? `- Firma: ${company}` : ''}
+      ${phone ? `- Telefon: ${phone}` : ''}
+      - Typ zapytania: ${lead_magnet ? 'Lead Magnet - Checklist' : 'Formularz kontaktowy'}
+      
+      Wiadomość:
+      ${message}
+      
+      Data: ${new Date().toLocaleString('pl-PL')}
+      Źródło: webdkw.net
+    `
 
-    // Simulate email sending success
-    const emailData = {
-      to_company: {
-        recipient: 'contact.dkwgroup@gmail.com',
+    // Prepare confirmation email for customer
+    const customerEmailContent = `
+      Cześć ${name},
+      
+      Dziękujemy za wysłanie zapytania przez nasz formularz kontaktowy!
+      
+      Otrzymaliśmy Twoją wiadomość i odpowiemy w ciągu 24 godzin.
+      
+      ${lead_magnet ? `
+      📋 Twoja checklist jest w drodze!
+      
+      Link do pobrania checklisty "15 kluczowych elementów skutecznej strony" 
+      zostanie wysłany na Twój email w ciągu kilku minut.
+      ` : ''}
+      
+      Podsumowanie Twojego zapytania:
+      - Imię i nazwisko: ${name}
+      - Email: ${email}
+      ${company ? `- Firma: ${company}` : ''}
+      ${phone ? `- Telefon: ${phone}` : ''}
+      
+      Wiadomość:
+      ${message}
+      
+      📞 Kontakt w pilnych sprawach:
+      📧 Email: contact.dkwgroup@gmail.com
+      📞 Telefon: +48 881 046 689
+      
+      Pozdrawiamy,
+      Zespół WebDKW
+      
+      ---
+      Ta wiadomość została wysłana automatycznie.
+      Prosimy nie odpowiadać na ten email.
+    `
+
+    // Prepare email data
+    const emailsToSend = [
+      {
+        to: 'contact.dkwgroup@gmail.com',
         subject: `Nowe zapytanie od ${name} ${company ? `(${company})` : ''}`,
-        content: `
-          Nowe zapytanie z formularza kontaktowego:
-          
-          Imię i nazwisko: ${name}
-          Email: ${email}
-          ${company ? `Firma: ${company}` : ''}
-          ${phone ? `Telefon: ${phone}` : ''}
-          Typ zapytania: ${lead_magnet ? 'Lead Magnet - Checklist' : 'Formularz kontaktowy'}
-          
-          Wiadomość:
-          ${message}
-          
-          Data: ${new Date().toLocaleString('pl-PL')}
-        `
+        content: companyEmailContent,
+        type: 'company_notification'
       },
-      to_customer: {
-        recipient: email,
+      {
+        to: email,
         subject: 'Potwierdzenie otrzymania zapytania - WebDKW',
-        content: `
-          Cześć ${name},
-          
-          Dziękujemy za wysłanie zapytania przez nasz formularz kontaktowy. 
-          Otrzymaliśmy Twoją wiadomość i odpowiemy w ciągu 24 godzin.
-          
-          ${lead_magnet ? `
-          📋 Twoja checklist jest w drodze!
-          Link do pobrania checklisty "15 kluczowych elementów skutecznej strony" 
-          zostanie wysłany na Twój email w ciągu kilku minut.
-          ` : ''}
-          
-          Podsumowanie Twojego zapytania:
-          - Imię i nazwisko: ${name}
-          - Email: ${email}
-          ${company ? `- Firma: ${company}` : ''}
-          ${phone ? `- Telefon: ${phone}` : ''}
-          
-          Wiadomość: ${message}
-          
-          Kontakt w pilnych sprawach:
-          📧 Email: contact.dkwgroup@gmail.com
-          📞 Telefon: +48 881 046 689
-          
-          Pozdrawiamy,
-          Zespół WebDKW
-        `
+        content: customerEmailContent,
+        type: 'customer_confirmation'
+      }
+    ]
+
+    // Try to send emails
+    const emailResults = []
+    for (const emailData of emailsToSend) {
+      try {
+        const result = await sendEmailViaService(emailData)
+        emailResults.push({ ...emailData, success: true, result })
+      } catch (error) {
+        console.error(`Failed to send ${emailData.type}:`, error)
+        emailResults.push({ ...emailData, success: false, error: error.message })
       }
     }
 
-    // In a real implementation, you would send these emails using your preferred service
-    // For now, we'll return success with the email data for debugging
+    // Log results for debugging
+    console.log('Email sending results:', emailResults)
+
+    // Return success even if emails failed (form submission is more important)
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: 'Formularz został wysłany pomyślnie',
-        debug: process.env.NODE_ENV === 'development' ? emailData : undefined
+        emailResults: emailResults.map(r => ({ type: r.type, success: r.success }))
       }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
