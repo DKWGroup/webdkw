@@ -1,4 +1,3 @@
-import React from 'react'
 import { TrendingUp, Users, DollarSign, Target, ArrowRight } from 'lucide-react'
 
 const ResultsSection = () => {

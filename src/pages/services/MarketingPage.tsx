@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Check, TrendingUp, Target, Users, BarChart3, Zap, DollarSign, Plus, Minus, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Check, TrendingUp, Target, Users, Zap, DollarSign, Plus, Minus, ExternalLink } from 'lucide-react'
 import { supabase, Project } from '../../lib/supabase'
 import Header from '../../components/Header'
 import Footer from '../../components/Footer'
