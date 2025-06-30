@@ -1,4 +1,3 @@
-import React from 'react'
 import { AlertTriangle, TrendingDown, DollarSign, Clock } from 'lucide-react'
 
 const ProblemSection = () => {
