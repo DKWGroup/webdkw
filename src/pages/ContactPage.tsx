@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, Mail, Phone, Clock, ArrowRight, CheckCircle, MapPin, Calendar } from 'lucide-react'
+import { ArrowLeft, Mail, Phone, Clock, ArrowRight, CheckCircle, MapPin } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 import { HelmetProvider } from 'react-helmet-async'
 import Header from '../components/Header'

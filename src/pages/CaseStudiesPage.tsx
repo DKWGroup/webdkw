@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Calendar, Tag, ArrowRight, TrendingUp } from 'lucide-react'
 import { supabase, Project } from '../lib/supabase'

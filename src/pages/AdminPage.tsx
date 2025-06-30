@@ -15,7 +15,6 @@ import {
   Download,
   Upload,
   Eye,
-  ChevronDown,
   Bell,
   User
 } from 'lucide-react'

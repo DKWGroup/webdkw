@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowLeft, Plus, Minus, MessageCircle } from 'lucide-react'
 import Header from '../components/Header'

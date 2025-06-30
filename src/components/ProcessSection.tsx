@@ -1,4 +1,3 @@
-import React from 'react'
 import { Search, Palette, Code, Rocket, CheckCircle, ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 

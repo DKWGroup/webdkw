@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ExternalLink, TrendingUp, Users, DollarSign, Calendar, Tag, FileText } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Calendar, Tag, FileText } from 'lucide-react'
 import { HelmetProvider } from 'react-helmet-async'
 import { supabase, Project } from '../lib/supabase'
 import Header from '../components/Header'

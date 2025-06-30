@@ -1,4 +1,3 @@
-import React from 'react'
 import { Search, TrendingUp, Target, BarChart3, ArrowRight } from 'lucide-react'
 
 const SEOSection = () => {
