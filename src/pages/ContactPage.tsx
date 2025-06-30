@@ -17,13 +17,16 @@ const ContactPage = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError('')
 
     try {
-      const { error } = await supabase
+      // Save to database
+      const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert([
           {
@@ -36,7 +39,30 @@ const ContactPage = () => {
           }
         ])
 
-      if (error) throw error
+      if (dbError) throw dbError
+
+      // Send emails via edge function
+      const emailResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone,
+          message: formData.message,
+          lead_magnet: false
+        })
+      })
+
+      if (!emailResponse.ok) {
+        const errorData = await emailResponse.json()
+        console.error('Email sending failed:', errorData)
+        // Don't throw error - form submission was successful even if email failed
+      }
 
       setIsSubmitted(true)
       setFormData({
@@ -48,7 +74,7 @@ const ContactPage = () => {
       })
     } catch (error) {
       console.error('Error submitting form:', error)
-      alert('Wystąpił błąd. Spróbuj ponownie lub napisz bezpośrednio na email.')
+      setError('Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie lub napisz bezpośrednio na email.')
     } finally {
       setIsSubmitting(false)
     }
@@ -83,7 +109,7 @@ const ContactPage = () => {
                   </h1>
                   <p className="text-xl text-gray-600 mb-8">
                     Otrzymałem Twoje zapytanie i odpowiem w ciągu 24 godzin. 
-                    Sprawdź skrzynkę email (również spam) w poszukiwaniu mojej odpowiedzi.
+                    Sprawdź skrzynkę email (również spam) w poszukiwaniu potwierdzenia i mojej odpowiedzi.
                   </p>
                   <p className="text-gray-500 mb-8">
                     W pilnych sprawach dzwoń: <strong>+48 881 046 689</strong>
@@ -238,6 +264,12 @@ const ContactPage = () => {
                         />
                       </div>
 
+                      {error && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                          <p className="text-red-800 text-sm">{error}</p>
+                        </div>
+                      )}
+
                       <button
                         type="submit"
                         disabled={isSubmitting}
@@ -303,29 +335,6 @@ const ContactPage = () => {
                       </div>
                     </div>
                   </div>
-
-                  {/* Calendar booking */}
-                  {/* <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-8 rounded-2xl text-white">
-                    <Calendar className="h-12 w-12 mb-4" />
-                    <h3 className="text-2xl font-bold mb-4">
-                      Umów się na bezpłatną konsultację
-                    </h3>
-                    <p className="mb-6 opacity-90">
-                      30 minut rozmowy o Twoim projekcie. Bez zobowiązań, 
-                      pełna koncentracja na Twoich celach biznesowych.
-                    </p>
-                    <a
-                      href="https://calendly.com/webexpert/konsultacja"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                    >
-                      Rezerwuj termin w kalendarzu
-                    </a>
-                    <p className="text-sm mt-4 opacity-80">
-                      ⚡ Najszybsze terminy dostępne już jutro
-                    </p>
-                  </div> */}
 
                   {/* Response guarantee */}
                   <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">

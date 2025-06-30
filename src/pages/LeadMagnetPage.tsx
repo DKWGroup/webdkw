@@ -13,13 +13,16 @@ const LeadMagnetPage = () => {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
+    setError('')
 
     try {
-      const { error } = await supabase
+      // Save to database
+      const { error: dbError } = await supabase
         .from('contact_submissions')
         .insert([
           {
@@ -31,12 +34,34 @@ const LeadMagnetPage = () => {
           }
         ])
 
-      if (error) throw error
+      if (dbError) throw dbError
+
+      // Send emails via edge function
+      const emailResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          message: 'Pobranie Lead Magnet - Checklista 15 elementów skutecznej strony',
+          lead_magnet: true
+        })
+      })
+
+      if (!emailResponse.ok) {
+        const errorData = await emailResponse.json()
+        console.error('Email sending failed:', errorData)
+        // Don't throw error - form submission was successful even if email failed
+      }
 
       setIsSubmitted(true)
     } catch (error) {
       console.error('Error submitting form:', error)
-      alert('Wystąpił błąd. Spróbuj ponownie.')
+      setError('Wystąpił błąd. Spróbuj ponownie.')
     } finally {
       setIsSubmitting(false)
     }
@@ -231,6 +256,12 @@ const LeadMagnetPage = () => {
                       placeholder="ABC Sp. z o.o."
                     />
                   </div>
+
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <p className="text-red-800 text-sm">{error}</p>
+                    </div>
+                  )}
 
                   <button
                     type="submit"
