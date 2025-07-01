@@ -5,20 +5,6 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'demo-anon-key-pla
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
 
-export interface Source {
-  id: string
-  type: 'book' | 'article' | 'website' | 'research' | 'other'
-  author: string
-  title: string
-  year: string
-  publisher?: string
-  website?: string
-  url?: string
-  doi?: string
-  isbn?: string
-  access_date?: string
-}
-
 export interface BlogPost {
   id: string
   title: string
@@ -38,8 +24,7 @@ export interface BlogPost {
   faqs?: Array<{ question: string; answer: string }>
   ctas?: Array<{ title: string; url: string; color: string }>
   seo_score?: number
-  sources?: Source[]
-  source_citation_style?: 'apa' | 'chicago' | 'mla'
+  sources?: string[]
 }
 
 export interface ContactSubmission {

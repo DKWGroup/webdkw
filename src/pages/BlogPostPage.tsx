@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle } from 'lucide-react'
+import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink } from 'lucide-react'
 import { supabase, BlogPost } from '../lib/supabase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -239,44 +239,6 @@ const BlogPostPage = () => {
           );
         } catch (error) {
           console.error('Error parsing CTA:', error);
-        }
-      }
-      
-      // Check for source references [n]
-      if (typeof child === 'string' && post?.sources) {
-        const sourceRegex = /\[(\d+)\]/g;
-        let lastIndex = 0;
-        const parts = [];
-        let match;
-        
-        while ((match = sourceRegex.exec(child)) !== null) {
-          // Add text before the match
-          if (match.index > lastIndex) {
-            parts.push(child.substring(lastIndex, match.index));
-          }
-          
-          // Add the source reference
-          const sourceIndex = parseInt(match[1]) - 1;
-          if (sourceIndex >= 0 && sourceIndex < post.sources.length) {
-            parts.push(
-              <sup key={match.index} className="text-orange-500 font-bold">
-                [{match[1]}]
-              </sup>
-            );
-          } else {
-            parts.push(match[0]);
-          }
-          
-          lastIndex = match.index + match[0].length;
-        }
-        
-        // Add remaining text
-        if (lastIndex < child.length) {
-          parts.push(child.substring(lastIndex));
-        }
-        
-        if (parts.length > 0) {
-          return <p className="text-gray-700 leading-relaxed mb-6" {...props}>{parts}</p>;
         }
       }
       
@@ -663,72 +625,22 @@ const BlogPostPage = () => {
                 {post.sources && post.sources.length > 0 && (
                   <div className="mt-12 pt-6 border-t border-gray-200">
                     <h2 className="text-2xl font-bold text-gray-900 mb-6">Źródła</h2>
-                    <ol className="list-decimal list-inside space-y-3 pl-4">
+                    <ul className="space-y-3">
                       {post.sources.map((source, index) => (
-                        <li key={index} className="text-gray-700">
-                          {post.source_citation_style === 'apa' && (
-                            <span>
-                              {source.author} ({source.year}). <em>{source.title}</em>. 
-                              {source.publisher && ` ${source.publisher}.`}
-                              {source.website && ` ${source.website}.`}
-                              {source.url && (
-                                <a 
-                                  href={source.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-orange-500 hover:text-orange-700 ml-1"
-                                >
-                                  {source.url}
-                                </a>
-                              )}
-                              {source.doi && ` DOI: ${source.doi}`}
-                              {source.isbn && ` ISBN: ${source.isbn}`}
-                              {source.access_date && ` (dostęp: ${source.access_date})`}
-                            </span>
-                          )}
-                          
-                          {post.source_citation_style === 'chicago' && (
-                            <span>
-                              {source.author}. <em>{source.title}</em>. 
-                              {source.publisher && ` ${source.publisher}, `}
-                              {source.year}.
-                              {source.website && ` ${source.website}.`}
-                              {source.url && (
-                                <a 
-                                  href={source.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-orange-500 hover:text-orange-700 ml-1"
-                                >
-                                  {source.url}
-                                </a>
-                              )}
-                              {source.access_date && ` (dostęp: ${source.access_date})`}
-                            </span>
-                          )}
-                          
-                          {post.source_citation_style === 'mla' && (
-                            <span>
-                              {source.author}. <em>{source.title}</em>. 
-                              {source.publisher && ` ${source.publisher}, `}
-                              {source.year}.
-                              {source.website && ` ${source.website}, `}
-                              {source.url && (
-                                <a 
-                                  href={source.url} 
-                                  target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="text-orange-500 hover:text-orange-700 ml-1"
-                                >
-                                  {source.url}
-                                </a>
-                              )}
-                              {source.access_date && ` (dostęp: ${source.access_date})`}
-                            </span>
-                          )}
+                        <li key={index} className="flex items-start space-x-2">
+                          <span className="text-gray-500">[{index + 1}]</span>
+                          <a 
+                            href={source} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="text-orange-500 hover:text-orange-700 hover:underline flex items-center"
+                          >
+                            <span>{source}</span>
+                            <ExternalLink className="h-4 w-4 ml-1 inline-block" />
+                          </a>
                         </li>
                       ))}
-                    </ol>
+                    </ul>
                   </div>
                 )}
                 
