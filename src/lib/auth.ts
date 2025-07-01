@@ -55,15 +55,6 @@ class AuthSecurity {
   async createInitialAdmin(email: string, password: string): Promise<{ success: boolean; error?: string }> {
     const ip = await this.getClientIP()
 
-    // Sprawdź czy już istnieją użytkownicy
-    const hasUsers = await this.hasAnyUsers()
-    if (hasUsers) {
-      return {
-        success: false,
-        error: 'Administrator już istnieje w systemie'
-      }
-    }
-
     // Walidacja hasła
     const passwordValidation = this.validatePassword(password)
     if (!passwordValidation.isValid) {
@@ -83,11 +74,17 @@ class AuthSecurity {
       })
 
       if (error) {
+        // Sprawdź czy to błąd istniejącego użytkownika
+        if (error.message === 'User already registered') {
+          return {
+            success: false,
+            error: 'Konto administratora już istnieje. Spróbuj się zalogować zamiast tworzyć nowe konto.'
+          }
+        }
+        
         return {
           success: false,
-          error: error.message === 'User already registered' 
-            ? 'Użytkownik z tym adresem email już istnieje'
-            : 'Błąd podczas tworzenia konta administratora'
+          error: 'Błąd podczas tworzenia konta administratora'
         }
       }
 
@@ -108,7 +105,16 @@ class AuthSecurity {
         success: false,
         error: 'Wystąpił błąd podczas tworzenia konta'
       }
-    } catch (error) {
+    } catch (error: any) {
+      // Dodatkowa obsługa błędów na poziomie catch
+      if (error?.message?.includes('User already registered') || 
+          error?.code === 'user_already_exists') {
+        return {
+          success: false,
+          error: 'Konto administratora już istnieje. Spróbuj się zalogować zamiast tworzyć nowe konto.'
+        }
+      }
+      
       return {
         success: false,
         error: 'Wystąpił błąd podczas tworzenia konta administratora'
