@@ -29,6 +29,93 @@ class AuthSecurity {
     this.loadBlockedIPs()
   }
 
+  // Sprawdzenie czy istnieje jakikolwiek użytkownik w systemie
+  async hasAnyUsers(): Promise<boolean> {
+    try {
+      // Sprawdź czy istnieją jakiekolwiek logi bezpieczeństwa z udanym logowaniem
+      const { data, error } = await supabase
+        .from('security_logs')
+        .select('id')
+        .eq('event_type', 'login_success')
+        .limit(1)
+
+      if (error) {
+        console.error('Error checking for existing users:', error)
+        return false
+      }
+
+      return data && data.length > 0
+    } catch (error) {
+      console.error('Error checking for existing users:', error)
+      return false
+    }
+  }
+
+  // Utworzenie pierwszego użytkownika administratora
+  async createInitialAdmin(email: string, password: string): Promise<{ success: boolean; error?: string }> {
+    const ip = await this.getClientIP()
+
+    // Sprawdź czy już istnieją użytkownicy
+    const hasUsers = await this.hasAnyUsers()
+    if (hasUsers) {
+      return {
+        success: false,
+        error: 'Administrator już istnieje w systemie'
+      }
+    }
+
+    // Walidacja hasła
+    const passwordValidation = this.validatePassword(password)
+    if (!passwordValidation.isValid) {
+      return {
+        success: false,
+        error: 'Hasło nie spełnia wymagań bezpieczeństwa'
+      }
+    }
+
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: undefined // Wyłącz potwierdzenie email dla pierwszego admina
+        }
+      })
+
+      if (error) {
+        return {
+          success: false,
+          error: error.message === 'User already registered' 
+            ? 'Użytkownik z tym adresem email już istnieje'
+            : 'Błąd podczas tworzenia konta administratora'
+        }
+      }
+
+      if (data.user) {
+        // Zaloguj utworzenie pierwszego administratora
+        this.logSecurityEvent(
+          'login_success',
+          ip,
+          navigator.userAgent,
+          email,
+          { type: 'initial_admin_setup' }
+        )
+
+        return { success: true }
+      }
+
+      return {
+        success: false,
+        error: 'Wystąpił błąd podczas tworzenia konta'
+      }
+    } catch (error) {
+      return {
+        success: false,
+        error: 'Wystąpił błąd podczas tworzenia konta administratora'
+      }
+    }
+  }
+
   // Walidacja silnego hasła
   validatePassword(password: string): { isValid: boolean; errors: string[] } {
     const errors: string[] = []
@@ -232,16 +319,6 @@ class AuthSecurity {
       }
     }
 
-    // Walidacja hasła
-    const passwordValidation = this.validatePassword(password)
-    if (!passwordValidation.isValid) {
-      this.recordLoginAttempt(ip, false, email)
-      return {
-        success: false,
-        error: 'Hasło nie spełnia wymagań bezpieczeństwa'
-      }
-    }
-
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
@@ -250,6 +327,18 @@ class AuthSecurity {
 
       if (error) {
         this.recordLoginAttempt(ip, false, email)
+        
+        // Sprawdź czy to błąd braku użytkownika
+        if (error.message.includes('Invalid login credentials')) {
+          const hasUsers = await this.hasAnyUsers()
+          if (!hasUsers) {
+            return {
+              success: false,
+              error: 'NO_ADMIN_EXISTS'
+            }
+          }
+        }
+        
         return {
           success: false,
           error: 'Nieprawidłowe dane logowania'
