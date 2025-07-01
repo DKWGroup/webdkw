@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react'
 import { Upload, X, Image, FileText, AlertCircle, CheckCircle } from 'lucide-react'
+import { supabase } from '../../lib/supabase'
 
 interface FileUploadProps {
   accept?: string
@@ -51,7 +52,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
     return null
   }
 
-  const processFiles = useCallback((fileList: FileList) => {
+  const processFiles = useCallback(async (fileList: FileList) => {
     const newFiles: File[] = []
     const errors: string[] = []
 
@@ -83,24 +84,64 @@ const FileUpload: React.FC<FileUploadProps> = ({
     }
 
     // Process valid files
-    const processedFiles: UploadedFile[] = newFiles.map(file => {
-      const uploadedFile: UploadedFile = { file }
-
-      // Generate preview for images
-      if (preview && file.type.startsWith('image/')) {
-        uploadedFile.preview = URL.createObjectURL(file)
-      }
-
-      return uploadedFile
-    })
+    const processedFiles: UploadedFile[] = newFiles.map(file => ({
+      file,
+      uploading: true,
+      progress: 0
+    }))
 
     if (multiple) {
       setFiles(prev => [...prev, ...processedFiles])
-      onFilesSelected([...files.map(f => f.file), ...newFiles])
     } else {
       setFiles(processedFiles)
-      onFilesSelected(newFiles)
     }
+
+    // Upload files to Supabase Storage
+    const uploadedFiles: File[] = []
+    
+    for (const fileData of processedFiles) {
+      try {
+        // Update progress
+        fileData.progress = 10
+        setFiles(prev => [...prev])
+        
+        // Generate a unique file name
+        const fileExt = fileData.file.name.split('.').pop()
+        const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`
+        const filePath = `uploads/${fileName}`
+        
+        // Upload to Supabase Storage
+        const { error: uploadError, data } = await supabase.storage
+          .from('images')
+          .upload(filePath, fileData.file, {
+            cacheControl: '3600',
+            upsert: false
+          })
+        
+        if (uploadError) throw uploadError
+        
+        // Get public URL
+        const { data: { publicUrl } } = supabase.storage
+          .from('images')
+          .getPublicUrl(filePath)
+        
+        // Update file with preview URL
+        fileData.preview = publicUrl
+        fileData.uploading = false
+        fileData.progress = 100
+        setFiles(prev => [...prev])
+        
+        uploadedFiles.push(fileData.file)
+      } catch (error) {
+        console.error('Error uploading file:', error)
+        fileData.error = 'Błąd podczas przesyłania pliku'
+        fileData.uploading = false
+        setFiles(prev => [...prev])
+      }
+    }
+
+    // Notify parent component
+    onFilesSelected(uploadedFiles)
   }, [files, maxFiles, maxSize, multiple, onError, onFilesSelected, preview, accept])
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

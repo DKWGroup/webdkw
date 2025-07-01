@@ -242,6 +242,44 @@ const BlogPostPage = () => {
         }
       }
       
+      // Check for source references [n]
+      if (typeof child === 'string' && post?.sources) {
+        const sourceRegex = /\[(\d+)\]/g;
+        let lastIndex = 0;
+        const parts = [];
+        let match;
+        
+        while ((match = sourceRegex.exec(child)) !== null) {
+          // Add text before the match
+          if (match.index > lastIndex) {
+            parts.push(child.substring(lastIndex, match.index));
+          }
+          
+          // Add the source reference
+          const sourceIndex = parseInt(match[1]) - 1;
+          if (sourceIndex >= 0 && sourceIndex < post.sources.length) {
+            parts.push(
+              <sup key={match.index} className="text-orange-500 font-bold">
+                [{match[1]}]
+              </sup>
+            );
+          } else {
+            parts.push(match[0]);
+          }
+          
+          lastIndex = match.index + match[0].length;
+        }
+        
+        // Add remaining text
+        if (lastIndex < child.length) {
+          parts.push(child.substring(lastIndex));
+        }
+        
+        if (parts.length > 0) {
+          return <p className="text-gray-700 leading-relaxed mb-6" {...props}>{parts}</p>;
+        }
+      }
+      
       return <p className="text-gray-700 leading-relaxed mb-6" {...props}>{children}</p>;
     },
     
@@ -620,6 +658,79 @@ const BlogPostPage = () => {
                     {processedContent}
                   </ReactMarkdown>
                 </div>
+                
+                {/* Sources Section */}
+                {post.sources && post.sources.length > 0 && (
+                  <div className="mt-12 pt-6 border-t border-gray-200">
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Źródła</h2>
+                    <ol className="list-decimal list-inside space-y-3 pl-4">
+                      {post.sources.map((source, index) => (
+                        <li key={index} className="text-gray-700">
+                          {post.source_citation_style === 'apa' && (
+                            <span>
+                              {source.author} ({source.year}). <em>{source.title}</em>. 
+                              {source.publisher && ` ${source.publisher}.`}
+                              {source.website && ` ${source.website}.`}
+                              {source.url && (
+                                <a 
+                                  href={source.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-orange-500 hover:text-orange-700 ml-1"
+                                >
+                                  {source.url}
+                                </a>
+                              )}
+                              {source.doi && ` DOI: ${source.doi}`}
+                              {source.isbn && ` ISBN: ${source.isbn}`}
+                              {source.access_date && ` (dostęp: ${source.access_date})`}
+                            </span>
+                          )}
+                          
+                          {post.source_citation_style === 'chicago' && (
+                            <span>
+                              {source.author}. <em>{source.title}</em>. 
+                              {source.publisher && ` ${source.publisher}, `}
+                              {source.year}.
+                              {source.website && ` ${source.website}.`}
+                              {source.url && (
+                                <a 
+                                  href={source.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-orange-500 hover:text-orange-700 ml-1"
+                                >
+                                  {source.url}
+                                </a>
+                              )}
+                              {source.access_date && ` (dostęp: ${source.access_date})`}
+                            </span>
+                          )}
+                          
+                          {post.source_citation_style === 'mla' && (
+                            <span>
+                              {source.author}. <em>{source.title}</em>. 
+                              {source.publisher && ` ${source.publisher}, `}
+                              {source.year}.
+                              {source.website && ` ${source.website}, `}
+                              {source.url && (
+                                <a 
+                                  href={source.url} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="text-orange-500 hover:text-orange-700 ml-1"
+                                >
+                                  {source.url}
+                                </a>
+                              )}
+                              {source.access_date && ` (dostęp: ${source.access_date})`}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
                 
                 {/* FAQ Section */}
                 {post.faqs && post.faqs.length > 0 && (
