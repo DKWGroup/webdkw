@@ -244,7 +244,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </button>
         
         <p className="text-gray-500 text-sm mt-2">
-          {accept === 'image/*' ? 'JPG, PNG, WebP' : 'Wszystkie pliki'} 
+          {accept === 'image/*' ? 'JPG, PNG, WebP' : accept === 'application/pdf' ? 'PDF' : 'Wszystkie pliki'} 
           {' '}(max {Math.round(maxSize / (1024 * 1024))}MB
           {multiple && `, max ${maxFiles} plików`})
         </p>
