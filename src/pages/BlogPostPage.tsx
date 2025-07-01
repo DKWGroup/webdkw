@@ -7,6 +7,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
 import StructuredData from '../components/StructuredData'
+import BlogSchema from '../components/BlogSchema'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
@@ -468,6 +469,9 @@ const BlogPostPage = () => {
       }))
     : null
 
+  // Bazowy URL dla schema.org
+  const baseUrl = 'https://webdkw.net';
+
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
@@ -485,6 +489,9 @@ const BlogPostPage = () => {
         <StructuredData type="breadcrumb" data={breadcrumbData} />
         <StructuredData type="article" data={articleData} />
         {faqData && <StructuredData type="faq" data={faqData} />}
+        
+        {/* Dodajemy BlogSchema dla danych strukturalnych schema.org */}
+        <BlogSchema post={post} baseUrl={baseUrl} />
         
         <Header />
         

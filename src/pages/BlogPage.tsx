@@ -55,6 +55,39 @@ const BlogPage = () => {
     { name: "Blog", url: "https://webdkw.net/blog" }
   ]
 
+  // Dane strukturalne dla listy blogów
+  const blogListingSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    "headline": "Blog WebDKW - Porady o stronach internetowych i marketingu",
+    "description": "Praktyczne porady, case studies i najnowsze trendy w tworzeniu stron internetowych. Wiedza, która pomaga budować lepsze rozwiązania online.",
+    "url": "https://webdkw.net/blog",
+    "publisher": {
+      "@type": "Organization",
+      "name": "WebDKW",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://webdkw.net/images/webdkw-logo.svg",
+        "width": 600,
+        "height": 60
+      }
+    },
+    "blogPost": posts.map(post => ({
+      "@type": "BlogPosting",
+      "headline": post.title,
+      "description": post.excerpt || post.title,
+      "datePublished": post.created_at,
+      "dateModified": post.updated_at || post.created_at,
+      "author": {
+        "@type": "Person",
+        "name": post.author || "Marcin Kowalski"
+      },
+      "url": `https://webdkw.net/blog/${post.slug}`,
+      "image": post.image_url ? [post.image_url] : [],
+      "keywords": post.tags ? post.tags.join(", ") : ""
+    }))
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -76,6 +109,13 @@ const BlogPage = () => {
           url="https://webdkw.net/blog"
         />
         <StructuredData type="breadcrumb" data={breadcrumbData} />
+        
+        {/* Dodajemy dane strukturalne dla listy blogów */}
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify(blogListingSchema)}
+          </script>
+        </Helmet>
         
         <Header />
         

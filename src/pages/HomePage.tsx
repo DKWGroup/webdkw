@@ -14,6 +14,7 @@ import ContactSection from '../components/ContactSection'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
 import StructuredData from '../components/StructuredData'
+import OrganizationSchema from '../components/OrganizationSchema'
 
 const HomePage = () => {
   const breadcrumbData = [
@@ -35,6 +36,9 @@ const HomePage = () => {
     }
   ]
 
+  // Bazowy URL dla schema.org
+  const baseUrl = 'https://webdkw.net';
+
   return (
     <HelmetProvider>
       <div className="min-h-screen">
@@ -47,6 +51,7 @@ const HomePage = () => {
         <StructuredData type="website" data={{}} />
         <StructuredData type="breadcrumb" data={breadcrumbData} />
         <StructuredData type="faq" data={faqData} />
+        <OrganizationSchema baseUrl={baseUrl} />
         
         <Header />
         <HeroSection />
