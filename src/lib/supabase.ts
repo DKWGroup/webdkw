@@ -25,6 +25,19 @@ export interface BlogPost {
   ctas?: Array<{ title: string; url: string; color: string }>
   seo_score?: number
   sources?: string[]
+  download_materials?: DownloadMaterial[]
+}
+
+export interface DownloadMaterial {
+  id: string
+  title: string
+  description: string
+  file_url: string
+  file_size?: string
+  file_type?: string
+  button_color?: string
+  button_size?: string
+  download_count?: number
 }
 
 export interface ContactSubmission {
@@ -64,4 +77,18 @@ export interface Project {
   case_study_results?: string
   case_study_summary?: string
   case_study_cta?: string
+}
+
+export interface Source {
+  id: string
+  type: 'book' | 'article' | 'website' | 'research' | 'other'
+  author: string
+  title: string
+  year: string
+  publisher?: string
+  website?: string
+  url?: string
+  doi?: string
+  isbn?: string
+  access_date?: string
 }

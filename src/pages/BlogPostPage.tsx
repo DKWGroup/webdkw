@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink, Download } from 'lucide-react'
 import { supabase, BlogPost } from '../lib/supabase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -13,6 +13,7 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism'
+import DownloadMaterial from '../components/DownloadMaterial'
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -610,6 +611,19 @@ const BlogPostPage = () => {
                   </div>
                 )}
                 
+                {/* Download Materials - Before Content */}
+                {post.download_materials && post.download_materials.length > 0 && (
+                  <div className="mb-10">
+                    {post.download_materials.map((material, index) => (
+                      <DownloadMaterial 
+                        key={index} 
+                        material={material} 
+                        postId={post.id} 
+                      />
+                    ))}
+                  </div>
+                )}
+                
                 {/* Article content */}
                 <div className="prose prose-lg max-w-none">
                   <ReactMarkdown
@@ -661,8 +675,10 @@ const BlogPostPage = () => {
                                 <ChevronRight className="h-5 w-5 text-orange-500" />
                               </span>
                             </summary>
-                            <div className="px-6 pb-6 border-t border-gray-100 pt-4">
-                              <p className="text-gray-700">{faq.answer}</p>
+                            <div className="px-6 pb-6">
+                              <div className="border-t border-gray-100 pt-6">
+                                <p className="text-gray-700">{faq.answer}</p>
+                              </div>
                             </div>
                           </details>
                         </div>
