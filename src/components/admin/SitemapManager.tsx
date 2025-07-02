@@ -72,10 +72,6 @@ const SitemapManager: React.FC = () => {
     setSuccessMessage(null);
     
     try {
-      // Przygotuj URL-e do powiadomienia wyszukiwarek
-      const googlePingUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`;
-      const bingPingUrl = `https://www.bing.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`;
-      
       // Wywołaj funkcję Edge do powiadomienia wyszukiwarek
       const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/ping-search-engines`, {
         method: 'POST',

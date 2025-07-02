@@ -208,14 +208,45 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
         })
       }, 100)
 
-      // In real implementation, upload to storage service
-      // For now, create local URLs
-      setGalleryFiles(prev => [...prev, ...files])
+      // Upload files to Supabase Storage
+      const uploadedFiles: File[] = []
+      const uploadedUrls: string[] = []
+      
+      for (const file of files) {
+        try {
+          // Generate a unique file name
+          const fileExt = file.name.split('.').pop()
+          const fileName = `project_${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`
+          const filePath = `projects/${fileName}`
+          
+          // Upload to Supabase Storage
+          const { error: uploadError } = await supabase.storage
+            .from('files')
+            .upload(filePath, file, {
+              cacheControl: '3600',
+              upsert: false
+            })
+          
+          if (uploadError) throw uploadError
+          
+          // Get public URL
+          const { data: { publicUrl } } = supabase.storage
+            .from('files')
+            .getPublicUrl(filePath)
+          
+          uploadedFiles.push(file)
+          uploadedUrls.push(publicUrl)
+        } catch (error) {
+          console.error('Error uploading file:', error)
+        }
+      }
+      
+      // Add uploaded files to gallery
+      setGalleryFiles(prev => [...prev, ...uploadedFiles])
       
       // Set the first image as main image if none exists
-      if (!formData.image_url && files.length > 0) {
-        const imageUrl = URL.createObjectURL(files[0])
-        setFormData(prev => ({ ...prev, image_url: imageUrl }))
+      if (!formData.image_url && uploadedUrls.length > 0) {
+        setFormData(prev => ({ ...prev, image_url: uploadedUrls[0] }))
       }
       
       setUploadProgress(100)

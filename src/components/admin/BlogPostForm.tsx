@@ -1,15 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
-import { X, Save, Eye, EyeOff, Tag, AlertCircle, Plus, Minus } from 'lucide-react'
-import { supabase, BlogPost, Source, DownloadMaterial } from '../../lib/supabase'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
+import { X, Save, Eye, Tag, AlertCircle, Edit, Trash2, Plus } from 'lucide-react'
+import { supabase, BlogPost } from '../../lib/supabase'
+import MarkdownEditor from './MarkdownEditor'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import { FormValidator } from './FormValidation'
 import FileUpload from './FileUpload'
-import MarkdownEditor from './MarkdownEditor'
-import SourceForm from './SourceForm'
 import DownloadMaterialForm from './DownloadMaterialForm'
+import SourceForm from './SourceForm'
 
 interface BlogPostFormProps {
   post?: BlogPost | null
@@ -18,66 +16,43 @@ interface BlogPostFormProps {
   onSave: (post: BlogPost) => void
 }
 
-interface FormData {
-  title: string
-  content: string
-  excerpt: string
-  image_url: string
-  published: boolean
-  tags: string[]
-  categories: string[]
-  author: string
-  meta_description: string
-  slug: string
-  tldr_summary: string
-  tldr_takeaways: string[]
-  faqs: Array<{ question: string; answer: string }>
-  ctas: Array<{ title: string; url: string; color: string }>
-  sources: string[]
-  download_materials: DownloadMaterial[]
-}
-
-interface FormErrors {
-  title?: string
-  content?: string
-  image_url?: string
-  meta_description?: string
-  slug?: string
-}
-
 const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSave }) => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<BlogPost>({
+    id: '',
     title: '',
-    content: '',
-    excerpt: '',
-    image_url: '',
-    published: false,
-    tags: [],
-    categories: [],
-    author: 'Marcin Kowalski',
-    meta_description: '',
     slug: '',
+    excerpt: '',
+    content: '',
+    published: false,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    author: 'Marcin Kowalski',
+    image_url: '',
+    tags: [],
+    meta_description: '',
+    categories: [],
     tldr_summary: '',
     tldr_takeaways: [],
     faqs: [],
     ctas: [],
+    seo_score: 0,
     sources: [],
     download_materials: []
   })
 
-  const [errors, setErrors] = useState<FormErrors>({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const [activeTab, setActiveTab] = useState('content')
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [uploadProgress, setUploadProgress] = useState(0)
   const [tagInput, setTagInput] = useState('')
   const [categoryInput, setCategoryInput] = useState('')
   const [takeawayInput, setTakeawayInput] = useState('')
   const [publishDate, setPublishDate] = useState<Date | null>(new Date())
-  const [activeTab, setActiveTab] = useState('content')
-  const [newFaq, setNewFaq] = useState({ question: '', answer: '' })
-  const [newCta, setNewCta] = useState({ title: '', url: '', color: 'orange' })
   const [citationStyle, setCitationStyle] = useState('apa')
+  const [faqInput, setFaqInput] = useState({ question: '', answer: '' })
+  const [ctaInput, setCtaInput] = useState({ title: '', url: '', color: 'orange' })
   const editorRef = useRef<any>(null)
 
   // Predefiniowane tagi
@@ -89,27 +64,18 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
 
   // Predefiniowane kategorie
   const availableCategories = [
-    'Poradniki', 'Case Studies', 'Aktualności', 'Trendy', 'Technologie',
-    'Marketing', 'SEO', 'UX/UI', 'Bezpieczeństwo', 'Wydajność'
+    'Tworzenie stron', 'Pozycjonowanie', 'Marketing', 'E-commerce', 
+    'Technologia', 'Porady', 'Case Study', 'Tutoriale'
   ]
 
   useEffect(() => {
     if (post) {
       setFormData({
-        title: post.title || '',
-        content: post.content || '',
-        excerpt: post.excerpt || '',
-        image_url: post.image_url || '',
-        published: post.published || false,
-        tags: post.tags || [],
-        categories: post.categories || [],
-        author: post.author || 'Marcin Kowalski',
-        meta_description: post.meta_description || '',
-        slug: post.slug || '',
-        tldr_summary: post.tldr_summary || '',
-        tldr_takeaways: post.tldr_takeaways || [],
+        ...post,
         faqs: post.faqs || [],
         ctas: post.ctas || [],
+        tldr_takeaways: post.tldr_takeaways || [],
+        categories: post.categories || [],
         sources: post.sources || [],
         download_materials: post.download_materials || []
       })
@@ -117,20 +83,24 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
     } else {
       // Reset form for new post
       setFormData({
+        id: '',
         title: '',
-        content: '',
-        excerpt: '',
-        image_url: '',
-        published: false,
-        tags: [],
-        categories: [],
-        author: 'Marcin Kowalski',
-        meta_description: '',
         slug: '',
+        excerpt: '',
+        content: '',
+        published: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        author: 'Marcin Kowalski',
+        image_url: '',
+        tags: [],
+        meta_description: '',
+        categories: [],
         tldr_summary: '',
         tldr_takeaways: [],
         faqs: [],
         ctas: [],
+        seo_score: 0,
         sources: [],
         download_materials: []
       })
@@ -204,25 +174,42 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
         })
       }, 100)
 
-      // In real implementation, upload to storage service
-      // For now, create a local URL
-      const imageUrl = URL.createObjectURL(file)
+      // Generate a unique file name
+      const fileExt = file.name.split('.').pop()
+      const fileName = `blog_${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`
+      const filePath = `blog/${fileName}`
       
-      setFormData(prev => ({ ...prev, image_url: imageUrl }))
+      // Upload to Supabase Storage
+      const { error: uploadError, data } = await supabase.storage
+        .from('files')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        })
+      
+      if (uploadError) throw uploadError
+      
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('files')
+        .getPublicUrl(filePath)
+      
+      setFormData(prev => ({ ...prev, image_url: publicUrl }))
       setUploadProgress(100)
       
       setTimeout(() => setUploadProgress(0), 1000)
     } catch (error) {
+      console.error('Error uploading image:', error)
       setErrors(prev => ({ ...prev, image_url: 'Błąd podczas przesyłania pliku' }))
       setUploadProgress(0)
     }
   }
 
   const addTag = (tag: string) => {
-    if (tag && !formData.tags.includes(tag)) {
+    if (tag && !formData.tags?.includes(tag)) {
       setFormData(prev => ({
         ...prev,
-        tags: [...prev.tags, tag]
+        tags: [...(prev.tags || []), tag]
       }))
     }
     setTagInput('')
@@ -231,15 +218,15 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const removeTag = (tagToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
+      tags: prev.tags?.filter(tag => tag !== tagToRemove) || []
     }))
   }
 
   const addCategory = (category: string) => {
-    if (category && !formData.categories.includes(category)) {
+    if (category && !formData.categories?.includes(category)) {
       setFormData(prev => ({
         ...prev,
-        categories: [...prev.categories, category]
+        categories: [...(prev.categories || []), category]
       }))
     }
     setCategoryInput('')
@@ -248,58 +235,58 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const removeCategory = (categoryToRemove: string) => {
     setFormData(prev => ({
       ...prev,
-      categories: prev.categories.filter(category => category !== categoryToRemove)
+      categories: prev.categories?.filter(category => category !== categoryToRemove) || []
     }))
   }
 
   const addTakeaway = (takeaway: string) => {
-    if (takeaway && !formData.tldr_takeaways.includes(takeaway)) {
+    if (takeaway) {
       setFormData(prev => ({
         ...prev,
-        tldr_takeaways: [...prev.tldr_takeaways, takeaway]
+        tldr_takeaways: [...(prev.tldr_takeaways || []), takeaway]
       }))
     }
     setTakeawayInput('')
   }
 
-  const removeTakeaway = (takeawayToRemove: string) => {
+  const removeTakeaway = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      tldr_takeaways: prev.tldr_takeaways.filter(takeaway => takeaway !== takeawayToRemove)
+      tldr_takeaways: prev.tldr_takeaways?.filter((_, i) => i !== index) || []
     }))
   }
 
   const addFaq = () => {
-    if (newFaq.question.trim() && newFaq.answer.trim()) {
+    if (faqInput.question && faqInput.answer) {
       setFormData(prev => ({
         ...prev,
-        faqs: [...prev.faqs, { ...newFaq }]
+        faqs: [...(prev.faqs || []), { ...faqInput }]
       }))
-      setNewFaq({ question: '', answer: '' })
+      setFaqInput({ question: '', answer: '' })
     }
   }
 
   const removeFaq = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      faqs: prev.faqs.filter((_, i) => i !== index)
+      faqs: prev.faqs?.filter((_, i) => i !== index) || []
     }))
   }
 
   const addCta = () => {
-    if (newCta.title.trim() && newCta.url.trim()) {
+    if (ctaInput.title && ctaInput.url) {
       setFormData(prev => ({
         ...prev,
-        ctas: [...prev.ctas, { ...newCta }]
+        ctas: [...(prev.ctas || []), { ...ctaInput }]
       }))
-      setNewCta({ title: '', url: '', color: 'orange' })
+      setCtaInput({ title: '', url: '', color: 'orange' })
     }
   }
 
   const removeCta = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      ctas: prev.ctas.filter((_, i) => i !== index)
+      ctas: prev.ctas?.filter((_, i) => i !== index) || []
     }))
   }
 
@@ -351,16 +338,16 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
     }
   }
 
-  const handleContentChange = (value: string) => {
-    setFormData(prev => ({ ...prev, content: value }))
+  const handleContentChange = (content: string) => {
+    setFormData(prev => ({ ...prev, content }))
   }
 
-  const handleSourcesChange = (sources: string[]) => {
-    setFormData(prev => ({ ...prev, sources }))
-  }
-
-  const handleDownloadMaterialsChange = (materials: DownloadMaterial[]) => {
+  const handleDownloadMaterialsChange = (materials: any[]) => {
     setFormData(prev => ({ ...prev, download_materials: materials }))
+  }
+
+  const handleSourcesChange = (sources: any[]) => {
+    setFormData(prev => ({ ...prev, sources: sources }))
   }
 
   if (!isOpen) return null
@@ -370,7 +357,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
       <div className="flex min-h-screen items-center justify-center p-4">
         <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} />
         
-        <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-5xl max-h-[90vh] overflow-hidden">
+        <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-6xl max-h-[90vh] overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900">
@@ -380,14 +367,14 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
               <button
                 type="button"
                 onClick={() => setShowPreview(!showPreview)}
-                className="flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                className={`flex items-center space-x-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors`}
               >
-                {showPreview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                <span>{showPreview ? 'Edytuj' : 'Podgląd'}</span>
+                <Eye className="h-4 w-4" />
+                <span>Podgląd</span>
               </button>
               <button
                 onClick={onClose}
-                className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -395,77 +382,49 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
           </div>
 
           {/* Tabs */}
-          <div className="flex border-b border-gray-200">
-            <button
-              className={`px-4 py-3 font-medium text-sm ${
-                activeTab === 'content'
-                  ? 'text-orange-500 border-b-2 border-orange-500'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              onClick={() => setActiveTab('content')}
-            >
-              Treść
-            </button>
-            <button
-              className={`px-4 py-3 font-medium text-sm ${
-                activeTab === 'seo'
-                  ? 'text-orange-500 border-b-2 border-orange-500'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              onClick={() => setActiveTab('seo')}
-            >
-              SEO i Meta
-            </button>
-            <button
-              className={`px-4 py-3 font-medium text-sm ${
-                activeTab === 'tldr'
-                  ? 'text-orange-500 border-b-2 border-orange-500'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              onClick={() => setActiveTab('tldr')}
-            >
-              TL;DR
-            </button>
-            <button
-              className={`px-4 py-3 font-medium text-sm ${
-                activeTab === 'faqs'
-                  ? 'text-orange-500 border-b-2 border-orange-500'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              onClick={() => setActiveTab('faqs')}
-            >
-              FAQ
-            </button>
-            <button
-              className={`px-4 py-3 font-medium text-sm ${
-                activeTab === 'cta'
-                  ? 'text-orange-500 border-b-2 border-orange-500'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              onClick={() => setActiveTab('cta')}
-            >
-              CTA
-            </button>
-            <button
-              className={`px-4 py-3 font-medium text-sm ${
-                activeTab === 'sources'
-                  ? 'text-orange-500 border-b-2 border-orange-500'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              onClick={() => setActiveTab('sources')}
-            >
-              Źródła
-            </button>
-            <button
-              className={`px-4 py-3 font-medium text-sm ${
-                activeTab === 'downloads'
-                  ? 'text-orange-500 border-b-2 border-orange-500'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-              onClick={() => setActiveTab('downloads')}
-            >
-              Materiały
-            </button>
+          <div className="border-b border-gray-200">
+            <nav className="flex -mb-px">
+              <button
+                onClick={() => setActiveTab('content')}
+                className={`py-4 px-6 font-medium text-sm border-b-2 ${
+                  activeTab === 'content'
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Treść
+              </button>
+              <button
+                onClick={() => setActiveTab('seo')}
+                className={`py-4 px-6 font-medium text-sm border-b-2 ${
+                  activeTab === 'seo'
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                SEO i Metadane
+              </button>
+              <button
+                onClick={() => setActiveTab('materials')}
+                className={`py-4 px-6 font-medium text-sm border-b-2 ${
+                  activeTab === 'materials'
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Materiały do pobrania
+              </button>
+              <button
+                onClick={() => setActiveTab('sources')}
+                className={`py-4 px-6 font-medium text-sm border-b-2 ${
+                  activeTab === 'sources'
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Źródła
+              </button>
+            </nav>
           </div>
 
           {/* Content */}
@@ -473,67 +432,63 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
             {/* Form */}
             <div className={`${showPreview ? 'w-1/2' : 'w-full'} overflow-y-auto p-6`}>
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Basic Info - Always visible */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                  {/* Title */}
-                  <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-2">
-                      Tytuł artykułu *
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.title}
-                      onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                      className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all ${
-                        errors.title ? 'border-red-500' : 'border-gray-300'
-                      }`}
-                      placeholder="Wprowadź tytuł artykułu..."
-                      maxLength={100}
-                    />
-                    <div className="flex justify-between mt-1">
-                      {errors.title && (
-                        <span className="text-red-500 text-sm flex items-center">
-                          <AlertCircle className="h-4 w-4 mr-1" />
-                          {errors.title}
-                        </span>
-                      )}
-                      <span className="text-gray-500 text-sm ml-auto">
-                        {formData.title.length}/100
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* URL Slug */}
-                  <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-2">
-                      URL Slug *
-                    </label>
-                    <div className="flex">
-                      <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
-                        /blog/
-                      </span>
-                      <input
-                        type="text"
-                        value={formData.slug}
-                        onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
-                        className={`flex-1 px-4 py-3 border rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all ${
-                          errors.slug ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                        placeholder="url-slug"
-                      />
-                    </div>
-                    {errors.slug && (
-                      <span className="text-red-500 text-sm flex items-center mt-1">
-                        <AlertCircle className="h-4 w-4 mr-1" />
-                        {errors.slug}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Content Tab */}
                 {activeTab === 'content' && (
                   <>
+                    {/* Title */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">
+                        Tytuł artykułu *
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.title}
+                        onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all ${
+                          errors.title ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                        placeholder="Wprowadź tytuł artykułu..."
+                        maxLength={100}
+                      />
+                      <div className="flex justify-between mt-1">
+                        {errors.title && (
+                          <span className="text-red-500 text-sm flex items-center">
+                            <AlertCircle className="h-4 w-4 mr-1" />
+                            {errors.title}
+                          </span>
+                        )}
+                        <span className="text-gray-500 text-sm ml-auto">
+                          {formData.title.length}/100
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* URL Slug */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">
+                        URL Slug *
+                      </label>
+                      <div className="flex">
+                        <span className="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
+                          /blog/
+                        </span>
+                        <input
+                          type="text"
+                          value={formData.slug}
+                          onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
+                          className={`flex-1 px-4 py-3 border rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all ${
+                            errors.slug ? 'border-red-500' : 'border-gray-300'
+                          }`}
+                          placeholder="url-slug"
+                        />
+                      </div>
+                      {errors.slug && (
+                        <span className="text-red-500 text-sm flex items-center mt-1">
+                          <AlertCircle className="h-4 w-4 mr-1" />
+                          {errors.slug}
+                        </span>
+                      )}
+                    </div>
+
                     {/* Content Editor */}
                     <div>
                       <label className="block text-sm font-bold text-gray-900 mb-2">
@@ -545,8 +500,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                           onChange={handleContentChange}
                           height="400px"
                           placeholder="Napisz treść artykułu..."
-                          autoFocus={false}
-                          ref={editorRef}
                         />
                       </div>
                       {errors.content && (
@@ -555,24 +508,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                           {errors.content}
                         </span>
                       )}
-                    </div>
-
-                    {/* Excerpt */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-900 mb-2">
-                        Excerpt (opcjonalnie)
-                      </label>
-                      <textarea
-                        value={formData.excerpt}
-                        onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
-                        rows={3}
-                        placeholder="Krótki opis artykułu (jeśli pusty, zostanie wygenerowany automatycznie)"
-                        maxLength={300}
-                      />
-                      <span className="text-gray-500 text-sm">
-                        {formData.excerpt.length}/300
-                      </span>
                     </div>
 
                     {/* Image Upload */}
@@ -626,10 +561,235 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                         )}
                       </div>
                     </div>
+
+                    {/* Excerpt */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">
+                        Excerpt (opcjonalnie)
+                      </label>
+                      <textarea
+                        value={formData.excerpt}
+                        onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
+                        rows={3}
+                        placeholder="Krótki opis artykułu (jeśli pusty, zostanie wygenerowany automatycznie)"
+                        maxLength={300}
+                      />
+                      <span className="text-gray-500 text-sm">
+                        {formData.excerpt?.length || 0}/300
+                      </span>
+                    </div>
+
+                    {/* TL;DR Section */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">
+                        TL;DR - Podsumowanie (opcjonalnie)
+                      </label>
+                      <textarea
+                        value={formData.tldr_summary}
+                        onChange={(e) => setFormData(prev => ({ ...prev, tldr_summary: e.target.value }))}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
+                        rows={2}
+                        placeholder="Krótkie podsumowanie artykułu dla osób, które nie chcą czytać całości"
+                        maxLength={200}
+                      />
+                      
+                      <div className="mt-4">
+                        <label className="block text-sm font-bold text-gray-900 mb-2">
+                          Kluczowe wnioski
+                        </label>
+                        <div className="space-y-2">
+                          {formData.tldr_takeaways?.map((takeaway, index) => (
+                            <div key={index} className="flex items-center space-x-2">
+                              <input
+                                type="text"
+                                value={takeaway}
+                                onChange={(e) => {
+                                  const newTakeaways = [...(formData.tldr_takeaways || [])]
+                                  newTakeaways[index] = e.target.value
+                                  setFormData(prev => ({ ...prev, tldr_takeaways: newTakeaways }))
+                                }}
+                                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeTakeaway(index)}
+                                className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                          ))}
+                          
+                          <div className="flex space-x-2">
+                            <input
+                              type="text"
+                              value={takeawayInput}
+                              onChange={(e) => setTakeawayInput(e.target.value)}
+                              onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault()
+                                  addTakeaway(takeawayInput)
+                                }
+                              }}
+                              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                              placeholder="Dodaj kluczowy wniosek..."
+                            />
+                            <button
+                              type="button"
+                              onClick={() => addTakeaway(takeawayInput)}
+                              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* FAQ Section */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">
+                        FAQ - Najczęściej zadawane pytania
+                      </label>
+                      <div className="space-y-4">
+                        {formData.faqs?.map((faq, index) => (
+                          <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-medium text-gray-900">{faq.question}</h4>
+                              <button
+                                type="button"
+                                onClick={() => removeFaq(index)}
+                                className="p-1 text-red-500 hover:text-red-700 transition-colors"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                            <p className="text-gray-600 text-sm">{faq.answer}</p>
+                          </div>
+                        ))}
+                        
+                        <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Pytanie
+                            </label>
+                            <input
+                              type="text"
+                              value={faqInput.question}
+                              onChange={(e) => setFaqInput(prev => ({ ...prev, question: e.target.value }))}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                              placeholder="Wpisz pytanie..."
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Odpowiedź
+                            </label>
+                            <textarea
+                              value={faqInput.answer}
+                              onChange={(e) => setFaqInput(prev => ({ ...prev, answer: e.target.value }))}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                              rows={3}
+                              placeholder="Wpisz odpowiedź..."
+                            />
+                          </div>
+                          <div className="text-right">
+                            <button
+                              type="button"
+                              onClick={addFaq}
+                              disabled={!faqInput.question || !faqInput.answer}
+                              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                              Dodaj FAQ
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* CTA Buttons */}
+                    <div>
+                      <label className="block text-sm font-bold text-gray-900 mb-2">
+                        Przyciski CTA
+                      </label>
+                      <div className="space-y-4">
+                        {formData.ctas?.map((cta, index) => (
+                          <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-medium text-gray-900">{cta.title}</h4>
+                              <button
+                                type="button"
+                                onClick={() => removeCta(index)}
+                                className="p-1 text-red-500 hover:text-red-700 transition-colors"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </button>
+                            </div>
+                            <div className="flex items-center space-x-2 text-sm text-gray-600">
+                              <span>URL: {cta.url}</span>
+                              <span>Kolor: {cta.color}</span>
+                            </div>
+                          </div>
+                        ))}
+                        
+                        <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Tekst przycisku
+                            </label>
+                            <input
+                              type="text"
+                              value={ctaInput.title}
+                              onChange={(e) => setCtaInput(prev => ({ ...prev, title: e.target.value }))}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                              placeholder="np. Umów konsultację"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              URL
+                            </label>
+                            <input
+                              type="url"
+                              value={ctaInput.url}
+                              onChange={(e) => setCtaInput(prev => ({ ...prev, url: e.target.value }))}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                              placeholder="https://example.com"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Kolor
+                            </label>
+                            <select
+                              value={ctaInput.color}
+                              onChange={(e) => setCtaInput(prev => ({ ...prev, color: e.target.value }))}
+                              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                            >
+                              <option value="orange">Pomarańczowy</option>
+                              <option value="blue">Niebieski</option>
+                              <option value="green">Zielony</option>
+                              <option value="red">Czerwony</option>
+                              <option value="gray">Szary</option>
+                            </select>
+                          </div>
+                          <div className="text-right">
+                            <button
+                              type="button"
+                              onClick={addCta}
+                              disabled={!ctaInput.title || !ctaInput.url}
+                              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            >
+                              Dodaj CTA
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </>
                 )}
 
-                {/* SEO Tab */}
                 {activeTab === 'seo' && (
                   <>
                     {/* Meta Description */}
@@ -655,7 +815,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                           </span>
                         )}
                         <span className="text-gray-500 text-sm ml-auto">
-                          {formData.meta_description.length}/160
+                          {formData.meta_description?.length || 0}/160
                         </span>
                       </div>
                     </div>
@@ -667,7 +827,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                       </label>
                       <div className="space-y-3">
                         {/* Selected tags */}
-                        {formData.tags.length > 0 && (
+                        {formData.tags && formData.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2">
                             {formData.tags.map((tag, index) => (
                               <span
@@ -714,7 +874,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                         {/* Suggested tags */}
                         <div className="flex flex-wrap gap-2">
                           {availableTags
-                            .filter(tag => !formData.tags.includes(tag))
+                            .filter(tag => !formData.tags?.includes(tag))
                             .slice(0, 8)
                             .map((tag, index) => (
                               <button
@@ -737,7 +897,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                       </label>
                       <div className="space-y-3">
                         {/* Selected categories */}
-                        {formData.categories.length > 0 && (
+                        {formData.categories && formData.categories.length > 0 && (
                           <div className="flex flex-wrap gap-2">
                             {formData.categories.map((category, index) => (
                               <span
@@ -777,15 +937,14 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                             onClick={() => addCategory(categoryInput)}
                             className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
                           >
-                            <Plus className="h-4 w-4" />
+                            <Tag className="h-4 w-4" />
                           </button>
                         </div>
 
                         {/* Suggested categories */}
                         <div className="flex flex-wrap gap-2">
                           {availableCategories
-                            .filter(category => !formData.categories.includes(category))
-                            .slice(0, 8)
+                            .filter(category => !formData.categories?.includes(category))
                             .map((category, index) => (
                               <button
                                 key={index}
@@ -864,363 +1023,19 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                   </>
                 )}
 
-                {/* TL;DR Tab */}
-                {activeTab === 'tldr' && (
-                  <>
-                    {/* TL;DR Summary */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-900 mb-2">
-                        TL;DR - Podsumowanie
-                      </label>
-                      <textarea
-                        value={formData.tldr_summary}
-                        onChange={(e) => setFormData(prev => ({ ...prev, tldr_summary: e.target.value }))}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
-                        rows={3}
-                        placeholder="Krótkie podsumowanie artykułu dla osób, które chcą szybko przeczytać najważniejsze informacje"
-                        maxLength={300}
-                      />
-                      <span className="text-gray-500 text-sm">
-                        {formData.tldr_summary.length}/300
-                      </span>
-                    </div>
-
-                    {/* TL;DR Takeaways */}
-                    <div>
-                      <label className="block text-sm font-bold text-gray-900 mb-2">
-                        Kluczowe wnioski
-                      </label>
-                      <div className="space-y-3">
-                        {/* Selected takeaways */}
-                        {formData.tldr_takeaways.length > 0 && (
-                          <div className="space-y-2">
-                            {formData.tldr_takeaways.map((takeaway, index) => (
-                              <div
-                                key={index}
-                                className="flex items-center space-x-2 p-3 bg-green-50 border border-green-200 rounded-lg"
-                              >
-                                <div className="flex-1">
-                                  <p className="text-green-800">{takeaway}</p>
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={() => removeTakeaway(takeaway)}
-                                  className="text-green-500 hover:text-green-700"
-                                >
-                                  <X className="h-4 w-4" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Add new takeaway */}
-                        <div className="flex space-x-2">
-                          <input
-                            type="text"
-                            value={takeawayInput}
-                            onChange={(e) => setTakeawayInput(e.target.value)}
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter') {
-                                e.preventDefault()
-                                addTakeaway(takeawayInput)
-                              }
-                            }}
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="Dodaj kluczowy wniosek..."
-                          />
-                          <button
-                            type="button"
-                            onClick={() => addTakeaway(takeawayInput)}
-                            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </>
+                {activeTab === 'materials' && (
+                  <DownloadMaterialForm
+                    materials={formData.download_materials || []}
+                    onChange={handleDownloadMaterialsChange}
+                  />
                 )}
 
-                {/* FAQs Tab */}
-                {activeTab === 'faqs' && (
-                  <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-4">
-                      Najczęściej zadawane pytania
-                    </label>
-                    
-                    {/* FAQs List */}
-                    {formData.faqs.length > 0 && (
-                      <div className="space-y-4 mb-6">
-                        {formData.faqs.map((faq, index) => (
-                          <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                            <div className="p-4 bg-gray-50 border-b border-gray-200">
-                              <div className="flex items-center justify-between">
-                                <h4 className="font-medium text-gray-900">{faq.question}</h4>
-                                <button
-                                  type="button"
-                                  onClick={() => removeFaq(index)}
-                                  className="text-red-500 hover:text-red-700"
-                                >
-                                  <X className="h-4 w-4" />
-                                </button>
-                              </div>
-                            </div>
-                            <div className="p-4">
-                              <p className="text-gray-600">{faq.answer}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    
-                    {/* Add New FAQ */}
-                    <div className="bg-white p-4 border border-gray-200 rounded-lg">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Pytanie
-                          </label>
-                          <input
-                            type="text"
-                            value={newFaq.question}
-                            onChange={(e) => setNewFaq(prev => ({ ...prev, question: e.target.value }))}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="Wpisz pytanie..."
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Odpowiedź
-                          </label>
-                          <textarea
-                            value={newFaq.answer}
-                            onChange={(e) => setNewFaq(prev => ({ ...prev, answer: e.target.value }))}
-                            rows={3}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
-                            placeholder="Wpisz odpowiedź..."
-                          />
-                        </div>
-                        
-                        <div className="flex justify-end">
-                          <button
-                            type="button"
-                            onClick={addFaq}
-                            disabled={!newFaq.question.trim() || !newFaq.answer.trim()}
-                            className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                          >
-                            <Plus className="h-4 w-4" />
-                            <span>Dodaj FAQ</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* CTA Tab */}
-                {activeTab === 'cta' && (
-                  <div>
-                    <label className="block text-sm font-bold text-gray-900 mb-4">
-                      Przyciski Call-to-Action
-                    </label>
-                    
-                    {/* CTAs List */}
-                    {formData.ctas.length > 0 && (
-                      <div className="space-y-4 mb-6">
-                        {formData.ctas.map((cta, index) => (
-                          <div key={index} className="flex items-center p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-2">
-                                <button
-                                  className={`px-4 py-2 rounded-lg font-medium text-sm ${
-                                    cta.color === 'orange' ? 'bg-orange-500 text-white' :
-                                    cta.color === 'blue' ? 'bg-blue-500 text-white' :
-                                    cta.color === 'green' ? 'bg-green-500 text-white' :
-                                    cta.color === 'red' ? 'bg-red-500 text-white' :
-                                    'bg-gray-500 text-white'
-                                  }`}
-                                >
-                                  {cta.title}
-                                </button>
-                              </div>
-                              <div className="text-sm text-gray-500">
-                                URL: <a href={cta.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{cta.url}</a>
-                              </div>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => removeCta(index)}
-                              className="p-2 text-red-500 hover:text-red-700"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    
-                    {/* Add New CTA */}
-                    <div className="bg-white p-4 border border-gray-200 rounded-lg">
-                      <div className="space-y-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Tekst przycisku
-                          </label>
-                          <input
-                            type="text"
-                            value={newCta.title}
-                            onChange={(e) => setNewCta(prev => ({ ...prev, title: e.target.value }))}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="np. Sprawdź ofertę"
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            URL
-                          </label>
-                          <input
-                            type="text"
-                            value={newCta.url}
-                            onChange={(e) => setNewCta(prev => ({ ...prev, url: e.target.value }))}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="https://example.com"
-                          />
-                        </div>
-                        
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Kolor przycisku
-                          </label>
-                          <select
-                            value={newCta.color}
-                            onChange={(e) => setNewCta(prev => ({ ...prev, color: e.target.value }))}
-                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                          >
-                            <option value="orange">Pomarańczowy</option>
-                            <option value="blue">Niebieski</option>
-                            <option value="green">Zielony</option>
-                            <option value="red">Czerwony</option>
-                            <option value="gray">Szary</option>
-                          </select>
-                        </div>
-                        
-                        <div className="flex justify-end">
-                          <button
-                            type="button"
-                            onClick={addCta}
-                            disabled={!newCta.title.trim() || !newCta.url.trim()}
-                            className="flex items-center space-x-2 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                          >
-                            <Plus className="h-4 w-4" />
-                            <span>Dodaj CTA</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Sources Tab */}
                 {activeTab === 'sources' && (
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-bold text-gray-900 mb-2">
-                        Źródła (linki)
-                      </label>
-                      <div className="space-y-4">
-                        {/* Sources List */}
-                        {formData.sources.length > 0 && (
-                          <div className="space-y-2 mb-4">
-                            {formData.sources.map((source, index) => (
-                              <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg">
-                                <div className="flex-1 overflow-hidden">
-                                  <span className="text-gray-500 mr-2">[{index + 1}]</span>
-                                  <a 
-                                    href={source} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="text-blue-500 hover:underline text-sm"
-                                  >
-                                    {source}
-                                  </a>
-                                </div>
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    setFormData(prev => ({
-                                      ...prev,
-                                      sources: prev.sources.filter((_, i) => i !== index)
-                                    }))
-                                  }}
-                                  className="ml-2 text-red-500 hover:text-red-700"
-                                >
-                                  <X className="h-4 w-4" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {/* Add New Source */}
-                        <div className="flex space-x-2">
-                          <input
-                            type="url"
-                            value={formData.sources.length > 0 ? '' : ''}
-                            onChange={(e) => {}}
-                            onKeyPress={(e) => {
-                              if (e.key === 'Enter' && e.currentTarget.value.trim()) {
-                                e.preventDefault()
-                                setFormData(prev => ({
-                                  ...prev,
-                                  sources: [...prev.sources, e.currentTarget.value.trim()]
-                                }))
-                                e.currentTarget.value = ''
-                              }
-                            }}
-                            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            placeholder="https://example.com/article"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const input = document.querySelector('input[type="url"]') as HTMLInputElement
-                              if (input && input.value.trim()) {
-                                setFormData(prev => ({
-                                  ...prev,
-                                  sources: [...prev.sources, input.value.trim()]
-                                }))
-                                input.value = ''
-                              }
-                            }}
-                            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-                          >
-                            <Plus className="h-4 w-4" />
-                          </button>
-                        </div>
-
-                        <div className="p-3 bg-blue-50 rounded-lg">
-                          <div className="flex items-start space-x-2">
-                            <AlertCircle className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
-                            <div className="text-sm text-blue-700">
-                              <p className="font-semibold">Jak dodawać odnośniki do źródeł w treści:</p>
-                              <p>Użyj składni <code>[n]</code> w treści artykułu, gdzie n to numer źródła (np. [1], [2], [3]).</p>
-                              <p>Przykład: "Według badań przeprowadzonych przez Kowalskiego [1], efektywność wzrasta o 25%."</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Downloads Tab */}
-                {activeTab === 'downloads' && (
-                  <DownloadMaterialForm 
-                    materials={formData.download_materials} 
-                    onChange={handleDownloadMaterialsChange} 
+                  <SourceForm
+                    sources={formData.sources || []}
+                    onChange={handleSourcesChange}
+                    citationStyle={citationStyle}
+                    onCitationStyleChange={setCitationStyle}
                   />
                 )}
               </form>
@@ -1241,18 +1056,18 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                   <h1 className="text-2xl font-bold text-gray-900 mb-2">{formData.title || 'Tytuł artykułu'}</h1>
                   <p className="text-gray-600 mb-4">{formData.excerpt || 'Excerpt artykułu...'}</p>
                   
-                  {/* TLDR Preview */}
-                  {(formData.tldr_summary || formData.tldr_takeaways.length > 0) && (
+                  {/* TL;DR Section */}
+                  {(formData.tldr_summary || (formData.tldr_takeaways && formData.tldr_takeaways.length > 0)) && (
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
-                      <h3 className="text-xl font-bold text-blue-900 mb-3">TL;DR - W skrócie</h3>
+                      <h2 className="text-xl font-bold text-blue-900 mb-3">TL;DR - W skrócie</h2>
                       {formData.tldr_summary && (
                         <p className="text-blue-800 mb-4">{formData.tldr_summary}</p>
                       )}
-                      {formData.tldr_takeaways.length > 0 && (
+                      {formData.tldr_takeaways && formData.tldr_takeaways.length > 0 && (
                         <div className="space-y-2">
                           {formData.tldr_takeaways.map((takeaway, index) => (
                             <div key={index} className="flex items-start space-x-2">
-                              <div className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0">✓</div>
+                              <span className="text-green-500">✓</span>
                               <span className="text-blue-800">{takeaway}</span>
                             </div>
                           ))}
@@ -1261,115 +1076,53 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                     </div>
                   )}
                   
-                  {/* Content Preview */}
                   <div className="prose max-w-none">
                     <div dangerouslySetInnerHTML={{ __html: formData.content || 'Treść artykułu...' }} />
                   </div>
                   
-                  {/* Sources Preview */}
-                  {formData.sources.length > 0 && (
-                    <div className="mt-8 pt-4 border-t border-gray-200">
-                      <h3 className="text-xl font-bold text-gray-900 mb-3">Źródła</h3>
-                      <ul className="space-y-2">
-                        {formData.sources.map((source, index) => (
-                          <li key={index} className="flex items-start">
-                            <span className="text-gray-500 mr-2">[{index + 1}]</span>
-                            <a 
-                              href={source} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-blue-500 hover:underline"
-                            >
-                              {source}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  
-                  {/* Download Materials Preview */}
-                  {formData.download_materials.length > 0 && (
-                    <div className="mt-8 pt-4 border-t border-gray-200">
-                      <h3 className="text-xl font-bold text-gray-900 mb-4">Materiały do pobrania</h3>
-                      <div className="space-y-4">
-                        {formData.download_materials.map((material, index) => (
-                          <div key={index} className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-                            <div className="flex items-start space-x-4">
-                              <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <FileText className="h-5 w-5 text-orange-500" />
-                              </div>
-                              <div className="flex-1">
-                                <h4 className="font-bold text-gray-900 mb-1">{material.title}</h4>
-                                <p className="text-gray-600 text-sm mb-3">{material.description}</p>
-                                <div className="flex items-center text-xs text-gray-500 mb-3">
-                                  <span className="mr-3">{material.file_type}</span>
-                                  <span>{material.file_size}</span>
-                                </div>
-                                <button 
-                                  className={`flex items-center space-x-2 rounded-lg font-semibold transition-colors
-                                    ${material.button_size === 'small' ? 'px-4 py-2 text-sm' : 
-                                      material.button_size === 'large' ? 'px-6 py-4 text-lg' : 'px-5 py-3 text-base'}
-                                    ${material.button_color === 'orange' ? 'bg-orange-500 hover:bg-orange-600 text-white' :
-                                      material.button_color === 'blue' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
-                                      material.button_color === 'green' ? 'bg-green-500 hover:bg-green-600 text-white' :
-                                      material.button_color === 'red' ? 'bg-red-500 hover:bg-red-600 text-white' :
-                                      'bg-gray-500 hover:bg-gray-600 text-white'}`}
-                                >
-                                  <Download className="h-5 w-5" />
-                                  <span>Pobierz materiał</span>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
                   {/* FAQ Preview */}
-                  {formData.faqs.length > 0 && (
-                    <div className="mt-8 pt-4 border-t border-gray-200">
-                      <h3 className="text-xl font-bold text-gray-900 mb-4">Najczęściej zadawane pytania</h3>
+                  {formData.faqs && formData.faqs.length > 0 && (
+                    <div className="mt-8 border-t border-gray-200 pt-6">
+                      <h2 className="text-2xl font-bold text-gray-900 mb-4">Najczęściej zadawane pytania</h2>
                       <div className="space-y-4">
                         {formData.faqs.map((faq, index) => (
-                          <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
-                            <div className="p-4 bg-gray-50 border-b border-gray-200">
-                              <h4 className="font-medium text-gray-900">{faq.question}</h4>
-                            </div>
-                            <div className="p-4">
-                              <p className="text-gray-600">{faq.answer}</p>
-                            </div>
+                          <div key={index} className="bg-gray-50 p-4 rounded-lg">
+                            <h3 className="font-bold text-gray-900 mb-2">{faq.question}</h3>
+                            <p className="text-gray-700">{faq.answer}</p>
                           </div>
                         ))}
                       </div>
                     </div>
                   )}
                   
-                  {/* CTA Buttons Preview */}
-                  {formData.ctas.length > 0 && (
-                    <div className="mt-8 pt-4 border-t border-gray-200">
-                      <h3 className="text-xl font-bold text-gray-900 mb-4">Call to Action</h3>
-                      <div className="flex flex-wrap gap-4">
-                        {formData.ctas.map((cta, index) => (
-                          <button
+                  {/* CTA Preview */}
+                  {formData.ctas && formData.ctas.length > 0 && (
+                    <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                      {formData.ctas.map((cta, index) => {
+                        const colorClasses: Record<string, string> = {
+                          orange: 'bg-orange-500 hover:bg-orange-600 text-white',
+                          blue: 'bg-blue-500 hover:bg-blue-600 text-white',
+                          green: 'bg-green-500 hover:bg-green-600 text-white',
+                          red: 'bg-red-500 hover:bg-red-600 text-white',
+                          gray: 'bg-gray-500 hover:bg-gray-600 text-white',
+                        };
+                        
+                        return (
+                          <a 
                             key={index}
-                            className={`px-6 py-3 rounded-lg font-semibold transition-colors ${
-                              cta.color === 'orange' ? 'bg-orange-500 hover:bg-orange-600 text-white' :
-                              cta.color === 'blue' ? 'bg-blue-500 hover:bg-blue-600 text-white' :
-                              cta.color === 'green' ? 'bg-green-500 hover:bg-green-600 text-white' :
-                              cta.color === 'red' ? 'bg-red-500 hover:bg-red-600 text-white' :
-                              'bg-gray-500 hover:bg-gray-600 text-white'
-                            }`}
+                            href={cta.url}
+                            className={`inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-colors ${colorClasses[cta.color] || colorClasses.orange}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
                           >
                             {cta.title}
-                          </button>
-                        ))}
-                      </div>
+                          </a>
+                        );
+                      })}
                     </div>
                   )}
                   
-                  {formData.tags.length > 0 && (
+                  {formData.tags && formData.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-6">
                       {formData.tags.map((tag, index) => (
                         <span
