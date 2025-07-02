@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { HelmetProvider, Helmet } from 'react-helmet-async'
+import { HelmetProvider } from 'react-helmet-async'
 import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink, Download } from 'lucide-react'
 import { supabase, BlogPost } from '../lib/supabase'
 import Header from '../components/Header'
@@ -15,7 +15,6 @@ import rehypeSanitize from 'rehype-sanitize'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import DownloadMaterial from '../components/DownloadMaterial'
-import BlogPostTrigger from '../components/BlogPostTrigger'
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -494,9 +493,6 @@ const BlogPostPage = () => {
         {/* Dodajemy BlogSchema dla danych strukturalnych schema.org */}
         <BlogSchema post={post} baseUrl={baseUrl} />
         
-        {/* Komponent nasłuchujący zmian w poście */}
-        <BlogPostTrigger postId={post.id} />
-        
         <Header />
         
         <main className="pt-20">
@@ -630,7 +626,6 @@ const BlogPostPage = () => {
                         key={index} 
                         material={material} 
                         postId={post.id} 
-                        requiresEmail={true}
                       />
                     ))}
                   </div>
