@@ -41,7 +41,7 @@ const SitemapGenerator: React.FC<SitemapGeneratorProps> = ({
       const filename = `sitemap_${timestamp}.xml`;
       
       const { data, error: uploadError } = await supabase.storage
-        .from('public')
+        .from('files')
         .upload(`sitemaps/${filename}`, sitemapXml, {
           contentType: 'application/xml',
           cacheControl: '3600',
@@ -52,12 +52,12 @@ const SitemapGenerator: React.FC<SitemapGeneratorProps> = ({
       
       // Pobierz publiczny URL do pliku
       const { data: { publicUrl } } = supabase.storage
-        .from('public')
+        .from('files')
         .getPublicUrl(`sitemaps/${filename}`);
       
       // Zapisz również jako sitemap.xml (nadpisując istniejący)
       await supabase.storage
-        .from('public')
+        .from('files')
         .upload('sitemap.xml', sitemapXml, {
           contentType: 'application/xml',
           cacheControl: '3600',
@@ -65,7 +65,7 @@ const SitemapGenerator: React.FC<SitemapGeneratorProps> = ({
         });
       
       const { data: { publicUrl: mainSitemapUrl } } = supabase.storage
-        .from('public')
+        .from('files')
         .getPublicUrl('sitemap.xml');
       
       // Zapisz informację o ostatnim wygenerowaniu

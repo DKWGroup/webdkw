@@ -21,7 +21,7 @@ const SitemapManager: React.FC = () => {
     try {
       // Sprawdź, czy istnieje plik sitemap.xml
       const { data, error } = await supabase.storage
-        .from('public')
+        .from('files')
         .list('sitemaps', {
           limit: 100,
           offset: 0,
@@ -35,7 +35,7 @@ const SitemapManager: React.FC = () => {
         const latestSitemap = data[0];
         
         const { data: { publicUrl } } = supabase.storage
-          .from('public')
+          .from('files')
           .getPublicUrl('sitemap.xml');
         
         setSitemapUrl(publicUrl);
