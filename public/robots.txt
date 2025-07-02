@@ -4,5 +4,7 @@ Disallow: /admin/
 Disallow: /admin/login
 Disallow: /admin/*
 
-# Sitemap
+# Sitemaps
 Sitemap: https://webdkw.net/sitemap.xml
+Sitemap: https://webdkw.net/sitemap-posts.xml
+Sitemap: https://webdkw.net/sitemap-index.xml

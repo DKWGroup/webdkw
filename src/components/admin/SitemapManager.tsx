@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { RefreshCw, Download, ExternalLink, AlertCircle, CheckCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import SitemapGenerator from '../SitemapGenerator';
+import BlogSitemapManager from './BlogSitemapManager';
 
 const SitemapManager: React.FC = () => {
   const [sitemapUrl, setSitemapUrl] = useState<string | null>(null);
@@ -9,6 +10,7 @@ const SitemapManager: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'main' | 'blog'>('main');
 
   useEffect(() => {
     checkExistingSitemap();
@@ -32,8 +34,6 @@ const SitemapManager: React.FC = () => {
       
       if (data && data.length > 0) {
         // Pobierz URL do najnowszego pliku
-        const latestSitemap = data[0];
-        
         const { data: { publicUrl } } = supabase.storage
           .from('files')
           .getPublicUrl('sitemap.xml');
@@ -41,6 +41,7 @@ const SitemapManager: React.FC = () => {
         setSitemapUrl(publicUrl);
         
         // Ustaw datę ostatniej generacji na podstawie nazwy pliku lub metadanych
+        const latestSitemap = data[0];
         const createdAt = latestSitemap.created_at || new Date().toISOString();
         setLastGenerated(new Date(createdAt).toLocaleString());
       }
@@ -124,77 +125,107 @@ const SitemapManager: React.FC = () => {
         </div>
       )}
       
-      <div className="grid md:grid-cols-2 gap-6">
-        <SitemapGenerator onGenerateComplete={handleGenerateComplete} />
-        
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h3 className="text-lg font-semibold mb-4">Informacje o mapie witryny</h3>
-          
-          {isLoading ? (
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500"></div>
-            </div>
-          ) : (
-            <>
-              {sitemapUrl ? (
-                <div className="space-y-4">
-                  <div>
-                    <p className="text-sm text-gray-600 mb-1">Status:</p>
-                    <div className="flex items-center text-green-600">
-                      <CheckCircle className="h-4 w-4 mr-1" />
-                      <span>Aktywna</span>
-                    </div>
-                  </div>
-                  
-                  {lastGenerated && (
-                    <div>
-                      <p className="text-sm text-gray-600 mb-1">Ostatnia aktualizacja:</p>
-                      <p className="font-medium">{lastGenerated}</p>
-                    </div>
-                  )}
-                  
-                  <div>
-                    <p className="text-sm text-gray-600 mb-1">URL mapy witryny:</p>
-                    <div className="flex items-center">
-                      <a 
-                        href={sitemapUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-blue-500 hover:text-blue-700 underline text-sm mr-2 truncate"
-                      >
-                        {sitemapUrl}
-                      </a>
-                      <ExternalLink className="h-4 w-4 text-gray-400" />
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4">
-                    <button
-                      onClick={submitToSearchEngines}
-                      disabled={isLoading}
-                      className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
-                      <span>Powiadom wyszukiwarki</span>
-                    </button>
-                    
-                    <p className="text-xs text-gray-500 mt-2">
-                      Powiadamia Google i Bing o aktualizacji mapy witryny
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                <div className="text-center py-6">
-                  <p className="text-gray-500 mb-4">Nie znaleziono mapy witryny</p>
-                  <p className="text-sm text-gray-600">
-                    Wygeneruj nową mapę witryny, aby poprawić widoczność w wyszukiwarkach
-                  </p>
-                </div>
-              )}
-            </>
-          )}
+      {/* Tabs */}
+      <div className="mb-6 border-b border-gray-200">
+        <div className="flex space-x-4">
+          <button
+            onClick={() => setActiveTab('main')}
+            className={`py-2 px-4 font-medium text-sm border-b-2 ${
+              activeTab === 'main' 
+                ? 'border-orange-500 text-orange-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Główna mapa witryny
+          </button>
+          <button
+            onClick={() => setActiveTab('blog')}
+            className={`py-2 px-4 font-medium text-sm border-b-2 ${
+              activeTab === 'blog' 
+                ? 'border-orange-500 text-orange-600' 
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Mapa witryny dla bloga
+          </button>
         </div>
       </div>
+      
+      {activeTab === 'main' ? (
+        <div className="grid md:grid-cols-2 gap-6">
+          <SitemapGenerator onGenerateComplete={handleGenerateComplete} />
+          
+          <div className="bg-gray-50 p-6 rounded-lg">
+            <h3 className="text-lg font-semibold mb-4">Informacje o mapie witryny</h3>
+            
+            {isLoading ? (
+              <div className="flex justify-center">
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500"></div>
+              </div>
+            ) : (
+              <>
+                {sitemapUrl ? (
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Status:</p>
+                      <div className="flex items-center text-green-600">
+                        <CheckCircle className="h-4 w-4 mr-1" />
+                        <span>Aktywna</span>
+                      </div>
+                    </div>
+                    
+                    {lastGenerated && (
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1">Ostatnia aktualizacja:</p>
+                        <p className="font-medium">{lastGenerated}</p>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">URL mapy witryny:</p>
+                      <div className="flex items-center">
+                        <a 
+                          href={sitemapUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:text-blue-700 underline text-sm mr-2 truncate"
+                        >
+                          {sitemapUrl}
+                        </a>
+                        <ExternalLink className="h-4 w-4 text-gray-400" />
+                      </div>
+                    </div>
+                    
+                    <div className="pt-4">
+                      <button
+                        onClick={submitToSearchEngines}
+                        disabled={isLoading}
+                        className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
+                        <span>Powiadom wyszukiwarki</span>
+                      </button>
+                      
+                      <p className="text-xs text-gray-500 mt-2">
+                        Powiadamia Google i Bing o aktualizacji mapy witryny
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center py-6">
+                    <p className="text-gray-500 mb-4">Nie znaleziono mapy witryny</p>
+                    <p className="text-sm text-gray-600">
+                      Wygeneruj nową mapę witryny, aby poprawić widoczność w wyszukiwarkach
+                    </p>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      ) : (
+        <BlogSitemapManager />
+      )}
       
       <div className="mt-6 p-4 bg-blue-50 rounded-lg">
         <div className="flex items-start space-x-3">

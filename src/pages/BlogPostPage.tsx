@@ -15,6 +15,7 @@ import rehypeSanitize from 'rehype-sanitize'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import DownloadMaterial from '../components/DownloadMaterial'
+import BlogPostTrigger from '../components/BlogPostTrigger'
 
 const BlogPostPage = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -492,6 +493,9 @@ const BlogPostPage = () => {
         
         {/* Dodajemy BlogSchema dla danych strukturalnych schema.org */}
         <BlogSchema post={post} baseUrl={baseUrl} />
+        
+        {/* Komponent nasłuchujący zmian w poście */}
+        <BlogPostTrigger postId={post.id} />
         
         <Header />
         

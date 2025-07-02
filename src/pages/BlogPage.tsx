@@ -7,6 +7,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import SEOHead from '../components/SEOHead'
 import StructuredData from '../components/StructuredData'
+import BlogPostTrigger from '../components/BlogPostTrigger'
 
 const BlogPage = () => {
   const [posts, setPosts] = useState<BlogPost[]>([])
@@ -115,7 +116,11 @@ const BlogPage = () => {
           <script type="application/ld+json">
             {JSON.stringify(blogListingSchema)}
           </script>
+          <link rel="sitemap" type="application/xml" href="/sitemap-posts.xml" />
         </Helmet>
+        
+        {/* Komponent nasłuchujący zmian w postach */}
+        <BlogPostTrigger />
         
         <Header />
         
