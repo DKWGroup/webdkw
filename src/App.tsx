@@ -16,11 +16,11 @@ import ProcessPage from './pages/ProcessPage'
 import AboutPage from './pages/AboutPage'
 import FAQPage from './pages/FAQPage'
 import ContactPage from './pages/ContactPage'
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminPage from './pages/AdminPage'
 import PasswordResetPage from './pages/PasswordResetPage'
 import NotFoundPage from './pages/NotFoundPage'
-import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
