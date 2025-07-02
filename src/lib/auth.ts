@@ -29,99 +29,6 @@ class AuthSecurity {
     this.loadBlockedIPs()
   }
 
-  // Sprawdzenie czy istnieje jakikolwiek użytkownik w systemie
-  async hasAnyUsers(): Promise<boolean> {
-    try {
-      // Sprawdź czy istnieją jakiekolwiek logi bezpieczeństwa z udanym logowaniem
-      const { data, error } = await supabase
-        .from('security_logs')
-        .select('id')
-        .eq('event_type', 'login_success')
-        .limit(1)
-
-      if (error) {
-        console.error('Error checking for existing users:', error)
-        return false
-      }
-
-      return data && data.length > 0
-    } catch (error) {
-      console.error('Error checking for existing users:', error)
-      return false
-    }
-  }
-
-  // Utworzenie pierwszego użytkownika administratora
-  async createInitialAdmin(email: string, password: string): Promise<{ success: boolean; error?: string }> {
-    const ip = await this.getClientIP()
-
-    // Walidacja hasła
-    const passwordValidation = this.validatePassword(password)
-    if (!passwordValidation.isValid) {
-      return {
-        success: false,
-        error: 'Hasło nie spełnia wymagań bezpieczeństwa'
-      }
-    }
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: undefined // Wyłącz potwierdzenie email dla pierwszego admina
-        }
-      })
-
-      if (error) {
-        // Sprawdź czy to błąd istniejącego użytkownika
-        if (error.message === 'User already registered') {
-          return {
-            success: false,
-            error: 'Konto administratora już istnieje. Spróbuj się zalogować zamiast tworzyć nowe konto.'
-          }
-        }
-        
-        return {
-          success: false,
-          error: 'Błąd podczas tworzenia konta administratora'
-        }
-      }
-
-      if (data.user) {
-        // Zaloguj utworzenie pierwszego administratora
-        this.logSecurityEvent(
-          'login_success',
-          ip,
-          navigator.userAgent,
-          email,
-          { type: 'initial_admin_setup' }
-        )
-
-        return { success: true }
-      }
-
-      return {
-        success: false,
-        error: 'Wystąpił błąd podczas tworzenia konta'
-      }
-    } catch (error: any) {
-      // Dodatkowa obsługa błędów na poziomie catch
-      if (error?.message?.includes('User already registered') || 
-          error?.code === 'user_already_exists') {
-        return {
-          success: false,
-          error: 'Konto administratora już istnieje. Spróbuj się zalogować zamiast tworzyć nowe konto.'
-        }
-      }
-      
-      return {
-        success: false,
-        error: 'Wystąpił błąd podczas tworzenia konta administratora'
-      }
-    }
-  }
-
   // Walidacja silnego hasła
   validatePassword(password: string): { isValid: boolean; errors: string[] } {
     const errors: string[] = []
@@ -333,18 +240,6 @@ class AuthSecurity {
 
       if (error) {
         this.recordLoginAttempt(ip, false, email)
-        
-        // Sprawdź czy to błąd braku użytkownika
-        if (error.message.includes('Invalid login credentials')) {
-          const hasUsers = await this.hasAnyUsers()
-          if (!hasUsers) {
-            return {
-              success: false,
-              error: 'NO_ADMIN_EXISTS'
-            }
-          }
-        }
-        
         return {
           success: false,
           error: 'Nieprawidłowe dane logowania'
