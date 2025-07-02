@@ -16,15 +16,13 @@ import {
   Upload,
   Eye,
   Bell,
-  User,
-  Globe
+  User
 } from 'lucide-react'
 import { supabase, BlogPost, ContactSubmission, Project } from '../lib/supabase'
 import { authSecurity } from '../lib/auth'
 import ArticleForm from '../components/admin/ArticleForm'
 import ProjectForm from '../components/admin/ProjectForm'
 import BlogPostForm from '../components/admin/BlogPostForm'
-import SitemapManager from '../components/admin/SitemapManager'
 
 const AdminPage = () => {
   const navigate = useNavigate()
@@ -213,8 +211,7 @@ const AdminPage = () => {
     { id: 'dashboard', label: 'Dashboard', icon: Home },
     { id: 'posts', label: 'Artykuły', icon: FileText },
     { id: 'projects', label: 'Projekty', icon: Settings },
-    { id: 'contacts', label: 'Kontakty', icon: Users },
-    { id: 'sitemap', label: 'Mapa witryny', icon: Globe },
+    { id: 'contacts', label: 'Kontakty', icon: Users }
   ]
 
   if (loading) {
@@ -362,7 +359,6 @@ const AdminPage = () => {
               />
             )}
             {activeTab === 'contacts' && <ContactsContent contacts={contacts} searchTerm={searchTerm} setSearchTerm={setSearchTerm} />}
-            {activeTab === 'sitemap' && <SitemapContent />}
           </div>
         </div>
       </div>
@@ -731,20 +727,6 @@ const ContactsContent = ({ contacts, searchTerm, setSearchTerm }: any) => (
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-)
-
-// Sitemap Content Component
-const SitemapContent = () => (
-  <div className="space-y-6">
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6">
-      <h2 className="text-xl font-bold text-gray-900 mb-6">Zarządzanie mapą witryny (sitemap.xml)</h2>
-      <p className="text-gray-600 mb-6">
-        Mapa witryny pomaga wyszukiwarkom indeksować Twoją stronę. Generuj nową mapę po dodaniu nowych treści.
-      </p>
-      
-      <SitemapManager />
     </div>
   </div>
 )
