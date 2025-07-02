@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Mail, Phone, Clock, ArrowRight, CheckCircle } from 'lucide-react'
+import { Mail, Phone, Clock, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 const ContactSection = () => {
@@ -13,11 +13,19 @@ const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [error, setError] = useState('')
+  const [rodoConsent, setRodoConsent] = useState(false)
+  const [showRodoInfo, setShowRodoInfo] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     setError('')
+
+    if (!rodoConsent) {
+      setError('Wymagana jest zgoda na przetwarzanie danych osobowych')
+      setIsSubmitting(false)
+      return
+    }
 
     try {
       // Save to database first (this is the most important part)
@@ -208,15 +216,58 @@ const ContactSection = () => {
                 />
               </div>
 
+              {/* RODO Consent Checkbox */}
+              <div className="relative">
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="rodo-consent"
+                      type="checkbox"
+                      checked={rodoConsent}
+                      onChange={(e) => setRodoConsent(e.target.checked)}
+                      className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                      required
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="rodo-consent" className="text-gray-600">
+                      Zapoznałem/am się z{' '}
+                      <button
+                        type="button"
+                        className="text-orange-500 hover:text-orange-700 underline"
+                        onClick={() => setShowRodoInfo(!showRodoInfo)}
+                        onMouseEnter={() => setShowRodoInfo(true)}
+                        onMouseLeave={() => setShowRodoInfo(false)}
+                      >
+                        informacją o administratorze i przetwarzaniu danych
+                      </button>
+                      . *
+                    </label>
+                  </div>
+                </div>
+                
+                {/* RODO Info Popup */}
+                {showRodoInfo && (
+                  <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
+                    <p>
+                      Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                    </p>
+                  </div>
+                )}
+              </div>
+
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <p className="text-red-800 text-sm">{error}</p>
+                  <div className="flex items-center space-x-2">
+                    <AlertTriangle className="h-5 w-5 text-red-500" />
+                    <p className="text-red-800 text-sm">{error}</p>
+                  </div>
                 </div>
               )}
 
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || !rodoConsent}
                 className="w-full bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
               >
                 <span>{isSubmitting ? 'Wysyłanie...' : 'Wyślij zapytanie'}</span>
