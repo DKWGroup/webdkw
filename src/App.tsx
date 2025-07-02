@@ -20,6 +20,7 @@ import AdminLoginPage from './pages/AdminLoginPage'
 import AdminPage from './pages/AdminPage'
 import PasswordResetPage from './pages/PasswordResetPage'
 import NotFoundPage from './pages/NotFoundPage'
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import ScrollToTop from './components/ScrollToTop'
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/o-nas" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/kontakt" element={<ContactPage />} />
+        <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/reset-password" element={<PasswordResetPage />} />
