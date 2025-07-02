@@ -13,6 +13,8 @@ interface ContactFormData {
   phone?: string
   message: string
   lead_magnet?: boolean
+  download_url?: string
+  download_title?: string
 }
 
 // Gmail SMTP configuration
@@ -140,7 +142,7 @@ serve(async (req) => {
   }
 
   try {
-    const { name, email, company, phone, message, lead_magnet }: ContactFormData = await req.json()
+    const { name, email, company, phone, message, lead_magnet, download_url, download_title }: ContactFormData = await req.json()
 
     // Validate required fields
     if (!name || !email || !message) {
@@ -177,7 +179,8 @@ serve(async (req) => {
             <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
             ${company ? `<p><strong>Firma:</strong> ${company}</p>` : ''}
             ${phone ? `<p><strong>Telefon:</strong> <a href="tel:${phone}">${phone}</a></p>` : ''}
-            <p><strong>Typ zapytania:</strong> ${lead_magnet ? 'Lead Magnet - Checklist' : 'Formularz kontaktowy'}</p>
+            <p><strong>Typ zapytania:</strong> ${lead_magnet ? 'Lead Magnet - Pobranie materiału' : 'Formularz kontaktowy'}</p>
+            ${download_title ? `<p><strong>Pobrany materiał:</strong> ${download_title}</p>` : ''}
           </div>
           
           <div style="background-color: #fff; padding: 20px; border-left: 4px solid #f97316; margin: 20px 0;">
@@ -196,7 +199,7 @@ serve(async (req) => {
     `
 
     // Email content for customer confirmation
-    const customerEmailContent = `
+    let customerEmailContent = `
       <!DOCTYPE html>
       <html>
       <head>
@@ -213,14 +216,32 @@ serve(async (req) => {
           <p>Cześć ${name},</p>
           
           <p>Dziękujemy za wysłanie zapytania przez nasz formularz kontaktowy. Otrzymaliśmy Twoją wiadomość i <strong>odpowiemy w ciągu 24 godzin</strong>.</p>
-          
-          ${lead_magnet ? `
-            <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
-              <h3 style="color: #1e40af; margin-top: 0;">📋 Twoja checklist jest w drodze!</h3>
-              <p>Link do pobrania checklisty "15 kluczowych elementów skutecznej strony" zostanie wysłany na Twój email w ciągu kilku minut.</p>
-            </div>
-          ` : ''}
-          
+    `
+
+    // Add download section if it's a lead magnet with download URL
+    if (lead_magnet && download_url && download_title) {
+      customerEmailContent += `
+        <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+          <h3 style="color: #1e40af; margin-top: 0;">📋 Twój materiał do pobrania</h3>
+          <p>Zgodnie z prośbą, przesyłamy link do pobrania materiału "${download_title}".</p>
+          <div style="text-align: center; margin: 20px 0;">
+            <a href="${download_url}" style="display: inline-block; background-color: #f97316; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">
+              Pobierz materiał
+            </a>
+          </div>
+          <p style="font-size: 12px; color: #666;">Link będzie aktywny przez 7 dni. Jeśli masz problemy z pobraniem, odpowiedz na tego maila.</p>
+        </div>
+      `
+    } else if (lead_magnet) {
+      customerEmailContent += `
+        <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+          <h3 style="color: #1e40af; margin-top: 0;">📋 Twój materiał jest w drodze!</h3>
+          <p>Link do pobrania materiału zostanie wysłany na Twój email w ciągu kilku minut.</p>
+        </div>
+      `
+    }
+
+    customerEmailContent += `
           <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
             <h3 style="margin-top: 0;">Podsumowanie Twojego zapytania:</h3>
             <p><strong>Imię i nazwisko:</strong> ${name}</p>
@@ -263,7 +284,9 @@ serve(async (req) => {
     console.log('Sending confirmation email to customer...')
     await sendEmailViaGmail(
       [email],
-      'Potwierdzenie otrzymania zapytania - WebDKW',
+      lead_magnet && download_title 
+        ? `Twój materiał do pobrania: ${download_title} - WebDKW` 
+        : 'Potwierdzenie otrzymania zapytania - WebDKW',
       customerEmailContent
     )
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
+import { HelmetProvider, Helmet } from 'react-helmet-async'
 import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink, Download } from 'lucide-react'
 import { supabase, BlogPost } from '../lib/supabase'
 import Header from '../components/Header'
@@ -626,6 +626,7 @@ const BlogPostPage = () => {
                         key={index} 
                         material={material} 
                         postId={post.id} 
+                        requiresEmail={true}
                       />
                     ))}
                   </div>

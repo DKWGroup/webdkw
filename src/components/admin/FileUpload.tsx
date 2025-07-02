@@ -45,8 +45,36 @@ const FileUpload: React.FC<FileUploadProps> = ({
     }
 
     // Type validation
-    if (accept !== '*' && !file.type.match(accept.replace('*', '.*'))) {
-      return `Plik "${file.name}" ma nieprawidłowy format`
+    if (accept !== '*') {
+      // Handle PDF files specifically
+      if (accept === 'application/pdf' && file.type === 'application/pdf') {
+        return null;
+      }
+      
+      // Handle multiple accept types (e.g. "image/*,application/pdf")
+      if (accept.includes(',')) {
+        const acceptTypes = accept.split(',').map(type => type.trim());
+        const isAccepted = acceptTypes.some(type => {
+          if (type.includes('*')) {
+            return file.type.startsWith(type.replace('*', ''));
+          }
+          return file.type === type;
+        });
+        
+        if (isAccepted) return null;
+      } 
+      // Handle wildcard accept types (e.g. "image/*")
+      else if (accept.includes('*')) {
+        if (file.type.startsWith(accept.replace('*', ''))) {
+          return null;
+        }
+      } 
+      // Handle exact match
+      else if (file.type === accept) {
+        return null;
+      }
+      
+      return `Plik "${file.name}" ma nieprawidłowy format`;
     }
 
     return null
@@ -112,7 +140,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         
         // Upload to Supabase Storage
         const { error: uploadError, data } = await supabase.storage
-          .from('images')
+          .from('files')
           .upload(filePath, fileData.file, {
             cacheControl: '3600',
             upsert: false
@@ -122,7 +150,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         
         // Get public URL
         const { data: { publicUrl } } = supabase.storage
-          .from('images')
+          .from('files')
           .getPublicUrl(filePath)
         
         // Update file with preview URL
@@ -199,6 +227,17 @@ const FileUpload: React.FC<FileUploadProps> = ({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
   }
 
+  // Format accept attribute for display
+  const getAcceptDisplay = () => {
+    if (accept === 'image/*') return 'JPG, PNG, WebP';
+    if (accept === 'application/pdf') return 'PDF';
+    if (accept === 'application/pdf,image/*' || accept === 'image/*,application/pdf') 
+      return 'PDF, JPG, PNG, WebP';
+    if (accept.includes('pdf') || accept.includes('doc')) 
+      return 'PDF, DOC, DOCX, XLS, XLSX';
+    return 'Wszystkie pliki';
+  };
+
   return (
     <div className={`space-y-4 ${className}`}>
       {/* Upload Area */}
@@ -244,7 +283,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         </button>
         
         <p className="text-gray-500 text-sm mt-2">
-          {accept === 'image/*' ? 'JPG, PNG, WebP' : accept === 'application/pdf' ? 'PDF' : 'Wszystkie pliki'} 
+          {getAcceptDisplay()} 
           {' '}(max {Math.round(maxSize / (1024 * 1024))}MB
           {multiple && `, max ${maxFiles} plików`})
         </p>
@@ -265,7 +304,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
               >
                 {/* File Preview/Icon */}
                 <div className="flex-shrink-0">
-                  {uploadedFile.preview ? (
+                  {uploadedFile.preview && uploadedFile.file.type.startsWith('image/') ? (
                     <img
                       src={uploadedFile.preview}
                       alt={uploadedFile.file.name}

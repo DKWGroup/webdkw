@@ -310,7 +310,7 @@ const DownloadMaterialForm: React.FC<DownloadMaterialFormProps> = ({ materials, 
                 </div>
               ) : (
                 <FileUpload
-                  accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip"
+                  accept="application/pdf,image/*,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip"
                   multiple={false}
                   maxSize={10 * 1024 * 1024} // 10MB
                   onFilesSelected={handleFileUpload}
@@ -387,6 +387,7 @@ const DownloadMaterialForm: React.FC<DownloadMaterialFormProps> = ({ materials, 
                 <li>Używaj krótkich, ale zachęcających opisów</li>
                 <li>Optymalna wielkość pliku to maksymalnie 5MB</li>
                 <li>Preferowane formaty to PDF, DOC lub XLSX</li>
+                <li>Materiały będą wysyłane na email po wypełnieniu formularza</li>
               </ul>
             </div>
           </div>
