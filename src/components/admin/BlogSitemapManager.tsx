@@ -74,7 +74,8 @@ const BlogSitemapManager: React.FC<BlogSitemapManagerProps> = ({ onGenerateCompl
       });
 
       if (!response.ok) {
-        throw new Error(`Błąd generowania mapy witryny dla bloga: ${response.statusText}`);
+        const errorData = await response.json();
+        throw new Error(`Błąd generowania mapy witryny dla bloga: ${errorData.details || response.statusText}`);
       }
 
       // Pobierz URL do pliku

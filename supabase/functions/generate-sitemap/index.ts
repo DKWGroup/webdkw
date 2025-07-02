@@ -137,7 +137,7 @@ serve(async (req) => {
 
     // 5. Kompresuj, jeśli wymagane
     let responseBody: Uint8Array | string = xml
-    let contentType = 'text/xml'
+    let contentType = 'application/xml'
     let contentEncoding = ''
 
     if (compress) {

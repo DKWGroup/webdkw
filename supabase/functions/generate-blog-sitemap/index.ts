@@ -46,11 +46,11 @@ ${blogPosts.map(post => `  <url>
   </url>`).join('\n')}
 </urlset>`
 
-    // Upload to Supabase Storage with text/xml MIME type
+    // Upload to Supabase Storage with application/xml MIME type
     const { error: uploadError } = await supabaseClient.storage
       .from('files')
-      .upload('sitemap-blog.xml', sitemapXml, {
-        contentType: 'text/xml',
+      .upload('sitemap-posts.xml', sitemapXml, {
+        contentType: 'application/xml',
         upsert: true
       })
 

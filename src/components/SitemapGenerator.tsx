@@ -43,7 +43,7 @@ const SitemapGenerator: React.FC<SitemapGeneratorProps> = ({
       const { data, error: uploadError } = await supabase.storage
         .from('files')
         .upload(`sitemaps/${filename}`, sitemapXml, {
-          contentType: 'text/xml',
+          contentType: 'application/xml',
           cacheControl: '3600',
           upsert: false
         });
@@ -59,7 +59,7 @@ const SitemapGenerator: React.FC<SitemapGeneratorProps> = ({
       await supabase.storage
         .from('files')
         .upload('sitemap.xml', sitemapXml, {
-          contentType: 'text/xml',
+          contentType: 'application/xml',
           cacheControl: '3600',
           upsert: true
         });
