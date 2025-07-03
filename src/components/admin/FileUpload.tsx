@@ -139,7 +139,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         const filePath = `uploads/${fileName}`
         
         // Upload to Supabase Storage
-        const { error: uploadError, data } = await supabase.storage
+        const { error: uploadError } = await supabase.storage
           .from('files')
           .upload(filePath, fileData.file, {
             cacheControl: '3600',

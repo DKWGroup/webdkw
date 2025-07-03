@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
-import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink, Download } from 'lucide-react'
+import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink } from 'lucide-react'
 import { supabase, BlogPost } from '../lib/supabase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -651,12 +651,12 @@ const BlogPostPage = () => {
                         <li key={index} className="flex items-start space-x-2">
                           <span className="text-gray-500">[{index + 1}]</span>
                           <a 
-                            href={source} 
+                            href={typeof source === 'string' ? source : '#'} 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="text-orange-500 hover:text-orange-700 hover:underline flex items-center"
                           >
-                            <span>{source}</span>
+                            <span>{typeof source === 'string' ? source : JSON.stringify(source)}</span>
                             <ExternalLink className="h-4 w-4 ml-1 inline-block" />
                           </a>
                         </li>

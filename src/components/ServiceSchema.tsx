@@ -22,7 +22,7 @@ const ServiceSchema: React.FC<ServiceSchemaProps> = ({
   areaServed = "Poland",
   serviceType
 }) => {
-  const schemaData = {
+  const schemaData: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "Service",
     "name": name,

@@ -18,7 +18,7 @@ const BlogSchema: React.FC<BlogSchemaProps> = ({ post, baseUrl }) => {
   const readingTime = calculateReadingTime(post.content);
   
   // Przygotuj dane strukturalne w formacie JSON-LD
-  const schemaData = {
+  const schemaData: Record<string, any> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": post.title,
