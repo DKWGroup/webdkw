@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { X, Save, Eye, Calendar, AlertCircle } from 'lucide-react'
 import { supabase, BlogPost, Source } from '../../lib/supabase'
 import DatePicker from 'react-datepicker'
