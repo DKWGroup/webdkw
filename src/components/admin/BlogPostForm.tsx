@@ -116,8 +116,18 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
         tldr_takeaways: post.tldr_takeaways || [],
         faqs: post.faqs || [],
         ctas: post.ctas || [],
-        sources: post.sources || [],
-        download_materials: post.download_materials || []
+        sources: (post.sources || []).map((s: any) => typeof s === 'string' ? { title: s, url: '', author: '', year: '' } : s),
+        download_materials: (post.download_materials || []).map((m: any) => ({
+          id: m.id,
+          title: m.title,
+          description: m.description,
+          file_url: m.file_url,
+          file_size: m.file_size || '',
+          file_type: m.file_type,
+          button_color: m.button_color,
+          button_size: m.button_size,
+          download_count: m.download_count
+        }))
       })
       setPublishDate(post.created_at ? new Date(post.created_at) : new Date())
     } else {
@@ -335,7 +345,11 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
           .select()
 
         if (error) throw error
-        onSave({ ...post, ...postData })
+        onSave({
+          ...post,
+          ...postData,
+          sources: (postData.sources || []).map((s: any) => typeof s === 'string' ? s : s.title)
+        })
       } else {
         // Create new post
         const { error } = await supabase
