@@ -25,7 +25,7 @@ const SilesianLandingPage = () => {
     {
       name: "Anna Kowalska",
       company: "TechStart Katowice",
-      text: "Dzięki WebDKW nasza firma zyskała profesjonalną stronę internetową, która przyciąga klientów z całego Śląska.",
+      text: "Dzięki WebDKW nasza firma zyskała profesjonalną stronę internetową, która przyciąga klientów z całego .",
       rating: 5
     },
     {
@@ -52,7 +52,7 @@ const SilesianLandingPage = () => {
     {
       icon: <Search className="w-8 h-8" />,
       title: "Pozycjonowanie SEO",
-      description: "Skuteczne pozycjonowanie w Google dla firm ze Śląska",
+      description: "Skuteczne pozycjonowanie w Google dla firm ze ",
       features: ["Lokalne SEO", "Analiza konkurencji", "Optymalizacja treści", "Raportowanie"]
     },
     {
@@ -71,7 +71,7 @@ const SilesianLandingPage = () => {
 
   const caseStudies = [
     {
-      title: "Śląska Firma Budowlana",
+      title: " Firma Budowlana",
       industry: "Budownictwo",
       result: "+150% więcej zapytań",
       description: "Kompleksowa strona z pozycjonowaniem lokalnym",
@@ -109,20 +109,20 @@ const SilesianLandingPage = () => {
       answer: "Agencja ze znajomością lokalnego rynku śląskiego rozumie specyfikę regionalnych klientów, konkurencję oraz lokalne trendy biznesowe. Dzięki temu możemy lepiej dostosować strategię marketingową, treści oraz pozycjonowanie do potrzeb śląskich odbiorców, co przekłada się na wyższe konwersje i lepszy zwrot z inwestycji."
     },
     {
-      question: "Jak długo trwa stworzenie strony internetowej dla firmy ze Śląska?",
-      answer: "Czas realizacji zależy od złożoności projektu. Standardowa strona wizytówkowa zajmuje około 2-3 tygodnie, bardziej rozbudowane strony firmowe 4-6 tygodni, a zaawansowane platformy e-commerce 6-8 tygodni. Dla firm ze Śląska oferujemy przyspieszoną realizację w przypadkach pilnych projektów."
+      question: "Jak długo trwa stworzenie strony internetowej dla firmy ze ?",
+      answer: "Czas realizacji zależy od złożoności projektu. Standardowa strona wizytówkowa zajmuje około 2-3 tygodnie, bardziej rozbudowane strony firmowe 4-6 tygodni, a zaawansowane platformy e-commerce 6-8 tygodni. Dla firm ze  oferujemy przyspieszoną realizację w przypadkach pilnych projektów."
     },
     {
       question: "Czy oferujecie pozycjonowanie lokalne dla miast śląskich?",
       answer: "Tak, specjalizujemy się w pozycjonowaniu lokalnym dla firm z Katowic, Gliwic, Zabrza i innych miast śląskich. Nasze strategie SEO uwzględniają lokalne frazy kluczowe, optymalizację Google Moja Firma oraz budowanie lokalnych linków, co znacząco zwiększa widoczność w lokalnych wynikach wyszukiwania."
     },
     {
-      question: "Jakie są koszty stworzenia strony internetowej dla firmy ze Śląska?",
-      answer: "Koszt strony internetowej zależy od jej złożoności i funkcjonalności. Strony wizytówkowe zaczynają się od 4000 zł, strony firmowe od 6000 zł, a sklepy internetowe od 8000 zł. Dla firm ze Śląska oferujemy specjalne pakiety z uwzględnieniem lokalnego pozycjonowania."
+      question: "Jakie są koszty stworzenia strony internetowej dla firmy ze ?",
+      answer: "Koszt strony internetowej zależy od jej złożoności i funkcjonalności. Strony wizytówkowe zaczynają się od 4000 zł, strony firmowe od 6000 zł, a sklepy internetowe od 8000 zł. Dla firm ze  oferujemy specjalne pakiety z uwzględnieniem lokalnego pozycjonowania."
     },
     {
-      question: "Czy pomagacie w prowadzeniu kampanii Google Ads dla firm ze Śląska?",
-      answer: "Tak, oferujemy kompleksowe zarządzanie kampaniami Google Ads dla firm ze Śląska. Nasze usługi obejmują analizę konkurencji, dobór słów kluczowych, tworzenie reklam, optymalizację stawek oraz regularne raportowanie wyników. Specjalizujemy się w kampaniach lokalnych, które docierają do klientów z konkretnych miast śląskich."
+      question: "Czy pomagacie w prowadzeniu kampanii Google Ads dla firm ze ?",
+      answer: "Tak, oferujemy kompleksowe zarządzanie kampaniami Google Ads dla firm ze . Nasze usługi obejmują analizę konkurencji, dobór słów kluczowych, tworzenie reklam, optymalizację stawek oraz regularne raportowanie wyników. Specjalizujemy się w kampaniach lokalnych, które docierają do klientów z konkretnych miast śląskich."
     }
   ];
 
@@ -190,8 +190,8 @@ const SilesianLandingPage = () => {
     <HelmetProvider>
       <div className="min-h-screen bg-white">
         <SEOHead 
-          title="WebDKW - Strony Internetowe i SEO dla Firm ze Śląska | Katowice, Gliwice, Zabrze"
-          description="Profesjonalne strony internetowe, pozycjonowanie SEO i marketing cyfrowy dla firm ze Śląska. Obsługujemy Katowice, Gliwice, Zabrze i cały region śląski."
+          title="WebDKW - Strony Internetowe i SEO dla Firm ze  | Katowice, Gliwice, Zabrze"
+          description="Profesjonalne strony internetowe, pozycjonowanie SEO i marketing cyfrowy dla firm ze . Obsługujemy Katowice, Gliwice, Zabrze i cały region śląski."
           keywords="strony internetowe śląsk, SEO katowice, pozycjonowanie gliwice, marketing cyfrowy zabrze, tworzenie stron śląsk"
           canonicalUrl="https://webdkw.com/slask"
         />
@@ -216,7 +216,7 @@ const SilesianLandingPage = () => {
                 
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                   Strony Internetowe dla Firm ze 
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-300"> Śląska</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-300"> Śląska</span>
                 </h1>
                 
                 <p className="text-xl text-blue-100 mb-8 leading-relaxed">
@@ -242,7 +242,7 @@ const SilesianLandingPage = () => {
                 <div className="grid grid-cols-3 gap-8 pt-8 border-t border-blue-700/50">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-blue-400 mb-2">50+</div>
-                    <div className="text-blue-200 text-sm">Firm ze Śląska</div>
+                    <div className="text-blue-200 text-sm">Firm ze </div>
                   </div>
                   <div className="text-center">
                     <div className="text-3xl font-bold text-blue-400 mb-2">5+</div>
@@ -332,7 +332,7 @@ const SilesianLandingPage = () => {
                         className="w-4 h-4 text-blue-600 bg-white/20 border-white/30 rounded focus:ring-blue-500"
                       />
                       <label htmlFor="leadMagnet" className="ml-2 text-sm text-blue-200">
-                        Chcę otrzymać darmowy przewodnik "SEO dla firm ze Śląska"
+                        Chcę otrzymać darmowy przewodnik "SEO dla firm ze "
                       </label>
                     </div>
                     
@@ -379,7 +379,7 @@ const SilesianLandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-gray-900 mb-4">Zaufali Nam</h2>
-              <p className="text-xl text-gray-600">Firmy ze Śląska, z którymi współpracujemy</p>
+              <p className="text-xl text-gray-600">Firmy ze , z którymi współpracujemy</p>
             </div>
             
             <div className="relative">
@@ -444,7 +444,7 @@ const SilesianLandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Kompleksowe Usługi Dla Firm ze Śląska
+                Kompleksowe Usługi Dla Firm ze 
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Oferujemy pełen zakres usług internetowych dostosowanych do specyfiki śląskiego rynku i potrzeb lokalnych przedsiębiorców.
@@ -487,7 +487,7 @@ const SilesianLandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Sukcesy Naszych Klientów ze Śląska
+                Sukcesy Naszych Klientów ze 
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Zobacz, jak pomogliśmy firmom z regionu śląskiego osiągnąć spektakularne rezultaty w internecie.
@@ -529,7 +529,7 @@ const SilesianLandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Co Mówią o Nas Klienci ze Śląska
+                Co Mówią o Nas Klienci ze 
               </h2>
               <p className="text-xl text-gray-600">
                 Opinie przedsiębiorców z Katowic, Gliwic, Zabrza i całego regionu
@@ -593,10 +593,10 @@ const SilesianLandingPage = () => {
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-4xl font-bold mb-6">
-                  Pozycjonowanie Lokalne dla Firm ze Śląska
+                  Pozycjonowanie Lokalne dla Firm ze 
                 </h2>
                 <p className="text-xl text-blue-100 mb-8">
-                  Specjalizujemy się w pozycjonowaniu lokalnym, które pomaga firmom ze Śląska być widocznymi dla klientów z regionu. Nasze strategie SEO są dostosowane do specyfiki śląskiego rynku.
+                  Specjalizujemy się w pozycjonowaniu lokalnym, które pomaga firmom ze  być widocznymi dla klientów z regionu. Nasze strategie SEO są dostosowane do specyfiki śląskiego rynku.
                 </p>
                 
                 <div className="space-y-6">
@@ -638,7 +638,7 @@ const SilesianLandingPage = () => {
                 <div className="grid grid-cols-2 gap-4">
                   {[
                     'Katowice', 'Gliwice', 'Zabrze', 'Bytom',
-                    'Sosnowiec', 'Ruda Śląska', 'Tychy', 'Dąbrowa Górnicza',
+                    'Sosnowiec', 'Ruda ', 'Tychy', 'Dąbrowa Górnicza',
                     'Chorzów', 'Jaworzno', 'Mysłowice', 'Siemianowice Śląskie'
                   ].map((city, index) => (
                     <div key={index} className="flex items-center">
@@ -670,7 +670,7 @@ const SilesianLandingPage = () => {
                 Skontaktuj się z Nami
               </h2>
               <p className="text-xl text-gray-600">
-                Jesteśmy gotowi pomóc Twojej firmie ze Śląska osiągnąć sukces w internecie
+                Jesteśmy gotowi pomóc Twojej firmie ze  osiągnąć sukces w internecie
               </p>
             </div>
             
@@ -715,7 +715,7 @@ const SilesianLandingPage = () => {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Stały Kontakt</h4>
-                      <p className="text-gray-600">Jesteśmy zawsze dostępni dla naszych klientów ze Śląska.</p>
+                      <p className="text-gray-600">Jesteśmy zawsze dostępni dla naszych klientów ze .</p>
                     </div>
                   </div>
                 </div>
@@ -829,7 +829,7 @@ const SilesianLandingPage = () => {
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                     />
                     <label htmlFor="leadMagnetForm" className="ml-2 text-sm text-gray-700">
-                      Chcę otrzymać darmowy przewodnik "SEO dla firm ze Śląska"
+                      Chcę otrzymać darmowy przewodnik "SEO dla firm ze "
                     </label>
                   </div>
                   
@@ -878,7 +878,7 @@ const SilesianLandingPage = () => {
                 Najczęściej Zadawane Pytania
               </h2>
               <p className="text-xl text-gray-600">
-                Odpowiedzi na pytania, które często zadają nam klienci ze Śląska
+                Odpowiedzi na pytania, które często zadają nam klienci ze 
               </p>
             </div>
 
