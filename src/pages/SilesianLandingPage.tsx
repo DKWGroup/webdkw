@@ -360,8 +360,7 @@ const SilesianLandingPage = () => {
                     href="/"
                     className="inline-block text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300"
                     style={{ 
-                      backgroundColor: activePalette.primary,
-                      "&:hover": { backgroundColor: activePalette.secondary }
+                      backgroundColor: activePalette.primary
                     }}
                   >
                     Wróć na strona główno
@@ -558,8 +557,7 @@ const SilesianLandingPage = () => {
                 onClick={prevSlide}
                 className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 text-gray-900 p-2 rounded-full shadow-lg transition-colors"
                 style={{ 
-                  backgroundColor: activePalette.primary,
-                  "&:hover": { backgroundColor: `${activePalette.primary}DD` }
+                  backgroundColor: activePalette.primary
                 }}
               >
                 <ChevronLeft className="h-6 w-6" />
@@ -569,8 +567,7 @@ const SilesianLandingPage = () => {
                 onClick={nextSlide}
                 className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 text-gray-900 p-2 rounded-full shadow-lg transition-colors"
                 style={{ 
-                  backgroundColor: activePalette.primary,
-                  "&:hover": { backgroundColor: `${activePalette.primary}DD` }
+                  backgroundColor: activePalette.primary
                 }}
               >
                 <ChevronRight className="h-6 w-6" />
@@ -856,7 +853,7 @@ const SilesianLandingPage = () => {
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all"
                         style={{ 
-                          "&:focus": { borderColor: activePalette.primary } 
+                          borderColor: 'rgb(209 213 219)'
                         }}
                         placeholder="Francik Nowok"
                       />
@@ -876,7 +873,7 @@ const SilesianLandingPage = () => {
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all"
                           style={{ 
-                            "&:focus": { borderColor: activePalette.primary } 
+                            borderColor: 'rgb(209 213 219)'
                           }}
                           placeholder="francik@firma.pl"
                         />
@@ -894,7 +891,7 @@ const SilesianLandingPage = () => {
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all"
                           style={{ 
-                            "&:focus": { borderColor: activePalette.primary } 
+                            borderColor: 'rgb(209 213 219)'
                           }}
                           placeholder="+48 123 456 789"
                         />
@@ -912,8 +909,7 @@ const SilesianLandingPage = () => {
                             onChange={(e) => setRodoConsent(e.target.checked)}
                             className="h-4 w-4 border-gray-300 rounded focus:ring-2"
                             style={{ 
-                              color: activePalette.primary,
-                              "&:focus": { borderColor: activePalette.primary } 
+                              color: activePalette.primary
                             }}
                             required
                           />
@@ -960,8 +956,7 @@ const SilesianLandingPage = () => {
                       disabled={isSubmitting || !rodoConsent}
                       className="w-full text-white px-8 py-4 rounded-lg text-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
                       style={{ 
-                        backgroundColor: activePalette.secondary,
-                        "&:hover": { backgroundColor: `${activePalette.secondary}DD` }
+                        backgroundColor: activePalette.secondary
                       }}
                     >
                       <span>{isSubmitting ? 'Wysyłanie...' : 'JO! BIERYMY SIE ZA ROBOTA!'}</span>
