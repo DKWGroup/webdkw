@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, Code, Database, TrendingUp, ExternalLink, Monitor, Smartphone, Search } from 'lucide-react';
+import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, Code, Database, TrendingUp, ExternalLink, Smartphone, Search } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import SEOHead from '../components/SEOHead';
 import Header from '../components/Header';
@@ -20,6 +20,7 @@ const SilesianLandingPage = () => {
   const [rodoConsent, setRodoConsent] = useState(false);
   const [showRodoInfo, setShowRodoInfo] = useState(false);
 
+  // Client logos with carousel functionality
   const clients = [
     { name: "Akademia Lutowania", city: "Katowice", logo: "/images/clients/akademia-lutowania.webp" },
     { name: "Contenty", city: "Chorzów", logo: "/images/clients/contenty.webp" },
@@ -29,6 +30,14 @@ const SilesianLandingPage = () => {
     { name: "MKHelicopters", city: "Ruda Śląska", logo: "/images/clients/mkhelicopters.webp" },
     { name: "WellDone", city: "Tychy", logo: "/images/clients/welldone.webp" }
   ];
+
+  const itemsPerSlide = {
+    mobile: 2,
+    tablet: 3,
+    desktop: 4
+  };
+
+  const [clientSlide, setClientSlide] = useState(0);
 
   const testimonials = [
     {
@@ -105,15 +114,15 @@ const SilesianLandingPage = () => {
     { word: "Na zicher", definition: "na pewno, na 100%" }
   ];
 
-  // Portfolio projects
+  // Portfolio projects - using existing projects from the site
   const portfolioProjects = [
     {
-      title: "Śląski Browar Rzemieślniczy",
-      description: "Nowoczesna strona dla browaru z Tychów z systemem rezerwacji wycieczek i sklepem online.",
-      image: "https://images.pexels.com/photos/1267700/pexels-photo-1267700.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      title: "TechStart Solutions",
+      description: "Kompleksowa platforma do zarządzania projektami technologicznymi z zaawansowanym systemem CRM.",
+      image: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800",
       city: "Tychy",
-      technologies: ["WordPress", "WooCommerce", "SEO"]
-    },
+      technologies: ["React", "Node.js", "PostgreSQL"]
+    }, 
     {
       title: "Kopalnia Wiedzy",
       description: "Platforma edukacyjna dla szkół na Śląsku z interaktywnym systemem nauki i quizami.",
@@ -122,10 +131,10 @@ const SilesianLandingPage = () => {
       technologies: ["React", "Node.js", "MongoDB"]
     },
     {
-      title: "Śląskie Smaki",
-      description: "Serwis kulinarny z przepisami na tradycyjne śląskie potrawy i system rezerwacji w restauracjach.",
-      image: "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-      city: "Chorzów",
+      title: "EcoGreen Consulting",
+      description: "Profesjonalna strona firmowa z kompleksową strategią SEO i content marketingiem.",
+      image: "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800",
+      city: "Zabrze",
       technologies: ["WordPress", "Custom Theme", "Google Maps API"]
     }
   ];
@@ -206,6 +215,27 @@ const SilesianLandingPage = () => {
   // Active color palette (first option by default)
   const activePalette = colorPalettes[0];
 
+  // Function to get the number of items to show based on screen width
+  const getItemsPerSlide = () => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 640) return itemsPerSlide.mobile;
+      if (window.innerWidth < 1024) return itemsPerSlide.tablet;
+      return itemsPerSlide.desktop;
+    }
+    return itemsPerSlide.desktop;
+  };
+
+  const [itemsToShow, setItemsToShow] = useState(getItemsPerSlide());
+  const totalClientSlides = Math.ceil(clients.length / itemsToShow);
+
+  const nextClientSlide = () => {
+    setClientSlide((prev) => (prev + 1) % totalClientSlides);
+  };
+
+  const prevClientSlide = () => {
+    setClientSlide((prev) => (prev - 1 + totalClientSlides) % totalClientSlides);
+  };
+
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % testimonials.length);
   };
@@ -213,6 +243,15 @@ const SilesianLandingPage = () => {
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
+
+  // Update items to show on window resize
+  React.useEffect(() => {
+    const handleResize = () => {
+      setItemsToShow(getItemsPerSlide());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -425,24 +464,64 @@ const SilesianLandingPage = () => {
             <h2 className="text-4xl font-bold text-center mb-16">
               Karlusy i Firmy ze Ślonska już nom zaufali
             </h2>
-            
-            <div className="relative mb-16">
+
+            {/* Client carousel - similar to the one on the main page */}
+            <div className="relative mb-12">
               <div className="overflow-hidden">
-                <div className="flex flex-wrap justify-center gap-8">
-                  {clients.map((client, index) => (
-                    <div key={index} className="flex flex-col items-center transition-all duration-300 hover:scale-110">
-                      <div className="bg-white/10 p-4 rounded-lg mb-3">
-                        <img 
-                          src={client.logo} 
-                          alt={client.name} 
-                          className="h-16 object-contain filter grayscale invert opacity-70"
-                        />
-                      </div>
+                <div 
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${clientSlide * 100}%)` }}
+                >
+                  {Array.from({ length: totalClientSlides }).map((_, slideIndex) => (
+                    <div key={slideIndex} className="w-full flex-shrink-0">
+                      <div className={`grid gap-8 justify-items-center ${
+                        itemsToShow === 2 ? 'grid-cols-2' :
+                        itemsToShow === 3 ? 'grid-cols-3' : 'grid-cols-4'
+                      }`}>
+                        {clients.slice(slideIndex * itemsToShow, (slideIndex + 1) * itemsToShow).map((client, index) => (
+                          <div 
+                            key={index}
+                            className="group transition-all duration-300 flex flex-col items-center"
+                          >
+                            <div className="bg-white/10 p-4 rounded-lg mb-3">
+                              <img 
+                                src={client.logo} 
+                                alt={client.name} 
+                                className="h-16 w-auto filter grayscale invert transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain" 
+                              />
+                            </div>
                       <p className="text-center text-gray-400">{client.name}, {client.city}</p>
                     </div>
                   ))}
                 </div>
               </div>
+            </div>
+            
+            {/* Navigation arrows - hidden on mobile */}
+            <button
+              onClick={prevClientSlide}
+              className="hidden sm:flex absolute left-0 top-1/3 transform -translate-y-1/2 -translate-x-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              style={{ color: activePalette.secondary }}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={nextClientSlide}
+              className="hidden sm:flex absolute right-0 top-1/3 transform -translate-y-1/2 translate-x-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              style={{ color: activePalette.secondary }}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+            
+            {/* Carousel indicators */}
+            <div className="flex justify-center space-x-2 mt-6 mb-12">
+              {Array.from({ length: totalClientSlides }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setClientSlide(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${clientSlide === index ? 'bg-white w-6' : 'bg-white/30 w-2'}`}
+                />
+              ))}
             </div>
             
             <div className="relative">
@@ -894,7 +973,7 @@ const SilesianLandingPage = () => {
         </section>
 
         {/* Footer */}
-        <section className="py-12 text-white" style={{ backgroundColor: activePalette.secondary }}>
+        <footer className="py-12 text-white" style={{ backgroundColor: activePalette.secondary }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-12">
               <div className="md:col-span-2 bg-white/5 p-6 rounded-lg">
@@ -908,36 +987,8 @@ const SilesianLandingPage = () => {
                   ))}
                 </div>
               </div>
-              
-              <div className="bg-white/5 p-6 rounded-lg">
-                <h3 className="text-2xl font-bold mb-6" style={{ color: activePalette.primary }}>Kontakt</h3>
-                <div className="space-y-4">
-                  <p className="mb-2 font-bold">WebDKW - Profesjonalne strony internetowe</p>
-                  
-                  <div className="flex items-start space-x-3">
-                    <MapPin className="h-5 w-5 mt-1" style={{ color: activePalette.primary }} />
-                    <p>Katowice, Śląsk</p>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <Mail className="h-5 w-5 mt-1" style={{ color: activePalette.primary }} />
-                    <p>contact.dkwgroup@gmail.com</p>
-                  </div>
-                  
-                  <div className="flex items-start space-x-3">
-                    <Phone className="h-5 w-5 mt-1" style={{ color: activePalette.primary }} />
-                    <p>+48 881 046 689</p>
-                  </div>
-                </div>
-                <div className="mt-6">
-                  <a href="/polityka-prywatnosci" className="hover:text-white transition-colors" style={{ color: activePalette.primary }}>
-                    Polityka prywatności
-                  </a>
-                </div>
-              </div>
             </div>
-            
-            <div className="border-t border-white/20 mt-12 pt-8 text-center text-gray-400">
+            <div className="mt-12 pt-8 text-center text-gray-400">
               <p>© {new Date().getFullYear()} WebDKW. Wszyskie prawa obwarowane.</p>
             </div>
           </div>
