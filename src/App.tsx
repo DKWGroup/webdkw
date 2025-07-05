@@ -12,6 +12,7 @@ import MarketingPage from './pages/services/MarketingPage'
 import PortfolioPage from './pages/PortfolioPage'
 import CaseStudiesPage from './pages/CaseStudiesPage'
 import CaseStudyPage from './pages/CaseStudyPage'
+import SilesianLandingPage from './pages/SilesianLandingPage'
 import ProcessPage from './pages/ProcessPage'
 import AboutPage from './pages/AboutPage'
 import FAQPage from './pages/FAQPage'
@@ -41,6 +42,7 @@ function App() {
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/case-studies" element={<CaseStudiesPage />} />
         <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
+        <Route path="/slask" element={<SilesianLandingPage />} />
         <Route path="/proces-realizacji" element={<ProcessPage />} />
         <Route path="/o-nas" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />
