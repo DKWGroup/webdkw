@@ -220,7 +220,7 @@ const SilesianLandingPage = () => {
                 </h1>
                 
                 <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                  Tworzymy profesjonalne strony internetowe i skutecznie pozycjonujemy firmy z Katowic, Gliwic, Zabrza i całego regionu śląskiego. Zwiększ swoją obecność online i pozyskaj więcej klientów.
+                  Twoja firma na Śląsku jest niewidoczno jak kret w kopalni? Zmienimy to! Tworzymy gryfne strony internetowe i robimy takie pozycjonowanie w Katowicach, Gliwicach i Zabrzu, że bydziesz na samym wiyrchu w Google. Dej pozór na nowych klientów!
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
