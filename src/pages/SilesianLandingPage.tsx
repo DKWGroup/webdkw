@@ -272,7 +272,7 @@ const SilesianLandingPage = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -595,7 +595,7 @@ const SilesianLandingPage = () => {
                 <h2 className="text-4xl font-bold mb-6">
                   Pozycjonowanie Lokalne dla Firm ze Śląska
                 </h2>
-                <p className="text-xl text-yellow-100 mb-8">
+                <p className="text-xl text-blue-100 mb-8">
                   Specjalizujemy się w pozycjonowaniu lokalnym, które pomaga firmom ze Śląska być widocznymi dla klientów z regionu. Nasze strategie SEO są dostosowane do specyfiki śląskiego rynku.
                 </p>
                 
@@ -606,7 +606,7 @@ const SilesianLandingPage = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Lokalne Frazy Kluczowe</h3>
-                      <p className="text-yellow-200">Optymalizujemy pod kątem fraz zawierających nazwy miast śląskich</p>
+                      <p className="text-blue-200">Optymalizujemy pod kątem fraz zawierających nazwy miast śląskich</p>
                     </div>
                   </div>
                   
@@ -616,7 +616,7 @@ const SilesianLandingPage = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Google Moja Firma</h3>
-                      <p className="text-yellow-200">Optymalizacja profilu w Google dla lepszej widoczności lokalnej</p>
+                      <p className="text-blue-200">Optymalizacja profilu w Google dla lepszej widoczności lokalnej</p>
                     </div>
                   </div>
                   
@@ -626,7 +626,7 @@ const SilesianLandingPage = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Analiza Konkurencji</h3>
-                      <p className="text-yellow-200">Badamy konkurencję w regionie śląskim i tworzymy lepsze strategie</p>
+                      <p className="text-blue-200">Badamy konkurencję w regionie śląskim i tworzymy lepsze strategie</p>
                     </div>
                   </div>
                 </div>
@@ -643,17 +643,17 @@ const SilesianLandingPage = () => {
                   ].map((city, index) => (
                     <div key={index} className="flex items-center">
                       <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                      <span className="text-yellow-100">{city}</span>
+                      <span className="text-blue-100">{city}</span>
                     </div>
                   ))}
                 </div>
                 
-                <div className="mt-8 p-4 bg-yellow-500/20 rounded-lg border border-yellow-400/30">
-                  <div className="flex items-center text-yellow-400 mb-2">
+                <div className="mt-8 p-4 bg-blue-500/20 rounded-lg border border-blue-400/30">
+                  <div className="flex items-center text-blue-400 mb-2">
                     <Lightbulb className="w-5 h-5 mr-2" />
                     <span className="font-semibold">Lokalny Bonus</span>
                   </div>
-                  <p className="text-yellow-100 text-sm">
+                  <p className="text-blue-100 text-sm">
                     Dla firm z regionu śląskiego oferujemy dodatkową optymalizację pod kątem lokalnych wydarzeń i trendów.
                   </p>
                 </div>
@@ -826,7 +826,7 @@ const SilesianLandingPage = () => {
                       id="leadMagnetForm"
                       checked={formData.leadMagnet}
                       onChange={handleInputChange}
-                      className="w-4 h-4 text-yellow-600 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500"
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                     />
                     <label htmlFor="leadMagnetForm" className="ml-2 text-sm text-gray-700">
                       Chcę otrzymać darmowy przewodnik "SEO dla firm ze Śląska"
