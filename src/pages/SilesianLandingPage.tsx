@@ -199,7 +199,7 @@ const SilesianLandingPage = () => {
         <Header />
 
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-yellow-700 via-yellow-800 to-yellow-900 text-white py-20 overflow-hidden">
+        <section className="relative bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white py-20 overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="absolute inset-0">
             <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
