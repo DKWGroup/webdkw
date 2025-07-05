@@ -209,17 +209,17 @@ const SilesianLandingPage = () => {
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center bg-yellow-500/20 text-yellow-200 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <div className="inline-flex items-center bg-blue-500/20 text-blue-200 px-4 py-2 rounded-full text-sm font-medium mb-6">
                   <MapPin className="w-4 h-4 mr-2" />
                   Obsługujemy cały region śląski
                 </div>
                 
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                   Strony Internetowe dla Firm ze 
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-300"> Śląska</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-300"> Śląska</span>
                 </h1>
                 
-                <p className="text-xl text-yellow-100 mb-8 leading-relaxed">
+                <p className="text-xl text-blue-100 mb-8 leading-relaxed">
                   Tworzymy profesjonalne strony internetowe i skutecznie pozycjonujemy firmy z Katowic, Gliwic, Zabrza i całego regionu śląskiego. Zwiększ swoją obecność online i pozyskaj więcej klientów.
                 </p>
                 
@@ -239,25 +239,25 @@ const SilesianLandingPage = () => {
                   </a>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-8 pt-8 border-t border-yellow-700/50">
+                <div className="grid grid-cols-3 gap-8 pt-8 border-t border-blue-700/50">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-yellow-400 mb-2">50+</div>
-                    <div className="text-yellow-200 text-sm">Firm ze Śląska</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-2">50+</div>
+                    <div className="text-blue-200 text-sm">Firm ze Śląska</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-yellow-400 mb-2">5+</div>
-                    <div className="text-yellow-200 text-sm">Lat Doświadczenia</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-2">5+</div>
+                    <div className="text-blue-200 text-sm">Lat Doświadczenia</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-yellow-400 mb-2">98%</div>
-                    <div className="text-yellow-200 text-sm">Zadowolonych Klientów</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-2">98%</div>
+                    <div className="text-blue-200 text-sm">Zadowolonych Klientów</div>
                   </div>
                 </div>
               </div>
               
               <div className="relative">
                 <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                  <div className="absolute -top-4 -right-4 bg-yellow-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                  <div className="absolute -top-4 -right-4 bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
                     Darmowa Analiza!
                   </div>
                   
@@ -272,7 +272,7 @@ const SilesianLandingPage = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -284,7 +284,7 @@ const SilesianLandingPage = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -295,7 +295,7 @@ const SilesianLandingPage = () => {
                         placeholder="Nazwa firmy"
                         value={formData.company}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -306,7 +306,7 @@ const SilesianLandingPage = () => {
                         placeholder="Telefon"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -318,7 +318,7 @@ const SilesianLandingPage = () => {
                         onChange={handleInputChange}
                         rows={3}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
                       />
                     </div>
                     
@@ -329,9 +329,9 @@ const SilesianLandingPage = () => {
                         id="leadMagnet"
                         checked={formData.leadMagnet}
                         onChange={handleInputChange}
-                        className="w-4 h-4 text-yellow-600 bg-white/20 border-white/30 rounded focus:ring-yellow-500"
+                        className="w-4 h-4 text-blue-600 bg-white/20 border-white/30 rounded focus:ring-blue-500"
                       />
-                      <label htmlFor="leadMagnet" className="ml-2 text-sm text-yellow-200">
+                      <label htmlFor="leadMagnet" className="ml-2 text-sm text-blue-200">
                         Chcę otrzymać darmowy przewodnik "SEO dla firm ze Śląska"
                       </label>
                     </div>
@@ -355,7 +355,7 @@ const SilesianLandingPage = () => {
                     </button>
                     
                     {submitStatus === 'success' && (
-                      <div className="flex items-center text-yellow-400 text-sm">
+                      <div className="flex items-center text-blue-400 text-sm">
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Dziękujemy! Skontaktujemy się z Tobą w ciągu 24 godzin.
                       </div>
