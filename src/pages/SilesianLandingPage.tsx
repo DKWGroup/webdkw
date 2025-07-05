@@ -226,14 +226,14 @@ const SilesianLandingPage = () => {
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <a 
                     href="#contact" 
-                    className="inline-flex items-center justify-center bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   >
                     Bezpłatna Konsultacja
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </a>
                   <a 
                     href="#services" 
-                    className="inline-flex items-center justify-center border-2 border-green-400 text-green-400 px-8 py-4 rounded-lg font-semibold hover:bg-green-400 hover:text-green-900 transition-all duration-300"
+                    className="inline-flex items-center justify-center border-2 border-blue-400 text-blue-400 px-8 py-4 rounded-lg font-semibold hover:bg-blue-400 hover:text-blue-900 transition-all duration-300"
                   >
                     Nasze Usługi
                   </a>
@@ -454,7 +454,7 @@ const SilesianLandingPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {services.map((service, index) => (
                 <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group hover:-translate-y-2">
-                  <div className="text-green-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-blue-600 mb-6 group-hover:scale-110 transition-transform duration-300">
                     {service.icon}
                   </div>
                   
@@ -464,7 +464,7 @@ const SilesianLandingPage = () => {
                   <ul className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-center text-sm text-gray-700">
-                        <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
+                        <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" />
                         {feature}
                       </li>
                     ))}
@@ -503,13 +503,13 @@ const SilesianLandingPage = () => {
                       alt={study.title}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    <div className="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       {study.result}
                     </div>
                   </div>
                   
                   <div className="p-6">
-                    <div className="text-sm text-green-600 font-semibold mb-2">{study.industry}</div>
+                    <div className="text-sm text-blue-600 font-semibold mb-2">{study.industry}</div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3">{study.title}</h3>
                     <p className="text-gray-600 mb-4">{study.description}</p>
                     
@@ -588,7 +588,7 @@ const SilesianLandingPage = () => {
         </section>
 
         {/* Local SEO Section */}
-        <section className="py-20 bg-green-800 text-white">
+        <section className="py-20 bg-blue-800 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -601,7 +601,7 @@ const SilesianLandingPage = () => {
                 
                 <div className="space-y-6">
                   <div className="flex items-start">
-                    <div className="bg-green-500 rounded-lg p-3 mr-4">
+                    <div className="bg-blue-500 rounded-lg p-3 mr-4">
                       <MapPin className="w-6 h-6" />
                     </div>
                     <div>
@@ -611,7 +611,7 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-green-500 rounded-lg p-3 mr-4">
+                    <div className="bg-blue-500 rounded-lg p-3 mr-4">
                       <Search className="w-6 h-6" />
                     </div>
                     <div>
@@ -621,7 +621,7 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-green-500 rounded-lg p-3 mr-4">
+                    <div className="bg-blue-500 rounded-lg p-3 mr-4">
                       <TrendingUp className="w-6 h-6" />
                     </div>
                     <div>
@@ -642,7 +642,7 @@ const SilesianLandingPage = () => {
                     'Chorzów', 'Jaworzno', 'Mysłowice', 'Siemianowice Śląskie'
                   ].map((city, index) => (
                     <div key={index} className="flex items-center">
-                      <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
+                      <CheckCircle className="w-4 h-4 text-blue-400 mr-2" />
                       <span className="text-blue-100">{city}</span>
                     </div>
                   ))}
@@ -680,8 +680,8 @@ const SilesianLandingPage = () => {
                 
                 <div className="space-y-6">
                   <div className="flex items-start">
-                    <div className="bg-green-100 rounded-lg p-3 mr-4">
-                      <MapPin className="w-6 h-6 text-green-600" />
+                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
+                      <MapPin className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Znajomość Lokalnego Rynku</h4>
@@ -690,8 +690,8 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-green-100 rounded-lg p-3 mr-4">
-                      <Clock className="w-6 h-6 text-green-600" />
+                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
+                      <Clock className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Szybka Realizacja</h4>
@@ -700,8 +700,8 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-green-100 rounded-lg p-3 mr-4">
-                      <Settings className="w-6 h-6 text-green-600" />
+                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
+                      <Settings className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Kompleksowa Obsługa</h4>
@@ -710,8 +710,8 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-green-100 rounded-lg p-3 mr-4">
-                      <MessageSquare className="w-6 h-6 text-green-600" />
+                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
+                      <MessageSquare className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Stały Kontakt</h4>
@@ -720,22 +720,22 @@ const SilesianLandingPage = () => {
                   </div>
                 </div>
                 
-                <div className="mt-8 p-6 bg-green-50 rounded-xl border border-green-200">
+                <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
                   <h4 className="text-lg font-semibold text-gray-900 mb-4">Dane Kontaktowe</h4>
                   
                   <div className="space-y-3">
                     <div className="flex items-center">
-                      <Phone className="w-5 h-5 text-green-600 mr-3" />
+                      <Phone className="w-5 h-5 text-blue-600 mr-3" />
                       <span className="text-gray-700">+48 123 456 789</span>
                     </div>
                     
                     <div className="flex items-center">
-                      <Mail className="w-5 h-5 text-green-600 mr-3" />
+                      <Mail className="w-5 h-5 text-blue-600 mr-3" />
                       <span className="text-gray-700">kontakt@webdkw.com</span>
                     </div>
                     
                     <div className="flex items-center">
-                      <MapPin className="w-5 h-5 text-green-600 mr-3" />
+                      <MapPin className="w-5 h-5 text-blue-600 mr-3" />
                       <span className="text-gray-700">Obsługujemy cały region śląski</span>
                     </div>
                   </div>
@@ -757,7 +757,7 @@ const SilesianLandingPage = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                     
@@ -771,7 +771,7 @@ const SilesianLandingPage = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                   </div>
@@ -786,7 +786,7 @@ const SilesianLandingPage = () => {
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                     
@@ -799,7 +799,7 @@ const SilesianLandingPage = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                   </div>
@@ -814,7 +814,7 @@ const SilesianLandingPage = () => {
                       onChange={handleInputChange}
                       required
                       rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-300 resize-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
                       placeholder="Opisz swoje potrzeby i oczekiwania..."
                     />
                   </div>
@@ -852,7 +852,7 @@ const SilesianLandingPage = () => {
                   </button>
                   
                   {submitStatus === 'success' && (
-                    <div className="flex items-center text-green-600 bg-green-50 p-4 rounded-lg">
+                    <div className="flex items-center text-blue-600 bg-blue-50 p-4 rounded-lg">
                       <CheckCircle className="w-5 h-5 mr-2" />
                       Dziękujemy za wiadomość! Skontaktujemy się z Tobą w ciągu 24 godzin.
                     </div>
@@ -897,9 +897,9 @@ const SilesianLandingPage = () => {
                     </h3>
                     <div className="flex-shrink-0">
                       {openFaq === index ? (
-                        <Minus className="h-6 w-6 text-green-500" />
+                        <Minus className="h-6 w-6 text-blue-500" />
                       ) : (
-                        <Plus className="h-6 w-6 text-yellow-500" />
+                        <Plus className="h-6 w-6 text-blue-500" />
                       )}
                     </div>
                   </button>
@@ -918,7 +918,7 @@ const SilesianLandingPage = () => {
             </div>
 
             <div className="text-center mt-12">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <p className="text-yellow-800 font-semibold">
                   💬 Masz inne pytanie? Skontaktuj się z nami - odpowiemy w ciągu 24 godzin!
                 </p>
