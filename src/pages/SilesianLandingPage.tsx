@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, Code, Database, TrendingUp, ExternalLink, Smartphone, Search } from 'lucide-react';
+import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, Code, Database, TrendingUp, ExternalLink, Smartphone, Search, Plus, Minus } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import SEOHead from '../components/SEOHead';
 import Header from '../components/Header';
@@ -8,6 +8,8 @@ import Footer from '../components/Footer';
 
 const SilesianLandingPage = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -91,6 +93,39 @@ const SilesianLandingPage = () => {
     }
   ];
 
+  const clients = [
+    { name: "Akademia Lutowania", logo: "/images/clients/akademia-lutowania.webp" },
+    { name: "Contenty", logo: "/images/clients/contenty.webp" },
+    { name: "Grzegorz Kusz", logo: "/images/clients/gk.webp" },
+    { name: "GlowUP", logo: "/images/clients/glowup.webp" },
+    { name: "Investment Partners", logo: "/images/clients/inp.svg" },
+    { name: "MKHelicopters", logo: "/images/clients/mkhelicopters.webp" },
+    { name: "WellDone", logo: "/images/clients/welldone.webp" }
+  ];
+
+  const faqs = [
+    {
+      question: "Dlaczego warto wybrać agencję ze znajomością śląskiego rynku?",
+      answer: "Agencja ze znajomością lokalnego rynku śląskiego rozumie specyfikę regionalnych klientów, konkurencję oraz lokalne trendy biznesowe. Dzięki temu możemy lepiej dostosować strategię marketingową, treści oraz pozycjonowanie do potrzeb śląskich odbiorców, co przekłada się na wyższe konwersje i lepszy zwrot z inwestycji."
+    },
+    {
+      question: "Jak długo trwa stworzenie strony internetowej dla firmy ze Śląska?",
+      answer: "Czas realizacji zależy od złożoności projektu. Standardowa strona wizytówkowa zajmuje około 2-3 tygodnie, bardziej rozbudowane strony firmowe 4-6 tygodni, a zaawansowane platformy e-commerce 6-8 tygodni. Dla firm ze Śląska oferujemy przyspieszoną realizację w przypadkach pilnych projektów."
+    },
+    {
+      question: "Czy oferujecie pozycjonowanie lokalne dla miast śląskich?",
+      answer: "Tak, specjalizujemy się w pozycjonowaniu lokalnym dla firm z Katowic, Gliwic, Zabrza i innych miast śląskich. Nasze strategie SEO uwzględniają lokalne frazy kluczowe, optymalizację Google Moja Firma oraz budowanie lokalnych linków, co znacząco zwiększa widoczność w lokalnych wynikach wyszukiwania."
+    },
+    {
+      question: "Jakie są koszty stworzenia strony internetowej dla firmy ze Śląska?",
+      answer: "Koszt strony internetowej zależy od jej złożoności i funkcjonalności. Strony wizytówkowe zaczynają się od 4000 zł, strony firmowe od 6000 zł, a sklepy internetowe od 8000 zł. Dla firm ze Śląska oferujemy specjalne pakiety z uwzględnieniem lokalnego pozycjonowania."
+    },
+    {
+      question: "Czy pomagacie w prowadzeniu kampanii Google Ads dla firm ze Śląska?",
+      answer: "Tak, oferujemy kompleksowe zarządzanie kampaniami Google Ads dla firm ze Śląska. Nasze usługi obejmują analizę konkurencji, dobór słów kluczowych, tworzenie reklam, optymalizację stawek oraz regularne raportowanie wyników. Specjalizujemy się w kampaniach lokalnych, które docierają do klientów z konkretnych miast śląskich."
+    }
+  ];
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     setFormData(prev => ({
@@ -143,6 +178,14 @@ const SilesianLandingPage = () => {
     setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % Math.ceil(clients.length / 4));
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + Math.ceil(clients.length / 4)) % Math.ceil(clients.length / 4));
+  };
+
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-white">
@@ -156,65 +199,65 @@ const SilesianLandingPage = () => {
         <Header />
 
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-20 overflow-hidden">
+        <section className="relative bg-gradient-to-br from-yellow-700 via-yellow-800 to-yellow-900 text-white py-20 overflow-hidden">
           <div className="absolute inset-0 bg-black/20"></div>
           <div className="absolute inset-0">
-            <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
-            <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute top-20 left-10 w-72 h-72 bg-yellow-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-20 right-10 w-96 h-96 bg-yellow-500/10 rounded-full blur-3xl"></div>
           </div>
           
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
-                <div className="inline-flex items-center bg-blue-500/20 text-blue-200 px-4 py-2 rounded-full text-sm font-medium mb-6">
+                <div className="inline-flex items-center bg-yellow-500/20 text-yellow-200 px-4 py-2 rounded-full text-sm font-medium mb-6">
                   <MapPin className="w-4 h-4 mr-2" />
                   Obsługujemy cały region śląski
                 </div>
                 
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
                   Strony Internetowe dla Firm ze 
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400"> Śląska</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-300"> Śląska</span>
                 </h1>
                 
-                <p className="text-xl text-blue-100 mb-8 leading-relaxed">
+                <p className="text-xl text-yellow-100 mb-8 leading-relaxed">
                   Tworzymy profesjonalne strony internetowe i skutecznie pozycjonujemy firmy z Katowic, Gliwic, Zabrza i całego regionu śląskiego. Zwiększ swoją obecność online i pozyskaj więcej klientów.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <a 
                     href="#contact" 
-                    className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    className="inline-flex items-center justify-center bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   >
                     Bezpłatna Konsultacja
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </a>
                   <a 
                     href="#services" 
-                    className="inline-flex items-center justify-center border-2 border-blue-400 text-blue-400 px-8 py-4 rounded-lg font-semibold hover:bg-blue-400 hover:text-blue-900 transition-all duration-300"
+                    className="inline-flex items-center justify-center border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-lg font-semibold hover:bg-yellow-400 hover:text-yellow-900 transition-all duration-300"
                   >
                     Nasze Usługi
                   </a>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-8 pt-8 border-t border-blue-700/50">
+                <div className="grid grid-cols-3 gap-8 pt-8 border-t border-yellow-700/50">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400 mb-2">50+</div>
-                    <div className="text-blue-200 text-sm">Firm ze Śląska</div>
+                    <div className="text-3xl font-bold text-yellow-400 mb-2">50+</div>
+                    <div className="text-yellow-200 text-sm">Firm ze Śląska</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400 mb-2">5+</div>
-                    <div className="text-blue-200 text-sm">Lat Doświadczenia</div>
+                    <div className="text-3xl font-bold text-yellow-400 mb-2">5+</div>
+                    <div className="text-yellow-200 text-sm">Lat Doświadczenia</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400 mb-2">98%</div>
-                    <div className="text-blue-200 text-sm">Zadowolonych Klientów</div>
+                    <div className="text-3xl font-bold text-yellow-400 mb-2">98%</div>
+                    <div className="text-yellow-200 text-sm">Zadowolonych Klientów</div>
                   </div>
                 </div>
               </div>
               
               <div className="relative">
                 <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                  <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                  <div className="absolute -top-4 -right-4 bg-yellow-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
                     Darmowa Analiza!
                   </div>
                   
@@ -229,7 +272,7 @@ const SilesianLandingPage = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -241,7 +284,7 @@ const SilesianLandingPage = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -252,7 +295,7 @@ const SilesianLandingPage = () => {
                         placeholder="Nazwa firmy"
                         value={formData.company}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -263,7 +306,7 @@ const SilesianLandingPage = () => {
                         placeholder="Telefon"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                       />
                     </div>
                     
@@ -275,7 +318,7 @@ const SilesianLandingPage = () => {
                         onChange={handleInputChange}
                         rows={3}
                         required
-                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent resize-none"
+                        className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-yellow-200 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
                       />
                     </div>
                     
@@ -286,9 +329,9 @@ const SilesianLandingPage = () => {
                         id="leadMagnet"
                         checked={formData.leadMagnet}
                         onChange={handleInputChange}
-                        className="w-4 h-4 text-blue-600 bg-white/20 border-white/30 rounded focus:ring-blue-500"
+                        className="w-4 h-4 text-yellow-600 bg-white/20 border-white/30 rounded focus:ring-yellow-500"
                       />
-                      <label htmlFor="leadMagnet" className="ml-2 text-sm text-blue-200">
+                      <label htmlFor="leadMagnet" className="ml-2 text-sm text-yellow-200">
                         Chcę otrzymać darmowy przewodnik "SEO dla firm ze Śląska"
                       </label>
                     </div>
@@ -296,7 +339,7 @@ const SilesianLandingPage = () => {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-4 rounded-lg font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                      className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-4 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                     >
                       {isSubmitting ? (
                         <>
@@ -312,7 +355,7 @@ const SilesianLandingPage = () => {
                     </button>
                     
                     {submitStatus === 'success' && (
-                      <div className="flex items-center text-green-400 text-sm">
+                      <div className="flex items-center text-yellow-400 text-sm">
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Dziękujemy! Skontaktujemy się z Tobą w ciągu 24 godzin.
                       </div>
@@ -326,6 +369,71 @@ const SilesianLandingPage = () => {
                     )}
                   </form>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Client Logos Carousel */}
+        <section className="py-16 bg-white border-t border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Zaufali Nam</h2>
+              <p className="text-xl text-gray-600">Firmy ze Śląska, z którymi współpracujemy</p>
+            </div>
+            
+            <div className="relative">
+              <div className="overflow-hidden">
+                <div 
+                  className="flex transition-transform duration-500 ease-in-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {Array.from({ length: Math.ceil(clients.length / 4) }).map((_, slideIndex) => (
+                    <div key={slideIndex} className="w-full flex-shrink-0">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
+                        {clients.slice(slideIndex * 4, (slideIndex + 1) * 4).map((client, index) => (
+                          <div 
+                            key={index}
+                            className="group transition-all duration-300 flex items-center justify-center"
+                          >
+                            <img 
+                              src={client.logo} 
+                              alt={client.name} 
+                              className="h-12 sm:h-16 w-auto filter grayscale invert transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain" 
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Navigation arrows */}
+              <button
+                onClick={prevSlide}
+                className="hidden sm:flex absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              >
+                <ChevronLeft className="h-4 w-4 text-gray-600" />
+              </button>
+              <button
+                onClick={nextSlide}
+                className="hidden sm:flex absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-white transition-colors"
+              >
+                <ChevronRight className="h-4 w-4 text-gray-600" />
+              </button>
+              
+              {/* Carousel indicators */}
+              <div className="flex justify-center space-x-2 mt-6">
+                {Array.from({ length: Math.ceil(clients.length / 4) }).map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentSlide === index ? 'bg-yellow-500 w-6' : 'bg-gray-300 w-2'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -346,7 +454,7 @@ const SilesianLandingPage = () => {
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {services.map((service, index) => (
                 <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group hover:-translate-y-2">
-                  <div className="text-blue-600 mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <div className="text-yellow-600 mb-6 group-hover:scale-110 transition-transform duration-300">
                     {service.icon}
                   </div>
                   
@@ -363,7 +471,7 @@ const SilesianLandingPage = () => {
                   </ul>
                   
                   <div className="mt-6 pt-6 border-t border-gray-100">
-                    <a href="#contact" className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-300 flex items-center">
+                    <a href="#contact" className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center">
                       Dowiedz się więcej
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </a>
@@ -395,17 +503,17 @@ const SilesianLandingPage = () => {
                       alt={study.title}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    <div className="absolute top-4 right-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                       {study.result}
                     </div>
                   </div>
                   
                   <div className="p-6">
-                    <div className="text-sm text-blue-600 font-semibold mb-2">{study.industry}</div>
+                    <div className="text-sm text-yellow-600 font-semibold mb-2">{study.industry}</div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3">{study.title}</h3>
                     <p className="text-gray-600 mb-4">{study.description}</p>
                     
-                    <a href="#contact" className="text-blue-600 font-semibold hover:text-blue-700 transition-colors duration-300 flex items-center">
+                    <a href="#contact" className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center">
                       Zobacz szczegóły
                       <ExternalLink className="w-4 h-4 ml-1" />
                     </a>
@@ -444,7 +552,7 @@ const SilesianLandingPage = () => {
                   <div className="font-bold text-gray-900 text-lg">
                     {testimonials[currentTestimonial].name}
                   </div>
-                  <div className="text-blue-600 font-semibold">
+                  <div className="text-yellow-600 font-semibold">
                     {testimonials[currentTestimonial].company}
                   </div>
                 </div>
@@ -452,14 +560,14 @@ const SilesianLandingPage = () => {
               
               <button
                 onClick={prevTestimonial}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-blue-600"
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-yellow-600"
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               
               <button
                 onClick={nextTestimonial}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-blue-600"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-yellow-600"
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
@@ -470,7 +578,7 @@ const SilesianLandingPage = () => {
                     key={index}
                     onClick={() => setCurrentTestimonial(index)}
                     className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentTestimonial ? 'bg-blue-600' : 'bg-gray-300'
+                      index === currentTestimonial ? 'bg-yellow-600' : 'bg-gray-300'
                     }`}
                   />
                 ))}
@@ -480,45 +588,45 @@ const SilesianLandingPage = () => {
         </section>
 
         {/* Local SEO Section */}
-        <section className="py-20 bg-blue-900 text-white">
+        <section className="py-20 bg-yellow-800 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-4xl font-bold mb-6">
                   Pozycjonowanie Lokalne dla Firm ze Śląska
                 </h2>
-                <p className="text-xl text-blue-100 mb-8">
+                <p className="text-xl text-yellow-100 mb-8">
                   Specjalizujemy się w pozycjonowaniu lokalnym, które pomaga firmom ze Śląska być widocznymi dla klientów z regionu. Nasze strategie SEO są dostosowane do specyfiki śląskiego rynku.
                 </p>
                 
                 <div className="space-y-6">
                   <div className="flex items-start">
-                    <div className="bg-blue-500 rounded-lg p-3 mr-4">
+                    <div className="bg-yellow-500 rounded-lg p-3 mr-4">
                       <MapPin className="w-6 h-6" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Lokalne Frazy Kluczowe</h3>
-                      <p className="text-blue-200">Optymalizujemy pod kątem fraz zawierających nazwy miast śląskich</p>
+                      <p className="text-yellow-200">Optymalizujemy pod kątem fraz zawierających nazwy miast śląskich</p>
                     </div>
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-blue-500 rounded-lg p-3 mr-4">
+                    <div className="bg-yellow-500 rounded-lg p-3 mr-4">
                       <Search className="w-6 h-6" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Google Moja Firma</h3>
-                      <p className="text-blue-200">Optymalizacja profilu w Google dla lepszej widoczności lokalnej</p>
+                      <p className="text-yellow-200">Optymalizacja profilu w Google dla lepszej widoczności lokalnej</p>
                     </div>
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-blue-500 rounded-lg p-3 mr-4">
+                    <div className="bg-yellow-500 rounded-lg p-3 mr-4">
                       <TrendingUp className="w-6 h-6" />
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Analiza Konkurencji</h3>
-                      <p className="text-blue-200">Badamy konkurencję w regionie śląskim i tworzymy lepsze strategie</p>
+                      <p className="text-yellow-200">Badamy konkurencję w regionie śląskim i tworzymy lepsze strategie</p>
                     </div>
                   </div>
                 </div>
@@ -535,17 +643,17 @@ const SilesianLandingPage = () => {
                   ].map((city, index) => (
                     <div key={index} className="flex items-center">
                       <CheckCircle className="w-4 h-4 text-green-400 mr-2" />
-                      <span className="text-blue-100">{city}</span>
+                      <span className="text-yellow-100">{city}</span>
                     </div>
                   ))}
                 </div>
                 
-                <div className="mt-8 p-4 bg-green-500/20 rounded-lg border border-green-400/30">
-                  <div className="flex items-center text-green-400 mb-2">
+                <div className="mt-8 p-4 bg-yellow-500/20 rounded-lg border border-yellow-400/30">
+                  <div className="flex items-center text-yellow-400 mb-2">
                     <Lightbulb className="w-5 h-5 mr-2" />
                     <span className="font-semibold">Lokalny Bonus</span>
                   </div>
-                  <p className="text-green-100 text-sm">
+                  <p className="text-yellow-100 text-sm">
                     Dla firm z regionu śląskiego oferujemy dodatkową optymalizację pod kątem lokalnych wydarzeń i trendów.
                   </p>
                 </div>
@@ -572,8 +680,8 @@ const SilesianLandingPage = () => {
                 
                 <div className="space-y-6">
                   <div className="flex items-start">
-                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
-                      <MapPin className="w-6 h-6 text-blue-600" />
+                    <div className="bg-yellow-100 rounded-lg p-3 mr-4">
+                      <MapPin className="w-6 h-6 text-yellow-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Znajomość Lokalnego Rynku</h4>
@@ -582,8 +690,8 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
-                      <Clock className="w-6 h-6 text-blue-600" />
+                    <div className="bg-yellow-100 rounded-lg p-3 mr-4">
+                      <Clock className="w-6 h-6 text-yellow-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Szybka Realizacja</h4>
@@ -592,8 +700,8 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
-                      <Settings className="w-6 h-6 text-blue-600" />
+                    <div className="bg-yellow-100 rounded-lg p-3 mr-4">
+                      <Settings className="w-6 h-6 text-yellow-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Kompleksowa Obsługa</h4>
@@ -602,8 +710,8 @@ const SilesianLandingPage = () => {
                   </div>
                   
                   <div className="flex items-start">
-                    <div className="bg-blue-100 rounded-lg p-3 mr-4">
-                      <MessageSquare className="w-6 h-6 text-blue-600" />
+                    <div className="bg-yellow-100 rounded-lg p-3 mr-4">
+                      <MessageSquare className="w-6 h-6 text-yellow-600" />
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Stały Kontakt</h4>
@@ -612,22 +720,22 @@ const SilesianLandingPage = () => {
                   </div>
                 </div>
                 
-                <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
+                <div className="mt-8 p-6 bg-yellow-50 rounded-xl border border-yellow-200">
                   <h4 className="text-lg font-semibold text-gray-900 mb-4">Dane Kontaktowe</h4>
                   
                   <div className="space-y-3">
                     <div className="flex items-center">
-                      <Phone className="w-5 h-5 text-blue-600 mr-3" />
+                      <Phone className="w-5 h-5 text-yellow-600 mr-3" />
                       <span className="text-gray-700">+48 123 456 789</span>
                     </div>
                     
                     <div className="flex items-center">
-                      <Mail className="w-5 h-5 text-blue-600 mr-3" />
+                      <Mail className="w-5 h-5 text-yellow-600 mr-3" />
                       <span className="text-gray-700">kontakt@webdkw.com</span>
                     </div>
                     
                     <div className="flex items-center">
-                      <MapPin className="w-5 h-5 text-blue-600 mr-3" />
+                      <MapPin className="w-5 h-5 text-yellow-600 mr-3" />
                       <span className="text-gray-700">Obsługujemy cały region śląski</span>
                     </div>
                   </div>
@@ -649,7 +757,7 @@ const SilesianLandingPage = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                     
@@ -663,7 +771,7 @@ const SilesianLandingPage = () => {
                         value={formData.email}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                   </div>
@@ -678,7 +786,7 @@ const SilesianLandingPage = () => {
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                     
@@ -691,7 +799,7 @@ const SilesianLandingPage = () => {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
                   </div>
@@ -706,7 +814,7 @@ const SilesianLandingPage = () => {
                       onChange={handleInputChange}
                       required
                       rows={4}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition-all duration-300 resize-none"
                       placeholder="Opisz swoje potrzeby i oczekiwania..."
                     />
                   </div>
@@ -718,7 +826,7 @@ const SilesianLandingPage = () => {
                       id="leadMagnetForm"
                       checked={formData.leadMagnet}
                       onChange={handleInputChange}
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                      className="w-4 h-4 text-yellow-600 bg-gray-100 border-gray-300 rounded focus:ring-yellow-500"
                     />
                     <label htmlFor="leadMagnetForm" className="ml-2 text-sm text-gray-700">
                       Chcę otrzymać darmowy przewodnik "SEO dla firm ze Śląska"
@@ -728,7 +836,7 @@ const SilesianLandingPage = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg hover:shadow-xl"
+                    className="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 text-white px-8 py-4 rounded-lg font-semibold hover:from-yellow-700 hover:to-yellow-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg hover:shadow-xl"
                   >
                     {isSubmitting ? (
                       <>
@@ -757,6 +865,63 @@ const SilesianLandingPage = () => {
                     </div>
                   )}
                 </form>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Najczęściej Zadawane Pytania
+              </h2>
+              <p className="text-xl text-gray-600">
+                Odpowiedzi na pytania, które często zadają nam klienci ze Śląska
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
+                >
+                  <button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
+                  >
+                    <h3 className="text-lg font-bold text-gray-900 pr-4">
+                      {faq.question}
+                    </h3>
+                    <div className="flex-shrink-0">
+                      {openFaq === index ? (
+                        <Minus className="h-6 w-6 text-yellow-500" />
+                      ) : (
+                        <Plus className="h-6 w-6 text-yellow-500" />
+                      )}
+                    </div>
+                  </button>
+                  
+                  {openFaq === index && (
+                    <div className="px-8 pb-6">
+                      <div className="border-t border-gray-100 pt-6">
+                        <p className="text-gray-600 leading-relaxed">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+                <p className="text-yellow-800 font-semibold">
+                  💬 Masz inne pytanie? Skontaktuj się z nami - odpowiemy w ciągu 24 godzin!
+                </p>
               </div>
             </div>
           </div>
