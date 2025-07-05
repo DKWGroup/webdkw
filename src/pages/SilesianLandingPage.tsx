@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin } from 'lucide-react';
+import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, Code, Database, TrendingUp, ExternalLink, Monitor, Smartphone, Search } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import SEOHead from '../components/SEOHead';
 import Header from '../components/Header';
@@ -103,6 +103,79 @@ const SilesianLandingPage = () => {
     { word: "Fuszerka", definition: "partactwo, byle jaka robota" },
     { word: "Karlus", definition: "chłopak, gość, swój człowiek" },
     { word: "Na zicher", definition: "na pewno, na 100%" }
+  ];
+
+  // Portfolio projects
+  const portfolioProjects = [
+    {
+      title: "Śląski Browar Rzemieślniczy",
+      description: "Nowoczesna strona dla browaru z Tychów z systemem rezerwacji wycieczek i sklepem online.",
+      image: "https://images.pexels.com/photos/1267700/pexels-photo-1267700.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      city: "Tychy",
+      technologies: ["WordPress", "WooCommerce", "SEO"]
+    },
+    {
+      title: "Kopalnia Wiedzy",
+      description: "Platforma edukacyjna dla szkół na Śląsku z interaktywnym systemem nauki i quizami.",
+      image: "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      city: "Katowice",
+      technologies: ["React", "Node.js", "MongoDB"]
+    },
+    {
+      title: "Śląskie Smaki",
+      description: "Serwis kulinarny z przepisami na tradycyjne śląskie potrawy i system rezerwacji w restauracjach.",
+      image: "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      city: "Chorzów",
+      technologies: ["WordPress", "Custom Theme", "Google Maps API"]
+    }
+  ];
+
+  // Services we offer
+  const services = [
+    {
+      title: "Strony firmowe",
+      description: "Profesjonalne strony internetowe dla firm ze Śląska, dostosowane do lokalnego rynku i potrzeb klientów.",
+      icon: <Globe className="h-10 w-10" />
+    },
+    {
+      title: "Sklepy internetowe",
+      description: "E-commerce z integracją płatności, systemem zarządzania zamówieniami i optymalizacją konwersji.",
+      icon: <Database className="h-10 w-10" />
+    },
+    {
+      title: "Aplikacje webowe",
+      description: "Dedykowane aplikacje internetowe dla firm ze Śląska, dostosowane do specyficznych potrzeb biznesowych.",
+      icon: <Code className="h-10 w-10" />
+    },
+    {
+      title: "Pozycjonowanie lokalne",
+      description: "Specjalizujemy się w pozycjonowaniu firm na Śląsku - bądź widoczny dla klientów w Twojej okolicy.",
+      icon: <Search className="h-10 w-10" />
+    }
+  ];
+
+  // SEO benefits
+  const seoBenefits = [
+    {
+      title: "Wyższa widoczność w Google",
+      description: "Twoja strona będzie widoczna dla klientów szukających usług w Katowicach, Gliwicach, Zabrzu i innych miastach Śląska.",
+      icon: <TrendingUp className="h-8 w-8" />
+    },
+    {
+      title: "Responsywny design",
+      description: "Strona będzie perfekcyjnie wyglądać na komputerach, tabletach i telefonach - dostosowana do wszystkich urządzeń.",
+      icon: <Smartphone className="h-8 w-8" />
+    },
+    {
+      title: "Szybkość ładowania",
+      description: "Optymalizujemy szybkość ładowania strony, co przekłada się na lepsze pozycje w Google i mniej porzuceń.",
+      icon: <Clock className="h-8 w-8" />
+    },
+    {
+      title: "Lokalne pozycjonowanie",
+      description: "Specjalizujemy się w pozycjonowaniu firm na Śląsku - bądź widoczny dla klientów w Twojej okolicy.",
+      icon: <MapPin className="h-8 w-8" />
+    }
   ];
 
   // Color palette options
@@ -350,20 +423,26 @@ const SilesianLandingPage = () => {
         <section className="py-20 text-white" style={{ backgroundColor: activePalette.secondary }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-4xl font-bold text-center mb-16">
-              Karlusy ze Ślonska już nom zaufali
+              Karlusy i Firmy ze Ślonska już nom zaufali
             </h2>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-              {clients.map((client, index) => (
-                <div key={index} className="flex flex-col items-center">
-                  <img 
-                    src={client.logo} 
-                    alt={client.name} 
-                    className="h-16 object-contain mb-4 filter grayscale invert opacity-70"
-                  />
-                  <p className="text-center text-gray-400">{client.name}, {client.city}</p>
+            <div className="relative mb-16">
+              <div className="overflow-hidden">
+                <div className="flex flex-wrap justify-center gap-8">
+                  {clients.map((client, index) => (
+                    <div key={index} className="flex flex-col items-center transition-all duration-300 hover:scale-110">
+                      <div className="bg-white/10 p-4 rounded-lg mb-3">
+                        <img 
+                          src={client.logo} 
+                          alt={client.name} 
+                          className="h-16 object-contain filter grayscale invert opacity-70"
+                        />
+                      </div>
+                      <p className="text-center text-gray-400">{client.name}, {client.city}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
             
             <div className="relative">
@@ -415,6 +494,126 @@ const SilesianLandingPage = () => {
               >
                 <ChevronRight className="h-6 w-6" />
               </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-4xl font-bold text-center mb-6" style={{ color: activePalette.secondary }}>
+              Co możemy dla Ciebie zrobić?
+            </h2>
+            <p className="text-xl text-gray-600 text-center mb-16 max-w-3xl mx-auto">
+              Oferujemy kompleksowe usługi tworzenia stron internetowych dla firm ze Śląska. 
+              Nasze rozwiązania są dostosowane do lokalnego rynku i potrzeb śląskich przedsiębiorców.
+            </p>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {services.map((service, index) => (
+                <div key={index} className="bg-gray-50 rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                  <div className="flex justify-center mb-6">
+                    <div className="p-4 rounded-full" style={{ color: activePalette.primary, backgroundColor: `${activePalette.primary}15` }}>
+                      {service.icon}
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                  <p className="text-gray-600">{service.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Portfolio Section */}
+        <section className="py-20" style={{ backgroundColor: `${activePalette.primary}15` }}>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-4xl font-bold text-center mb-6" style={{ color: activePalette.secondary }}>
+              Nasze Śląskie Realizacje
+            </h2>
+            <p className="text-xl text-gray-600 text-center mb-16 max-w-3xl mx-auto">
+              Sprawdź przykłady stron internetowych, które stworzyliśmy dla firm ze Śląska. 
+              Każdy projekt jest dopasowany do specyfiki branży i lokalnego rynku.
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              {portfolioProjects.map((project, index) => (
+                <div key={index} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="relative h-48">
+                    <img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-semibold" style={{ color: activePalette.secondary }}>
+                      {project.city}
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
+                    <p className="text-gray-600 mb-4">{project.description}</p>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {project.technologies.map((tech, idx) => (
+                        <span 
+                          key={idx} 
+                          className="px-3 py-1 rounded-full text-sm font-medium"
+                          style={{ backgroundColor: `${activePalette.primary}20`, color: activePalette.secondary }}
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <a 
+                      href="#contact" 
+                      className="inline-flex items-center text-sm font-semibold transition-colors"
+                      style={{ color: activePalette.primary }}
+                    >
+                      <span>Zobacz więcej</span>
+                      <ExternalLink className="h-4 w-4 ml-1" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SEO Benefits Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-4xl font-bold text-center mb-6" style={{ color: activePalette.secondary }}>
+              Korzyści z profesjonalnej strony internetowej
+            </h2>
+            <p className="text-xl text-gray-600 text-center mb-16 max-w-3xl mx-auto">
+              Strona internetowa to nie tylko wizytówka Twojej firmy, ale przede wszystkim narzędzie do pozyskiwania klientów.
+              Oto co zyskasz dzięki współpracy z nami:
+            </p>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {seoBenefits.map((benefit, index) => (
+                <div key={index} className="bg-gray-50 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300">
+                  <div className="flex justify-center mb-6">
+                    <div className="p-3 rounded-full" style={{ color: activePalette.primary, backgroundColor: `${activePalette.primary}15` }}>
+                      {benefit.icon}
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">{benefit.title}</h3>
+                  <p className="text-gray-600 text-center">{benefit.description}</p>
+                </div>
+              ))}
+            </div>
+            
+            <div className="mt-16 bg-gray-50 border-l-4 p-6 rounded-lg" style={{ borderColor: activePalette.primary }}>
+              <h3 className="text-xl font-bold mb-3" style={{ color: activePalette.secondary }}>Dlaczego warto zainwestować w stronę internetową na Śląsku?</h3>
+              <p className="text-gray-700 mb-4">
+                Śląsk to dynamicznie rozwijający się region z ogromnym potencjałem biznesowym. Coraz więcej klientów szuka usług i produktów online, 
+                a profesjonalna strona internetowa to klucz do ich pozyskania. Nasze strony są nie tylko estetyczne, ale przede wszystkim 
+                funkcjonalne i zoptymalizowane pod kątem konwersji.
+              </p>
+              <p className="text-gray-700">
+                Znamy specyfikę śląskiego rynku i wiemy, jak dotrzeć do lokalnych klientów. Nasze strony są tworzone z myślą o 
+                pozycjonowaniu w lokalnych wynikach wyszukiwania, co przekłada się na realny wzrost zapytań i sprzedaży.
+              </p>
             </div>
           </div>
         </section>
@@ -489,144 +688,207 @@ const SilesianLandingPage = () => {
         </section>
 
         {/* CTA Section */}
-        <section id="contact" className="py-20 text-white" style={{ backgroundColor: activePalette.secondary }}>
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-6">
-                Chcesz mieć strona, kero bydzie Twojom maszynkom do robienio piniyndzy?
-              </h2>
-              <p className="text-xl text-gray-300 mb-8">
-                Wypełnij formularz. Zadzwonimy, pogodomy. Bez zobowiązań.
-              </p>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 shadow-xl">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-bold mb-2">
-                    Imię i nazwisko *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-700 bg-transparent rounded-lg focus:ring-2 focus:border-transparent transition-all"
-                    style={{ 
-                      "&:focus": { borderColor: activePalette.primary } 
-                    }}
-                    placeholder="Francik Nowok"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-bold mb-2">
-                      E-mail *
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-700 bg-transparent rounded-lg focus:ring-2 focus:border-transparent transition-all"
-                      style={{ 
-                        "&:focus": { borderColor: activePalette.primary } 
-                      }}
-                      placeholder="francik@firma.pl"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="block text-sm font-bold mb-2">
-                      Telefon *
-                    </label>
-                    <input
-                      type="tel"
-                      id="phone"
-                      name="phone"
-                      required
-                      value={formData.phone}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 border border-gray-700 bg-transparent rounded-lg focus:ring-2 focus:border-transparent transition-all"
-                      style={{ 
-                        "&:focus": { borderColor: activePalette.primary } 
-                      }}
-                      placeholder="+48 123 456 789"
-                    />
-                  </div>
-                </div>
-
-                {/* RODO Consent Checkbox */}
-                <div className="relative">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="rodo-consent"
-                        type="checkbox"
-                        checked={rodoConsent}
-                        onChange={(e) => setRodoConsent(e.target.checked)}
-                        className="h-4 w-4 border-gray-700 rounded focus:ring-2"
-                        style={{ 
-                          color: activePalette.primary,
-                          "&:focus": { borderColor: activePalette.primary } 
-                        }}
-                        required
-                      />
+        <section id="contact" className="py-20 relative">
+          <div className="absolute inset-0 z-0">
+            <div className="h-full w-full" style={{ backgroundColor: activePalette.secondary }}></div>
+            <div className="absolute inset-0 bg-pattern opacity-10"></div>
+          </div>
+          
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div className="text-white">
+                <h2 className="text-4xl font-bold mb-6">
+                  Chcesz mieć strona, kero bydzie Twojom maszynkom do robienio piniyndzy?
+                </h2>
+                <p className="text-xl text-gray-300 mb-8">
+                  Wypełnij formularz. Zadzwonimy, pogodomy. Bez zobowiązań.
+                </p>
+                
+                <div className="space-y-6 mb-8">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 rounded-full" style={{ backgroundColor: `${activePalette.primary}30` }}>
+                      <Phone className="h-6 w-6" style={{ color: activePalette.primary }} />
                     </div>
-                    <div className="ml-3 text-sm">
-                      <label htmlFor="rodo-consent" className="text-gray-300">
-                        Zapoznałem/am się z{' '}
-                        <button
-                          type="button"
-                          className="underline hover:text-white transition-colors"
-                          style={{ color: activePalette.primary }}
-                          onClick={() => setShowRodoInfo(!showRodoInfo)}
-                          onMouseEnter={() => setShowRodoInfo(true)}
-                          onMouseLeave={() => setShowRodoInfo(false)}
-                        >
-                          informacją o administratorze i przetwarzaniu danych
-                        </button>
-                        . *
-                      </label>
+                    <div>
+                      <h3 className="font-bold text-lg mb-1">Zadzwoń do nos</h3>
+                      <p className="text-gray-300">+48 881 046 689</p>
                     </div>
                   </div>
                   
-                  {/* RODO Info Popup */}
-                  {showRodoInfo && (
-                    <div className="absolute z-10 mt-2 p-4 bg-white/20 backdrop-blur-sm rounded-lg shadow-xl border border-white/20 text-sm text-gray-300 max-w-md">
-                      <p>
-                        Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
-                      </p>
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 rounded-full" style={{ backgroundColor: `${activePalette.primary}30` }}>
+                      <Mail className="h-6 w-6" style={{ color: activePalette.primary }} />
                     </div>
-                  )}
-                </div>
-
-                {error && (
-                  <div className="bg-red-900/50 border border-red-700 rounded-lg p-4">
-                    <div className="flex items-center space-x-2">
-                      <AlertTriangle className="h-5 w-5 text-red-500" />
-                      <p className="text-red-300 text-sm">{error}</p>
+                    <div>
+                      <h3 className="font-bold text-lg mb-1">Napisz do nos</h3>
+                      <p className="text-gray-300">contact.dkwgroup@gmail.com</p>
                     </div>
                   </div>
-                )}
+                  
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 rounded-full" style={{ backgroundColor: `${activePalette.primary}30` }}>
+                      <MapPin className="h-6 w-6" style={{ color: activePalette.primary }} />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-1">Znajdziesz nos</h3>
+                      <p className="text-gray-300">Katowice i cały Śląsk</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="bg-white/10 backdrop-blur-sm p-6 rounded-lg border border-white/20">
+                  <h3 className="font-bold text-lg mb-3" style={{ color: activePalette.primary }}>Dlaczego warto?</h3>
+                  <ul className="space-y-2">
+                    <li className="flex items-start space-x-2">
+                      <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" style={{ color: activePalette.primary }} />
+                      <span>Darmowa wycena i konsultacja</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" style={{ color: activePalette.primary }} />
+                      <span>Realizacja w 2-4 tygodnie</span>
+                    </li>
+                    <li className="flex items-start space-x-2">
+                      <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" style={{ color: activePalette.primary }} />
+                      <span>Wsparcie techniczne po wdrożeniu</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div>
+                <div className="bg-white rounded-xl p-8 shadow-2xl">
+                  <h3 className="text-2xl font-bold mb-6" style={{ color: activePalette.secondary }}>
+                    Wyślij zapytanie
+                  </h3>
+                  
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-bold text-gray-700 mb-2">
+                        Imię i nazwisko *
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all"
+                        style={{ 
+                          "&:focus": { borderColor: activePalette.primary } 
+                        }}
+                        placeholder="Francik Nowok"
+                      />
+                    </div>
 
-                <button
-                  type="submit"
-                  disabled={isSubmitting || !rodoConsent}
-                  className="w-full text-gray-900 px-8 py-4 rounded-lg text-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
-                  style={{ 
-                    backgroundColor: activePalette.primary,
-                    "&:hover": { backgroundColor: `${activePalette.primary}DD` }
-                  }}
-                >
-                  <span>{isSubmitting ? 'Wysyłanie...' : 'JO! BIERYMY SIE ZA ROBOTA!'}</span>
-                  {!isSubmitting && <ArrowRight className="h-5 w-5" />}
-                </button>
-              </form>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label htmlFor="email" className="block text-sm font-bold text-gray-700 mb-2">
+                          E-mail *
+                        </label>
+                        <input
+                          type="email"
+                          id="email"
+                          name="email"
+                          required
+                          value={formData.email}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all"
+                          style={{ 
+                            "&:focus": { borderColor: activePalette.primary } 
+                          }}
+                          placeholder="francik@firma.pl"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="phone" className="block text-sm font-bold text-gray-700 mb-2">
+                          Telefon *
+                        </label>
+                        <input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          required
+                          value={formData.phone}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:border-transparent transition-all"
+                          style={{ 
+                            "&:focus": { borderColor: activePalette.primary } 
+                          }}
+                          placeholder="+48 123 456 789"
+                        />
+                      </div>
+                    </div>
+
+                    {/* RODO Consent Checkbox */}
+                    <div className="relative">
+                      <div className="flex items-start">
+                        <div className="flex items-center h-5">
+                          <input
+                            id="rodo-consent"
+                            type="checkbox"
+                            checked={rodoConsent}
+                            onChange={(e) => setRodoConsent(e.target.checked)}
+                            className="h-4 w-4 border-gray-300 rounded focus:ring-2"
+                            style={{ 
+                              color: activePalette.primary,
+                              "&:focus": { borderColor: activePalette.primary } 
+                            }}
+                            required
+                          />
+                        </div>
+                        <div className="ml-3 text-sm">
+                          <label htmlFor="rodo-consent" className="text-gray-600">
+                            Zapoznałem/am się z{' '}
+                            <button
+                              type="button"
+                              className="underline hover:text-gray-900 transition-colors"
+                              style={{ color: activePalette.primary }}
+                              onClick={() => setShowRodoInfo(!showRodoInfo)}
+                              onMouseEnter={() => setShowRodoInfo(true)}
+                              onMouseLeave={() => setShowRodoInfo(false)}
+                            >
+                              informacją o administratorze i przetwarzaniu danych
+                            </button>
+                            . *
+                          </label>
+                        </div>
+                      </div>
+                      
+                      {/* RODO Info Popup */}
+                      {showRodoInfo && (
+                        <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
+                          <p>
+                            Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                          </p>
+                        </div>
+                      )}
+                    </div>
+
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div className="flex items-center space-x-2">
+                          <AlertTriangle className="h-5 w-5 text-red-500" />
+                          <p className="text-red-700 text-sm">{error}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting || !rodoConsent}
+                      className="w-full text-white px-8 py-4 rounded-lg text-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
+                      style={{ 
+                        backgroundColor: activePalette.secondary,
+                        "&:hover": { backgroundColor: `${activePalette.secondary}DD` }
+                      }}
+                    >
+                      <span>{isSubmitting ? 'Wysyłanie...' : 'JO! BIERYMY SIE ZA ROBOTA!'}</span>
+                      {!isSubmitting && <ArrowRight className="h-5 w-5" />}
+                    </button>
+                  </form>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -635,19 +897,19 @@ const SilesianLandingPage = () => {
         <section className="py-12 text-white" style={{ backgroundColor: activePalette.secondary }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid md:grid-cols-3 gap-12">
-              <div className="md:col-span-2">
+              <div className="md:col-span-2 bg-white/5 p-6 rounded-lg">
                 <h3 className="text-2xl font-bold mb-6" style={{ color: activePalette.primary }}>Mały Słowniczek dla Goroli</h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                   {dictionary.map((item, index) => (
-                    <div key={index} className="mb-3">
-                      <p className="font-bold" style={{ color: activePalette.primary }}>{item.word}</p>
-                      <p className="text-gray-400">{item.definition}</p>
+                    <div key={index} className="bg-white/10 p-4 rounded-lg">
+                      <p className="font-bold text-lg mb-1" style={{ color: activePalette.primary }}>{item.word}</p>
+                      <p className="text-gray-300">{item.definition}</p>
                     </div>
                   ))}
                 </div>
               </div>
               
-              <div>
+              <div className="bg-white/5 p-6 rounded-lg">
                 <h3 className="text-2xl font-bold mb-6" style={{ color: activePalette.primary }}>Kontakt</h3>
                 <div className="space-y-4">
                   <p className="mb-2 font-bold">WebDKW - Profesjonalne strony internetowe</p>
