@@ -483,6 +483,7 @@ const SilesianLandingPage = () => {
                             key={index}
                             className="group transition-all duration-300 flex flex-col items-center"
                           >
+                            <>
                             <div className="bg-white/10 p-4 rounded-lg mb-3">
                               <img 
                                 src={client.logo} 
@@ -490,7 +491,8 @@ const SilesianLandingPage = () => {
                                 className="h-16 w-auto filter grayscale invert transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain" 
                               />
                             </div>
-                      <p className="text-center text-gray-400">{client.name}, {client.city}</p>
+                            <p className="text-center text-gray-400">{client.name}, {client.city}</p>
+                            </>
                     </div>
                   ))}
                 </div>
