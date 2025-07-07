@@ -475,7 +475,7 @@ const SilesianLandingPage = () => {
                   </ul>
                   
                   <div className="mt-6 pt-6 border-t border-gray-100">
-                    <a href="#contact" className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center">
+                    <a href="https://webdkw.net/uslugi" className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center">
                       Dowiedz się więcej
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </a>
