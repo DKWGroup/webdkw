@@ -19,6 +19,8 @@ const SilesianLandingPage = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [rodoConsent, setRodoConsent] = useState(false);
+  const [showRodoInfo, setShowRodoInfo] = useState(false);
 
   const services = [
     {
@@ -116,6 +118,12 @@ const SilesianLandingPage = () => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
+
+    if (!rodoConsent) {
+      setSubmitStatus('error');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const { error } = await supabase
@@ -305,10 +313,50 @@ const SilesianLandingPage = () => {
                         Chcę otrzymać darmowy przewodnik "SEO dla firm ze "
                       </label>
                     </div>
+
+                    {/* RODO Consent Checkbox */}
+                    <div className="relative">
+                      <div className="flex items-start">
+                        <div className="flex items-center h-5">
+                          <input
+                            id="rodo-consent"
+                            type="checkbox"
+                            checked={rodoConsent}
+                            onChange={(e) => setRodoConsent(e.target.checked)}
+                            className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                            required
+                          />
+                        </div>
+                        <div className="ml-3 text-sm">
+                          <label htmlFor="rodo-consent" className="text-blue-200">
+                            Zapoznałem/am się z{' '}
+                            <button
+                              type="button"
+                              className="text-orange-500 hover:text-orange-700 underline"
+                              onClick={() => setShowRodoInfo(!showRodoInfo)}
+                              onMouseEnter={() => setShowRodoInfo(true)}
+                              onMouseLeave={() => setShowRodoInfo(false)}
+                            >
+                              informacją o administratorze i przetwarzaniu danych
+                            </button>
+                            . *
+                          </label>
+                        </div>
+                      </div>
+                      
+                      {/* RODO Info Popup */}
+                      {showRodoInfo && (
+                        <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
+                          <p>
+                            Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                          </p>
+                        </div>
+                      )}
+                    </div>
                     
                     <button
                       type="submit"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || !rodoConsent}
                       className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white px-6 py-4 rounded-lg font-semibold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                     >
                       {isSubmitting ? (
@@ -962,10 +1010,50 @@ const SilesianLandingPage = () => {
                       Chcę otrzymać darmowy przewodnik "SEO dla firm ze "
                     </label>
                   </div>
+
+                  {/* RODO Consent Checkbox */}
+                  <div className="relative">
+                    <div className="flex items-start">
+                      <div className="flex items-center h-5">
+                        <input
+                          id="rodo-consent"
+                          type="checkbox"
+                          checked={rodoConsent}
+                          onChange={(e) => setRodoConsent(e.target.checked)}
+                          className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                          required
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="rodo-consent" className="text-gray-600">
+                          Zapoznałem/am się z{' '}
+                          <button
+                            type="button"
+                            className="text-orange-500 hover:text-orange-700 underline"
+                            onClick={() => setShowRodoInfo(!showRodoInfo)}
+                            onMouseEnter={() => setShowRodoInfo(true)}
+                            onMouseLeave={() => setShowRodoInfo(false)}
+                          >
+                            informacją o administratorze i przetwarzaniu danych
+                          </button>
+                          . *
+                        </label>
+                      </div>
+                    </div>
+                    
+                    {/* RODO Info Popup */}
+                    {showRodoInfo && (
+                      <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
+                        <p>
+                          Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                        </p>
+                      </div>
+                    )}
+                  </div>
                   
                   <button
                     type="submit"
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || !rodoConsent}
                     className="w-full bg-gradient-to-r from-yellow-600 to-yellow-700 text-white px-8 py-4 rounded-lg font-semibold hover:from-yellow-700 hover:to-yellow-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center shadow-lg hover:shadow-xl"
                   >
                     {isSubmitting ? (
