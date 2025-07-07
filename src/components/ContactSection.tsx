@@ -216,6 +216,46 @@ const ContactSection = () => {
                 />
               </div>
 
+              {/* RODO Consent Checkbox */}
+                  <div className="relative">
+                    <div className="flex items-start">
+                      <div className="flex items-center h-5">
+                        <input
+                          id="rodo-consent"
+                          type="checkbox"
+                          checked={rodoConsent}
+                          onChange={(e) => setRodoConsent(e.target.checked)}
+                          className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                          required
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="rodo-consent" className="text-gray-600">
+                          Zapoznałem/am się z{' '}
+                          <button
+                            type="button"
+                            className="text-orange-500 hover:text-orange-700 underline"
+                            onClick={() => setShowRodoInfo(!showRodoInfo)}
+                            onMouseEnter={() => setShowRodoInfo(true)}
+                            onMouseLeave={() => setShowRodoInfo(false)}
+                          >
+                            informacją o administratorze i przetwarzaniu danych
+                          </button>
+                          . *
+                        </label>
+                      </div>
+                    </div>
+                    
+                    {/* RODO Info Popup */}
+                    {showRodoInfo && (
+                      <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
+                        <p>
+                          Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
               {error && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                   <div className="flex items-center space-x-2">
