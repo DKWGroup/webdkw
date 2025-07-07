@@ -982,20 +982,6 @@ const SilesianLandingPage = () => {
                       placeholder="Opisz swoje potrzeby i oczekiwania..."
                     />
                   </div>
-                  
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name="leadMagnet"
-                      id="leadMagnetForm"
-                      checked={formData.leadMagnet}
-                      onChange={handleInputChange}
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
-                    />
-                    <label htmlFor="leadMagnetForm" className="ml-2 text-sm text-gray-700">
-                      Chcę otrzymać darmowy przewodnik "SEO dla firm ze "
-                    </label>
-                  </div>
 
                   {/* RODO Consent Checkbox */}
                   <div className="relative">
