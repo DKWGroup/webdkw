@@ -861,7 +861,7 @@ const SilesianLandingPage = () => {
                     
                     <div className="flex items-center">
                       <Mail className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="text-gray-700"><a href="mail:contact.dkwgroup@gmail.com">contact.dkwgroup@gmail.com</a></span>
+                      <span className="text-gray-700"><a href="mailto:contact.dkwgroup@gmail.com">contact.dkwgroup@gmail.com</a></span>
                     </div>
                     
                     <div className="flex items-center">
