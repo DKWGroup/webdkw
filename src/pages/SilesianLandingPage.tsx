@@ -309,7 +309,7 @@ const SilesianLandingPage = () => {
                             type="checkbox"
                             checked={rodoConsent}
                             onChange={(e) => setRodoConsent(e.target.checked)}
-                            className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                            className="h-4 w-4 text-yellow-500 focus:ring-yellow-500 border-gray-300 rounded"
                             required
                           />
                         </div>
@@ -318,7 +318,7 @@ const SilesianLandingPage = () => {
                             Zapoznałem/am się z{' '}
                             <button
                               type="button"
-                              className="text-orange-500 hover:text-orange-700 underline"
+                              className="text-yellow-500 hover:text-yellow-700 underline"
                               onClick={() => setShowRodoInfo(!showRodoInfo)}
                               onMouseEnter={() => setShowRodoInfo(true)}
                               onMouseLeave={() => setShowRodoInfo(false)}
