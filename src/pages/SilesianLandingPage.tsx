@@ -168,10 +168,10 @@ const SilesianLandingPage = () => {
     <HelmetProvider>
       <div className="min-h-screen bg-white">
         <SEOHead 
-          title="WebDKW - Strony Internetowe i SEO dla Firm ze  | Katowice, Gliwice, Zabrze"
+          title="Strony Internetowe i SEO dla Firm ze Śląska | Katowice, Gliwice, Zabrze"
           description="Profesjonalne strony internetowe, pozycjonowanie SEO i marketing cyfrowy dla firm ze . Obsługujemy Katowice, Gliwice, Zabrze i cały region śląski."
           keywords="strony internetowe śląsk, SEO katowice, pozycjonowanie gliwice, marketing cyfrowy zabrze, tworzenie stron śląsk"
-          url="https://webdkw.com/slask"
+          url="https://webdkw.com/strony-internetowe-seo-slask"
         />
         
         <Header />
