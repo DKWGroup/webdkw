@@ -870,6 +870,76 @@ const SilesianLandingPage = () => {
           </div>
         </section>
 
+        {/* Why Choose Us Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Jesteśmy więcej niż tylko agencją. Jesteśmy Twoim lokalnym partnerem.
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Wybierając WebDKW, wybierasz zespół, który rozumie specyfikę śląskiego rynku i potrzeby lokalnych przedsiębiorców.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Local Team */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <MapPin className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Lokalny Zespół ze Śląska</h3>
+                <p className="text-gray-600 text-center">
+                  Znamy specyfikę rynku. Możemy spotkać się przy kawie w Katowicach, by omówić Twój projekt.
+                </p>
+              </div>
+              
+              {/* Results Focus */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <TrendingUp className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Skupienie na Wynikach</h3>
+                <p className="text-gray-600 text-center">
+                  Naszym celem nie jest 'zrobić stronę', ale dostarczyć narzędzie, które realnie wspiera Twój biznes.
+                </p>
+              </div>
+              
+              {/* Transparency */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <Shield className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Pełna Transparentność</h3>
+                <p className="text-gray-600 text-center">
+                  Jasne zasady, stały kontakt i żadnych ukrytych kosztów. Zawsze wiesz, za co płacisz.
+                </p>
+              </div>
+              
+              {/* Comprehensive Support */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <Headphones className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Kompleksowe Wsparcie</h3>
+                <p className="text-gray-600 text-center">
+                  Od projektu, przez SEO, po reklamy - wszystko w jednym miejscu. Nie musisz szukać wielu wykonawców.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-12 text-center">
+              <a 
+                href="#contact" 
+                className="inline-flex items-center justify-center bg-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
+                Porozmawiajmy o Twoim projekcie
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </a>
+            </div>
+          </div>
+        </section>
+
         {/* Process Section */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
