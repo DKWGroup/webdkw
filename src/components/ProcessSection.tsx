@@ -89,6 +89,14 @@ const ProcessSection = () => {
                 <div className={`hidden lg:block flex-1 ${index % 2 === 0 ? 'lg:pl-8' : 'lg:pr-8'}`}></div>
               </div>
             ))}
+          <Link
+            to="/proces-realizacji"
+            className="inline-flex items-center space-x-2 bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            <span>Zobacz szczegółowy opis procesu współpracy</span>
+            <ArrowRight className="h-5 w-5" />
+          </Link>
+          
           </div>
         </div>
 
