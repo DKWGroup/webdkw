@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HelmetProvider } from 'react-helmet-async';
-import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, Code, Database, TrendingUp, ExternalLink, Smartphone, Search, Plus, Minus, Shield, Headphones, Building, Zap, Users } from 'lucide-react';
+import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, TrendingUp, ExternalLink, Smartphone, Search, Plus, Minus, Shield, Headphones, Building, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import SEOHead from '../components/SEOHead';
 import Header from '../components/Header';
@@ -193,7 +193,7 @@ const SilesianLandingPage = () => {
           title="WebDKW - Strony Internetowe i SEO dla Firm ze  | Katowice, Gliwice, Zabrze"
           description="Profesjonalne strony internetowe, pozycjonowanie SEO i marketing cyfrowy dla firm ze . Obsługujemy Katowice, Gliwice, Zabrze i cały region śląski."
           keywords="strony internetowe śląsk, SEO katowice, pozycjonowanie gliwice, marketing cyfrowy zabrze, tworzenie stron śląsk"
-          canonicalUrl="https://webdkw.com/slask"
+          url="https://webdkw.com/slask"
         />
         
         <Header />
