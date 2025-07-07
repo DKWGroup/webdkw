@@ -4,6 +4,7 @@ import HeroSection from '../components/HeroSection'
 import ProblemSection from '../components/ProblemSection'
 import ProcessSection from '../components/ProcessSection'
 import ServicesSection from '../components/ServicesSection'
+import BusinessValueSection from '../components/BusinessValueSection'
 import PortfolioSection from '../components/PortfolioSection'
 import ResultsSection from '../components/ResultsSection'
 import SEOSection from '../components/SEOSection'
@@ -58,6 +59,7 @@ const HomePage = () => {
         <ProblemSection />
         <ProcessSection />
         <ServicesSection />
+        <BusinessValueSection />
         <PortfolioSection />
         <ResultsSection />
         <SEOSection />
