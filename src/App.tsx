@@ -42,7 +42,7 @@ function App() {
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/case-studies" element={<CaseStudiesPage />} />
         <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
-        <Route path="/slask" element={<SilesianLandingPage />} />
+        <Route path="/strony-internetowe-seo-slask" element={<SilesianLandingPage />} />
         <Route path="/proces-realizacji" element={<ProcessPage />} />
         <Route path="/o-nas" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />
