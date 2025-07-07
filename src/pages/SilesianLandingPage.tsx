@@ -20,27 +20,6 @@ const SilesianLandingPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const testimonials = [
-    {
-      name: "Anna Kowalska",
-      company: "TechStart Katowice",
-      text: "Dzięki WebDKW nasza firma zyskała profesjonalną stronę internetową, która przyciąga klientów z całego .",
-      rating: 5
-    },
-    {
-      name: "Marek Nowak",
-      company: "Śląskie Usługi",
-      text: "Kompleksowa obsługa i świetne rezultaty. Polecam każdemu przedsiębiorcy z regionu!",
-      rating: 5
-    },
-    {
-      name: "Katarzyna Wiśniewska",
-      company: "Gliwice Business",
-      text: "Profesjonalne podejście i zrozumienie specyfiki śląskiego rynku. Jesteśmy bardzo zadowoleni.",
-      rating: 5
-    }
-  ];
-
   const services = [
     {
       icon: <Globe className="w-8 h-8" />,
