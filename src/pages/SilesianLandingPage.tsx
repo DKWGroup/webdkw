@@ -662,6 +662,162 @@ const SilesianLandingPage = () => {
           </div>
         </section>
 
+        {/* Why Choose Us Section */}
+        <section className="py-20 bg-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Jesteśmy więcej niż tylko agencją. Jesteśmy Twoim lokalnym partnerem.
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Wybierając WebDKW, wybierasz zespół, który rozumie specyfikę śląskiego rynku i potrzeby lokalnych przedsiębiorców.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Local Team */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <MapPin className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Lokalny Zespół ze Śląska</h3>
+                <p className="text-gray-600 text-center">
+                  Znamy specyfikę rynku. Możemy spotkać się przy kawie w Katowicach, by omówić Twój projekt.
+                </p>
+              </div>
+              
+              {/* Results Focus */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <TrendingUp className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Skupienie na Wynikach</h3>
+                <p className="text-gray-600 text-center">
+                  Naszym celem nie jest 'zrobić stronę', ale dostarczyć narzędzie, które realnie wspiera Twój biznes.
+                </p>
+              </div>
+              
+              {/* Transparency */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <Shield className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Pełna Transparentność</h3>
+                <p className="text-gray-600 text-center">
+                  Jasne zasady, stały kontakt i żadnych ukrytych kosztów. Zawsze wiesz, za co płacisz.
+                </p>
+              </div>
+              
+              {/* Comprehensive Support */}
+              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
+                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
+                  <Headphones className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Kompleksowe Wsparcie</h3>
+                <p className="text-gray-600 text-center">
+                  Od projektu, przez SEO, po reklamy - wszystko w jednym miejscu. Nie musisz szukać wielu wykonawców.
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-12 text-center">
+              <a 
+                href="#contact" 
+                className="inline-flex items-center justify-center bg-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
+                Porozmawiajmy o Twoim projekcie
+                <ArrowRight className="ml-2 w-5 h-5" />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Process Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                Współpraca z nami to prosty i przejrzysty proces
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Każdy etap jest starannie zaplanowany, aby zapewnić najwyższą jakość i zminimalizować ryzyko
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
+              {/* Step 1 */}
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">1</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Strategia i Analiza</h3>
+                <p className="text-gray-600">Poznajemy Twój biznes i cele. Analizujemy konkurencję i określamy grupę docelową.</p>
+              </div>
+              
+              {/* Step 2 */}
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">2</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Projekt Graficzny</h3>
+                <p className="text-gray-600">Tworzymy unikalny design zgodny z Twoją marką. Projektujemy interfejs przyjazny dla użytkownika.</p>
+              </div>
+              
+              {/* Step 3 */}
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">3</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Programowanie i Wdrożenie</h3>
+                <p className="text-gray-600">Kodujemy stronę w oparciu o najnowsze technologie. Implementujemy wszystkie funkcjonalności.</p>
+              </div>
+              
+              {/* Step 4 */}
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">4</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Testy i Optymalizacja</h3>
+                <p className="text-gray-600">Upewniamy się, że wszystko działa perfekcyjnie. Optymalizujemy wydajność i SEO.</p>
+              </div>
+              
+              {/* Step 5 */}
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">5</div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">Start i Wsparcie</h3>
+                <p className="text-gray-600">Uruchamiamy stronę i pozostajemy do Twojej dyspozycji. Zapewniamy wsparcie techniczne.</p>
+              </div>
+            </div>
+            
+            <div className="mt-12 bg-blue-50 rounded-xl p-8 border border-blue-100">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">Redukcja Ryzyka</h3>
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="flex items-start">
+                  <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
+                    <CheckCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Jasne Zasady</h4>
+                    <p className="text-gray-600 text-sm">Szczegółowa umowa i harmonogram prac</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
+                    <CheckCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Etapowe Płatności</h4>
+                    <p className="text-gray-600 text-sm">Płacisz tylko za ukończone etapy pracy</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start">
+                  <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
+                    <CheckCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-1">Gwarancja Jakości</h4>
+                    <p className="text-gray-600 text-sm">3 miesiące wsparcia po wdrożeniu</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Contact Section */}
         <section id="contact" className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -865,162 +1021,6 @@ const SilesianLandingPage = () => {
                     </div>
                   )}
                 </form>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Why Choose Us Section */}
-        <section className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Jesteśmy więcej niż tylko agencją. Jesteśmy Twoim lokalnym partnerem.
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Wybierając WebDKW, wybierasz zespół, który rozumie specyfikę śląskiego rynku i potrzeby lokalnych przedsiębiorców.
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {/* Local Team */}
-              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
-                  <MapPin className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Lokalny Zespół ze Śląska</h3>
-                <p className="text-gray-600 text-center">
-                  Znamy specyfikę rynku. Możemy spotkać się przy kawie w Katowicach, by omówić Twój projekt.
-                </p>
-              </div>
-              
-              {/* Results Focus */}
-              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
-                  <TrendingUp className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Skupienie na Wynikach</h3>
-                <p className="text-gray-600 text-center">
-                  Naszym celem nie jest 'zrobić stronę', ale dostarczyć narzędzie, które realnie wspiera Twój biznes.
-                </p>
-              </div>
-              
-              {/* Transparency */}
-              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
-                  <Shield className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Pełna Transparentność</h3>
-                <p className="text-gray-600 text-center">
-                  Jasne zasady, stały kontakt i żadnych ukrytych kosztów. Zawsze wiesz, za co płacisz.
-                </p>
-              </div>
-              
-              {/* Comprehensive Support */}
-              <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
-                  <Headphones className="w-8 h-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Kompleksowe Wsparcie</h3>
-                <p className="text-gray-600 text-center">
-                  Od projektu, przez SEO, po reklamy - wszystko w jednym miejscu. Nie musisz szukać wielu wykonawców.
-                </p>
-              </div>
-            </div>
-            
-            <div className="mt-12 text-center">
-              <a 
-                href="#contact" 
-                className="inline-flex items-center justify-center bg-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                Porozmawiajmy o Twoim projekcie
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* Process Section */}
-        <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Współpraca z nami to prosty i przejrzysty proces
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Każdy etap jest starannie zaplanowany, aby zapewnić najwyższą jakość i zminimalizować ryzyko
-              </p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
-              {/* Step 1 */}
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">1</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Strategia i Analiza</h3>
-                <p className="text-gray-600">Poznajemy Twój biznes i cele. Analizujemy konkurencję i określamy grupę docelową.</p>
-              </div>
-              
-              {/* Step 2 */}
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">2</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Projekt Graficzny</h3>
-                <p className="text-gray-600">Tworzymy unikalny design zgodny z Twoją marką. Projektujemy interfejs przyjazny dla użytkownika.</p>
-              </div>
-              
-              {/* Step 3 */}
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">3</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Programowanie i Wdrożenie</h3>
-                <p className="text-gray-600">Kodujemy stronę w oparciu o najnowsze technologie. Implementujemy wszystkie funkcjonalności.</p>
-              </div>
-              
-              {/* Step 4 */}
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">4</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Testy i Optymalizacja</h3>
-                <p className="text-gray-600">Upewniamy się, że wszystko działa perfekcyjnie. Optymalizujemy wydajność i SEO.</p>
-              </div>
-              
-              {/* Step 5 */}
-              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">5</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Start i Wsparcie</h3>
-                <p className="text-gray-600">Uruchamiamy stronę i pozostajemy do Twojej dyspozycji. Zapewniamy wsparcie techniczne.</p>
-              </div>
-            </div>
-            
-            <div className="mt-12 bg-blue-50 rounded-xl p-8 border border-blue-100">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">Redukcja Ryzyka</h3>
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="flex items-start">
-                  <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
-                    <CheckCircle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Jasne Zasady</h4>
-                    <p className="text-gray-600 text-sm">Szczegółowa umowa i harmonogram prac</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
-                    <CheckCircle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Etapowe Płatności</h4>
-                    <p className="text-gray-600 text-sm">Płacisz tylko za ukończone etapy pracy</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
-                    <CheckCircle className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Gwarancja Jakości</h4>
-                    <p className="text-gray-600 text-sm">3 miesiące wsparcia po wdrożeniu</p>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
