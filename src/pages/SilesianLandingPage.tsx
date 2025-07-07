@@ -49,25 +49,25 @@ const SilesianLandingPage = () => {
 
   const caseStudies = [
     {
-      title: " Firma Budowlana",
-      industry: "Budownictwo",
-      result: "+150% więcej zapytań",
-      description: "Kompleksowa strona z pozycjonowaniem lokalnym",
-      image: "https://images.pexels.com/photos/1216589/pexels-photo-1216589.jpeg"
+      title: "MK Helicopters",
+      industry: "Lotnictwo helikopterowe",
+      result: "+370% kliknięć w stronę",
+      description: "Przebudowa strona z pozycjonowaniem",
+      image: "https://mkhelicopters.pl/wp-content/uploads/2025/05/open-graph-bg.png"
     },
     {
-      title: "Katowicki Sklep Meblowy",
-      industry: "E-commerce",
-      result: "+200% sprzedaży online",
-      description: "Nowoczesny sklep internetowy z integracjami",
-      image: "https://images.pexels.com/photos/1350789/pexels-photo-1350789.jpeg"
+      title: "Paweł Węglarz",
+      industry: "Trener personalny",
+      result: "+145% sprzedaży online",
+      description: "Konfiguracja pod kampanie",
+      image: "https://i.imgur.com/AaFWZ8d.png"
     },
     {
-      title: "Gliwicka Klinika",
-      industry: "Medycyna",
-      result: "+80% nowych pacjentów",
-      description: "Strona z systemem rezerwacji online",
-      image: "https://images.pexels.com/photos/263402/pexels-photo-263402.jpeg"
+      title: "Vis Naturae",
+      industry: "Masaż i Refleksologia",
+      result: "50/msc. nowych pacjentów",
+      description: "Wizytówka strony i usług",
+      image: "https://i.imgur.com/cMPPuMy.png"
     }
   ];
 
