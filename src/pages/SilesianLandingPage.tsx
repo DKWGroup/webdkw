@@ -414,7 +414,7 @@ const SilesianLandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Kompleksowe Usługi Dla Firm ze 
+                Kompleksowe Usługi Dla Firm ze Śląska
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Oferujemy pełen zakres usług internetowych dostosowanych do specyfiki śląskiego rynku i potrzeb lokalnych przedsiębiorców.
@@ -561,76 +561,13 @@ const SilesianLandingPage = () => {
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        {/* <section className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Co Mówią o Nas Klienci ze 
-              </h2>
-              <p className="text-xl text-gray-600">
-                Opinie przedsiębiorców z Katowic, Gliwic, Zabrza i całego regionu
-              </p>
-            </div>
-            
-            <div className="relative max-w-4xl mx-auto">
-              <div className="bg-white rounded-2xl p-8 shadow-lg">
-                <div className="flex items-center justify-center mb-6">
-                  {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                    <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                
-                <blockquote className="text-xl text-gray-700 text-center mb-8 leading-relaxed">
-                  "{testimonials[currentTestimonial].text}"
-                </blockquote>
-                
-                <div className="text-center">
-                  <div className="font-bold text-gray-900 text-lg">
-                    {testimonials[currentTestimonial].name}
-                  </div>
-                  <div className="text-yellow-600 font-semibold">
-                    {testimonials[currentTestimonial].company}
-                  </div>
-                </div>
-              </div>
-              
-              <button
-                onClick={prevTestimonial}
-                className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-yellow-600"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              
-              <button
-                onClick={nextTestimonial}
-                className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 text-gray-600 hover:text-yellow-600"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-              
-              <div className="flex justify-center mt-8 space-x-2">
-                {testimonials.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                      index === currentTestimonial ? 'bg-yellow-600' : 'bg-gray-300'
-                    }`}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section> */}
-
         {/* Local SEO Section */}
         <section className="py-20 bg-blue-800 text-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
                 <h2 className="text-4xl font-bold mb-6">
-                  Pozycjonowanie Lokalne dla Firm ze 
+                  Pozycjonowanie Lokalne dla Firm ze Śląska
                 </h2>
                 <p className="text-xl text-blue-100 mb-8">
                   Specjalizujemy się w pozycjonowaniu lokalnym, które pomaga firmom ze  być widocznymi dla klientów z regionu. Nasze strategie SEO są dostosowane do specyfiki śląskiego rynku.
@@ -863,7 +800,7 @@ const SilesianLandingPage = () => {
                 Skontaktuj się z Nami
               </h2>
               <p className="text-xl text-gray-600">
-                Jesteśmy gotowi pomóc Twojej firmie ze  osiągnąć sukces w internecie
+                Jesteśmy gotowi pomóc Twojej firmie ze Śląska i osiągnąć sukces w internecie
               </p>
             </div>
             
@@ -908,7 +845,7 @@ const SilesianLandingPage = () => {
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-gray-900 mb-2">Stały Kontakt</h4>
-                      <p className="text-gray-600">Jesteśmy zawsze dostępni dla naszych klientów ze .</p>
+                      <p className="text-gray-600">Jesteśmy zawsze dostępni dla naszych klientów ze Śląska.</p>
                     </div>
                   </div>
                 </div>
@@ -919,12 +856,12 @@ const SilesianLandingPage = () => {
                   <div className="space-y-3">
                     <div className="flex items-center">
                       <Phone className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="text-gray-700">+48 123 456 789</span>
+                      <span className="text-gray-700"><a href="tel:+48 881 046 689">+48 881 046 689</a></span>
                     </div>
                     
                     <div className="flex items-center">
                       <Mail className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="text-gray-700">kontakt@webdkw.com</span>
+                      <span className="text-gray-700">contact.dkwgroup@gmai.com</span>
                     </div>
                     
                     <div className="flex items-center">
