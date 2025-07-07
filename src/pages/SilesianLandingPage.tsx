@@ -164,6 +164,8 @@ const SilesianLandingPage = () => {
     setCurrentSlide((prev) => (prev - 1 + Math.ceil(clients.length / 4)) % Math.ceil(clients.length / 4));
   };
 
+  const baseUrl = "https://webdkw.com/strony-internetowe-seo-slask"
+
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-white">
@@ -173,6 +175,10 @@ const SilesianLandingPage = () => {
           keywords="strony internetowe śląsk, SEO katowice, pozycjonowanie gliwice, marketing cyfrowy zabrze, tworzenie stron śląsk"
           url="https://webdkw.com/strony-internetowe-seo-slask"
         />
+
+        <StructuredData type="website" data={{}} />
+        <StructuredData type="faq" data={faqs} />
+        <OrganizationSchema baseUrl={baseUrl} />
         
         <Header />
 
