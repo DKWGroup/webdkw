@@ -5,6 +5,8 @@ import { supabase } from '../lib/supabase';
 import SEOHead from '../components/SEOHead';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import StructuredData from '../components/StructuredData'
+import OrganizationSchema from '../components/OrganizationSchema'
 
 const SilesianLandingPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
