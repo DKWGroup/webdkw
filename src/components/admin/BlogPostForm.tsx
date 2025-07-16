@@ -85,6 +85,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const [citationStyle, setCitationStyle] = useState('apa')
   const [faqInput, setFaqInput] = useState({ question: '', answer: '' })
   const [ctaInput, setCtaInput] = useState({ title: '', url: '', color: 'orange' })
+  const [categoryInput, setCategoryInput] = useState('')
 
   // Predefiniowane tagi
   const availableTags = [
@@ -129,8 +130,8 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
           download_count: m.download_count
         }))
       })
-      setSources(Array.isArray(article.sources) ? article.sources : [])
-      setCitationStyle(article.source_citation_style || 'apa')
+      setSources(Array.isArray(post.sources) ? post.sources : [])
+      setCitationStyle(post.source_citation_style || 'apa')
       setPublishDate(post.created_at ? new Date(post.created_at) : new Date())
     } else {
       // Reset form for new post
@@ -159,7 +160,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
     setErrors({})
     setShowPreview(false)
     setImageFile(null)
-  }, [post, isOpen])
   }, [post, isOpen])
 
   // Auto-generate slug from title
@@ -1196,14 +1196,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
               </div>
             )}
           </div>
-            {/* Sources */}
-            <SourceForm 
-              sources={sources}
-              onChange={setSources}
-              citationStyle={citationStyle}
-              onCitationStyleChange={setCitationStyle}
-            />
-
 
           {/* Footer */}
           <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">
