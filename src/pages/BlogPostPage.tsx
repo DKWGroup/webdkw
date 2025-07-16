@@ -1,154 +1,172 @@
-import React, { useState, useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
-import { ArrowLeft, Calendar, User, Clock, Tag, Share2, ChevronRight, MessageCircle, BookOpen, CheckCircle, HelpCircle, ExternalLink } from 'lucide-react'
-import { supabase, BlogPost } from '../lib/supabase'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import SEOHead from '../components/SEOHead'
-import StructuredData from '../components/StructuredData'
-import BlogSchema from '../components/BlogSchema'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import rehypeRaw from 'rehype-raw'
-import rehypeSanitize from 'rehype-sanitize'
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import { tomorrow } from 'react-syntax-highlighter/dist/esm/styles/prism'
-import DownloadMaterial from '../components/DownloadMaterial'
+import {
+  ArrowLeft,
+  BookOpen,
+  Calendar,
+  CheckCircle,
+  ChevronRight,
+  Clock,
+  ExternalLink,
+  HelpCircle,
+  MessageCircle,
+  Share2,
+  Tag,
+  User,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import ReactMarkdown from "react-markdown";
+import { Link, useParams } from "react-router-dom";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
+import BlogSchema from "../components/BlogSchema";
+import DownloadMaterial from "../components/DownloadMaterial";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import SEOHead from "../components/SEOHead";
+import StructuredData from "../components/StructuredData";
+import { BlogPost, supabase } from "../lib/supabase";
 
 const BlogPostPage = () => {
-  const { slug } = useParams<{ slug: string }>()
-  const [post, setPost] = useState<BlogPost | null>(null)
-  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [tableOfContents, setTableOfContents] = useState<{id: string, text: string, level: number}[]>([])
+  const { slug } = useParams<{ slug: string }>();
+  const [post, setPost] = useState<BlogPost | null>(null);
+  const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [tableOfContents, setTableOfContents] = useState<
+    { id: string; text: string; level: number }[]
+  >([]);
 
   useEffect(() => {
     if (slug) {
-      fetchPost()
+      fetchPost();
     }
-  }, [slug])
+  }, [slug]);
 
   const fetchPost = async () => {
     try {
       const { data, error } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .eq('slug', slug)
-        .eq('published', true)
-        .single()
+        .from("blog_posts")
+        .select("*")
+        .eq("slug", slug)
+        .eq("published", true)
+        .single();
 
-      if (error) throw error
-      setPost(data)
-      
+      if (error) throw error;
+      setPost(data);
+
       // Extract headings for table of contents
       if (data?.content) {
-        const headings = extractHeadings(data.content)
-        setTableOfContents(headings)
+        const headings = extractHeadings(data.content);
+        setTableOfContents(headings);
       }
-      
+
       // Fetch related posts based on categories or tags
       if (data) {
-        fetchRelatedPosts(data)
+        fetchRelatedPosts(data);
       }
     } catch (error) {
-      console.error('Error fetching post:', error)
-      setError('Nie znaleziono artykułu')
+      console.error("Error fetching post:", error);
+      setError("Nie znaleziono artykułu");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
-  
+  };
+
   const extractHeadings = (content: string) => {
-    const headingRegex = /^(#{2,3})\s+(.+)$/gm
-    const headings = []
-    let match
-    
+    const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+    const headings = [];
+    let match;
+
     while ((match = headingRegex.exec(content)) !== null) {
-      const level = match[1].length
-      const text = match[2]
-      const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '')
-      
-      headings.push({ id, text, level })
+      const level = match[1].length;
+      const text = match[2];
+      const id = text
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]/g, "");
+
+      headings.push({ id, text, level });
     }
-    
-    return headings
-  }
-  
+
+    return headings;
+  };
+
   const fetchRelatedPosts = async (currentPost: BlogPost) => {
     try {
       // Try to match by categories first
       let query = supabase
-        .from('blog_posts')
-        .select('*')
-        .neq('id', currentPost.id)
-        .eq('published', true)
-        .order('created_at', { ascending: false })
-        .limit(3)
-      
+        .from("blog_posts")
+        .select("*")
+        .neq("id", currentPost.id)
+        .eq("published", true)
+        .order("created_at", { ascending: false })
+        .limit(3);
+
       if (currentPost.categories && currentPost.categories.length > 0) {
-        query = query.overlaps('categories', currentPost.categories)
+        query = query.overlaps("categories", currentPost.categories);
       } else if (currentPost.tags && currentPost.tags.length > 0) {
         // Fall back to tags if no categories
-        query = query.overlaps('tags', currentPost.tags)
+        query = query.overlaps("tags", currentPost.tags);
       }
-      
-      const { data } = await query
-      
+
+      const { data } = await query;
+
       if (data && data.length > 0) {
-        setRelatedPosts(data)
+        setRelatedPosts(data);
       } else {
         // If no related posts found, just get the latest posts
         const { data: latestPosts } = await supabase
-          .from('blog_posts')
-          .select('*')
-          .neq('id', currentPost.id)
-          .eq('published', true)
-          .order('created_at', { ascending: false })
-          .limit(3)
-        
-        setRelatedPosts(latestPosts || [])
+          .from("blog_posts")
+          .select("*")
+          .neq("id", currentPost.id)
+          .eq("published", true)
+          .order("created_at", { ascending: false })
+          .limit(3);
+
+        setRelatedPosts(latestPosts || []);
       }
     } catch (error) {
-      console.error('Error fetching related posts:', error)
+      console.error("Error fetching related posts:", error);
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pl-PL', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
+    return new Date(dateString).toLocaleDateString("pl-PL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const getReadingTime = (content: string) => {
-    const wordsPerMinute = 200
-    const wordCount = content.split(' ').length
-    const minutes = Math.ceil(wordCount / wordsPerMinute)
-    return `${minutes} min czytania`
-  }
+    const wordsPerMinute = 200;
+    const wordCount = content.split(" ").length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return `${minutes} min czytania`;
+  };
 
   const sharePost = () => {
     if (navigator.share && post) {
       navigator.share({
         title: post.title,
-        text: post.excerpt || '',
+        text: post.excerpt || "",
         url: window.location.href,
-      })
+      });
     } else {
       // Fallback - copy to clipboard
-      navigator.clipboard.writeText(window.location.href)
-      alert('Link skopiowany do schowka!')
+      navigator.clipboard.writeText(window.location.href);
+      alert("Link skopiowany do schowka!");
     }
-  }
+  };
 
   // Custom components for markdown rendering
   const MarkdownComponents = {
     // Custom code block with syntax highlighting
     code({ node, inline, className, children, ...props }: any) {
-      const match = /language-(\w+)/.exec(className || '');
+      const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (
         <SyntaxHighlighter
           style={tomorrow}
@@ -157,78 +175,93 @@ const BlogPostPage = () => {
           className="rounded-lg my-4"
           {...props}
         >
-          {String(children).replace(/\n$/, '')}
+          {String(children).replace(/\n$/, "")}
         </SyntaxHighlighter>
       ) : (
-        <code className="bg-gray-100 px-1 py-0.5 rounded text-red-600" {...props}>
+        <code
+          className="bg-gray-100 px-1 py-0.5 rounded text-red-600"
+          {...props}
+        >
           {children}
         </code>
       );
     },
-    
+
     // Add IDs to headings for TOC
     h2({ node, children, ...props }: any) {
       const id = children
         .toString()
         .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w-]/g, '');
-      
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]/g, "");
+
       return (
-        <h2 id={id} className="text-3xl font-bold text-gray-900 mt-10 mb-6" {...props}>
+        <h2
+          id={id}
+          className="text-3xl font-bold text-gray-900 mt-10 mb-6"
+          {...props}
+        >
           {children}
         </h2>
       );
     },
-    
+
     h3({ node, children, ...props }: any) {
       const id = children
         .toString()
         .toLowerCase()
-        .replace(/\s+/g, '-')
-        .replace(/[^\w-]/g, '');
-      
+        .replace(/\s+/g, "-")
+        .replace(/[^\w-]/g, "");
+
       return (
-        <h3 id={id} className="text-2xl font-bold text-gray-900 mt-8 mb-4" {...props}>
+        <h3
+          id={id}
+          className="text-2xl font-bold text-gray-900 mt-8 mb-4"
+          {...props}
+        >
           {children}
         </h3>
       );
     },
-    
+
     // Style paragraphs
     p({ node, children, ...props }: any) {
       // Check for CTA syntax
       const child = children?.[0];
-      
-      if (typeof child === 'string' && child.startsWith('[CTA:') && child.endsWith(']')) {
+
+      if (
+        typeof child === "string" &&
+        child.startsWith("[CTA:") &&
+        child.endsWith("]")
+      ) {
         try {
           const ctaContent = child.slice(5, -1);
           const params = new Map();
-          
-          ctaContent.split(',').forEach(param => {
-            const [key, value] = param.split('=');
+
+          ctaContent.split(",").forEach((param) => {
+            const [key, value] = param.split("=");
             if (key && value) {
               params.set(key.trim(), value.trim());
             }
           });
-          
-          const title = params.get('title') || 'Kliknij tutaj';
-          const url = params.get('url') || '#';
-          const color = params.get('color') || 'orange';
-          
+
+          const title = params.get("title") || "Kliknij tutaj";
+          const url = params.get("url") || "#";
+          const color = params.get("color") || "orange";
+
           const colorClasses: Record<string, string> = {
-            orange: 'bg-orange-500 hover:bg-orange-600 text-white',
-            blue: 'bg-blue-500 hover:bg-blue-600 text-white',
-            green: 'bg-green-500 hover:bg-green-600 text-white',
-            red: 'bg-red-500 hover:bg-red-600 text-white',
-            gray: 'bg-gray-500 hover:bg-gray-600 text-white',
+            orange: "bg-orange-500 hover:bg-orange-600 text-white",
+            blue: "bg-blue-500 hover:bg-blue-600 text-white",
+            green: "bg-green-500 hover:bg-green-600 text-white",
+            red: "bg-red-500 hover:bg-red-600 text-white",
+            gray: "bg-gray-500 hover:bg-gray-600 text-white",
           };
-          
+
           const buttonClass = colorClasses[color] || colorClasses.orange;
-          
+
           return (
             <div className="my-8 text-center">
-              <a 
+              <a
                 href={url}
                 className={`inline-flex items-center px-6 py-3 rounded-lg font-semibold transition-colors ${buttonClass}`}
                 target="_blank"
@@ -240,18 +273,22 @@ const BlogPostPage = () => {
             </div>
           );
         } catch (error) {
-          console.error('Error parsing CTA:', error);
+          console.error("Error parsing CTA:", error);
         }
       }
-      
-      return <p className="text-gray-700 leading-relaxed mb-6" {...props}>{children}</p>;
+
+      return (
+        <p className="text-gray-700 leading-relaxed mb-6" {...props}>
+          {children}
+        </p>
+      );
     },
-    
+
     // Style links
     a({ node, children, ...props }: any) {
       return (
-        <a 
-          className="text-orange-500 hover:text-orange-700 underline" 
+        <a
+          className="text-orange-500 hover:text-orange-700 underline"
           target="_blank"
           rel="noopener noreferrer"
           {...props}
@@ -260,11 +297,11 @@ const BlogPostPage = () => {
         </a>
       );
     },
-    
+
     // Style blockquotes
     blockquote({ node, children, ...props }: any) {
       return (
-        <blockquote 
+        <blockquote
           className="border-l-4 border-orange-500 pl-4 py-2 my-6 bg-orange-50 rounded-r-lg text-gray-700 italic"
           {...props}
         >
@@ -272,7 +309,7 @@ const BlogPostPage = () => {
         </blockquote>
       );
     },
-    
+
     // Style lists
     ul({ node, children, ...props }: any) {
       return (
@@ -281,7 +318,7 @@ const BlogPostPage = () => {
         </ul>
       );
     },
-    
+
     ol({ node, children, ...props }: any) {
       return (
         <ol className="list-decimal list-inside mb-6 space-y-2" {...props}>
@@ -289,7 +326,7 @@ const BlogPostPage = () => {
         </ol>
       );
     },
-    
+
     // Style list items
     li({ node, children, ...props }: any) {
       return (
@@ -298,18 +335,21 @@ const BlogPostPage = () => {
         </li>
       );
     },
-    
+
     // Style tables
     table({ node, children, ...props }: any) {
       return (
         <div className="overflow-x-auto my-6">
-          <table className="min-w-full border border-gray-300 rounded-lg" {...props}>
+          <table
+            className="min-w-full border border-gray-300 rounded-lg"
+            {...props}
+          >
             {children}
           </table>
         </div>
       );
     },
-    
+
     thead({ node, children, ...props }: any) {
       return (
         <thead className="bg-gray-100" {...props}>
@@ -317,7 +357,7 @@ const BlogPostPage = () => {
         </thead>
       );
     },
-    
+
     tbody({ node, children, ...props }: any) {
       return (
         <tbody className="divide-y divide-gray-300" {...props}>
@@ -325,7 +365,7 @@ const BlogPostPage = () => {
         </tbody>
       );
     },
-    
+
     tr({ node, children, ...props }: any) {
       return (
         <tr className="hover:bg-gray-50" {...props}>
@@ -333,32 +373,38 @@ const BlogPostPage = () => {
         </tr>
       );
     },
-    
+
     th({ node, children, ...props }: any) {
       return (
-        <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700" {...props}>
+        <th
+          className="px-4 py-3 text-left text-sm font-semibold text-gray-700"
+          {...props}
+        >
           {children}
         </th>
       );
     },
-    
+
     td({ node, children, ...props }: any) {
       return (
-        <td className="px-4 py-3 text-sm text-gray-700 border-t border-gray-300" {...props}>
+        <td
+          className="px-4 py-3 text-sm text-gray-700 border-t border-gray-300"
+          {...props}
+        >
           {children}
         </td>
       );
     },
-    
+
     // Style images
     img({ node, ...props }: any) {
       return (
         <figure className="my-8">
-          <img 
-            className="w-full rounded-lg shadow-lg" 
-            {...props} 
+          <img
+            className="w-full rounded-lg shadow-lg"
+            {...props}
             loading="lazy"
-            alt={props.alt || 'Blog image'}
+            alt={props.alt || "Blog image"}
           />
           {props.alt && (
             <figcaption className="text-center text-gray-500 mt-2 text-sm italic">
@@ -374,30 +420,36 @@ const BlogPostPage = () => {
   const processedContent = React.useMemo(() => {
     // Early return if post or post.content is not available
     if (!post || !post.content) {
-      return '';
+      return "";
     }
 
     // Only add TOC if there are at least 2 h2 headings
     const h2Count = (post.content.match(/^## /gm) || []).length;
-    
+
     if (h2Count >= 2) {
       // Find all h2 and h3 headings
       const headings: { level: number; text: string; id: string }[] = [];
-      const lines = post.content.split('\n');
-      
-      lines.forEach(line => {
-        if (line.startsWith('## ')) {
-          const text = line.replace(/^## /, '');
-          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+      const lines = post.content.split("\n");
+
+      lines.forEach((line) => {
+        if (line.startsWith("## ")) {
+          const text = line.replace(/^## /, "");
+          const id = text
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^\w-]/g, "");
           headings.push({ level: 2, text, id });
-        } else if (line.startsWith('### ')) {
-          const text = line.replace(/^### /, '');
-          const id = text.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+        } else if (line.startsWith("### ")) {
+          const text = line.replace(/^### /, "");
+          const id = text
+            .toLowerCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^\w-]/g, "");
           headings.push({ level: 3, text, id });
         }
       });
     }
-    
+
     return post.content;
   }, [post]);
 
@@ -409,14 +461,14 @@ const BlogPostPage = () => {
           <p className="text-gray-600">Ładowanie artykułu...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (error || !post) {
     return (
       <HelmetProvider>
         <div className="min-h-screen bg-gray-50">
-          <SEOHead 
+          <SEOHead
             title="Artykuł nie został znaleziony"
             description="Przepraszamy, ale artykuł o podanym adresie nie istnieje lub został usunięty."
             url={`https://webdkw.net/blog/${slug}`}
@@ -428,7 +480,8 @@ const BlogPostPage = () => {
                 Artykuł nie został znaleziony
               </h1>
               <p className="text-xl text-gray-600 mb-8">
-                Przepraszamy, ale artykuł o podanym adresie nie istnieje lub został usunięty.
+                Przepraszamy, ale artykuł o podanym adresie nie istnieje lub
+                został usunięty.
               </p>
               <Link
                 to="/blog"
@@ -442,14 +495,14 @@ const BlogPostPage = () => {
           <Footer />
         </div>
       </HelmetProvider>
-    )
+    );
   }
 
   const breadcrumbData = [
     { name: "Strona główna", url: "https://webdkw.net" },
     { name: "Blog", url: "https://webdkw.net/blog" },
-    { name: post.title, url: `https://webdkw.net/blog/${post.slug}` }
-  ]
+    { name: post.title, url: `https://webdkw.net/blog/${post.slug}` },
+  ];
 
   const articleData = {
     title: post.title,
@@ -458,43 +511,48 @@ const BlogPostPage = () => {
     author: post.author,
     publishedTime: post.created_at,
     modifiedTime: post.updated_at,
-    url: `https://webdkw.net/blog/${post.slug}`
-  }
-  
+    url: `https://webdkw.net/blog/${post.slug}`,
+  };
+
   // Generate FAQ structured data if available
-  const faqData = post.faqs && post.faqs.length > 0 
-    ? post.faqs.map((faq: any) => ({
-        question: faq.question,
-        answer: faq.answer
-      }))
-    : null
+  const faqData =
+    post.faqs && post.faqs.length > 0
+      ? post.faqs.map((faq: any) => ({
+          question: faq.question,
+          answer: faq.answer,
+        }))
+      : null;
 
   // Bazowy URL dla schema.org
-  const baseUrl = 'https://webdkw.net';
+  const baseUrl = "https://webdkw.net";
 
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
-        <SEOHead 
+        <SEOHead
           title={post.title}
           description={post.meta_description || post.excerpt || post.title}
-          keywords={post.tags?.join(', ') || 'blog, porady, strony internetowe'}
-          image={post.image_url}
+          keywords={post.tags?.join(", ") || "blog, porady, strony internetowe"}
+          image={
+            post.image_url || "https://webdkw.net/images/webdkw-open-graph.png"
+          }
           url={`https://webdkw.net/blog/${post.slug}`}
           type="article"
           author={post.author}
           publishedTime={post.created_at}
           modifiedTime={post.updated_at}
+          tags={post.tags}
+          categories={post.categories}
         />
         <StructuredData type="breadcrumb" data={breadcrumbData} />
         <StructuredData type="article" data={articleData} />
         {faqData && <StructuredData type="faq" data={faqData} />}
-        
+
         {/* Dodajemy BlogSchema dla danych strukturalnych schema.org */}
         <BlogSchema post={post} baseUrl={baseUrl} />
-        
+
         <Header />
-        
+
         <main className="pt-20">
           {/* Header section */}
           <section className="bg-white py-16">
@@ -508,7 +566,7 @@ const BlogPostPage = () => {
                   <span>Wróć do bloga</span>
                 </Link>
               </div>
-              
+
               {/* Article header */}
               <article>
                 <header className="mb-8">
@@ -519,7 +577,7 @@ const BlogPostPage = () => {
                       className="w-full h-64 md:h-80 object-cover rounded-2xl shadow-lg mb-8"
                     />
                   )}
-                  
+
                   <div className="flex items-center space-x-4 text-sm text-gray-500 mb-6">
                     <div className="flex items-center space-x-1">
                       <Calendar className="h-4 w-4" />
@@ -541,17 +599,17 @@ const BlogPostPage = () => {
                       <span>Udostępnij</span>
                     </button>
                   </div>
-                  
+
                   <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                     {post.title}
                   </h1>
-                  
+
                   {post.excerpt && (
                     <p className="text-xl text-gray-600 leading-relaxed mb-6">
                       {post.excerpt}
                     </p>
                   )}
-                  
+
                   {post.tags && post.tags.length > 0 && (
                     <div className="flex items-center space-x-2 mb-8">
                       <Tag className="h-4 w-4 text-gray-400" />
@@ -568,43 +626,61 @@ const BlogPostPage = () => {
                     </div>
                   )}
                 </header>
-                
+
                 {/* TLDR Section */}
-                {(post.tldr_summary || (post.tldr_takeaways && post.tldr_takeaways.length > 0)) && (
+                {(post.tldr_summary ||
+                  (post.tldr_takeaways && post.tldr_takeaways.length > 0)) && (
                   <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-10">
                     <div className="flex items-start">
                       <div className="bg-blue-100 p-2 rounded-lg mr-4">
                         <BookOpen className="h-6 w-6 text-blue-600" />
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-blue-900 mb-3">TL;DR - W skrócie</h2>
+                        <h2 className="text-xl font-bold text-blue-900 mb-3">
+                          TL;DR - W skrócie
+                        </h2>
                         {post.tldr_summary && (
-                          <p className="text-blue-800 mb-4">{post.tldr_summary}</p>
+                          <p className="text-blue-800 mb-4">
+                            {post.tldr_summary}
+                          </p>
                         )}
-                        {post.tldr_takeaways && post.tldr_takeaways.length > 0 && (
-                          <div className="space-y-2">
-                            {post.tldr_takeaways.map((takeaway, index) => (
-                              <div key={index} className="flex items-start space-x-2">
-                                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                                <span className="text-blue-800">{takeaway}</span>
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                        {post.tldr_takeaways &&
+                          post.tldr_takeaways.length > 0 && (
+                            <div className="space-y-2">
+                              {post.tldr_takeaways.map((takeaway, index) => (
+                                <div
+                                  key={index}
+                                  className="flex items-start space-x-2"
+                                >
+                                  <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                                  <span className="text-blue-800">
+                                    {takeaway}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          )}
                       </div>
                     </div>
                   </div>
                 )}
-                
+
                 {/* Table of Contents */}
                 {tableOfContents.length >= 2 && (
                   <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-10">
-                    <h2 className="text-xl font-bold text-gray-900 mb-4">Spis treści</h2>
+                    <h2 className="text-xl font-bold text-gray-900 mb-4">
+                      Spis treści
+                    </h2>
                     <nav>
                       <ul className="space-y-2">
                         {tableOfContents.map((heading, index) => (
-                          <li key={index} style={{ marginLeft: `${(heading.level - 2) * 1}rem` }}>
-                            <a 
+                          <li
+                            key={index}
+                            style={{
+                              marginLeft: `${(heading.level - 2) * 1}rem`,
+                            }}
+                          >
+                            <a
                               href={`#${heading.id}`}
                               className="text-orange-500 hover:text-orange-700 hover:underline flex items-center"
                             >
@@ -617,20 +693,21 @@ const BlogPostPage = () => {
                     </nav>
                   </div>
                 )}
-                
+
                 {/* Download Materials - Before Content */}
-                {post.download_materials && post.download_materials.length > 0 && (
-                  <div className="mb-10">
-                    {post.download_materials.map((material, index) => (
-                      <DownloadMaterial 
-                        key={index} 
-                        material={material} 
-                        postId={post.id} 
-                      />
-                    ))}
-                  </div>
-                )}
-                
+                {post.download_materials &&
+                  post.download_materials.length > 0 && (
+                    <div className="mb-10">
+                      {post.download_materials.map((material, index) => (
+                        <DownloadMaterial
+                          key={index}
+                          material={material}
+                          postId={post.id}
+                        />
+                      ))}
+                    </div>
+                  )}
+
                 {/* Article content */}
                 <div className="prose prose-lg max-w-none">
                   <ReactMarkdown
@@ -641,22 +718,28 @@ const BlogPostPage = () => {
                     {processedContent}
                   </ReactMarkdown>
                 </div>
-                
+
                 {/* Sources Section */}
                 {post.sources && post.sources.length > 0 && (
                   <div className="mt-12 pt-6 border-t border-gray-200">
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Źródła</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                      Źródła
+                    </h2>
                     <ul className="space-y-3">
                       {post.sources.map((source, index) => (
                         <li key={index} className="flex items-start space-x-2">
                           <span className="text-gray-500">[{index + 1}]</span>
-                          <a 
-                            href={typeof source === 'string' ? source : '#'} 
-                            target="_blank" 
+                          <a
+                            href={typeof source === "string" ? source : "#"}
+                            target="_blank"
                             rel="noopener noreferrer"
                             className="text-orange-500 hover:text-orange-700 hover:underline flex items-center"
                           >
-                            <span>{typeof source === 'string' ? source : JSON.stringify(source)}</span>
+                            <span>
+                              {typeof source === "string"
+                                ? source
+                                : JSON.stringify(source)}
+                            </span>
                             <ExternalLink className="h-4 w-4 ml-1 inline-block" />
                           </a>
                         </li>
@@ -664,20 +747,27 @@ const BlogPostPage = () => {
                     </ul>
                   </div>
                 )}
-                
+
                 {/* FAQ Section */}
                 {post.faqs && post.faqs.length > 0 && (
                   <div className="mt-12 mb-10">
                     <div className="flex items-center space-x-3 mb-6">
                       <HelpCircle className="h-6 w-6 text-orange-500" />
-                      <h2 className="text-2xl font-bold text-gray-900">Najczęściej zadawane pytania</h2>
+                      <h2 className="text-2xl font-bold text-gray-900">
+                        Najczęściej zadawane pytania
+                      </h2>
                     </div>
                     <div className="space-y-4">
                       {post.faqs.map((faq: any, index: number) => (
-                        <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div
+                          key={index}
+                          className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden"
+                        >
                           <details className="group">
                             <summary className="flex justify-between items-center font-medium cursor-pointer p-6">
-                              <h3 className="text-lg font-bold text-gray-900">{faq.question}</h3>
+                              <h3 className="text-lg font-bold text-gray-900">
+                                {faq.question}
+                              </h3>
                               <span className="transition group-open:rotate-180">
                                 <ChevronRight className="h-5 w-5 text-orange-500" />
                               </span>
@@ -693,23 +783,24 @@ const BlogPostPage = () => {
                     </div>
                   </div>
                 )}
-                
+
                 {/* CTA Buttons */}
                 {post.ctas && post.ctas.length > 0 && (
                   <div className="my-10 flex flex-col sm:flex-row gap-4 justify-center">
                     {post.ctas.map((cta: any, index: number) => {
                       const colorClasses: Record<string, string> = {
-                        orange: 'bg-orange-500 hover:bg-orange-600 text-white',
-                        blue: 'bg-blue-500 hover:bg-blue-600 text-white',
-                        green: 'bg-green-500 hover:bg-green-600 text-white',
-                        red: 'bg-red-500 hover:bg-red-600 text-white',
-                        gray: 'bg-gray-500 hover:bg-gray-600 text-white',
+                        orange: "bg-orange-500 hover:bg-orange-600 text-white",
+                        blue: "bg-blue-500 hover:bg-blue-600 text-white",
+                        green: "bg-green-500 hover:bg-green-600 text-white",
+                        red: "bg-red-500 hover:bg-red-600 text-white",
+                        gray: "bg-gray-500 hover:bg-gray-600 text-white",
                       };
-                      
-                      const buttonClass = colorClasses[cta.color] || colorClasses.orange;
-                      
+
+                      const buttonClass =
+                        colorClasses[cta.color] || colorClasses.orange;
+
                       return (
-                        <a 
+                        <a
                           key={index}
                           href={cta.url}
                           className={`inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-colors ${buttonClass}`}
@@ -723,7 +814,7 @@ const BlogPostPage = () => {
                     })}
                   </div>
                 )}
-                
+
                 {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
                   <div className="mt-10 pt-6 border-t border-gray-200">
@@ -766,15 +857,16 @@ const BlogPostPage = () => {
                       Senior Web Developer & SEO Strategist
                     </p>
                     <p className="text-gray-600 leading-relaxed">
-                      Specjalista od tworzenia stron internetowych i pozycjonowania. 
-                      Pomagam firmom budować skuteczną obecność online od ponad 5 lat.
+                      Specjalista od tworzenia stron internetowych i
+                      pozycjonowania. Pomagam firmom budować skuteczną obecność
+                      online od ponad 5 lat.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
           </section>
-          
+
           {/* Related Articles */}
           {relatedPosts.length > 0 && (
             <section className="py-16 bg-gray-50">
@@ -824,7 +916,8 @@ const BlogPostPage = () => {
                   Masz pytania dotyczące tego artykułu?
                 </h2>
                 <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                  Skontaktuj się z nami, aby uzyskać więcej informacji lub omówić, jak możemy pomóc Twojemu biznesowi.
+                  Skontaktuj się z nami, aby uzyskać więcej informacji lub
+                  omówić, jak możemy pomóc Twojemu biznesowi.
                 </p>
                 <Link
                   to="/kontakt"
@@ -844,7 +937,8 @@ const BlogPostPage = () => {
                 Potrzebujesz pomocy z projektem?
               </h2>
               <p className="text-xl text-white/90 mb-8">
-                Skorzystaj z bezpłatnej konsultacji i dowiedz się, jak mogę pomóc Twojemu biznesowi.
+                Skorzystaj z bezpłatnej konsultacji i dowiedz się, jak mogę
+                pomóc Twojemu biznesowi.
               </p>
               <Link
                 to="/#kontakt"
@@ -859,7 +953,7 @@ const BlogPostPage = () => {
         <Footer />
       </div>
     </HelmetProvider>
-  )
-}
+  );
+};
 
-export default BlogPostPage
+export default BlogPostPage;
