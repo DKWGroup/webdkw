@@ -159,7 +159,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
     setErrors({})
     setShowPreview(false)
     setImageFile(null)
-    setActiveTab('content')
+  }, [post, isOpen])
   }, [post, isOpen])
 
   // Auto-generate slug from title
