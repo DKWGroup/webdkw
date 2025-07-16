@@ -8,7 +8,6 @@ import FileUpload from './FileUpload'
 import MarkdownEditor from './MarkdownEditor'
 import SourceForm from './SourceForm'
 import DownloadMaterialForm from './DownloadMaterialForm'
-import SourceForm from './SourceForm'
 
 interface BlogPostFormProps {
   post?: BlogPost | null
