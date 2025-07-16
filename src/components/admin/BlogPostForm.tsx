@@ -6,6 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import { FormValidator } from './FormValidation'
 import FileUpload from './FileUpload'
 import MarkdownEditor from './MarkdownEditor'
+import SourceForm from './SourceForm'
 import DownloadMaterialForm from './DownloadMaterialForm'
 import SourceForm from './SourceForm'
 
@@ -78,6 +79,8 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const [showPreview, setShowPreview] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [tagInput, setTagInput] = useState('')
+  const [sources, setSources] = useState<any[]>([])
+  const [citationStyle, setCitationStyle] = useState('apa')
   const [categoryInput, setCategoryInput] = useState('')
   const [takeawayInput, setTakeawayInput] = useState('')
   const [publishDate, setPublishDate] = useState<Date | null>(new Date())
@@ -129,6 +132,8 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
           download_count: m.download_count
         }))
       })
+      setSources(Array.isArray(article.sources) ? article.sources : [])
+      setCitationStyle(article.source_citation_style || 'apa')
       setPublishDate(post.created_at ? new Date(post.created_at) : new Date())
     } else {
       // Reset form for new post
@@ -150,6 +155,8 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
         sources: [],
         download_materials: []
       })
+      setSources([])
+      setCitationStyle('apa')
       setPublishDate(new Date())
     }
     setErrors({})
@@ -332,6 +339,8 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
         ...formData,
         excerpt: formData.excerpt || FormValidator.generateExcerpt(formData.content),
         meta_description: formData.meta_description || FormValidator.generateMetaDescription(formData.content),
+        sources: sources,
+        source_citation_style: citationStyle,
         created_at: publishDate?.toISOString() || new Date().toISOString(),
         updated_at: new Date().toISOString()
       }
@@ -1190,6 +1199,14 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
               </div>
             )}
           </div>
+            {/* Sources */}
+            <SourceForm 
+              sources={sources}
+              onChange={setSources}
+              citationStyle={citationStyle}
+              onCitationStyleChange={setCitationStyle}
+            />
+
 
           {/* Footer */}
           <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">

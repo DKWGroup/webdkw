@@ -24,7 +24,8 @@ export interface BlogPost {
   faqs?: Array<{ question: string; answer: string }>
   ctas?: Array<{ title: string; url: string; color: string }>
   seo_score?: number
-  sources?: string[]
+ sources?: any[]
+ source_citation_style?: string
   download_materials?: DownloadMaterial[]
 }
 
