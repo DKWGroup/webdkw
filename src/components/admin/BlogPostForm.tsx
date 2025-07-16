@@ -80,7 +80,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const [tagInput, setTagInput] = useState('')
   const [sources, setSources] = useState<any[]>([])
   const [citationStyle, setCitationStyle] = useState('apa')
-  const [categoryInput, setCategoryInput] = useState('')
   const [takeawayInput, setTakeawayInput] = useState('')
   const [publishDate, setPublishDate] = useState<Date | null>(new Date())
   const [activeTab, setActiveTab] = useState('content')
