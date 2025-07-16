@@ -81,8 +81,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const [sources, setSources] = useState<any[]>([])
   const [takeawayInput, setTakeawayInput] = useState('')
   const [publishDate, setPublishDate] = useState<Date | null>(new Date())
-  const [activeTab, setActiveTab] = useState('content')
-  const [citationStyle, setCitationStyle] = useState('apa')
+  const [sources, setSources] = useState<string[]>([])
   const [faqInput, setFaqInput] = useState({ question: '', answer: '' })
   const [ctaInput, setCtaInput] = useState({ title: '', url: '', color: 'orange' })
   const [categoryInput, setCategoryInput] = useState('')
@@ -130,8 +129,7 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
           download_count: m.download_count
         }))
       })
-      setSources(Array.isArray(post.sources) ? post.sources : [])
-      setCitationStyle(post.source_citation_style || 'apa')
+      setSources(post.sources || [])
       setPublishDate(post.created_at ? new Date(post.created_at) : new Date())
     } else {
       // Reset form for new post
@@ -154,7 +152,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
         download_materials: []
       })
       setSources([])
-      setCitationStyle('apa')
       setPublishDate(new Date())
     }
     setErrors({})
@@ -337,7 +334,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
         excerpt: formData.excerpt || FormValidator.generateExcerpt(formData.content),
         meta_description: formData.meta_description || FormValidator.generateMetaDescription(formData.content),
         sources: sources,
-        source_citation_style: citationStyle,
         created_at: publishDate?.toISOString() || new Date().toISOString(),
         updated_at: new Date().toISOString()
       }
@@ -1190,8 +1186,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                           {tag}
                         </span>
                       ))}
-                    </div>
-                  )}
                 </div>
               </div>
             )}

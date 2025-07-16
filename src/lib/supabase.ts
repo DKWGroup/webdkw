@@ -24,8 +24,7 @@ export interface BlogPost {
   faqs?: Array<{ question: string; answer: string }>
   ctas?: Array<{ title: string; url: string; color: string }>
   seo_score?: number
- sources?: any[]
- source_citation_style?: string
+ sources?: string[]
   download_materials?: DownloadMaterial[]
 }
 
@@ -78,18 +77,4 @@ export interface Project {
   case_study_results?: string
   case_study_summary?: string
   case_study_cta?: string
-}
-
-export interface Source {
-  id: string
-  type: 'book' | 'article' | 'website' | 'research' | 'other'
-  author: string
-  title: string
-  year: string
-  publisher?: string
-  website?: string
-  url?: string
-  doi?: string
-  isbn?: string
-  access_date?: string
 }
