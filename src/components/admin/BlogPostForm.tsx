@@ -79,7 +79,6 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [tagInput, setTagInput] = useState('')
   const [sources, setSources] = useState<any[]>([])
-  const [citationStyle, setCitationStyle] = useState('apa')
   const [takeawayInput, setTakeawayInput] = useState('')
   const [publishDate, setPublishDate] = useState<Date | null>(new Date())
   const [activeTab, setActiveTab] = useState('content')
