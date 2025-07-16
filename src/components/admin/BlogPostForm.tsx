@@ -81,10 +81,11 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
   const [sources, setSources] = useState<any[]>([])
   const [takeawayInput, setTakeawayInput] = useState('')
   const [publishDate, setPublishDate] = useState<Date | null>(new Date())
-  const [sources, setSources] = useState<string[]>([])
   const [faqInput, setFaqInput] = useState({ question: '', answer: '' })
   const [ctaInput, setCtaInput] = useState({ title: '', url: '', color: 'orange' })
   const [categoryInput, setCategoryInput] = useState('')
+  const [activeTab, setActiveTab] = useState('content')
+  const [citationStyle, setCitationStyle] = useState('apa')
 
   // Predefiniowane tagi
   const availableTags = [
@@ -1186,6 +1187,8 @@ const BlogPostForm: React.FC<BlogPostFormProps> = ({ post, isOpen, onClose, onSa
                           {tag}
                         </span>
                       ))}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
