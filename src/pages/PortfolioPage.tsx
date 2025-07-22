@@ -224,10 +224,11 @@ const PortfolioPage = () => {
                               </Link>
                             </div>
                           )}
-                        <div 
-                          className="text-gray-600 text-sm prose prose-sm max-w-none"
-                          dangerouslySetInnerHTML={{ __html: project.description }}
-                        />
+                          <div 
+                            className="text-gray-600 text-sm prose prose-sm max-w-none"
+                            dangerouslySetInnerHTML={{ __html: project.description }}
+                          />
+                        </div>
                       </div>
                     </div>
                   ))}
