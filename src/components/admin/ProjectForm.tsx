@@ -319,8 +319,12 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ project, isOpen, onClose, onS
     setIsSubmitting(true)
 
     try {
+      // Strip HTML tags from description before saving
+      const cleanDescription = formData.description.replace(/<[^>]*>/g, '')
+      
       const projectData = {
         ...formData,
+        description: cleanDescription,
         results: formData.results.filter(result => result.metric && result.value),
         completion_date: completionDate?.toISOString().split('T')[0] || '',
         updated_at: new Date().toISOString()
