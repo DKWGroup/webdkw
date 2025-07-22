@@ -131,7 +131,10 @@ const PortfolioSection = () => {
                       <div className="space-y-6">
                         <div>
                           <h4 className="font-bold text-gray-900 mb-2">🎯 Wyzwanie:</h4>
-                          <p className="text-gray-600">{study.description}</p>
+                          <div 
+                            className="text-gray-600 prose prose-sm max-w-none"
+                            dangerouslySetInnerHTML={{ __html: study.description }}
+                          />
                         </div>
 
                         <div>
@@ -197,7 +200,10 @@ const PortfolioSection = () => {
                             <div className="space-y-4">
                               <div>
                                 <h4 className="font-bold text-gray-900 mb-2 text-sm">🎯 Wyzwanie:</h4>
-                                <p className="text-gray-600 text-sm leading-relaxed">{study.description}</p>
+                                <div 
+                                  className="text-gray-600 text-sm leading-relaxed prose prose-sm max-w-none"
+                                  dangerouslySetInnerHTML={{ __html: study.description }}
+                                />
                               </div>
 
                               <div>
