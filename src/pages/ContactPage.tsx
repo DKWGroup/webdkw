@@ -1,41 +1,50 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, Mail, Phone, Clock, ArrowRight, CheckCircle, MapPin, AlertTriangle } from 'lucide-react'
-import { supabase } from '../lib/supabase'
-import { HelmetProvider } from 'react-helmet-async'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import SEOHead from '../components/SEOHead'
+import {
+  AlertTriangle,
+  ArrowLeft,
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
+import React, { useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import SEOHead from "../components/SEOHead";
+import { supabase } from "../lib/supabase";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    message: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [error, setError] = useState('')
-  const [rodoConsent, setRodoConsent] = useState(false)
-  const [showRodoInfo, setShowRodoInfo] = useState(false)
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
+  const [rodoConsent, setRodoConsent] = useState(false);
+  const [showRodoInfo, setShowRodoInfo] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setError('')
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
 
     if (!rodoConsent) {
-      setError('Wymagana jest zgoda na przetwarzanie danych osobowych')
-      setIsSubmitting(false)
-      return
+      setError("Wymagana jest zgoda na przetwarzanie danych osobowych");
+      setIsSubmitting(false);
+      return;
     }
 
     try {
       // Save to database first (this is the most important part)
       const { error: dbError } = await supabase
-        .from('contact_submissions')
+        .from("contact_submissions")
         .insert([
           {
             name: formData.name,
@@ -43,72 +52,83 @@ const ContactPage = () => {
             company: formData.company,
             phone: formData.phone,
             message: formData.message,
-            lead_magnet: false
-          }
-        ])
+            lead_magnet: false,
+          },
+        ]);
 
-      if (dbError) throw dbError
+      if (dbError) throw dbError;
 
       // Try to send emails via edge function (optional - if it fails, form is still submitted)
       try {
-        const emailResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            phone: formData.phone,
-            message: formData.message,
-            lead_magnet: false
-          })
-        })
+        const emailResponse = await fetch(
+          `${
+            import.meta.env.VITE_SUPABASE_URL
+          }/functions/v1/send-contact-email`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: formData.name,
+              email: formData.email,
+              company: formData.company,
+              phone: formData.phone,
+              message: formData.message,
+              lead_magnet: false,
+            }),
+          }
+        );
 
         if (!emailResponse.ok) {
-          console.warn('Email sending failed, but form was submitted successfully')
+          console.warn(
+            "Email sending failed, but form was submitted successfully"
+          );
         }
       } catch (emailError) {
-        console.warn('Email function error:', emailError)
+        console.warn("Email function error:", emailError);
         // Don't throw - form submission was successful
       }
 
-      setIsSubmitted(true)
+      setIsSubmitted(true);
       setFormData({
-        name: '',
-        email: '',
-        company: '',
-        phone: '',
-        message: ''
-      })
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        message: "",
+      });
     } catch (error) {
-      console.error('Error submitting form:', error)
-      setError('Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie lub napisz bezpośrednio na email.')
+      console.error("Error submitting form:", error);
+      setError(
+        "Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie lub napisz bezpośrednio na email."
+      );
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   if (isSubmitted) {
     return (
       <HelmetProvider>
         <div className="min-h-screen bg-gray-50">
-          <SEOHead 
+          <SEOHead
             title="Kontakt | Tworzenie Stron, SEO, Marketing Internetowy"
             description="Skontaktuj się z nami! Zapytaj o tworzenie stron internetowych, sklepów online, optymalizację SEO i skuteczne kampanie marketingowe. Czekamy na Twój kontakt!"
             keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
             url="https://webdkw.net"
           />
-          
+
           <Header />
           <main className="pt-20">
             <section className="py-20">
@@ -119,8 +139,9 @@ const ContactPage = () => {
                     Dziękuję za wiadomość!
                   </h1>
                   <p className="text-xl text-gray-600 mb-8">
-                    Otrzymałem Twoje zapytanie i odpowiem w ciągu 24 godzin. 
-                    Sprawdź skrzynkę email (również spam) w poszukiwaniu potwierdzenia i mojej odpowiedzi.
+                    Otrzymałem Twoje zapytanie i odpowiem w ciągu 24 godzin.
+                    Sprawdź skrzynkę email (również spam) w poszukiwaniu
+                    potwierdzenia i mojej odpowiedzi.
                   </p>
                   <p className="text-gray-500 mb-8">
                     W pilnych sprawach dzwoń: <strong>+48 881 046 689</strong>
@@ -138,21 +159,21 @@ const ContactPage = () => {
           <Footer />
         </div>
       </HelmetProvider>
-    )
+    );
   }
 
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
-        <SEOHead 
+        <SEOHead
           title="Kontakt | Tworzenie Stron, SEO, Marketing Internetowy"
           description="Skontaktuj się z nami! Zapytaj o tworzenie stron internetowych, sklepów online, optymalizację SEO i skuteczne kampanie marketingowe. Czekamy na Twój kontakt!"
           keywords="strony internetowe, tworzenie stron www, sklepy internetowe, pozycjonowanie SEO, Google Ads, marketing internetowy"
           url="https://webdkw.net"
         />
-        
+
         <Header />
-        
+
         <main className="pt-20">
           {/* Header section */}
           <section className="bg-white py-16">
@@ -166,14 +187,14 @@ const ContactPage = () => {
                   <span>Powrót na stronę główną</span>
                 </Link>
               </div>
-              
+
               <div className="text-center max-w-4xl mx-auto">
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                   Skontaktuj się z nami
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Gotowy na rozmowę o Twoim projekcie? Wypełnij formularz lub skorzystaj 
-                  z jednej z dostępnych form kontaktu.
+                  Gotowy na rozmowę o Twoim projekcie? Wypełnij formularz lub
+                  skorzystaj z jednej z dostępnych form kontaktu.
                 </p>
               </div>
             </div>
@@ -190,14 +211,17 @@ const ContactPage = () => {
                       Wyślij zapytanie
                     </h2>
                     <p className="text-gray-600 mb-8">
-                      Wypełnij formularz, a odpowiem w ciągu 24 godzin z propozycją 
-                      bezpłatnej konsultacji strategicznej.
+                      Wypełnij formularz, a odpowiem w ciągu 24 godzin z
+                      propozycją bezpłatnej konsultacji strategicznej.
                     </p>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div>
-                          <label htmlFor="name" className="block text-sm font-bold text-gray-900 mb-2">
+                          <label
+                            htmlFor="name"
+                            className="block text-sm font-bold text-gray-900 mb-2"
+                          >
                             Imię i nazwisko *
                           </label>
                           <input
@@ -212,7 +236,10 @@ const ContactPage = () => {
                           />
                         </div>
                         <div>
-                          <label htmlFor="company" className="block text-sm font-bold text-gray-900 mb-2">
+                          <label
+                            htmlFor="company"
+                            className="block text-sm font-bold text-gray-900 mb-2"
+                          >
                             Nazwa firmy
                           </label>
                           <input
@@ -229,7 +256,10 @@ const ContactPage = () => {
 
                       <div className="grid sm:grid-cols-2 gap-6">
                         <div>
-                          <label htmlFor="email" className="block text-sm font-bold text-gray-900 mb-2">
+                          <label
+                            htmlFor="email"
+                            className="block text-sm font-bold text-gray-900 mb-2"
+                          >
                             Email *
                           </label>
                           <input
@@ -244,7 +274,10 @@ const ContactPage = () => {
                           />
                         </div>
                         <div>
-                          <label htmlFor="phone" className="block text-sm font-bold text-gray-900 mb-2">
+                          <label
+                            htmlFor="phone"
+                            className="block text-sm font-bold text-gray-900 mb-2"
+                          >
                             Telefon
                           </label>
                           <input
@@ -260,7 +293,10 @@ const ContactPage = () => {
                       </div>
 
                       <div>
-                        <label htmlFor="message" className="block text-sm font-bold text-gray-900 mb-2">
+                        <label
+                          htmlFor="message"
+                          className="block text-sm font-bold text-gray-900 mb-2"
+                        >
                           Opisz swój projekt *
                         </label>
                         <textarea
@@ -289,8 +325,11 @@ const ContactPage = () => {
                             />
                           </div>
                           <div className="ml-3 text-sm">
-                            <label htmlFor="rodo-consent" className="text-gray-600">
-                              Zapoznałem/am się z{' '}
+                            <label
+                              htmlFor="rodo-consent"
+                              className="text-gray-600"
+                            >
+                              Zapoznałem/am się z{" "}
                               <button
                                 type="button"
                                 className="text-orange-500 hover:text-orange-700 underline"
@@ -298,18 +337,27 @@ const ContactPage = () => {
                                 onMouseEnter={() => setShowRodoInfo(true)}
                                 onMouseLeave={() => setShowRodoInfo(false)}
                               >
-                                informacją o administratorze i przetwarzaniu danych
+                                informacją o administratorze i przetwarzaniu
+                                danych
                               </button>
                               . *
                             </label>
                           </div>
                         </div>
-                        
+
                         {/* RODO Info Popup */}
                         {showRodoInfo && (
                           <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
                             <p>
-                              Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                              Wyrażam zgodę na przetwarzanie moich danych
+                              osobowych zgodnie z ustawą o ochronie danych
+                              osobowych w celu wysyłania informacji handlowej.
+                              Podanie danych osobowych jest dobrowolne. Zostałem
+                              poinformowany, że przysługuje mi prawo dostępu do
+                              swoich danych, możliwości ich poprawiania, żądania
+                              zaprzestania ich przetwarzania. Administratorem
+                              danych jest DM.me Dawid Myszka ul. Bolesława
+                              Chrobrego 32/103, Katowice 40-881.
                             </p>
                           </div>
                         )}
@@ -329,7 +377,9 @@ const ContactPage = () => {
                         disabled={isSubmitting || !rodoConsent}
                         className="w-full bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
                       >
-                        <span>{isSubmitting ? 'Wysyłanie...' : 'Wyślij zapytanie'}</span>
+                        <span>
+                          {isSubmitting ? "Wysyłanie..." : "Wyślij zapytanie"}
+                        </span>
                         {!isSubmitting && <ArrowRight className="h-5 w-5" />}
                       </button>
 
@@ -351,40 +401,64 @@ const ContactPage = () => {
                       <div className="flex items-start space-x-4">
                         <Mail className="h-6 w-6 text-orange-500 mt-1" />
                         <div>
-                          <div className="font-semibold text-gray-900">Email</div>
-                          <a href="mailto:contact.dkwgroup@gmail.com" className="text-orange-500 hover:text-orange-600">
-                          contact.dkwgroup@gmail.com
+                          <div className="font-semibold text-gray-900">
+                            Email
+                          </div>
+                          <a
+                            href="mailto:contact.dkwgroup@gmail.com"
+                            className="text-orange-500 hover:text-orange-600"
+                          >
+                            contact.dkwgroup@gmail.com
                           </a>
-                          <p className="text-sm text-gray-500 mt-1">Odpowiedź w ciągu 24h</p>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Odpowiedź w ciągu 24h
+                          </p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-start space-x-4">
                         <Phone className="h-6 w-6 text-orange-500 mt-1" />
                         <div>
-                          <div className="font-semibold text-gray-900">Telefon</div>
-                          <a href="tel:+48881046689" className="text-orange-500 hover:text-orange-600">
+                          <div className="font-semibold text-gray-900">
+                            Telefon
+                          </div>
+                          <a
+                            href="tel:+48881046689"
+                            className="text-orange-500 hover:text-orange-600"
+                          >
                             +48 881 046 689
                           </a>
-                          <p className="text-sm text-gray-500 mt-1">W pilnych sprawach</p>
+                          <p className="text-sm text-gray-500 mt-1">
+                            W pilnych sprawach
+                          </p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-start space-x-4">
                         <Clock className="h-6 w-6 text-orange-500 mt-1" />
                         <div>
-                          <div className="font-semibold text-gray-900">Godziny pracy</div>
-                          <div className="text-gray-600">Pon-Pt: 9:00-17:00</div>
-                          <p className="text-sm text-gray-500 mt-1">Czas odpowiedzi: do 2h</p>
+                          <div className="font-semibold text-gray-900">
+                            Godziny pracy
+                          </div>
+                          <div className="text-gray-600">
+                            Pon-Pt: 9:00-17:00
+                          </div>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Czas odpowiedzi: do 2h
+                          </p>
                         </div>
                       </div>
 
                       <div className="flex items-start space-x-4">
                         <MapPin className="h-6 w-6 text-orange-500 mt-1" />
                         <div>
-                          <div className="font-semibold text-gray-900">Lokalizacja</div>
+                          <div className="font-semibold text-gray-900">
+                            Lokalizacja
+                          </div>
                           <div className="text-gray-600">Katowice, Polska</div>
-                          <p className="text-sm text-gray-500 mt-1">Spotkania online i stacjonarne</p>
+                          <p className="text-sm text-gray-500 mt-1">
+                            Spotkania online i stacjonarne
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -392,10 +466,13 @@ const ContactPage = () => {
 
                   {/* Response guarantee */}
                   <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-                    <h4 className="font-bold text-blue-900 mb-2">Gwarancja odpowiedzi</h4>
+                    <h4 className="font-bold text-blue-900 mb-2">
+                      Gwarancja odpowiedzi
+                    </h4>
                     <p className="text-blue-800">
-                      Odpowiadam na wszystkie zapytania w ciągu <strong>24 godzin</strong>. 
-                      W pilnych sprawach dzwoń bezpośrednio - zawsze znajdę czas na rozmowę.
+                      Odpowiadam na wszystkie zapytania w ciągu{" "}
+                      <strong>24 godzin</strong>. W pilnych sprawach dzwoń
+                      bezpośrednio - zawsze znajdę czas na rozmowę.
                     </p>
                   </div>
                 </div>
@@ -407,7 +484,7 @@ const ContactPage = () => {
         <Footer />
       </div>
     </HelmetProvider>
-  )
-}
+  );
+};
 
-export default ContactPage
+export default ContactPage;

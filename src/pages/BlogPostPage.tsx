@@ -941,7 +941,7 @@ const BlogPostPage = () => {
                 pomóc Twojemu biznesowi.
               </p>
               <Link
-                to="/#kontakt"
+                to="/kontakt"
                 className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Umów bezpłatną konsultację

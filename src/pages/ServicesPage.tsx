@@ -1,10 +1,20 @@
-import { Link } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
-import { ArrowLeft, ArrowRight, Globe, Database, ShoppingCart, Search, TrendingUp, Clock, DollarSign } from 'lucide-react'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import SEOHead from '../components/SEOHead'
-import StructuredData from '../components/StructuredData'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Clock,
+  Database,
+  DollarSign,
+  Globe,
+  Search,
+  ShoppingCart,
+  TrendingUp,
+} from "lucide-react";
+import { HelmetProvider } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import SEOHead from "../components/SEOHead";
+import StructuredData from "../components/StructuredData";
 
 const ServicesPage = () => {
   const services = [
@@ -12,58 +22,88 @@ const ServicesPage = () => {
       icon: <Globe className="h-12 w-12 text-orange-500" />,
       title: "Tworzenie stron internetowych",
       subtitle: "Landing page / Wizytówka",
-      description: "Profesjonalne strony wizytówkowe i landing page'y zoptymalizowane pod konwersję",
+      description:
+        "Profesjonalne strony wizytówkowe i landing page'y zoptymalizowane pod konwersję",
       priceRange: "od 4 000 zł",
       timeframe: "1 tydzień",
-      features: ["Responsywny design", "Optymalizacja SEO", "Formularz kontaktowy", "Panel administracyjny"],
-      link: "/uslugi/tworzenie-stron"
+      features: [
+        "Responsywny design",
+        "Optymalizacja SEO",
+        "Formularz kontaktowy",
+        "Panel administracyjny",
+      ],
+      link: "/uslugi/tworzenie-stron",
     },
     {
       icon: <Database className="h-12 w-12 text-orange-500" />,
       title: "Platformy internetowe",
       subtitle: "Systemy i aplikacje web",
-      description: "Zaawansowane platformy internetowe i systemy zarządzania dostosowane do Twoich potrzeb",
+      description:
+        "Zaawansowane platformy internetowe i systemy zarządzania dostosowane do Twoich potrzeb",
       priceRange: "od 9 000 zł",
       timeframe: "od 4 tygodni",
-      features: ["Dedykowany kod", "Zaawansowane funkcje", "Integracje API", "Skalowalność"],
-      link: "/uslugi/platformy-internetowe"
+      features: [
+        "Dedykowany kod",
+        "Zaawansowane funkcje",
+        "Integracje API",
+        "Skalowalność",
+      ],
+      link: "/uslugi/platformy-internetowe",
     },
     {
       icon: <ShoppingCart className="h-12 w-12 text-orange-500" />,
       title: "Sklepy internetowe",
       subtitle: "E-commerce",
-      description: "Kompleksowe sklepy internetowe z systemami płatności i zarządzania zamówieniami",
+      description:
+        "Kompleksowe sklepy internetowe z systemami płatności i zarządzania zamówieniami",
       priceRange: "od 4 000 zł",
       timeframe: "od 2 tygodni",
-      features: ["WooCommerce/Custom", "Systemy płatności", "Zarządzanie produktami", "Analityka sprzedaży"],
-      link: "/uslugi/sklepy-internetowe"
+      features: [
+        "WooCommerce/Custom",
+        "Systemy płatności",
+        "Zarządzanie produktami",
+        "Analityka sprzedaży",
+      ],
+      link: "/uslugi/sklepy-internetowe",
     },
     {
       icon: <Search className="h-12 w-12 text-orange-500" />,
       title: "Optymalizacja SEO",
       subtitle: "Pozycjonowanie w Google",
-      description: "Kompleksowa optymalizacja SEO zwiększająca widoczność w wyszukiwarkach",
+      description:
+        "Kompleksowa optymalizacja SEO zwiększająca widoczność w wyszukiwarkach",
       priceRange: "od 1 200 zł/mies",
       timeframe: "rezulataty po miesiącu",
-      features: ["Audyt SEO", "Optymalizacja techniczna", "Content marketing", "Link building"],
-      link: "/uslugi/seo"
+      features: [
+        "Audyt SEO",
+        "Optymalizacja techniczna",
+        "Content marketing",
+        "Link building",
+      ],
+      link: "/uslugi/seo",
     },
     {
       icon: <TrendingUp className="h-12 w-12 text-orange-500" />,
       title: "Marketing i reklamy",
       subtitle: "Google Ads / Facebook Ads",
-      description: "Profesjonalne kampanie reklamowe generujące wysokiej jakości leady",
+      description:
+        "Profesjonalne kampanie reklamowe generujące wysokiej jakości leady",
       priceRange: "od 600 zł/mies",
       timeframe: "od tygodnia",
-      features: ["Google Ads", "Facebook/Instagram Ads", "Optymalizacja konwersji", "Raportowanie"],
-      link: "/uslugi/marketing"
-    }
-  ]
+      features: [
+        "Google Ads",
+        "Facebook/Instagram Ads",
+        "Optymalizacja konwersji",
+        "Raportowanie",
+      ],
+      link: "/uslugi/marketing",
+    },
+  ];
 
   const breadcrumbData = [
     { name: "Strona główna", url: "https://webdkw.net" },
-    { name: "Usługi", url: "https://webdkw.net/uslugi" }
-  ]
+    { name: "Usługi", url: "https://webdkw.net/uslugi" },
+  ];
 
   // const servicesStructuredData = services.map(service => ({
   //   "@type": "Service",
@@ -83,28 +123,28 @@ const ServicesPage = () => {
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
-        <SEOHead 
+        <SEOHead
           title="Usługi WebDKW - Strony internetowe, SEO, Marketing"
           description="Kompleksowe rozwiązania internetowe dla Twojego biznesu. Od prostych stron wizytówkowych po zaawansowane platformy e-commerce."
           keywords="usługi, strony internetowe, sklepy online, SEO, pozycjonowanie, Google Ads, marketing internetowy"
           url="https://webdkw.net/uslugi"
         />
         <StructuredData type="breadcrumb" data={breadcrumbData} />
-        <StructuredData 
-          type="service" 
+        <StructuredData
+          type="service"
           data={{
             name: "Usługi WebDKW",
             description: "Kompleksowe rozwiązania internetowe dla firm",
             serviceType: "Web Development",
             offers: {
               price: "od 3000",
-              priceCurrency: "PLN"
-            }
-          }} 
+              priceCurrency: "PLN",
+            },
+          }}
         />
-        
+
         <Header />
-        
+
         <main className="pt-20">
           {/* Header section */}
           <section className="bg-white py-16">
@@ -118,14 +158,15 @@ const ServicesPage = () => {
                   <span>Powrót na stronę główną</span>
                 </Link>
               </div>
-              
+
               <div className="text-center max-w-4xl mx-auto">
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                   Nasze usługi
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Kompleksowe rozwiązania internetowe dla Twojego biznesu. 
-                  Od prostych stron wizytówkowych po zaawansowane platformy e-commerce.
+                  Kompleksowe rozwiązania internetowe dla Twojego biznesu. Od
+                  prostych stron wizytówkowych po zaawansowane platformy
+                  e-commerce.
                 </p>
               </div>
             </div>
@@ -142,9 +183,7 @@ const ServicesPage = () => {
                   >
                     <div className="p-8">
                       <div className="flex items-start space-x-4 mb-6">
-                        <div className="flex-shrink-0">
-                          {service.icon}
-                        </div>
+                        <div className="flex-shrink-0">{service.icon}</div>
                         <div className="flex-1">
                           <h3 className="text-2xl font-bold text-gray-900 mb-1">
                             {service.title}
@@ -175,12 +214,19 @@ const ServicesPage = () => {
                       </div>
 
                       <div className="mb-6">
-                        <h4 className="font-semibold text-gray-900 mb-3">Kluczowe funkcje:</h4>
+                        <h4 className="font-semibold text-gray-900 mb-3">
+                          Kluczowe funkcje:
+                        </h4>
                         <div className="grid grid-cols-2 gap-2">
                           {service.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-center space-x-2">
+                            <div
+                              key={idx}
+                              className="flex items-center space-x-2"
+                            >
                               <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                              <span className="text-sm text-gray-600">{feature}</span>
+                              <span className="text-sm text-gray-600">
+                                {feature}
+                              </span>
                             </div>
                           ))}
                         </div>
@@ -207,10 +253,11 @@ const ServicesPage = () => {
                 Nie wiesz, która usługa jest dla Ciebie?
               </h2>
               <p className="text-xl text-white/90 mb-8">
-                Umów się na bezpłatną konsultację i wspólnie dobierzemy najlepsze rozwiązanie dla Twojego biznesu.
+                Umów się na bezpłatną konsultację i wspólnie dobierzemy
+                najlepsze rozwiązanie dla Twojego biznesu.
               </p>
               <Link
-                to="/#kontakt"
+                to="/kontakt"
                 className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Umów bezpłatną konsultację
@@ -222,7 +269,7 @@ const ServicesPage = () => {
         <Footer />
       </div>
     </HelmetProvider>
-  )
-}
+  );
+};
 
-export default ServicesPage
+export default ServicesPage;

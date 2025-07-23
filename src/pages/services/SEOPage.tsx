@@ -1,35 +1,47 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { HelmetProvider } from 'react-helmet-async'
-import { ArrowLeft, Check, Search, TrendingUp, Target, BarChart3, FileText, Link as LinkIcon, Plus, Minus, ExternalLink } from 'lucide-react'
-import { supabase, Project } from '../../lib/supabase'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
-import SEOHead from '../../components/SEOHead'
+import {
+  ArrowLeft,
+  BarChart3,
+  Check,
+  ExternalLink,
+  FileText,
+  Link as LinkIcon,
+  Minus,
+  Plus,
+  Search,
+  Target,
+  TrendingUp,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import SEOHead from "../../components/SEOHead";
+import { Project, supabase } from "../../lib/supabase";
 
 const SEOPage = () => {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [openProcess, setOpenProcess] = useState<number | null>(null)
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [openProcess, setOpenProcess] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchProjects()
-  }, [])
+    fetchProjects();
+  }, []);
 
   const fetchProjects = async () => {
     try {
       const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .ilike('description', '%SEO%')
-        .limit(3)
+        .from("projects")
+        .select("*")
+        .ilike("description", "%SEO%")
+        .limit(3);
 
-      if (error) throw error
-      setProjects(data || [])
+      if (error) throw error;
+      setProjects(data || []);
     } catch (error) {
-      console.error('Error fetching projects:', error)
+      console.error("Error fetching projects:", error);
     }
-  }
+  };
 
   const packages = [
     {
@@ -45,7 +57,7 @@ const SEOPage = () => {
         "Konsultacja 1h",
       ],
       timeframe: "3 dni",
-      oneTime: true
+      oneTime: true,
     },
     {
       name: "SEO Miesięczne",
@@ -58,10 +70,10 @@ const SEOPage = () => {
         "Monitoring pozycji",
         "Miesięczne raporty",
         "Optymalizacja konwersji",
-        "Wsparcie techniczne"
+        "Wsparcie techniczne",
       ],
       timeframe: "od 3 miesięcy",
-      popular: true
+      popular: true,
     },
     {
       name: "Premium SEO",
@@ -74,44 +86,45 @@ const SEOPage = () => {
         "Multi-domain SEO",
         "Konkurencyjna analiza",
         "Strategia content marketing",
-        "Priorytetowe wsparcie"
+        "Priorytetowe wsparcie",
       ],
-      timeframe: "od 3 miesięcy"
-    }
-  ]
+      timeframe: "od 3 miesięcy",
+    },
+  ];
 
   const services = [
     {
       icon: <Search className="h-8 w-8 text-orange-500" />,
       title: "Audyt techniczny SEO",
-      description: "Analiza szybkości, struktury URL, meta tagów, schema markup"
+      description:
+        "Analiza szybkości, struktury URL, meta tagów, schema markup",
     },
     {
       icon: <Target className="h-8 w-8 text-orange-500" />,
       title: "Analiza słów kluczowych",
-      description: "Identyfikacja najcenniejszych fraz dla Twojej branży"
+      description: "Identyfikacja najcenniejszych fraz dla Twojej branży",
     },
     {
       icon: <FileText className="h-8 w-8 text-orange-500" />,
       title: "Content marketing",
-      description: "Tworzenie wartościowych treści przyciągających klientów"
+      description: "Tworzenie wartościowych treści przyciągających klientów",
     },
     {
       icon: <LinkIcon className="h-8 w-8 text-orange-500" />,
       title: "Link building",
-      description: "Budowanie autorytetu domeny przez wysokiej jakości linki"
+      description: "Budowanie autorytetu domeny przez wysokiej jakości linki",
     },
     {
       icon: <BarChart3 className="h-8 w-8 text-orange-500" />,
       title: "Monitoring i raporty",
-      description: "Śledzenie pozycji, ruchu i konwersji z jasnym ROI"
+      description: "Śledzenie pozycji, ruchu i konwersji z jasnym ROI",
     },
     {
       icon: <TrendingUp className="h-8 w-8 text-orange-500" />,
       title: "Optymalizacja konwersji",
-      description: "Zwiększanie współczynnika konwersji z ruchu organicznego"
-    }
-  ]
+      description: "Zwiększanie współczynnika konwersji z ruchu organicznego",
+    },
+  ];
 
   const results = [
     "Wzrost ruchu organicznego o 200-500% w 6 miesięcy",
@@ -119,8 +132,8 @@ const SEOPage = () => {
     "Zwiększenie liczby zapytań ofertowych o 150-300%",
     "Poprawa współczynnika konwersji o 50-100%",
     "Długoterminowy ROI 300-800%",
-    "Budowanie autorytetu marki w internecie"
-  ]
+    "Budowanie autorytetu marki w internecie",
+  ];
 
   const processSteps = [
     {
@@ -130,8 +143,8 @@ const SEOPage = () => {
         "Analiza obecnych pozycji w Google",
         "Badanie konkurencji i ich strategii SEO",
         "Analiza słów kluczowych i potencjału",
-        "Identyfikacja problemów technicznych"
-      ]
+        "Identyfikacja problemów technicznych",
+      ],
     },
     {
       title: "Strategia SEO",
@@ -140,8 +153,8 @@ const SEOPage = () => {
         "Planowanie struktury treści",
         "Strategia link buildingu",
         "Harmonogram działań SEO",
-        "Określenie KPI i celów"
-      ]
+        "Określenie KPI i celów",
+      ],
     },
     {
       title: "Optymalizacja techniczna",
@@ -150,8 +163,8 @@ const SEOPage = () => {
         "Optymalizacja szybkości ładowania",
         "Poprawa struktury URL",
         "Implementacja schema markup",
-        "Optymalizacja dla urządzeń mobilnych"
-      ]
+        "Optymalizacja dla urządzeń mobilnych",
+      ],
     },
     {
       title: "Content marketing",
@@ -160,8 +173,8 @@ const SEOPage = () => {
         "Tworzenie nowych artykułów i stron",
         "Optymalizacja meta tagów",
         "Tworzenie treści pod długi ogon",
-        "Optymalizacja obrazów i mediów"
-      ]
+        "Optymalizacja obrazów i mediów",
+      ],
     },
     {
       title: "Link building",
@@ -170,8 +183,8 @@ const SEOPage = () => {
         "Budowanie linków wysokiej jakości",
         "Guest posting i współpraca",
         "Linki lokalne i branżowe",
-        "Monitoring i raportowanie linków"
-      ]
+        "Monitoring i raportowanie linków",
+      ],
     },
     {
       title: "Monitoring i optymalizacja",
@@ -180,64 +193,73 @@ const SEOPage = () => {
         "Analiza ruchu organicznego",
         "Monitoring konwersji",
         "Miesięczne raporty wyników",
-        "Ciągła optymalizacja strategii"
-      ]
-    }
-  ]
+        "Ciągła optymalizacja strategii",
+      ],
+    },
+  ];
 
   const uniqueFeatures = [
     {
       title: "Holistyczne podejście do SEO",
-      description: "Łączymy optymalizację techniczną, content marketing i link building w spójną strategię."
+      description:
+        "Łączymy optymalizację techniczną, content marketing i link building w spójną strategię.",
     },
     {
       title: "Focus na konwersję",
-      description: "Nie tylko zwiększamy ruch, ale optymalizujemy go pod kątem generowania leadów i sprzedaży."
+      description:
+        "Nie tylko zwiększamy ruch, ale optymalizujemy go pod kątem generowania leadów i sprzedaży.",
     },
     {
       title: "Transparentne raportowanie",
-      description: "Otrzymujesz szczegółowe raporty z jasno określonym ROI i wpływem na biznes."
+      description:
+        "Otrzymujesz szczegółowe raporty z jasno określonym ROI i wpływem na biznes.",
     },
     {
       title: "Długoterminowa strategia",
-      description: "Budujemy trwałe fundamenty SEO, które będą działać przez lata."
-    }
-  ]
+      description:
+        "Budujemy trwałe fundamenty SEO, które będą działać przez lata.",
+    },
+  ];
 
   const faqs = [
     {
       question: "Jak długo trzeba czekać na efekty SEO?",
-      answer: "Pierwsze efekty SEO widać po 2-3 miesiącach, znaczące rezultaty po 6 miesiącach. SEO to inwestycja długoterminowa - raz osiągnięte pozycje generują ruch przez lata bez dodatkowych kosztów reklamowych."
+      answer:
+        "Pierwsze efekty SEO widać po 2-3 miesiącach, znaczące rezultaty po 6 miesiącach. SEO to inwestycja długoterminowa - raz osiągnięte pozycje generują ruch przez lata bez dodatkowych kosztów reklamowych.",
     },
     {
       question: "Czy gwarantujecie konkretne pozycje w Google?",
-      answer: "Nie gwarantujemy konkretnych pozycji, ponieważ algorytm Google się zmienia. Gwarantujemy profesjonalne działania zgodne z wytycznymi Google i transparentne raportowanie postępów."
+      answer:
+        "Nie gwarantujemy konkretnych pozycji, ponieważ algorytm Google się zmienia. Gwarantujemy profesjonalne działania zgodne z wytycznymi Google i transparentne raportowanie postępów.",
     },
     {
       question: "Czy SEO jest lepsze od Google Ads?",
-      answer: "SEO i Google Ads to uzupełniające się strategie. SEO daje długoterminowe efekty bez kosztów za kliknięcie, ale wymaga czasu. Google Ads daje natychmiastowe efekty, ale wymaga stałego budżetu."
+      answer:
+        "SEO i Google Ads to uzupełniające się strategie. SEO daje długoterminowe efekty bez kosztów za kliknięcie, ale wymaga czasu. Google Ads daje natychmiastowe efekty, ale wymaga stałego budżetu.",
     },
     {
       question: "Jak wybieracie słowa kluczowe?",
-      answer: "Analizujemy Twój biznes, konkurencję i potencjał słów kluczowych. Wybieramy frazy o odpowiednim wolumenie wyszukiwań, konkurencyjności i potencjale konwersji."
+      answer:
+        "Analizujemy Twój biznes, konkurencję i potencjał słów kluczowych. Wybieramy frazy o odpowiednim wolumenie wyszukiwań, konkurencyjności i potencjale konwersji.",
     },
     {
       question: "Czy SEO działa dla każdej branży?",
-      answer: "Tak, SEO działa dla każdej branży, ale strategie różnią się w zależności od specyfiki biznesu, konkurencji i grupy docelowej. Dostosowujemy podejście do Twojej branży."
-    }
-  ]
+      answer:
+        "Tak, SEO działa dla każdej branży, ale strategie różnią się w zależności od specyfiki biznesu, konkurencji i grupy docelowej. Dostosowujemy podejście do Twojej branży.",
+    },
+  ];
 
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
-        <SEOHead 
+        <SEOHead
           title="SEO i Pozycjonowanie Stron | WebDKW"
           description="Profesjonalne usługi SEO i pozycjonowania stron internetowych. Zwiększ widoczność w Google i generuj więcej klientów."
           keywords="SEO, pozycjonowanie, Google, optymalizacja, marketing internetowy"
           url="https://webdkw.net/uslugi/seo"
         />
         <Header />
-        
+
         <main className="pt-20">
           {/* Header section */}
           <section className="bg-white py-16">
@@ -251,7 +273,7 @@ const SEOPage = () => {
                   <span>Powrót do usług</span>
                 </Link>
               </div>
-              
+
               <div className="text-center max-w-4xl mx-auto">
                 <div className="flex justify-center mb-6">
                   <Search className="h-16 w-16 text-orange-500" />
@@ -260,8 +282,9 @@ const SEOPage = () => {
                   Optymalizacja SEO
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Profesjonalne pozycjonowanie stron internetowych, które zwiększa widoczność 
-                  w Google i przyciąga wysokiej jakości ruch organiczny.
+                  Profesjonalne pozycjonowanie stron internetowych, które
+                  zwiększa widoczność w Google i przyciąga wysokiej jakości ruch
+                  organiczny.
                 </p>
               </div>
             </div>
@@ -275,16 +298,17 @@ const SEOPage = () => {
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {services.map((service, index) => (
-                  <div key={index} className="bg-white p-6 rounded-xl shadow-lg text-center">
+                  <div
+                    key={index}
+                    className="bg-white p-6 rounded-xl shadow-lg text-center"
+                  >
                     <div className="flex justify-center mb-4">
                       {service.icon}
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 mb-3">
                       {service.title}
                     </h3>
-                    <p className="text-gray-600">
-                      {service.description}
-                    </p>
+                    <p className="text-gray-600">{service.description}</p>
                   </div>
                 ))}
               </div>
@@ -303,9 +327,7 @@ const SEOPage = () => {
                     <h3 className="text-xl font-bold text-gray-900 mb-3">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-600">
-                      {feature.description}
-                    </p>
+                    <p className="text-gray-600">{feature.description}</p>
                   </div>
                 ))}
               </div>
@@ -321,7 +343,10 @@ const SEOPage = () => {
                 </h2>
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {projects.map((project) => (
-                    <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                    <div
+                      key={project.id}
+                      className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
+                    >
                       <div className="relative group">
                         <img
                           src={project.image_url}
@@ -343,9 +368,15 @@ const SEOPage = () => {
                         </div>
                       </div>
                       <div className="p-6">
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
-                        <p className="text-orange-500 font-semibold mb-3">{project.industry}</p>
-                        <p className="text-gray-600 text-sm">{project.description}</p>
+                        <h3 className="text-xl font-bold text-gray-900 mb-2">
+                          {project.title}
+                        </h3>
+                        <p className="text-orange-500 font-semibold mb-3">
+                          {project.industry}
+                        </p>
+                        <p className="text-gray-600 text-sm">
+                          {project.description}
+                        </p>
                       </div>
                     </div>
                   ))}
@@ -371,7 +402,9 @@ const SEOPage = () => {
                   <div
                     key={index}
                     className={`relative bg-white rounded-2xl shadow-xl border-2 transition-all duration-300 hover:shadow-2xl ${
-                      pkg.popular ? 'border-orange-500 transform lg:scale-105' : 'border-gray-200'
+                      pkg.popular
+                        ? "border-orange-500 transform lg:scale-105"
+                        : "border-gray-200"
                     }`}
                   >
                     {pkg.popular && (
@@ -384,10 +417,14 @@ const SEOPage = () => {
 
                     <div className="p-8">
                       <div className="text-center mb-8">
-                        <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                        <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                          {pkg.name}
+                        </h3>
                         <div className="text-3xl font-bold text-orange-500 mb-4">
                           {pkg.price}
-                          {!pkg.oneTime && <span className="text-lg text-gray-500">/mies</span>}
+                          {!pkg.oneTime && (
+                            <span className="text-lg text-gray-500">/mies</span>
+                          )}
                         </div>
                         <p className="text-gray-600">{pkg.description}</p>
                       </div>
@@ -403,14 +440,16 @@ const SEOPage = () => {
 
                       <div className="text-center">
                         <p className="text-sm text-gray-500 mb-6">
-                          {pkg.oneTime ? `Czas realizacji: ${pkg.timeframe}` : `Pierwsze rezultaty: ${pkg.timeframe}`}
+                          {pkg.oneTime
+                            ? `Czas realizacji: ${pkg.timeframe}`
+                            : `Pierwsze rezultaty: ${pkg.timeframe}`}
                         </p>
                         <Link
-                          to="/#kontakt"
+                          to="/kontakt"
                           className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 inline-block ${
                             pkg.popular
-                              ? 'bg-orange-500 text-white hover:bg-orange-600'
-                              : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                              ? "bg-orange-500 text-white hover:bg-orange-600"
+                              : "bg-gray-100 text-gray-900 hover:bg-gray-200"
                           }`}
                         >
                           Umów konsultację
@@ -433,14 +472,18 @@ const SEOPage = () => {
                 {processSteps.map((step, index) => (
                   <div key={index} className="bg-white rounded-2xl shadow-lg">
                     <button
-                      onClick={() => setOpenProcess(openProcess === index ? null : index)}
+                      onClick={() =>
+                        setOpenProcess(openProcess === index ? null : index)
+                      }
                       className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
                     >
                       <div className="flex items-center space-x-4">
                         <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
                           {index + 1}
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900">{step.title}</h3>
+                        <h3 className="text-lg font-bold text-gray-900">
+                          {step.title}
+                        </h3>
                       </div>
                       <div className="flex-shrink-0">
                         {openProcess === index ? (
@@ -450,13 +493,16 @@ const SEOPage = () => {
                         )}
                       </div>
                     </button>
-                    
+
                     {openProcess === index && (
                       <div className="px-8 pb-6">
                         <div className="border-t border-gray-100 pt-6">
                           <ul className="space-y-2">
                             {step.details.map((detail, idx) => (
-                              <li key={idx} className="flex items-start space-x-3">
+                              <li
+                                key={idx}
+                                className="flex items-start space-x-3"
+                              >
                                 <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
                                 <span className="text-gray-600">{detail}</span>
                               </li>
@@ -485,14 +531,15 @@ const SEOPage = () => {
                   </div>
                 ))}
               </div>
-              
+
               <div className="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <h3 className="text-xl font-bold text-blue-900 mb-3">
                   💡 Dlaczego SEO to najlepsza inwestycja długoterminowa?
                 </h3>
                 <p className="text-blue-800">
-                  W przeciwieństwie do reklam płatnych, SEO buduje trwały fundament Twojej obecności online. 
-                  Raz osiągnięte wysokie pozycje generują ruch przez lata, zapewniając stały przepływ 
+                  W przeciwieństwie do reklam płatnych, SEO buduje trwały
+                  fundament Twojej obecności online. Raz osiągnięte wysokie
+                  pozycje generują ruch przez lata, zapewniając stały przepływ
                   potencjalnych klientów bez dodatkowych kosztów reklamowych.
                 </p>
               </div>
@@ -509,7 +556,9 @@ const SEOPage = () => {
                 {faqs.map((faq, index) => (
                   <div key={index} className="bg-white rounded-2xl shadow-lg">
                     <button
-                      onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                      onClick={() =>
+                        setOpenFaq(openFaq === index ? null : index)
+                      }
                       className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
                     >
                       <h3 className="text-lg font-bold text-gray-900 pr-4">
@@ -523,7 +572,7 @@ const SEOPage = () => {
                         )}
                       </div>
                     </button>
-                    
+
                     {openFaq === index && (
                       <div className="px-8 pb-6">
                         <div className="border-t border-gray-100 pt-6">
@@ -546,10 +595,11 @@ const SEOPage = () => {
                 Gotowy zdominować wyniki wyszukiwania?
               </h2>
               <p className="text-xl text-white/90 mb-8">
-                Zacznij od bezpłatnego audytu SEO i dowiedz się, jak zwiększyć widoczność swojej strony.
+                Zacznij od bezpłatnego audytu SEO i dowiedz się, jak zwiększyć
+                widoczność swojej strony.
               </p>
               <Link
-                to="/#kontakt"
+                to="/kontakt"
                 className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Zamów bezpłatny audyt SEO
@@ -561,7 +611,7 @@ const SEOPage = () => {
         <Footer />
       </div>
     </HelmetProvider>
-  )
-}
+  );
+};
 
-export default SEOPage
+export default SEOPage;

@@ -1,91 +1,92 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { HelmetProvider, Helmet } from 'react-helmet-async'
-import { ArrowLeft, Calendar, User, Clock, Tag } from 'lucide-react'
-import { supabase, BlogPost } from '../lib/supabase'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import SEOHead from '../components/SEOHead'
-import StructuredData from '../components/StructuredData'
+import { ArrowLeft, Calendar, Clock, Tag, User } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import SEOHead from "../components/SEOHead";
+import StructuredData from "../components/StructuredData";
+import { BlogPost, supabase } from "../lib/supabase";
 
 const BlogPage = () => {
-  const [posts, setPosts] = useState<BlogPost[]>([])
-  const [loading, setLoading] = useState(true)
+  const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchPosts()
-  }, [])
+    fetchPosts();
+  }, []);
 
   const fetchPosts = async () => {
     try {
       const { data, error } = await supabase
-        .from('blog_posts')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: false })
+        .from("blog_posts")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false });
 
-      if (error) throw error
-      setPosts(data || [])
+      if (error) throw error;
+      setPosts(data || []);
     } catch (error) {
-      console.error('Error fetching posts:', error)
+      console.error("Error fetching posts:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pl-PL', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })
-  }
+    return new Date(dateString).toLocaleDateString("pl-PL", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   const getReadingTime = (content: string) => {
-    const wordsPerMinute = 200
-    const wordCount = content.split(' ').length
-    const minutes = Math.ceil(wordCount / wordsPerMinute)
-    return `${minutes} min czytania`
-  }
+    const wordsPerMinute = 200;
+    const wordCount = content.split(" ").length;
+    const minutes = Math.ceil(wordCount / wordsPerMinute);
+    return `${minutes} min czytania`;
+  };
 
-  const displayPosts = posts
+  const displayPosts = posts;
 
   const breadcrumbData = [
     { name: "Strona główna", url: "https://webdkw.net" },
-    { name: "Blog", url: "https://webdkw.net/blog" }
-  ]
+    { name: "Blog", url: "https://webdkw.net/blog" },
+  ];
 
   // Dane strukturalne dla listy blogów
   const blogListingSchema = {
     "@context": "https://schema.org",
     "@type": "Blog",
-    "headline": "Blog WebDKW - Porady o stronach internetowych i marketingu",
-    "description": "Praktyczne porady, case studies i najnowsze trendy w tworzeniu stron internetowych. Wiedza, która pomaga budować lepsze rozwiązania online.",
-    "url": "https://webdkw.net/blog",
-    "publisher": {
+    headline: "Blog WebDKW - Porady o stronach internetowych i marketingu",
+    description:
+      "Praktyczne porady, case studies i najnowsze trendy w tworzeniu stron internetowych. Wiedza, która pomaga budować lepsze rozwiązania online.",
+    url: "https://webdkw.net/blog",
+    publisher: {
       "@type": "Organization",
-      "name": "WebDKW",
-      "logo": {
+      name: "WebDKW",
+      logo: {
         "@type": "ImageObject",
-        "url": "https://webdkw.net/images/webdkw-logo.svg",
-        "width": 600,
-        "height": 60
-      }
-    },
-    "blogPost": posts.map(post => ({
-      "@type": "BlogPosting",
-      "headline": post.title,
-      "description": post.excerpt || post.title,
-      "datePublished": post.created_at,
-      "dateModified": post.updated_at || post.created_at,
-      "author": {
-        "@type": "Person",
-        "name": post.author || "Marcin Kowalski"
+        url: "https://webdkw.net/images/webdkw-logo.svg",
+        width: 600,
+        height: 60,
       },
-      "url": `https://webdkw.net/blog/${post.slug}`,
-      "image": post.image_url ? [post.image_url] : [],
-      "keywords": post.tags ? post.tags.join(", ") : ""
-    }))
+    },
+    blogPost: posts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      description: post.excerpt || post.title,
+      datePublished: post.created_at,
+      dateModified: post.updated_at || post.created_at,
+      author: {
+        "@type": "Person",
+        name: post.author || "Marcin Kowalski",
+      },
+      url: `https://webdkw.net/blog/${post.slug}`,
+      image: post.image_url ? [post.image_url] : [],
+      keywords: post.tags ? post.tags.join(", ") : "",
+    })),
   };
 
   if (loading) {
@@ -96,29 +97,29 @@ const BlogPage = () => {
           <p className="text-gray-600">Ładowanie artykułów...</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
-        <SEOHead 
+        <SEOHead
           title="Blog WebDKW - Porady o stronach internetowych i marketingu"
           description="Praktyczne porady, case studies i najnowsze trendy w tworzeniu stron internetowych. Wiedza, która pomaga budować lepsze rozwiązania online."
           keywords="blog, porady, strony internetowe, SEO, marketing internetowy, case studies"
           url="https://webdkw.net/blog"
         />
         <StructuredData type="breadcrumb" data={breadcrumbData} />
-        
+
         {/* Dodajemy dane strukturalne dla listy blogów */}
         <Helmet>
           <script type="application/ld+json">
             {JSON.stringify(blogListingSchema)}
           </script>
         </Helmet>
-        
+
         <Header />
-        
+
         <main className="pt-20">
           {/* Header section */}
           <section className="bg-white py-16">
@@ -132,14 +133,15 @@ const BlogPage = () => {
                   <span>Powrót na stronę główną</span>
                 </Link>
               </div>
-              
+
               <div className="text-center max-w-3xl mx-auto">
                 <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                   Blog WebExpert
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
-                  Praktyczne porady, case studies i najnowsze trendy w tworzeniu stron internetowych. 
-                  Wiedza, która pomaga budować lepsze rozwiązania online.
+                  Praktyczne porady, case studies i najnowsze trendy w tworzeniu
+                  stron internetowych. Wiedza, która pomaga budować lepsze
+                  rozwiązania online.
                 </p>
               </div>
             </div>
@@ -156,11 +158,13 @@ const BlogPage = () => {
                       Blog będzie wkrótce dostępny
                     </h2>
                     <p className="text-gray-600 mb-8">
-                      Pracuję nad pierwszymi artykułami, które pomogą Ci lepiej zrozumieć proces tworzenia stron internetowych i marketingu online.
+                      Pracuję nad pierwszymi artykułami, które pomogą Ci lepiej
+                      zrozumieć proces tworzenia stron internetowych i
+                      marketingu online.
                     </p>
                     <div className="flex justify-center space-x-4">
                       <Link
-                        to="/#kontakt"
+                        to="/kontakt"
                         className="inline-flex items-center px-6 py-3 bg-orange-500 text-white rounded-lg font-semibold hover:bg-orange-600 transition-colors"
                       >
                         Skontaktuj się ze mną
@@ -180,15 +184,18 @@ const BlogPage = () => {
                     <article
                       key={post.id}
                       className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${
-                        index === 0 ? 'lg:col-span-2 lg:row-span-2' : ''
+                        index === 0 ? "lg:col-span-2 lg:row-span-2" : ""
                       }`}
                     >
                       <div className="relative">
                         <img
-                          src={post.image_url || 'https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800'}
+                          src={
+                            post.image_url ||
+                            "https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=800"
+                          }
                           alt={post.title}
                           className={`w-full object-cover ${
-                            index === 0 ? 'h-64 lg:h-80' : 'h-48'
+                            index === 0 ? "h-64 lg:h-80" : "h-48"
                           }`}
                         />
                         <div className="absolute top-4 left-4">
@@ -199,8 +206,8 @@ const BlogPage = () => {
                           )}
                         </div>
                       </div>
-                      
-                      <div className={`p-6 ${index === 0 ? 'lg:p-8' : ''}`}>
+
+                      <div className={`p-6 ${index === 0 ? "lg:p-8" : ""}`}>
                         <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
                           <div className="flex items-center space-x-1">
                             <Calendar className="h-4 w-4" />
@@ -215,19 +222,23 @@ const BlogPage = () => {
                             <span>{getReadingTime(post.content)}</span>
                           </div>
                         </div>
-                        
-                        <h2 className={`font-bold text-gray-900 mb-3 line-clamp-2 ${
-                          index === 0 ? 'text-2xl lg:text-3xl' : 'text-xl'
-                        }`}>
+
+                        <h2
+                          className={`font-bold text-gray-900 mb-3 line-clamp-2 ${
+                            index === 0 ? "text-2xl lg:text-3xl" : "text-xl"
+                          }`}
+                        >
                           {post.title}
                         </h2>
-                        
-                        <p className={`text-gray-600 leading-relaxed mb-4 ${
-                          index === 0 ? 'text-lg' : ''
-                        }`}>
+
+                        <p
+                          className={`text-gray-600 leading-relaxed mb-4 ${
+                            index === 0 ? "text-lg" : ""
+                          }`}
+                        >
                           {post.excerpt}
                         </p>
-                        
+
                         <Link
                           to={`/blog/${post.slug}`}
                           className="inline-flex items-center space-x-2 text-orange-500 hover:text-orange-600 font-semibold transition-colors"
@@ -235,7 +246,7 @@ const BlogPage = () => {
                           <span>Czytaj dalej</span>
                           <ArrowLeft className="h-4 w-4 rotate-180" />
                         </Link>
-                        
+
                         {post.tags && post.tags.length > 1 && (
                           <div className="flex items-center space-x-2 mt-4 pt-4 border-t border-gray-100">
                             <Tag className="h-4 w-4 text-gray-400" />
@@ -266,10 +277,11 @@ const BlogPage = () => {
                 Potrzebujesz strony, która rzeczywiście sprzedaje?
               </h2>
               <p className="text-xl text-white/90 mb-8">
-                Skorzystaj z darmowej konsultacji i dowiedz się, jak zwiększyć konwersję swojej strony.
+                Skorzystaj z darmowej konsultacji i dowiedz się, jak zwiększyć
+                konwersję swojej strony.
               </p>
               <Link
-                to="/#kontakt"
+                to="/kontakt"
                 className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Umów bezpłatną konsultację
@@ -281,7 +293,7 @@ const BlogPage = () => {
         <Footer />
       </div>
     </HelmetProvider>
-  )
-}
+  );
+};
 
-export default BlogPage
+export default BlogPage;

@@ -1,33 +1,44 @@
-import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, Check, TrendingUp, Target, Users, Zap, DollarSign, Plus, Minus, ExternalLink } from 'lucide-react'
-import { supabase, Project } from '../../lib/supabase'
-import Header from '../../components/Header'
-import Footer from '../../components/Footer'
+import {
+  ArrowLeft,
+  Check,
+  DollarSign,
+  ExternalLink,
+  Minus,
+  Plus,
+  Target,
+  TrendingUp,
+  Users,
+  Zap,
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import { Project, supabase } from "../../lib/supabase";
 
 const MarketingPage = () => {
-  const [projects, setProjects] = useState<Project[]>([])
-  const [openProcess, setOpenProcess] = useState<number | null>(null)
-  const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [openProcess, setOpenProcess] = useState<number | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
-    fetchProjects()
-  }, [])
+    fetchProjects();
+  }, []);
 
   const fetchProjects = async () => {
     try {
       const { data, error } = await supabase
-        .from('projects')
-        .select('*')
-        .ilike('description', '%marketing%')
-        .limit(3)
+        .from("projects")
+        .select("*")
+        .ilike("description", "%marketing%")
+        .limit(3);
 
-      if (error) throw error
-      setProjects(data || [])
+      if (error) throw error;
+      setProjects(data || []);
     } catch (error) {
-      console.error('Error fetching projects:', error)
+      console.error("Error fetching projects:", error);
     }
-  }
+  };
 
   const packages = [
     {
@@ -41,10 +52,10 @@ const MarketingPage = () => {
         "Pixel tracking setup",
         "Landing page optymalizacja",
         "Pierwsze kampanie testowe",
-        "Szkolenie z obsługi"
+        "Szkolenie z obsługi",
       ],
       timeframe: "1 tydzień",
-      oneTime: true
+      oneTime: true,
     },
     {
       name: "Zarządzanie Miesięczne",
@@ -57,10 +68,10 @@ const MarketingPage = () => {
         "A/B testing reklam",
         "Miesięczne raporty ROI",
         "Optymalizacja budżetu",
-        "Wsparcie techniczne"
+        "Wsparcie techniczne",
       ],
       timeframe: "Pierwsze rezultaty w 2-4 tygodnie",
-      popular: true
+      popular: true,
     },
     {
       name: "Marketing PRO",
@@ -73,34 +84,37 @@ const MarketingPage = () => {
         "Social media management",
         "Remarketing campaigns",
         "Conversion rate optimization",
-        "Dedykowany account manager"
+        "Dedykowany account manager",
       ],
-      timeframe: "Pełne rezultaty w 2-3 miesiące"
-    }
-  ]
+      timeframe: "Pełne rezultaty w 2-3 miesiące",
+    },
+  ];
 
   const platforms = [
     {
       icon: <Target className="h-8 w-8 text-orange-500" />,
       title: "Google Ads",
-      description: "Reklamy w wyszukiwarce, YouTube, Gmail i sieci partnerskiej Google"
+      description:
+        "Reklamy w wyszukiwarce, YouTube, Gmail i sieci partnerskiej Google",
     },
     {
       icon: <Users className="h-8 w-8 text-orange-500" />,
       title: "Facebook & Instagram Ads",
-      description: "Precyzyjne targetowanie w największych sieciach społecznościowych"
+      description:
+        "Precyzyjne targetowanie w największych sieciach społecznościowych",
     },
     {
       icon: <TrendingUp className="h-8 w-8 text-orange-500" />,
       title: "LinkedIn Ads",
-      description: "Skuteczne dotarcie do decydentów B2B i profesjonalistów"
+      description: "Skuteczne dotarcie do decydentów B2B i profesjonalistów",
     },
     {
       icon: <Zap className="h-8 w-8 text-orange-500" />,
       title: "Remarketing",
-      description: "Ponowne dotarcie do osób, które już odwiedziły Twoją stronę"
-    }
-  ]
+      description:
+        "Ponowne dotarcie do osób, które już odwiedziły Twoją stronę",
+    },
+  ];
 
   const benefits = [
     "Szybkie rezultaty - pierwsze leady w ciągu 24-48h",
@@ -108,31 +122,31 @@ const MarketingPage = () => {
     "Pełna kontrola nad budżetem reklamowym",
     "Szczegółowe raportowanie ROI",
     "Optymalizacja kosztów pozyskania klienta",
-    "Skalowalność kampanii wraz z rozwojem biznesu"
-  ]
+    "Skalowalność kampanii wraz z rozwojem biznesu",
+  ];
 
   const metrics = [
     {
       icon: <DollarSign className="h-8 w-8 text-green-500" />,
       metric: "ROI 300-800%",
-      description: "Średni zwrot z inwestycji w kampanie"
+      description: "Średni zwrot z inwestycji w kampanie",
     },
     {
       icon: <Target className="h-8 w-8 text-blue-500" />,
       metric: "CTR 3-8%",
-      description: "Współczynnik klikalności naszych reklam"
+      description: "Współczynnik klikalności naszych reklam",
     },
     {
       icon: <TrendingUp className="h-8 w-8 text-purple-500" />,
       metric: "CPC -40%",
-      description: "Redukcja kosztów kliknięcia vs. konkurencja"
+      description: "Redukcja kosztów kliknięcia vs. konkurencja",
     },
     {
       icon: <Users className="h-8 w-8 text-orange-500" />,
       metric: "Konwersja +250%",
-      description: "Średni wzrost konwersji po optymalizacji"
-    }
-  ]
+      description: "Średni wzrost konwersji po optymalizacji",
+    },
+  ];
 
   const processSteps = [
     {
@@ -142,8 +156,8 @@ const MarketingPage = () => {
         "Identyfikacja idealnego klienta (buyer persona)",
         "Analiza konkurencji i ich strategii reklamowych",
         "Określenie celów kampanii i KPI",
-        "Ustalenie budżetu i strategii bidowania"
-      ]
+        "Ustalenie budżetu i strategii bidowania",
+      ],
     },
     {
       title: "Badanie konkurencji i rynku",
@@ -152,8 +166,8 @@ const MarketingPage = () => {
         "Badanie słów kluczowych w branży",
         "Analiza landing pages konkurentów",
         "Identyfikacja luk w rynku",
-        "Benchmarking kosztów i wyników"
-      ]
+        "Benchmarking kosztów i wyników",
+      ],
     },
     {
       title: "Opracowanie strategii kampanii",
@@ -162,8 +176,8 @@ const MarketingPage = () => {
         "Strategia targetowania i segmentacji",
         "Planowanie budżetu i harmonogramu",
         "Określenie struktury kampanii",
-        "Strategia testowania i optymalizacji"
-      ]
+        "Strategia testowania i optymalizacji",
+      ],
     },
     {
       title: "Przygotowanie kreacji reklamowych",
@@ -172,8 +186,8 @@ const MarketingPage = () => {
         "Projektowanie grafik i bannerów",
         "Przygotowanie materiałów wideo",
         "A/B testing różnych wersji",
-        "Optymalizacja pod konwersję"
-      ]
+        "Optymalizacja pod konwersję",
+      ],
     },
     {
       title: "Konfiguracja i uruchomienie kampanii",
@@ -182,8 +196,8 @@ const MarketingPage = () => {
         "Implementacja pixel tracking",
         "Ustawienie konwersji i celów",
         "Konfiguracja remarketing",
-        "Uruchomienie kampanii testowych"
-      ]
+        "Uruchomienie kampanii testowych",
+      ],
     },
     {
       title: "Monitoring i optymalizacja wyników",
@@ -192,57 +206,66 @@ const MarketingPage = () => {
         "Optymalizacja bidów i budżetów",
         "Testowanie nowych kreacji",
         "Analiza i raportowanie ROI",
-        "Skalowanie skutecznych kampanii"
-      ]
-    }
-  ]
+        "Skalowanie skutecznych kampanii",
+      ],
+    },
+  ];
 
   const uniqueFeatures = [
     {
       title: "Data-driven approach",
-      description: "Wszystkie decyzje podejmujemy na podstawie danych i testów, nie intuicji."
+      description:
+        "Wszystkie decyzje podejmujemy na podstawie danych i testów, nie intuicji.",
     },
     {
       title: "Transparentne raportowanie",
-      description: "Otrzymujesz szczegółowe raporty z jasno określonym ROI i wpływem na sprzedaż."
+      description:
+        "Otrzymujesz szczegółowe raporty z jasno określonym ROI i wpływem na sprzedaż.",
     },
     {
       title: "Ciągła optymalizacja",
-      description: "Nieustannie testujemy i optymalizujemy kampanie dla maksymalnych wyników."
+      description:
+        "Nieustannie testujemy i optymalizujemy kampanie dla maksymalnych wyników.",
     },
     {
       title: "Holistyczne podejście",
-      description: "Łączymy różne kanały reklamowe w spójną strategię marketingową."
-    }
-  ]
+      description:
+        "Łączymy różne kanały reklamowe w spójną strategię marketingową.",
+    },
+  ];
 
   const faqs = [
     {
       question: "Jaki budżet reklamowy powinienem przeznaczyć?",
-      answer: "Budżet zależy od branży, konkurencji i celów. Zalecamy start od 3000-5000 PLN miesięcznie dla testów, a następnie skalowanie skutecznych kampanii. Pomożemy określić optymalny budżet dla Twojego biznesu."
+      answer:
+        "Budżet zależy od branży, konkurencji i celów. Zalecamy start od 3000-5000 PLN miesięcznie dla testów, a następnie skalowanie skutecznych kampanii. Pomożemy określić optymalny budżet dla Twojego biznesu.",
     },
     {
       question: "Jak szybko zobaczę pierwsze rezultaty?",
-      answer: "Pierwsze rezultaty widać już w ciągu 24-48 godzin od uruchomienia kampanii. Optymalne wyniki osiągamy po 2-4 tygodniach testowania i optymalizacji."
+      answer:
+        "Pierwsze rezultaty widać już w ciągu 24-48 godzin od uruchomienia kampanii. Optymalne wyniki osiągamy po 2-4 tygodniach testowania i optymalizacji.",
     },
     {
       question: "Czy Google Ads jest lepsze od Facebook Ads?",
-      answer: "To zależy od Twojego biznesu. Google Ads świetnie sprawdza się dla usług B2B i wysokiej intencji zakupu. Facebook Ads lepiej działa dla produktów B2C i budowania świadomości marki. Często łączymy oba kanały."
+      answer:
+        "To zależy od Twojego biznesu. Google Ads świetnie sprawdza się dla usług B2B i wysokiej intencji zakupu. Facebook Ads lepiej działa dla produktów B2C i budowania świadomości marki. Często łączymy oba kanały.",
     },
     {
       question: "Jak mierzicie skuteczność kampanii?",
-      answer: "Mierzymy ROI, koszt pozyskania klienta (CAC), współczynnik konwersji, CTR i inne KPI. Otrzymujesz miesięczne raporty z jasno określonym wpływem na sprzedaż."
+      answer:
+        "Mierzymy ROI, koszt pozyskania klienta (CAC), współczynnik konwersji, CTR i inne KPI. Otrzymujesz miesięczne raporty z jasno określonym wpływem na sprzedaż.",
     },
     {
       question: "Czy mogę samodzielnie zarządzać kampaniami?",
-      answer: "Tak, oferujemy szkolenia i przekazanie kampanii. Jednak profesjonalne zarządzanie wymaga doświadczenia i czasu - często lepiej skupić się na biznesie, a kampanie zostawić ekspertom."
-    }
-  ]
+      answer:
+        "Tak, oferujemy szkolenia i przekazanie kampanii. Jednak profesjonalne zarządzanie wymaga doświadczenia i czasu - często lepiej skupić się na biznesie, a kampanie zostawić ekspertom.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      
+
       <main className="pt-20">
         {/* Header section */}
         <section className="bg-white py-16">
@@ -256,7 +279,7 @@ const MarketingPage = () => {
                 <span>Powrót do usług</span>
               </Link>
             </div>
-            
+
             <div className="text-center max-w-4xl mx-auto">
               <div className="flex justify-center mb-6">
                 <TrendingUp className="h-16 w-16 text-orange-500" />
@@ -265,8 +288,9 @@ const MarketingPage = () => {
                 Marketing i kampanie reklamowe
               </h1>
               <p className="text-xl text-gray-600 leading-relaxed">
-                Profesjonalne kampanie Google Ads i Facebook Ads, które generują 
-                wysokiej jakości leady i maksymalizują zwrot z inwestycji reklamowej.
+                Profesjonalne kampanie Google Ads i Facebook Ads, które generują
+                wysokiej jakości leady i maksymalizują zwrot z inwestycji
+                reklamowej.
               </p>
             </div>
           </div>
@@ -280,16 +304,17 @@ const MarketingPage = () => {
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {platforms.map((platform, index) => (
-                <div key={index} className="bg-white p-6 rounded-xl shadow-lg text-center">
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-xl shadow-lg text-center"
+                >
                   <div className="flex justify-center mb-4">
                     {platform.icon}
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     {platform.title}
                   </h3>
-                  <p className="text-gray-600">
-                    {platform.description}
-                  </p>
+                  <p className="text-gray-600">{platform.description}</p>
                 </div>
               ))}
             </div>
@@ -308,9 +333,7 @@ const MarketingPage = () => {
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
                     {feature.title}
                   </h3>
-                  <p className="text-gray-600">
-                    {feature.description}
-                  </p>
+                  <p className="text-gray-600">{feature.description}</p>
                 </div>
               ))}
             </div>
@@ -325,16 +348,15 @@ const MarketingPage = () => {
             </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {metrics.map((metric, index) => (
-                <div key={index} className="text-center bg-white p-6 rounded-xl shadow-lg">
-                  <div className="flex justify-center mb-4">
-                    {metric.icon}
-                  </div>
+                <div
+                  key={index}
+                  className="text-center bg-white p-6 rounded-xl shadow-lg"
+                >
+                  <div className="flex justify-center mb-4">{metric.icon}</div>
                   <div className="text-3xl font-bold text-gray-900 mb-2">
                     {metric.metric}
                   </div>
-                  <p className="text-gray-600">
-                    {metric.description}
-                  </p>
+                  <p className="text-gray-600">{metric.description}</p>
                 </div>
               ))}
             </div>
@@ -350,7 +372,10 @@ const MarketingPage = () => {
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {projects.map((project) => (
-                  <div key={project.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                  <div
+                    key={project.id}
+                    className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
+                  >
                     <div className="relative group">
                       <img
                         src={project.image_url}
@@ -372,9 +397,15 @@ const MarketingPage = () => {
                       </div>
                     </div>
                     <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
-                      <p className="text-orange-500 font-semibold mb-3">{project.industry}</p>
-                      <p className="text-gray-600 text-sm">{project.description}</p>
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-orange-500 font-semibold mb-3">
+                        {project.industry}
+                      </p>
+                      <p className="text-gray-600 text-sm">
+                        {project.description}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -400,7 +431,9 @@ const MarketingPage = () => {
                 <div
                   key={index}
                   className={`relative bg-white rounded-2xl shadow-xl border-2 transition-all duration-300 hover:shadow-2xl ${
-                    pkg.popular ? 'border-orange-500 transform lg:scale-105' : 'border-gray-200'
+                    pkg.popular
+                      ? "border-orange-500 transform lg:scale-105"
+                      : "border-gray-200"
                   }`}
                 >
                   {pkg.popular && (
@@ -413,10 +446,14 @@ const MarketingPage = () => {
 
                   <div className="p-8">
                     <div className="text-center mb-8">
-                      <h3 className="text-2xl font-bold text-gray-900 mb-2">{pkg.name}</h3>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        {pkg.name}
+                      </h3>
                       <div className="text-3xl font-bold text-orange-500 mb-4">
                         {pkg.price}
-                        {!pkg.oneTime && <span className="text-lg text-gray-500">/mies</span>}
+                        {!pkg.oneTime && (
+                          <span className="text-lg text-gray-500">/mies</span>
+                        )}
                       </div>
                       <p className="text-gray-600">{pkg.description}</p>
                     </div>
@@ -431,13 +468,15 @@ const MarketingPage = () => {
                     </ul>
 
                     <div className="text-center">
-                      <p className="text-sm text-gray-500 mb-6">{pkg.timeframe}</p>
+                      <p className="text-sm text-gray-500 mb-6">
+                        {pkg.timeframe}
+                      </p>
                       <Link
-                        to="/#kontakt"
+                        to="/kontakt"
                         className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 inline-block ${
                           pkg.popular
-                            ? 'bg-orange-500 text-white hover:bg-orange-600'
-                            : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                            ? "bg-orange-500 text-white hover:bg-orange-600"
+                            : "bg-gray-100 text-gray-900 hover:bg-gray-200"
                         }`}
                       >
                         Umów konsultację
@@ -458,16 +497,23 @@ const MarketingPage = () => {
             </h2>
             <div className="space-y-4">
               {processSteps.map((step, index) => (
-                <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200">
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl shadow-lg border border-gray-200"
+                >
                   <button
-                    onClick={() => setOpenProcess(openProcess === index ? null : index)}
+                    onClick={() =>
+                      setOpenProcess(openProcess === index ? null : index)
+                    }
                     className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
                   >
                     <div className="flex items-center space-x-4">
                       <div className="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center font-bold">
                         {index + 1}
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900">{step.title}</h3>
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {step.title}
+                      </h3>
                     </div>
                     <div className="flex-shrink-0">
                       {openProcess === index ? (
@@ -477,13 +523,16 @@ const MarketingPage = () => {
                       )}
                     </div>
                   </button>
-                  
+
                   {openProcess === index && (
                     <div className="px-8 pb-6">
                       <div className="border-t border-gray-100 pt-6">
                         <ul className="space-y-2">
                           {step.details.map((detail, idx) => (
-                            <li key={idx} className="flex items-start space-x-3">
+                            <li
+                              key={idx}
+                              className="flex items-start space-x-3"
+                            >
                               <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
                               <span className="text-gray-600">{detail}</span>
                             </li>
@@ -512,15 +561,16 @@ const MarketingPage = () => {
                 </div>
               ))}
             </div>
-            
+
             <div className="mt-12 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
               <h3 className="text-xl font-bold text-yellow-900 mb-3">
                 💡 Pamiętaj: Budżet reklamowy to inwestycja, nie koszt
               </h3>
               <p className="text-yellow-800">
-                Każda złotówka wydana na dobrze zoptymalizowane kampanie reklamowe powinna przynosić 
-                3-8 złotych przychodu. Nasze kampanie są projektowane z myślą o maksymalizacji ROI, 
-                nie o wydawaniu budżetu.
+                Każda złotówka wydana na dobrze zoptymalizowane kampanie
+                reklamowe powinna przynosić 3-8 złotych przychodu. Nasze
+                kampanie są projektowane z myślą o maksymalizacji ROI, nie o
+                wydawaniu budżetu.
               </p>
             </div>
           </div>
@@ -534,7 +584,10 @@ const MarketingPage = () => {
             </h2>
             <div className="space-y-4">
               {faqs.map((faq, index) => (
-                <div key={index} className="bg-white rounded-2xl shadow-lg border border-gray-200">
+                <div
+                  key={index}
+                  className="bg-white rounded-2xl shadow-lg border border-gray-200"
+                >
                   <button
                     onClick={() => setOpenFaq(openFaq === index ? null : index)}
                     className="w-full px-8 py-6 text-left flex items-center justify-between focus:outline-none"
@@ -550,7 +603,7 @@ const MarketingPage = () => {
                       )}
                     </div>
                   </button>
-                  
+
                   {openFaq === index && (
                     <div className="px-8 pb-6">
                       <div className="border-t border-gray-100 pt-6">
@@ -573,10 +626,11 @@ const MarketingPage = () => {
               Gotowy na pierwsze leady już jutro?
             </h2>
             <p className="text-xl text-white/90 mb-8">
-              Umów się na bezpłatną konsultację i otrzymaj strategię kampanii dla Twojego biznesu.
+              Umów się na bezpłatną konsultację i otrzymaj strategię kampanii
+              dla Twojego biznesu.
             </p>
             <Link
-              to="/#kontakt"
+              to="/kontakt"
               className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
             >
               Umów bezpłatną konsultację
@@ -587,7 +641,7 @@ const MarketingPage = () => {
 
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default MarketingPage
+export default MarketingPage;

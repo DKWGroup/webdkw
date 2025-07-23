@@ -1,26 +1,53 @@
-import React, { useState } from 'react';
-import { HelmetProvider } from 'react-helmet-async';
-import { ArrowRight, MessageSquare, Settings, Lightbulb, ChevronLeft, ChevronRight, Star, Clock, CheckCircle, AlertTriangle, Mail, Phone, MapPin, Globe, TrendingUp, ExternalLink, Smartphone, Search, Plus, Minus, Shield, Headphones, Building, Zap } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import SEOHead from '../components/SEOHead';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import StructuredData from '../components/StructuredData'
-import OrganizationSchema from '../components/OrganizationSchema'
+import {
+  AlertTriangle,
+  ArrowRight,
+  Building,
+  CheckCircle,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  ExternalLink,
+  Globe,
+  Headphones,
+  Lightbulb,
+  Mail,
+  MapPin,
+  MessageSquare,
+  Minus,
+  Phone,
+  Plus,
+  Search,
+  Settings,
+  Shield,
+  Smartphone,
+  Star,
+  TrendingUp,
+  Zap,
+} from "lucide-react";
+import React, { useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import OrganizationSchema from "../components/OrganizationSchema";
+import SEOHead from "../components/SEOHead";
+import StructuredData from "../components/StructuredData";
+import { supabase } from "../lib/supabase";
 
 const SilesianLandingPage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    phone: '',
-    message: '',
-    leadMagnet: false
+    name: "",
+    email: "",
+    company: "",
+    phone: "",
+    message: "",
+    leadMagnet: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
   const [rodoConsent, setRodoConsent] = useState(false);
   const [showRodoInfo, setShowRodoInfo] = useState(false);
 
@@ -28,27 +55,43 @@ const SilesianLandingPage = () => {
     {
       icon: <Globe className="w-8 h-8" />,
       title: "Strony Internetowe",
-      description: "Nowoczesne, responsywne strony dostosowane do śląskiego rynku",
-      features: ["Responsywny design", "Optymalizacja SEO", "Szybkie ładowanie", "Bezpieczeństwo"]
+      description:
+        "Nowoczesne, responsywne strony dostosowane do śląskiego rynku",
+      features: [
+        "Responsywny design",
+        "Optymalizacja SEO",
+        "Szybkie ładowanie",
+        "Bezpieczeństwo",
+      ],
     },
     {
       icon: <Search className="w-8 h-8" />,
       title: "Pozycjonowanie SEO",
       description: "Skuteczne pozycjonowanie w Google dla firm ze ",
-      features: ["Lokalne SEO", "Analiza konkurencji", "Optymalizacja treści", "Raportowanie"]
+      features: [
+        "Lokalne SEO",
+        "Analiza konkurencji",
+        "Optymalizacja treści",
+        "Raportowanie",
+      ],
     },
     {
       icon: <Smartphone className="w-8 h-8" />,
       title: "E-commerce",
       description: "Sklepy internetowe dla śląskich przedsiębiorców",
-      features: ["Integracje płatności", "Zarządzanie produktami", "Analityka sprzedaży", "Wsparcie techniczne"]
+      features: [
+        "Integracje płatności",
+        "Zarządzanie produktami",
+        "Analityka sprzedaży",
+        "Wsparcie techniczne",
+      ],
     },
     {
       icon: <TrendingUp className="w-8 h-8" />,
       title: "Marketing Cyfrowy",
       description: "Kompleksowe strategie marketingowe dla regionu",
-      features: ["Google Ads", "Facebook Ads", "Email marketing", "Analityka"]
-    }
+      features: ["Google Ads", "Facebook Ads", "Email marketing", "Analityka"],
+    },
   ];
 
   const caseStudies = [
@@ -57,102 +100,114 @@ const SilesianLandingPage = () => {
       industry: "Lotnictwo helikopterowe",
       result: "+370% kliknięć w stronę",
       description: "Przebudowa strona z pozycjonowaniem",
-      image: "https://mkhelicopters.pl/wp-content/uploads/2025/05/open-graph-bg.png"
+      image:
+        "https://mkhelicopters.pl/wp-content/uploads/2025/05/open-graph-bg.png",
     },
     {
       title: "Paweł Węglarz",
       industry: "Trener personalny",
       result: "+145% sprzedaży online",
       description: "Konfiguracja pod kampanie",
-      image: "https://i.imgur.com/AaFWZ8d.png"
+      image: "https://i.imgur.com/AaFWZ8d.png",
     },
     {
       title: "Vis Naturae",
       industry: "Masaż i Refleksologia",
       result: "50/msc. nowych pacjentów",
       description: "Wizytówka strony i usług",
-      image: "https://i.imgur.com/cMPPuMy.png"
-    }
+      image: "https://i.imgur.com/cMPPuMy.png",
+    },
   ];
 
   const clients = [
-    { name: "Akademia Lutowania", logo: "/images/clients/akademia-lutowania.webp" },
+    {
+      name: "Akademia Lutowania",
+      logo: "/images/clients/akademia-lutowania.webp",
+    },
     { name: "Contenty", logo: "/images/clients/contenty.webp" },
     { name: "Grzegorz Kusz", logo: "/images/clients/gk.webp" },
     { name: "GlowUP", logo: "/images/clients/glowup.webp" },
     { name: "Investment Partners", logo: "/images/clients/inp.svg" },
     { name: "MKHelicopters", logo: "/images/clients/mkhelicopters.webp" },
-    { name: "WellDone", logo: "/images/clients/welldone.webp" }
+    { name: "WellDone", logo: "/images/clients/welldone.webp" },
   ];
 
   const faqs = [
     {
       question: "Dlaczego warto wybrać agencję ze znajomością śląskiego rynku?",
-      answer: "Agencja ze znajomością lokalnego rynku śląskiego rozumie specyfikę regionalnych klientów, konkurencję oraz lokalne trendy biznesowe. Dzięki temu możemy lepiej dostosować strategię marketingową, treści oraz pozycjonowanie do potrzeb śląskich odbiorców, co przekłada się na wyższe konwersje i lepszy zwrot z inwestycji."
+      answer:
+        "Agencja ze znajomością lokalnego rynku śląskiego rozumie specyfikę regionalnych klientów, konkurencję oraz lokalne trendy biznesowe. Dzięki temu możemy lepiej dostosować strategię marketingową, treści oraz pozycjonowanie do potrzeb śląskich odbiorców, co przekłada się na wyższe konwersje i lepszy zwrot z inwestycji.",
     },
     {
       question: "Jak długo trwa stworzenie strony internetowej dla firmy ze ?",
-      answer: "Czas realizacji zależy od złożoności projektu. Standardowa strona wizytówkowa zajmuje około 2-3 tygodnie, bardziej rozbudowane strony firmowe 4-6 tygodni, a zaawansowane platformy e-commerce 6-8 tygodni. Dla firm ze  oferujemy przyspieszoną realizację w przypadkach pilnych projektów."
+      answer:
+        "Czas realizacji zależy od złożoności projektu. Standardowa strona wizytówkowa zajmuje około 2-3 tygodnie, bardziej rozbudowane strony firmowe 4-6 tygodni, a zaawansowane platformy e-commerce 6-8 tygodni. Dla firm ze  oferujemy przyspieszoną realizację w przypadkach pilnych projektów.",
     },
     {
       question: "Czy oferujecie pozycjonowanie lokalne dla miast śląskich?",
-      answer: "Tak, specjalizujemy się w pozycjonowaniu lokalnym dla firm z Katowic, Gliwic, Zabrza i innych miast śląskich. Nasze strategie SEO uwzględniają lokalne frazy kluczowe, optymalizację Google Moja Firma oraz budowanie lokalnych linków, co znacząco zwiększa widoczność w lokalnych wynikach wyszukiwania."
+      answer:
+        "Tak, specjalizujemy się w pozycjonowaniu lokalnym dla firm z Katowic, Gliwic, Zabrza i innych miast śląskich. Nasze strategie SEO uwzględniają lokalne frazy kluczowe, optymalizację Google Moja Firma oraz budowanie lokalnych linków, co znacząco zwiększa widoczność w lokalnych wynikach wyszukiwania.",
     },
     {
       question: "Jakie są koszty stworzenia strony internetowej dla firmy ze ?",
-      answer: "Koszt strony internetowej zależy od jej złożoności i funkcjonalności. Strony wizytówkowe zaczynają się od 4000 zł, strony firmowe od 6000 zł, a sklepy internetowe od 8000 zł. Dla firm ze  oferujemy specjalne pakiety z uwzględnieniem lokalnego pozycjonowania."
+      answer:
+        "Koszt strony internetowej zależy od jej złożoności i funkcjonalności. Strony wizytówkowe zaczynają się od 4000 zł, strony firmowe od 6000 zł, a sklepy internetowe od 8000 zł. Dla firm ze  oferujemy specjalne pakiety z uwzględnieniem lokalnego pozycjonowania.",
     },
     {
       question: "Czy pomagacie w prowadzeniu kampanii Google Ads dla firm ze ?",
-      answer: "Tak, oferujemy kompleksowe zarządzanie kampaniami Google Ads dla firm ze . Nasze usługi obejmują analizę konkurencji, dobór słów kluczowych, tworzenie reklam, optymalizację stawek oraz regularne raportowanie wyników. Specjalizujemy się w kampaniach lokalnych, które docierają do klientów z konkretnych miast śląskich."
-    }
+      answer:
+        "Tak, oferujemy kompleksowe zarządzanie kampaniami Google Ads dla firm ze . Nasze usługi obejmują analizę konkurencji, dobór słów kluczowych, tworzenie reklam, optymalizację stawek oraz regularne raportowanie wyników. Specjalizujemy się w kampaniach lokalnych, które docierają do klientów z konkretnych miast śląskich.",
+    },
   ];
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setSubmitStatus('idle');
+    setSubmitStatus("idle");
 
     if (!rodoConsent) {
-      setSubmitStatus('error');
+      setSubmitStatus("error");
       setIsSubmitting(false);
       return;
     }
 
     try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert([{
+      const { error } = await supabase.from("contact_submissions").insert([
+        {
           name: formData.name,
           email: formData.email,
           company: formData.company,
           phone: formData.phone,
           message: formData.message,
-          lead_magnet: formData.leadMagnet
-        }]);
+          lead_magnet: formData.leadMagnet,
+        },
+      ]);
 
       if (error) throw error;
 
-      setSubmitStatus('success');
+      setSubmitStatus("success");
       setFormData({
-        name: '',
-        email: '',
-        company: '',
-        phone: '',
-        message: '',
-        leadMagnet: false
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        message: "",
+        leadMagnet: false,
       });
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitStatus('error');
+      console.error("Error submitting form:", error);
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
@@ -163,15 +218,19 @@ const SilesianLandingPage = () => {
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + Math.ceil(clients.length / 4)) % Math.ceil(clients.length / 4));
+    setCurrentSlide(
+      (prev) =>
+        (prev - 1 + Math.ceil(clients.length / 4)) %
+        Math.ceil(clients.length / 4)
+    );
   };
 
-  const baseUrl = "https://webdkw.com/strony-internetowe-seo-slask"
+  const baseUrl = "https://webdkw.com/strony-internetowe-seo-slask";
 
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-white">
-        <SEOHead 
+        <SEOHead
           title="Strony Internetowe i SEO dla Firm ze Śląska | Katowice, Gliwice, Zabrze"
           description="Profesjonalne strony internetowe, pozycjonowanie SEO i marketing cyfrowy dla firm ze . Obsługujemy Katowice, Gliwice, Zabrze i cały region śląski."
           keywords="strony internetowe śląsk, SEO katowice, pozycjonowanie gliwice, marketing cyfrowy zabrze, tworzenie stron śląsk"
@@ -181,7 +240,7 @@ const SilesianLandingPage = () => {
         <StructuredData type="website" data={{}} />
         <StructuredData type="faq" data={faqs} />
         <OrganizationSchema baseUrl={baseUrl} />
-        
+
         <Header />
 
         {/* Hero Section */}
@@ -191,7 +250,7 @@ const SilesianLandingPage = () => {
             <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
             <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl"></div>
           </div>
-          
+
           <div className="relative pt-4 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
               <div>
@@ -199,56 +258,74 @@ const SilesianLandingPage = () => {
                   <MapPin className="w-4 h-4 mr-2" />
                   Obsługujemy cały region śląski
                 </div>
-                
+
                 <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                  Strony Internetowe dla Firm ze 
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-300"> Śląska</span>
+                  Strony Internetowe dla Firm ze
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-yellow-300">
+                    {" "}
+                    Śląska
+                  </span>
                 </h1>
-                
+
                 <p className="text-xl text-blue-100 mb-8 leading-relaxed">
-                  Twoja firma na Śląsku jest niewidoczno jak kret w kopalni? Zmienimy to! Tworzymy gryfne strony internetowe i robimy takie pozycjonowanie w Katowicach, Gliwicach i Zabrzu, że bydziesz na samym wiyrchu w Google. Dej pozór na nowych klientów!
+                  Twoja firma na Śląsku jest niewidoczno jak kret w kopalni?
+                  Zmienimy to! Tworzymy gryfne strony internetowe i robimy takie
+                  pozycjonowanie w Katowicach, Gliwicach i Zabrzu, że bydziesz
+                  na samym wiyrchu w Google. Dej pozór na nowych klientów!
                 </p>
-                
+
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                  <a 
-                    href="#contact" 
+                  <a
+                    href="#contact"
                     className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                   >
                     Bezpłatna Konsultacja
                     <ArrowRight className="ml-2 w-5 h-5" />
                   </a>
-                  <a 
-                    href="#services" 
+                  <a
+                    href="#services"
                     className="inline-flex items-center justify-center border-2 border-blue-400 text-blue-400 px-8 py-4 rounded-lg font-semibold hover:bg-blue-400 hover:text-blue-900 transition-all duration-300"
                   >
                     Nasze Usługi
                   </a>
                 </div>
-                
+
                 <div className="grid grid-cols-3 gap-8 pt-8 border-t border-blue-700/50">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400 mb-2">50+</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-2">
+                      50+
+                    </div>
                     <div className="text-blue-200 text-sm">Firm ze </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400 mb-2">5+</div>
-                    <div className="text-blue-200 text-sm">Lat Doświadczenia</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-2">
+                      5+
+                    </div>
+                    <div className="text-blue-200 text-sm">
+                      Lat Doświadczenia
+                    </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-blue-400 mb-2">98%</div>
-                    <div className="text-blue-200 text-sm">Zadowolonych Klientów</div>
+                    <div className="text-3xl font-bold text-blue-400 mb-2">
+                      98%
+                    </div>
+                    <div className="text-blue-200 text-sm">
+                      Zadowolonych Klientów
+                    </div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="relative">
                 <div className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                   <div className="absolute -top-4 -right-4 bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
                     Darmowa Analiza!
                   </div>
-                  
-                  <h3 className="text-2xl font-bold mb-6">Sprawdź Potencjał Swojej Strony</h3>
-                  
+
+                  <h3 className="text-2xl font-bold mb-6">
+                    Sprawdź Potencjał Swojej Strony
+                  </h3>
+
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
                       <input
@@ -261,7 +338,7 @@ const SilesianLandingPage = () => {
                         className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
-                    
+
                     <div>
                       <input
                         type="email"
@@ -273,7 +350,7 @@ const SilesianLandingPage = () => {
                         className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
-                    
+
                     <div>
                       <input
                         type="text"
@@ -284,7 +361,7 @@ const SilesianLandingPage = () => {
                         className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
-                    
+
                     <div>
                       <input
                         type="tel"
@@ -295,7 +372,7 @@ const SilesianLandingPage = () => {
                         className="w-full px-4 py-3 rounded-lg bg-white/20 border border-white/30 text-white placeholder-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                       />
                     </div>
-                    
+
                     <div>
                       <textarea
                         name="message"
@@ -322,8 +399,11 @@ const SilesianLandingPage = () => {
                           />
                         </div>
                         <div className="ml-3 text-sm">
-                          <label htmlFor="rodo-consent" className="text-blue-200">
-                            Zapoznałem/am się z{' '}
+                          <label
+                            htmlFor="rodo-consent"
+                            className="text-blue-200"
+                          >
+                            Zapoznałem/am się z{" "}
                             <button
                               type="button"
                               className="text-yellow-500 hover:text-yellow-700 underline"
@@ -331,23 +411,32 @@ const SilesianLandingPage = () => {
                               onMouseEnter={() => setShowRodoInfo(true)}
                               onMouseLeave={() => setShowRodoInfo(false)}
                             >
-                              informacją o administratorze i przetwarzaniu danych
+                              informacją o administratorze i przetwarzaniu
+                              danych
                             </button>
                             . *
                           </label>
                         </div>
                       </div>
-                      
+
                       {/* RODO Info Popup */}
                       {showRodoInfo && (
                         <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
                           <p>
-                            Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                            Wyrażam zgodę na przetwarzanie moich danych
+                            osobowych zgodnie z ustawą o ochronie danych
+                            osobowych w celu wysyłania informacji handlowej.
+                            Podanie danych osobowych jest dobrowolne. Zostałem
+                            poinformowany, że przysługuje mi prawo dostępu do
+                            swoich danych, możliwości ich poprawiania, żądania
+                            zaprzestania ich przetwarzania. Administratorem
+                            danych jest DM.me Dawid Myszka ul. Bolesława
+                            Chrobrego 32/103, Katowice 40-881.
                           </p>
                         </div>
                       )}
                     </div>
-                    
+
                     <button
                       type="submit"
                       disabled={isSubmitting || !rodoConsent}
@@ -365,15 +454,15 @@ const SilesianLandingPage = () => {
                         </>
                       )}
                     </button>
-                    
-                    {submitStatus === 'success' && (
+
+                    {submitStatus === "success" && (
                       <div className="flex items-center text-blue-400 text-sm">
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Dziękujemy! Skontaktujemy się z Tobą w ciągu 24 godzin.
                       </div>
                     )}
-                    
-                    {submitStatus === 'error' && (
+
+                    {submitStatus === "error" && (
                       <div className="flex items-center text-red-400 text-sm">
                         <AlertTriangle className="w-4 h-4 mr-2" />
                         Wystąpił błąd. Spróbuj ponownie lub zadzwoń do nas.
@@ -390,37 +479,43 @@ const SilesianLandingPage = () => {
         <section className="py-16 bg-white border-t border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Zaufali Nam</h2>
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Zaufali Nam
+              </h2>
               <p className="text-xl text-gray-600">Firmy, które nam zaufały</p>
             </div>
-            
+
             <div className="relative">
               <div className="overflow-hidden">
-                <div 
+                <div
                   className="flex transition-transform duration-500 ease-in-out"
                   style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
-                  {Array.from({ length: Math.ceil(clients.length / 4) }).map((_, slideIndex) => (
-                    <div key={slideIndex} className="w-full flex-shrink-0">
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
-                        {clients.slice(slideIndex * 4, (slideIndex + 1) * 4).map((client, index) => (
-                          <div 
-                            key={index}
-                            className="group transition-all duration-300 flex items-center justify-center"
-                          >
-                            <img 
-                              src={client.logo} 
-                              alt={client.name} 
-                              className="h-12 sm:h-16 w-auto filter grayscale invert transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain" 
-                            />
-                          </div>
-                        ))}
+                  {Array.from({ length: Math.ceil(clients.length / 4) }).map(
+                    (_, slideIndex) => (
+                      <div key={slideIndex} className="w-full flex-shrink-0">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
+                          {clients
+                            .slice(slideIndex * 4, (slideIndex + 1) * 4)
+                            .map((client, index) => (
+                              <div
+                                key={index}
+                                className="group transition-all duration-300 flex items-center justify-center"
+                              >
+                                <img
+                                  src={client.logo}
+                                  alt={client.name}
+                                  className="h-12 sm:h-16 w-auto filter grayscale invert transition-all duration-300 opacity-60 group-hover:opacity-100 max-w-full object-contain"
+                                />
+                              </div>
+                            ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  )}
                 </div>
               </div>
-              
+
               {/* Navigation arrows */}
               <button
                 onClick={prevSlide}
@@ -434,18 +529,22 @@ const SilesianLandingPage = () => {
               >
                 <ChevronRight className="h-4 w-4 text-gray-600" />
               </button>
-              
+
               {/* Carousel indicators */}
               <div className="flex justify-center space-x-2 mt-6">
-                {Array.from({ length: Math.ceil(clients.length / 4) }).map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentSlide(index)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      currentSlide === index ? 'bg-yellow-500 w-6' : 'bg-gray-300 w-2'
-                    }`}
-                  />
-                ))}
+                {Array.from({ length: Math.ceil(clients.length / 4) }).map(
+                  (_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentSlide(index)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        currentSlide === index
+                          ? "bg-yellow-500 w-6"
+                          : "bg-gray-300 w-2"
+                      }`}
+                    />
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -459,31 +558,43 @@ const SilesianLandingPage = () => {
                 Kompleksowe Usługi Dla Firm ze Śląska
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Oferujemy pełen zakres usług internetowych dostosowanych do specyfiki śląskiego rynku i potrzeb lokalnych przedsiębiorców.
+                Oferujemy pełen zakres usług internetowych dostosowanych do
+                specyfiki śląskiego rynku i potrzeb lokalnych przedsiębiorców.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {services.map((service, index) => (
-                <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group hover:-translate-y-2">
+                <div
+                  key={index}
+                  className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group hover:-translate-y-2"
+                >
                   <div className="text-blue-600 mb-6 group-hover:scale-110 transition-transform duration-300">
                     {service.icon}
                   </div>
-                  
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">{service.title}</h3>
+
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    {service.title}
+                  </h3>
                   <p className="text-gray-600 mb-6">{service.description}</p>
-                  
+
                   <ul className="space-y-2">
                     {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-center text-sm text-gray-700">
+                      <li
+                        key={featureIndex}
+                        className="flex items-center text-sm text-gray-700"
+                      >
                         <CheckCircle className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0" />
                         {feature}
                       </li>
                     ))}
                   </ul>
-                  
+
                   <div className="mt-6 pt-6 border-t border-gray-100">
-                    <a href="https://webdkw.net/uslugi" className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center">
+                    <a
+                      href="https://webdkw.net/uslugi"
+                      className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center"
+                    >
                       Dowiedz się więcej
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </a>
@@ -500,55 +611,92 @@ const SilesianLandingPage = () => {
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8 text-center">
               🚀 Strona, Która Pracuje dla Twojego Biznesu na Śląsku – 24/7
             </h2>
-            
+
             <div className="prose prose-lg max-w-none">
               <p className="text-gray-700 mb-8">
-                W dzisiejszych czasach każda firma może mieć stronę internetową. Prawdziwe pytanie brzmi: czy Twoja strona aktywnie pracuje na Twój sukces? Wiele witryn to tylko ładne, ale pasywne wizytówki. My podchodzimy do tego inaczej. Traktujemy profesjonalne tworzenie stron internetowych dla firm na Śląsku jako budowę najważniejszego narzędzia marketingowego w Twoim arsenale – narzędzia, które generuje realne zyski.
+                W dzisiejszych czasach każda firma może mieć stronę internetową.
+                Prawdziwe pytanie brzmi: czy Twoja strona aktywnie pracuje na
+                Twój sukces? Wiele witryn to tylko ładne, ale pasywne wizytówki.
+                My podchodzimy do tego inaczej. Traktujemy profesjonalne
+                tworzenie stron internetowych dla firm na Śląsku jako budowę
+                najważniejszego narzędzia marketingowego w Twoim arsenale –
+                narzędzia, które generuje realne zyski.
               </p>
-              
+
               <div className="bg-orange-50 p-8 rounded-xl mb-10">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
                   <Building className="h-6 w-6 text-orange-500 mr-3" />
                   Od cyfrowej ulotki do maszyny sprzedażowej
                 </h3>
                 <p className="text-gray-700">
-                  Przestarzała strona to cyfrowy odpowiednik zamkniętego biura. Nowoczesna, dobrze zaprojektowana witryna to Twój najlepszy handlowiec, który pracuje bez przerwy. Naszym celem jest zaprojektowanie strony internetowej dla Twojej firmy w Bielsku-Białej, Katowicach czy Gliwicach, która nie tylko informuje, ale przede wszystkim przekonuje i konwertuje odwiedzających w płacących klientów. Analizujemy ścieżkę Twojego klienta, by każde kliknięcie prowadziło go do złożenia zapytania lub dokonania zakupu.
+                  Przestarzała strona to cyfrowy odpowiednik zamkniętego biura.
+                  Nowoczesna, dobrze zaprojektowana witryna to Twój najlepszy
+                  handlowiec, który pracuje bez przerwy. Naszym celem jest
+                  zaprojektowanie strony internetowej dla Twojej firmy w
+                  Bielsku-Białej, Katowicach czy Gliwicach, która nie tylko
+                  informuje, ale przede wszystkim przekonuje i konwertuje
+                  odwiedzających w płacących klientów. Analizujemy ścieżkę
+                  Twojego klienta, by każde kliknięcie prowadziło go do złożenia
+                  zapytania lub dokonania zakupu.
                 </p>
               </div>
-              
+
               <div className="bg-blue-50 p-8 rounded-xl mb-10">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
                   <Search className="h-6 w-6 text-blue-500 mr-3" />
-                  Lokalna widoczność w Google, czyli klienci, którzy sami Cię znajdują
+                  Lokalna widoczność w Google, czyli klienci, którzy sami Cię
+                  znajdują
                 </h3>
                 <p className="text-gray-700">
-                  Zastanawiasz się, jak pozyskać klientów z internetu na Śląsku? Odpowiedzią jest strategiczne SEO. To nie magia, a przemyślany proces, dzięki któremu Twoja firma staje się widoczna dla osób aktywnie szukających Twoich usług. Dbamy o to, by optymalizacja strony pod kątem SEO dla firmy lokalnej była fundamentem projektu. Dzięki temu, gdy potencjalny klient wpisze w Google "usługi budowlane Częstochowa" lub "dobry prawnik Rybnik", znajdzie właśnie Ciebie, a nie konkurencję.
+                  Zastanawiasz się, jak pozyskać klientów z internetu na Śląsku?
+                  Odpowiedzią jest strategiczne SEO. To nie magia, a przemyślany
+                  proces, dzięki któremu Twoja firma staje się widoczna dla osób
+                  aktywnie szukających Twoich usług. Dbamy o to, by
+                  optymalizacja strony pod kątem SEO dla firmy lokalnej była
+                  fundamentem projektu. Dzięki temu, gdy potencjalny klient
+                  wpisze w Google "usługi budowlane Częstochowa" lub "dobry
+                  prawnik Rybnik", znajdzie właśnie Ciebie, a nie konkurencję.
                 </p>
               </div>
-              
+
               <div className="bg-green-50 p-8 rounded-xl mb-10">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
                   <Zap className="h-6 w-6 text-green-500 mr-3" />
                   Pełna kontrola i niezależność dzięki systemowi CMS
                 </h3>
                 <p className="text-gray-700">
-                  Boisz się, że po stworzeniu strony będziesz uzależniony od programisty przy każdej drobnej zmianie? Rozwiewamy te obawy. Każda tworzona przez nas responsywna strona internetowa z CMS w Gliwicach (i na całym Śląsku) daje Ci pełną swobodę. Otrzymujesz od nas intuicyjne narzędzie, dzięki któremu samodzielnie dodasz nowy wpis na blogu, zaktualizujesz cennik czy opublikujesz zdjęcia z ostatniej realizacji – szybko, prosto i bez dodatkowych kosztów.
+                  Boisz się, że po stworzeniu strony będziesz uzależniony od
+                  programisty przy każdej drobnej zmianie? Rozwiewamy te obawy.
+                  Każda tworzona przez nas responsywna strona internetowa z CMS
+                  w Gliwicach (i na całym Śląsku) daje Ci pełną swobodę.
+                  Otrzymujesz od nas intuicyjne narzędzie, dzięki któremu
+                  samodzielnie dodasz nowy wpis na blogu, zaktualizujesz cennik
+                  czy opublikujesz zdjęcia z ostatniej realizacji – szybko,
+                  prosto i bez dodatkowych kosztów.
                 </p>
               </div>
-              
+
               <div className="bg-purple-50 p-8 rounded-xl mb-10">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4 flex items-center">
                   <Star className="h-6 w-6 text-purple-500 mr-3" />
                   Design, który buduje zaufanie i rośnie razem z Twoją firmą
                 </h3>
                 <p className="text-gray-700">
-                  Wizerunek w sieci ma znaczenie. Dlatego tworzymy indywidualne projekty stron www dla firm z Tychów, Zabrza i całego regionu, które są nie tylko estetyczne i zgodne z Twoją marką, ale przede wszystkim budują zaufanie i profesjonalny autorytet. Co więcej, myślimy przyszłościowo. Nasze rozwiązania są skalowalne, co oznacza, że Twoja strona będzie mogła rosnąć i ewoluować razem z Twoim biznesem – od prostej wizytówki, po rozbudowany portal czy sklep internetowy.
+                  Wizerunek w sieci ma znaczenie. Dlatego tworzymy indywidualne
+                  projekty stron www dla firm z Tychów, Zabrza i całego regionu,
+                  które są nie tylko estetyczne i zgodne z Twoją marką, ale
+                  przede wszystkim budują zaufanie i profesjonalny autorytet. Co
+                  więcej, myślimy przyszłościowo. Nasze rozwiązania są
+                  skalowalne, co oznacza, że Twoja strona będzie mogła rosnąć i
+                  ewoluować razem z Twoim biznesem – od prostej wizytówki, po
+                  rozbudowany portal czy sklep internetowy.
                 </p>
               </div>
-              
+
               <div className="bg-gray-50 p-6 rounded-xl text-center">
                 <p className="text-lg font-semibold text-gray-700">
-                  💼 Twoja firma na Śląsku zasługuje na profesjonalną obecność w internecie!
+                  💼 Twoja firma na Śląsku zasługuje na profesjonalną obecność w
+                  internecie!
                 </p>
                 <a
                   href="#contact"
@@ -566,19 +714,23 @@ const SilesianLandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Sukcesy Naszych Klientów ze 
+                Sukcesy Naszych Klientów ze
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Zobacz, jak pomogliśmy firmom z regionu śląskiego osiągnąć spektakularne rezultaty w internecie.
+                Zobacz, jak pomogliśmy firmom z regionu śląskiego osiągnąć
+                spektakularne rezultaty w internecie.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-3 gap-8">
               {caseStudies.map((study, index) => (
-                <div key={index} className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group">
+                <div
+                  key={index}
+                  className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 group"
+                >
                   <div className="relative overflow-hidden">
-                    <img 
-                      src={study.image} 
+                    <img
+                      src={study.image}
                       alt={study.title}
                       className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -586,13 +738,20 @@ const SilesianLandingPage = () => {
                       {study.result}
                     </div>
                   </div>
-                  
+
                   <div className="p-6">
-                    <div className="text-sm text-blue-600 font-semibold mb-2">{study.industry}</div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3">{study.title}</h3>
+                    <div className="text-sm text-blue-600 font-semibold mb-2">
+                      {study.industry}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">
+                      {study.title}
+                    </h3>
                     <p className="text-gray-600 mb-4">{study.description}</p>
-                    
-                    <a href="#contact" className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center">
+
+                    <a
+                      href="#contact"
+                      className="text-yellow-600 font-semibold hover:text-yellow-700 transition-colors duration-300 flex items-center"
+                    >
                       Zobacz szczegóły
                       <ExternalLink className="w-4 h-4 ml-1" />
                     </a>
@@ -612,50 +771,78 @@ const SilesianLandingPage = () => {
                   Pozycjonowanie Lokalne dla Firm ze Śląska
                 </h2>
                 <p className="text-xl text-blue-100 mb-8">
-                  Specjalizujemy się w pozycjonowaniu lokalnym, które pomaga firmom ze  być widocznymi dla klientów z regionu. Nasze strategie SEO są dostosowane do specyfiki śląskiego rynku.
+                  Specjalizujemy się w pozycjonowaniu lokalnym, które pomaga
+                  firmom ze być widocznymi dla klientów z regionu. Nasze
+                  strategie SEO są dostosowane do specyfiki śląskiego rynku.
                 </p>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="bg-blue-500 rounded-lg p-3 mr-4">
                       <MapPin className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">Lokalne Frazy Kluczowe</h3>
-                      <p className="text-blue-200">Optymalizujemy pod kątem fraz zawierających nazwy miast śląskich</p>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Lokalne Frazy Kluczowe
+                      </h3>
+                      <p className="text-blue-200">
+                        Optymalizujemy pod kątem fraz zawierających nazwy miast
+                        śląskich
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <div className="bg-blue-500 rounded-lg p-3 mr-4">
                       <Search className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">Google Moja Firma</h3>
-                      <p className="text-blue-200">Optymalizacja profilu w Google dla lepszej widoczności lokalnej</p>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Google Moja Firma
+                      </h3>
+                      <p className="text-blue-200">
+                        Optymalizacja profilu w Google dla lepszej widoczności
+                        lokalnej
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <div className="bg-blue-500 rounded-lg p-3 mr-4">
                       <TrendingUp className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold mb-2">Analiza Konkurencji</h3>
-                      <p className="text-blue-200">Badamy konkurencję w regionie śląskim i tworzymy lepsze strategie</p>
+                      <h3 className="text-lg font-semibold mb-2">
+                        Analiza Konkurencji
+                      </h3>
+                      <p className="text-blue-200">
+                        Badamy konkurencję w regionie śląskim i tworzymy lepsze
+                        strategie
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <h3 className="text-2xl font-bold mb-6">Miasta, które obsługujemy:</h3>
-                
+                <h3 className="text-2xl font-bold mb-6">
+                  Miasta, które obsługujemy:
+                </h3>
+
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    'Katowice', 'Gliwice', 'Zabrze', 'Bytom',
-                    'Sosnowiec', 'Ruda ', 'Tychy', 'Dąbrowa Górnicza',
-                    'Chorzów', 'Jaworzno', 'Mysłowice', 'Siemianowice Śląskie'
+                    "Katowice",
+                    "Gliwice",
+                    "Zabrze",
+                    "Bytom",
+                    "Sosnowiec",
+                    "Ruda ",
+                    "Tychy",
+                    "Dąbrowa Górnicza",
+                    "Chorzów",
+                    "Jaworzno",
+                    "Mysłowice",
+                    "Siemianowice Śląskie",
                   ].map((city, index) => (
                     <div key={index} className="flex items-center">
                       <CheckCircle className="w-4 h-4 text-blue-400 mr-2" />
@@ -663,14 +850,15 @@ const SilesianLandingPage = () => {
                     </div>
                   ))}
                 </div>
-                
+
                 <div className="mt-8 p-4 bg-blue-500/20 rounded-lg border border-blue-400/30">
                   <div className="flex items-center text-blue-400 mb-2">
                     <Lightbulb className="w-5 h-5 mr-2" />
                     <span className="font-semibold">Lokalny Bonus</span>
                   </div>
                   <p className="text-blue-100 text-sm">
-                    Dla firm z regionu śląskiego oferujemy dodatkową optymalizację pod kątem lokalnych wydarzeń i trendów.
+                    Dla firm z regionu śląskiego oferujemy dodatkową
+                    optymalizację pod kątem lokalnych wydarzeń i trendów.
                   </p>
                 </div>
               </div>
@@ -683,62 +871,76 @@ const SilesianLandingPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Jesteśmy więcej niż tylko agencją. Jesteśmy Twoim lokalnym partnerem.
+                Jesteśmy więcej niż tylko agencją. Jesteśmy Twoim lokalnym
+                partnerem.
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Wybierając WebDKW, wybierasz zespół, który rozumie specyfikę śląskiego rynku i potrzeby lokalnych przedsiębiorców.
+                Wybierając WebDKW, wybierasz zespół, który rozumie specyfikę
+                śląskiego rynku i potrzeby lokalnych przedsiębiorców.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {/* Local Team */}
               <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
                 <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
                   <MapPin className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Lokalny Zespół ze Śląska</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+                  Lokalny Zespół ze Śląska
+                </h3>
                 <p className="text-gray-600 text-center">
-                  Znamy specyfikę rynku. Możemy spotkać się przy kawie w Katowicach, by omówić Twój projekt.
+                  Znamy specyfikę rynku. Możemy spotkać się przy kawie w
+                  Katowicach, by omówić Twój projekt.
                 </p>
               </div>
-              
+
               {/* Results Focus */}
               <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
                 <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
                   <TrendingUp className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Skupienie na Wynikach</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+                  Skupienie na Wynikach
+                </h3>
                 <p className="text-gray-600 text-center">
-                  Naszym celem nie jest 'zrobić stronę', ale dostarczyć narzędzie, które realnie wspiera Twój biznes.
+                  Naszym celem nie jest 'zrobić stronę', ale dostarczyć
+                  narzędzie, które realnie wspiera Twój biznes.
                 </p>
               </div>
-              
+
               {/* Transparency */}
               <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
                 <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
                   <Shield className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Pełna Transparentność</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+                  Pełna Transparentność
+                </h3>
                 <p className="text-gray-600 text-center">
-                  Jasne zasady, stały kontakt i żadnych ukrytych kosztów. Zawsze wiesz, za co płacisz.
+                  Jasne zasady, stały kontakt i żadnych ukrytych kosztów. Zawsze
+                  wiesz, za co płacisz.
                 </p>
               </div>
-              
+
               {/* Comprehensive Support */}
               <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
                 <div className="bg-blue-100 p-4 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto">
                   <Headphones className="w-8 h-8 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">Kompleksowe Wsparcie</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-3 text-center">
+                  Kompleksowe Wsparcie
+                </h3>
                 <p className="text-gray-600 text-center">
-                  Od projektu, przez SEO, po reklamy - wszystko w jednym miejscu. Nie musisz szukać wielu wykonawców.
+                  Od projektu, przez SEO, po reklamy - wszystko w jednym
+                  miejscu. Nie musisz szukać wielu wykonawców.
                 </p>
               </div>
             </div>
-            
+
             <div className="mt-12 text-center">
-              <a 
-                href="#contact" 
+              <a
+                href="#contact"
                 className="inline-flex items-center justify-center bg-yellow-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Porozmawiajmy o Twoim projekcie
@@ -756,77 +958,127 @@ const SilesianLandingPage = () => {
                 Współpraca z nami to prosty i przejrzysty proces
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                Każdy etap jest starannie zaplanowany, aby zapewnić najwyższą jakość i zminimalizować ryzyko
+                Każdy etap jest starannie zaplanowany, aby zapewnić najwyższą
+                jakość i zminimalizować ryzyko
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-8">
               {/* Step 1 */}
               <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">1</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Strategia i Analiza</h3>
-                <p className="text-gray-600">Poznajemy Twój biznes i cele. Analizujemy konkurencję i określamy grupę docelową.</p>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">
+                  1
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Strategia i Analiza
+                </h3>
+                <p className="text-gray-600">
+                  Poznajemy Twój biznes i cele. Analizujemy konkurencję i
+                  określamy grupę docelową.
+                </p>
               </div>
-              
+
               {/* Step 2 */}
               <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">2</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Projekt Graficzny</h3>
-                <p className="text-gray-600">Tworzymy unikalny design zgodny z Twoją marką. Projektujemy interfejs przyjazny dla użytkownika.</p>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">
+                  2
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Projekt Graficzny
+                </h3>
+                <p className="text-gray-600">
+                  Tworzymy unikalny design zgodny z Twoją marką. Projektujemy
+                  interfejs przyjazny dla użytkownika.
+                </p>
               </div>
-              
+
               {/* Step 3 */}
               <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">3</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Programowanie i Wdrożenie</h3>
-                <p className="text-gray-600">Kodujemy stronę w oparciu o najnowsze technologie. Implementujemy wszystkie funkcjonalności.</p>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">
+                  3
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Programowanie i Wdrożenie
+                </h3>
+                <p className="text-gray-600">
+                  Kodujemy stronę w oparciu o najnowsze technologie.
+                  Implementujemy wszystkie funkcjonalności.
+                </p>
               </div>
-              
+
               {/* Step 4 */}
               <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">4</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Testy i Optymalizacja</h3>
-                <p className="text-gray-600">Upewniamy się, że wszystko działa perfekcyjnie. Optymalizujemy wydajność i SEO.</p>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">
+                  4
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Testy i Optymalizacja
+                </h3>
+                <p className="text-gray-600">
+                  Upewniamy się, że wszystko działa perfekcyjnie. Optymalizujemy
+                  wydajność i SEO.
+                </p>
               </div>
-              
+
               {/* Step 5 */}
               <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">5</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Start i Wsparcie</h3>
-                <p className="text-gray-600">Uruchamiamy stronę i pozostajemy do Twojej dyspozycji. Zapewniamy wsparcie techniczne.</p>
+                <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl mb-4">
+                  5
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                  Start i Wsparcie
+                </h3>
+                <p className="text-gray-600">
+                  Uruchamiamy stronę i pozostajemy do Twojej dyspozycji.
+                  Zapewniamy wsparcie techniczne.
+                </p>
               </div>
             </div>
-            
+
             <div className="mt-12 bg-blue-50 rounded-xl p-8 border border-blue-100">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">Redukcja Ryzyka</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 text-center">
+                Redukcja Ryzyka
+              </h3>
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="flex items-start">
                   <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
                     <CheckCircle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Jasne Zasady</h4>
-                    <p className="text-gray-600 text-sm">Szczegółowa umowa i harmonogram prac</p>
+                    <h4 className="font-semibold text-gray-900 mb-1">
+                      Jasne Zasady
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Szczegółowa umowa i harmonogram prac
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
                     <CheckCircle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Etapowe Płatności</h4>
-                    <p className="text-gray-600 text-sm">Płacisz tylko za ukończone etapy pracy</p>
+                    <h4 className="font-semibold text-gray-900 mb-1">
+                      Etapowe Płatności
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      Płacisz tylko za ukończone etapy pracy
+                    </p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start">
                   <div className="bg-yellow-500 rounded-full p-2 mr-3 text-white">
                     <CheckCircle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-1">Gwarancja Jakości</h4>
-                    <p className="text-gray-600 text-sm">3 miesiące wsparcia po wdrożeniu</p>
+                    <h4 className="font-semibold text-gray-900 mb-1">
+                      Gwarancja Jakości
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      3 miesiące wsparcia po wdrożeniu
+                    </p>
                   </div>
                 </div>
               </div>
@@ -842,81 +1094,114 @@ const SilesianLandingPage = () => {
                 Skontaktuj się z Nami
               </h2>
               <p className="text-xl text-gray-600">
-                Jesteśmy gotowi pomóc Twojej firmie ze Śląska i osiągnąć sukces w internecie
+                Jesteśmy gotowi pomóc Twojej firmie ze Śląska i osiągnąć sukces
+                w internecie
               </p>
             </div>
-            
+
             <div className="grid lg:grid-cols-2 gap-12">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Dlaczego WebDKW?</h3>
-                
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Dlaczego WebDKW?
+                </h3>
+
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                       <MapPin className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">Znajomość Lokalnego Rynku</h4>
-                      <p className="text-gray-600">Doskonale znamy specyfikę śląskiego rynku i potrzeby lokalnych przedsiębiorców.</p>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                        Znajomość Lokalnego Rynku
+                      </h4>
+                      <p className="text-gray-600">
+                        Doskonale znamy specyfikę śląskiego rynku i potrzeby
+                        lokalnych przedsiębiorców.
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                       <Clock className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">Szybka Realizacja</h4>
-                      <p className="text-gray-600">Realizujemy projekty sprawnie, bez zbędnych opóźnień.</p>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                        Szybka Realizacja
+                      </h4>
+                      <p className="text-gray-600">
+                        Realizujemy projekty sprawnie, bez zbędnych opóźnień.
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                       <Settings className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">Kompleksowa Obsługa</h4>
-                      <p className="text-gray-600">Od projektu strony po marketing - wszystko w jednym miejscu.</p>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                        Kompleksowa Obsługa
+                      </h4>
+                      <p className="text-gray-600">
+                        Od projektu strony po marketing - wszystko w jednym
+                        miejscu.
+                      </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <div className="bg-blue-100 rounded-lg p-3 mr-4">
                       <MessageSquare className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-2">Stały Kontakt</h4>
-                      <p className="text-gray-600">Jesteśmy zawsze dostępni dla naszych klientów ze Śląska.</p>
+                      <h4 className="text-lg font-semibold text-gray-900 mb-2">
+                        Stały Kontakt
+                      </h4>
+                      <p className="text-gray-600">
+                        Jesteśmy zawsze dostępni dla naszych klientów ze Śląska.
+                      </p>
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-200">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4">Dane Kontaktowe</h4>
-                  
+                  <h4 className="text-lg font-semibold text-gray-900 mb-4">
+                    Dane Kontaktowe
+                  </h4>
+
                   <div className="space-y-3">
                     <div className="flex items-center">
                       <Phone className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="text-gray-700"><a href="tel:+48 881 046 689">+48 881 046 689</a></span>
+                      <span className="text-gray-700">
+                        <a href="tel:+48 881 046 689">+48 881 046 689</a>
+                      </span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <Mail className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="text-gray-700"><a href="mailto:contact.dkwgroup@gmail.com">contact.dkwgroup@gmail.com</a></span>
+                      <span className="text-gray-700">
+                        <a href="mailto:contact.dkwgroup@gmail.com">
+                          contact.dkwgroup@gmail.com
+                        </a>
+                      </span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <MapPin className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="text-gray-700">Obsługujemy cały region śląski</span>
+                      <span className="text-gray-700">
+                        Obsługujemy cały region śląski
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Napisz do Nas</h3>
-                
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Napisz do Nas
+                </h3>
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
@@ -932,7 +1217,7 @@ const SilesianLandingPage = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Email *
@@ -947,7 +1232,7 @@ const SilesianLandingPage = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -961,7 +1246,7 @@ const SilesianLandingPage = () => {
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Telefon
@@ -975,7 +1260,7 @@ const SilesianLandingPage = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Wiadomość *
@@ -1006,7 +1291,7 @@ const SilesianLandingPage = () => {
                       </div>
                       <div className="ml-3 text-sm">
                         <label htmlFor="rodo-consent" className="text-gray-600">
-                          Zapoznałem/am się z{' '}
+                          Zapoznałem/am się z{" "}
                           <button
                             type="button"
                             className="text-orange-500 hover:text-orange-700 underline"
@@ -1020,17 +1305,25 @@ const SilesianLandingPage = () => {
                         </label>
                       </div>
                     </div>
-                    
+
                     {/* RODO Info Popup */}
                     {showRodoInfo && (
                       <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
                         <p>
-                          Wyrażam zgodę na przetwarzanie moich danych osobowych zgodnie z ustawą o ochronie danych osobowych w celu wysyłania informacji handlowej. Podanie danych osobowych jest dobrowolne. Zostałem poinformowany, że przysługuje mi prawo dostępu do swoich danych, możliwości ich poprawiania, żądania zaprzestania ich przetwarzania. Administratorem danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego 32/103, Katowice 40-881.
+                          Wyrażam zgodę na przetwarzanie moich danych osobowych
+                          zgodnie z ustawą o ochronie danych osobowych w celu
+                          wysyłania informacji handlowej. Podanie danych
+                          osobowych jest dobrowolne. Zostałem poinformowany, że
+                          przysługuje mi prawo dostępu do swoich danych,
+                          możliwości ich poprawiania, żądania zaprzestania ich
+                          przetwarzania. Administratorem danych jest DM.me Dawid
+                          Myszka ul. Bolesława Chrobrego 32/103, Katowice
+                          40-881.
                         </p>
                       </div>
                     )}
                   </div>
-                  
+
                   <button
                     type="submit"
                     disabled={isSubmitting || !rodoConsent}
@@ -1048,18 +1341,20 @@ const SilesianLandingPage = () => {
                       </>
                     )}
                   </button>
-                  
-                  {submitStatus === 'success' && (
+
+                  {submitStatus === "success" && (
                     <div className="flex items-center text-blue-600 bg-blue-50 p-4 rounded-lg">
                       <CheckCircle className="w-5 h-5 mr-2" />
-                      Dziękujemy za wiadomość! Skontaktujemy się z Tobą w ciągu 24 godzin.
+                      Dziękujemy za wiadomość! Skontaktujemy się z Tobą w ciągu
+                      24 godzin.
                     </div>
                   )}
-                  
-                  {submitStatus === 'error' && (
+
+                  {submitStatus === "error" && (
                     <div className="flex items-center text-red-600 bg-red-50 p-4 rounded-lg">
                       <AlertTriangle className="w-5 h-5 mr-2" />
-                      Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie lub zadzwoń do nas.
+                      Wystąpił błąd podczas wysyłania wiadomości. Spróbuj
+                      ponownie lub zadzwoń do nas.
                     </div>
                   )}
                 </form>
@@ -1076,7 +1371,7 @@ const SilesianLandingPage = () => {
                 Najczęściej Zadawane Pytania
               </h2>
               <p className="text-xl text-gray-600">
-                Odpowiedzi na pytania, które często zadają nam klienci ze 
+                Odpowiedzi na pytania, które często zadają nam klienci ze
               </p>
             </div>
 
@@ -1101,7 +1396,7 @@ const SilesianLandingPage = () => {
                       )}
                     </div>
                   </button>
-                  
+
                   {openFaq === index && (
                     <div className="px-8 pb-6">
                       <div className="border-t border-gray-100 pt-6">
@@ -1118,13 +1413,14 @@ const SilesianLandingPage = () => {
             <div className="text-center mt-12">
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
                 <p className="text-yellow-800 font-semibold">
-                  💬 Masz inne pytanie? Skontaktuj się z nami - odpowiemy w ciągu 24 godzin!
+                  💬 Masz inne pytanie? Skontaktuj się z nami - odpowiemy w
+                  ciągu 24 godzin!
                 </p>
               </div>
             </div>
           </div>
         </section>
-        
+
         <Footer />
       </div>
     </HelmetProvider>

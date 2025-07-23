@@ -1,83 +1,92 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowLeft, Download, CheckCircle, Star, FileText } from 'lucide-react'
-import { supabase } from '../lib/supabase'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { HelmetProvider } from 'react-helmet-async'
-import SEOHead from '../components/SEOHead'
+import { ArrowLeft, CheckCircle, Download, FileText, Star } from "lucide-react";
+import React, { useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
+import Header from "../components/Header";
+import SEOHead from "../components/SEOHead";
+import { supabase } from "../lib/supabase";
 
 const LeadMagnetPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
-  const [error, setError] = useState('')
+    name: "",
+    email: "",
+    company: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setError('')
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
 
     try {
       // Save to database first (this is the most important part)
       const { error: dbError } = await supabase
-        .from('contact_submissions')
+        .from("contact_submissions")
         .insert([
           {
             name: formData.name,
             email: formData.email,
             company: formData.company,
-            message: 'Pobranie Lead Magnet - Checklista 15 elementów skutecznej strony',
-            lead_magnet: true
-          }
-        ])
+            message:
+              "Pobranie Lead Magnet - Checklista 15 elementów skutecznej strony",
+            lead_magnet: true,
+          },
+        ]);
 
-      if (dbError) throw dbError
+      if (dbError) throw dbError;
 
       // Try to send emails via edge function (optional - if it fails, form is still submitted)
       try {
-        const emailResponse = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-contact-email`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            email: formData.email,
-            company: formData.company,
-            message: 'Pobranie Lead Magnet - Checklista 15 elementów skutecznej strony',
-            lead_magnet: true
-          })
-        })
+        const emailResponse = await fetch(
+          `${
+            import.meta.env.VITE_SUPABASE_URL
+          }/functions/v1/send-contact-email`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: formData.name,
+              email: formData.email,
+              company: formData.company,
+              message:
+                "Pobranie Lead Magnet - Checklista 15 elementów skutecznej strony",
+              lead_magnet: true,
+            }),
+          }
+        );
 
         if (!emailResponse.ok) {
-          console.warn('Email sending failed, but form was submitted successfully')
+          console.warn(
+            "Email sending failed, but form was submitted successfully"
+          );
         }
       } catch (emailError) {
-        console.warn('Email function error:', emailError)
+        console.warn("Email function error:", emailError);
         // Don't throw - form submission was successful
       }
 
-      setIsSubmitted(true)
+      setIsSubmitted(true);
     } catch (error) {
-      console.error('Error submitting form:', error)
-      setError('Wystąpił błąd. Spróbuj ponownie.')
+      console.error("Error submitting form:", error);
+      setError("Wystąpił błąd. Spróbuj ponownie.");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const checklistItems = [
     "Jasno zdefiniowany cel strony i grupa docelowa",
@@ -94,14 +103,14 @@ const LeadMagnetPage = () => {
     "Zgodność z RODO i polityką prywatności",
     "Testowanie na różnych przeglądarkach",
     "Backup i plan awaryjny",
-    "Plan promocji i strategia content marketingu"
-  ]
+    "Plan promocji i strategia content marketingu",
+  ];
 
   if (isSubmitted) {
     return (
       <HelmetProvider>
         <div className="min-h-screen bg-gray-50">
-          <SEOHead 
+          <SEOHead
             title="Dziękujemy za pobranie materiału | WebDKW"
             description="Dziękujemy za pobranie checklisty. Sprawdź swoją skrzynkę email, aby uzyskać dostęp do materiału."
             keywords="checklist, lead magnet, strony internetowe, SEO"
@@ -117,17 +126,21 @@ const LeadMagnetPage = () => {
                     Dziękujemy! Checklist jest już w drodze
                   </h1>
                   <p className="text-xl text-gray-600 mb-8">
-                    Sprawdź skrzynkę email (również spam) - powinieneś otrzymać link do pobrania 
-                    w ciągu kilku minut.
+                    Sprawdź skrzynkę email (również spam) - powinieneś otrzymać
+                    link do pobrania w ciągu kilku minut.
                   </p>
-                  
+
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-                    <h3 className="text-lg font-bold text-blue-900 mb-2">Co dalej?</h3>
+                    <h3 className="text-lg font-bold text-blue-900 mb-2">
+                      Co dalej?
+                    </h3>
                     <ul className="text-blue-800 text-left space-y-2">
                       <li>✅ Pobierz i przejrzyj checklistę</li>
                       <li>✅ Oceń swoją obecną stronę</li>
                       <li>✅ Zidentyfikuj obszary do poprawy</li>
-                      <li>✅ Skontaktuj się ze mną, jeśli potrzebujesz pomocy</li>
+                      <li>
+                        ✅ Skontaktuj się ze mną, jeśli potrzebujesz pomocy
+                      </li>
                     </ul>
                   </div>
 
@@ -140,7 +153,7 @@ const LeadMagnetPage = () => {
                     </Link>
                     <div>
                       <Link
-                        to="/#kontakt"
+                        to="/kontakt"
                         className="text-orange-500 hover:text-orange-600 font-semibold"
                       >
                         Lub umów się na bezpłatną konsultację
@@ -154,20 +167,20 @@ const LeadMagnetPage = () => {
           <Footer />
         </div>
       </HelmetProvider>
-    )
+    );
   }
 
   return (
     <HelmetProvider>
       <div className="min-h-screen bg-gray-50">
-        <SEOHead 
+        <SEOHead
           title="Darmowa Checklist: 15 kluczowych elementów skutecznej strony | WebDKW"
           description="Pobierz darmową checklistę i sprawdź, czy Twoja strona zawiera wszystkie elementy niezbędne do generowania zapytań i sprzedaży online."
           keywords="checklist, lead magnet, strony internetowe, SEO"
           url="https://webdkw.net/lead-magnet"
         />
         <Header />
-        
+
         <main className="pt-20">
           {/* Hero Section */}
           <section className="py-16 bg-gradient-to-br from-orange-500 to-orange-600 text-white">
@@ -181,22 +194,22 @@ const LeadMagnetPage = () => {
                   <span>Powrót na stronę główną</span>
                 </Link>
               </div>
-              
+
               <div className="text-center">
                 <div className="flex justify-center mb-6">
                   <div className="bg-white/20 p-4 rounded-2xl">
                     <FileText className="h-16 w-16" />
                   </div>
                 </div>
-                
+
                 <h1 className="text-4xl md:text-5xl font-bold mb-6">
                   Darmowa Checklist: 15 kluczowych elementów skutecznej strony
                 </h1>
                 <p className="text-xl md:text-2xl mb-8 opacity-90">
-                  Sprawdź, czy Twoja strona zawiera wszystkie elementy, 
-                  które są niezbędne do generowania zapytań i sprzedaży online.
+                  Sprawdź, czy Twoja strona zawiera wszystkie elementy, które są
+                  niezbędne do generowania zapytań i sprzedaży online.
                 </p>
-                
+
                 <div className="flex items-center justify-center space-x-6 text-lg">
                   <div className="flex items-center space-x-2">
                     <Star className="h-6 w-6 fill-current" />
@@ -225,13 +238,16 @@ const LeadMagnetPage = () => {
                     Pobierz checklistę za darmo
                   </h2>
                   <p className="text-gray-600 mb-8">
-                    Wypełnij formularz, a w ciągu kilku minut otrzymasz link do pobrania 
-                    na swój email. Bez spamu, bez ukrytych kosztów.
+                    Wypełnij formularz, a w ciągu kilku minut otrzymasz link do
+                    pobrania na swój email. Bez spamu, bez ukrytych kosztów.
                   </p>
 
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                      <label htmlFor="name" className="block text-sm font-bold text-gray-900 mb-2">
+                      <label
+                        htmlFor="name"
+                        className="block text-sm font-bold text-gray-900 mb-2"
+                      >
                         Imię i nazwisko *
                       </label>
                       <input
@@ -247,7 +263,10 @@ const LeadMagnetPage = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="email" className="block text-sm font-bold text-gray-900 mb-2">
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-bold text-gray-900 mb-2"
+                      >
                         Email *
                       </label>
                       <input
@@ -263,7 +282,10 @@ const LeadMagnetPage = () => {
                     </div>
 
                     <div>
-                      <label htmlFor="company" className="block text-sm font-bold text-gray-900 mb-2">
+                      <label
+                        htmlFor="company"
+                        className="block text-sm font-bold text-gray-900 mb-2"
+                      >
                         Nazwa firmy (opcjonalnie)
                       </label>
                       <input
@@ -289,11 +311,16 @@ const LeadMagnetPage = () => {
                       className="w-full bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
                     >
                       <Download className="h-5 w-5" />
-                      <span>{isSubmitting ? 'Wysyłanie...' : 'Pobierz checklistę za darmo'}</span>
+                      <span>
+                        {isSubmitting
+                          ? "Wysyłanie..."
+                          : "Pobierz checklistę za darmo"}
+                      </span>
                     </button>
 
                     <p className="text-sm text-gray-500 text-center">
-                      Gwarantuję, że nie otrzymasz spamu. Możesz zrezygnować z subskrypcji w każdej chwili.
+                      Gwarantuję, że nie otrzymasz spamu. Możesz zrezygnować z
+                      subskrypcji w każdej chwili.
                     </p>
                   </form>
                 </div>
@@ -315,10 +342,13 @@ const LeadMagnetPage = () => {
                   </div>
 
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-                    <h4 className="font-bold text-blue-900 mb-2">💡 Dlaczego ta checklist jest wartościowa?</h4>
+                    <h4 className="font-bold text-blue-900 mb-2">
+                      💡 Dlaczego ta checklist jest wartościowa?
+                    </h4>
                     <p className="text-blue-800">
-                      Bazuje na 5+ latach doświadczenia i analizie setek projektów. 
-                      Każdy punkt to konkretny element, który bezpośrednio wpływa na wyniki biznesowe strony.
+                      Bazuje na 5+ latach doświadczenia i analizie setek
+                      projektów. Każdy punkt to konkretny element, który
+                      bezpośrednio wpływa na wyniki biznesowe strony.
                     </p>
                   </div>
                 </div>
@@ -332,19 +362,29 @@ const LeadMagnetPage = () => {
               <h2 className="text-3xl font-bold text-gray-900 mb-8">
                 Dołącz do 500+ przedsiębiorców, którzy pobrali tę checklistę
               </h2>
-              
+
               <div className="grid md:grid-cols-3 gap-8">
                 <div className="bg-gray-50 p-6 rounded-lg">
-                  <div className="text-3xl font-bold text-orange-500 mb-2">500+</div>
+                  <div className="text-3xl font-bold text-orange-500 mb-2">
+                    500+
+                  </div>
                   <div className="text-gray-600">Pobrań w ciągu 3 miesięcy</div>
                 </div>
                 <div className="bg-gray-50 p-6 rounded-lg">
-                  <div className="text-3xl font-bold text-orange-500 mb-2">4.9/5</div>
-                  <div className="text-gray-600">Średnia ocena przydatności</div>
+                  <div className="text-3xl font-bold text-orange-500 mb-2">
+                    4.9/5
+                  </div>
+                  <div className="text-gray-600">
+                    Średnia ocena przydatności
+                  </div>
                 </div>
                 <div className="bg-gray-50 p-6 rounded-lg">
-                  <div className="text-3xl font-bold text-orange-500 mb-2">89%</div>
-                  <div className="text-gray-600">Znalazło błędy na swojej stronie</div>
+                  <div className="text-3xl font-bold text-orange-500 mb-2">
+                    89%
+                  </div>
+                  <div className="text-gray-600">
+                    Znalazło błędy na swojej stronie
+                  </div>
                 </div>
               </div>
             </div>
@@ -354,7 +394,7 @@ const LeadMagnetPage = () => {
         <Footer />
       </div>
     </HelmetProvider>
-  )
-}
+  );
+};
 
-export default LeadMagnetPage
+export default LeadMagnetPage;
