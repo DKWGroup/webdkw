@@ -13,6 +13,7 @@ import PortfolioPage from './pages/PortfolioPage'
 import CaseStudiesPage from './pages/CaseStudiesPage'
 import CaseStudyPage from './pages/CaseStudyPage'
 import SilesianLandingPage from './pages/SilesianLandingPage'
+import AEOGEOLandingPage from './pages/AEOGEOLandingPage'
 import ProcessPage from './pages/ProcessPage'
 import AboutPage from './pages/AboutPage'
 import FAQPage from './pages/FAQPage'
@@ -43,6 +44,7 @@ function App() {
         <Route path="/case-studies" element={<CaseStudiesPage />} />
         <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
         <Route path="/strony-internetowe-seo-slask" element={<SilesianLandingPage />} />
+        <Route path="/pozycjonowanie-aeo-geo" element={<AEOGEOLandingPage />} />
         <Route path="/proces-realizacji" element={<ProcessPage />} />
         <Route path="/o-nas" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />
