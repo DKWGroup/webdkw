@@ -37,6 +37,13 @@ const ServicesSection = () => {
       description: "Profesjonalne kampanie Google Ads i Facebook Ads generujące wysokiej jakości leady z mierzalnym ROI.",
       link: "/uslugi/marketing",
       features: ["Google Ads", "Facebook Ads", "Optymalizacja ROI"]
+    },
+    {
+      icon: <TrendingUp className="h-12 w-12 text-orange-500" />,
+      title: "Pozycjonowanie AEO/GEO",
+      description: "Pionierskie pozycjonowanie pod AI Overviews i odpowiedzi sztucznej inteligencji. Pierwsza agencja AEO/GEO w Polsce z gwarancją wyników.",
+      link: "/pozycjonowanie-aeo-geo",
+      features: ["AI Overviews", "Answer Share™", "Gwarancja wyników"]
     }
   ]
 

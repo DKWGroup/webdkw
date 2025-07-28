@@ -24,7 +24,8 @@ const Header = () => {
     { name: 'Platformy internetowe', path: '/uslugi/platformy-internetowe' },
     { name: 'Sklepy internetowe', path: '/uslugi/sklepy-internetowe' },
     { name: 'Optymalizacja SEO', path: '/uslugi/seo' },
-    { name: 'Marketing i reklamy', path: '/uslugi/marketing' }
+    { name: 'Marketing i reklamy', path: '/uslugi/marketing' },
+    { name: 'Pozycjonowanie AEO/GEO', path: '/pozycjonowanie-aeo-geo' }
   ]
 
   return (

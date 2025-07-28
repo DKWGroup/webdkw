@@ -75,6 +75,15 @@ const HeroSection = () => {
           <p className="text-xl md:text-2xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
             Tworzenie stron www i sklepów internetowych z gwarancją rezultatów. Zoptymalizowane pod SEO, Google Ads i realne cele biznesowe Twojej firmy.
           </p>
+          
+          <div className="bg-orange-100 border border-orange-300 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
+            <p className="text-orange-800 font-semibold text-lg">
+              🚀 <strong>NOWOŚĆ:</strong> Jako pierwsi w Polsce oferujemy pozycjonowanie pod AI Overviews!
+            </p>
+            <p className="text-orange-700 mt-2">
+              Nie pozwól, by sztuczna inteligencja ukryła Twoją firmę przed klientami.
+            </p>
+          </div>
 
           <div className="flex flex-col gap-4 justify-center items-center mb-12">
             <button
@@ -84,6 +93,13 @@ const HeroSection = () => {
               <span>Bezpłatna konsultacja + wycena w 24h</span>
               <ArrowRight className="h-5 w-5" />
             </button>
+            <Link
+              to="/pozycjonowanie-aeo-geo"
+              className="bg-blue-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-600 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
+              <span>Sprawdź potencjał AEO za 950 zł</span>
+              <ArrowRight className="h-5 w-5" />
+            </Link>
             <div className="text-sm text-gray-500">
               ⏱️ 30 minut • 🎯 Bez zobowiązań
             </div>
