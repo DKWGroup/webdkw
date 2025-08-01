@@ -1,282 +1,283 @@
-import { AlertCircle, Eye, Save, Tag, X } from 'lucide-react'
-import { useEffect, useRef, useState } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
-import ReactQuill from 'react-quill'
-import 'react-quill/dist/quill.snow.css'
-import { BlogPost, supabase } from '../../lib/supabase'
-import FileUpload from './FileUpload'
-import { FormValidator } from './FormValidation'
+import { AlertCircle, Eye, Save, Tag, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { BlogPost, supabase } from "../../lib/supabase";
+import FileUpload from "./FileUpload";
+import { FormValidator } from "./FormValidation";
 
 interface ArticleFormProps {
-  article?: BlogPost | null
-  isOpen: boolean
-  onClose: () => void
-  onSave: (article: BlogPost) => void
+  article?: BlogPost | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (article: BlogPost) => void;
 }
 
 interface FormData {
-  title: string
-  content: string
-  excerpt: string
-  image_url: string
-  published: boolean
-  tags: string[]
-  author: string
-  meta_description: string
-  slug: string
+  title: string;
+  content: string;
+  excerpt: string;
+  image_url: string;
+  published: boolean;
+  tags: string[];
+  author: string;
+  meta_description: string;
+  slug: string;
 }
 
 interface FormErrors {
-  title?: string
-  content?: string
-  image_url?: string
-  meta_description?: string
-  slug?: string
+  title?: string;
+  content?: string;
+  image_url?: string;
+  meta_description?: string;
+  slug?: string;
 }
 
-const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onSave }) => {
+const ArticleForm: React.FC<ArticleFormProps> = ({
+  article,
+  isOpen,
+  onClose,
+  onSave,
+}) => {
   const [formData, setFormData] = useState<FormData>({
-    title: '',
-    content: '',
-    excerpt: '',
-    image_url: '',
+    title: "",
+    content: "",
+    excerpt: "",
+    image_url: "",
     published: false,
     tags: [],
-    author: 'Marcin Kowalski',
-    meta_description: '',
-    slug: ''
-  })
+    author: "Marcin Kowalski",
+    meta_description: "",
+    slug: "",
+  });
 
-  const [errors, setErrors] = useState<FormErrors>({})
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [showPreview, setShowPreview] = useState(false)
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [tagInput, setTagInput] = useState('')
-  const [publishDate, setPublishDate] = useState<Date | null>(new Date())
-  const quillRef = useRef<ReactQuill>(null)
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [tagInput, setTagInput] = useState("");
+  const [publishDate, setPublishDate] = useState<Date | null>(new Date());
+  const quillRef = useRef<ReactQuill>(null);
 
   // Predefiniowane tagi
   const availableTags = [
-    'Web Development', 'SEO', 'Marketing', 'Design', 'E-commerce', 
-    'WordPress', 'React', 'JavaScript', 'CSS', 'HTML', 'Performance',
-    'Accessibility', 'UX/UI', 'Mobile', 'Analytics'
-  ]
+    "Web Development",
+    "SEO",
+    "Marketing",
+    "Design",
+    "E-commerce",
+    "WordPress",
+    "React",
+    "JavaScript",
+    "CSS",
+    "HTML",
+    "Performance",
+    "Accessibility",
+    "UX/UI",
+    "Mobile",
+    "Analytics",
+  ];
 
   // Quill editor modules and formats
   const modules = {
     toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      ['link', 'image'],
-      ['clean']
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      ["clean"],
     ],
-  }
-  
+  };
+
   const formats = [
-    'header',
-    'bold', 'italic', 'underline', 'strike',
-    'list', 'bullet',
-    'link', 'image'
-  ]
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "list",
+    "bullet",
+    "link",
+    "image",
+  ];
 
   useEffect(() => {
     if (article) {
       setFormData({
-        title: article.title || '',
-        content: article.content || '',
-        excerpt: article.excerpt || '',
-        image_url: article.image_url || '',
+        title: article.title || "",
+        content: article.content || "",
+        excerpt: article.excerpt || "",
+        image_url: article.image_url || "",
         published: article.published || false,
         tags: article.tags || [],
-        author: article.author || 'Marcin Kowalski',
-        meta_description: article.meta_description || '',
-        slug: article.slug || ''
-      })
-      setPublishDate(article.created_at ? new Date(article.created_at) : new Date())
+        author: article.author || "Marcin Kowalski",
+        meta_description: article.meta_description || "",
+        slug: article.slug || "",
+      });
+      setPublishDate(
+        article.created_at ? new Date(article.created_at) : new Date()
+      );
     } else {
       // Reset form for new article
       setFormData({
-        title: '',
-        content: '',
-        excerpt: '',
-        image_url: '',
+        title: "",
+        content: "",
+        excerpt: "",
+        image_url: "",
         published: false,
         tags: [],
-        author: 'Marcin Kowalski',
-        meta_description: '',
-        slug: ''
-      })
-      setPublishDate(new Date())
+        author: "Marcin Kowalski",
+        meta_description: "",
+        slug: "",
+      });
+      setPublishDate(new Date());
     }
-    setErrors({})
-    setShowPreview(false)
-    setImageFile(null)
-  }, [article, isOpen])
-
-  // Auto-generate slug from title (only once when title changes and not editing)
-  useEffect(() => {
-    if (formData.title && !article && !formData.slug) {
-      const slug = FormValidator.generateSlug(formData.title)
-      setFormData(prev => ({ ...prev, slug }))
-    }
-  }, [formData.title, article])
-
-  // Auto-generate meta description from content (debounced)
-  useEffect(() => {
-    if (formData.content && !formData.meta_description && !article) {
-      const timer = setTimeout(() => {
-        const metaDesc = FormValidator.generateMetaDescription(formData.content)
-        setFormData(prev => ({ ...prev, meta_description: metaDesc }))
-      }, 1000) // 1 second delay
-      
-      return () => clearTimeout(timer)
-    }
-  }, [formData.content, article])
-
-  // Auto-generate excerpt from content (debounced)
-  useEffect(() => {
-    if (formData.content && !formData.excerpt && !article) {
-      const timer = setTimeout(() => {
-        const excerpt = FormValidator.generateExcerpt(formData.content)
-        setFormData(prev => ({ ...prev, excerpt }))
-      }, 1000) // 1 second delay
-      
-      return () => clearTimeout(timer)
-    }
-  }, [formData.content, article])
+    setErrors({});
+    setShowPreview(false);
+    setImageFile(null);
+  }, [article, isOpen]);
 
   const validateForm = (): boolean => {
     const validator = new FormValidator({
       title: FormValidator.commonRules.title,
       content: FormValidator.commonRules.content,
       slug: FormValidator.commonRules.slug,
-      meta_description: FormValidator.commonRules.metaDescription
-    })
+      meta_description: FormValidator.commonRules.metaDescription,
+    });
 
-    const newErrors = validator.validate(formData)
-    
+    const newErrors = validator.validate(formData);
+
     // Image validation
     if (!formData.image_url && !imageFile) {
-      newErrors.image_url = 'Miniatura jest wymagana'
+      newErrors.image_url = "Miniatura jest wymagana";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleImageUpload = async (files: File[]) => {
-    if (!files.length) return
-    const file = files[0] // Take only the first file
+    if (!files.length) return;
+    const file = files[0]; // Take only the first file
 
-    setImageFile(file)
-    setUploadProgress(0)
-    
+    setImageFile(file);
+    setUploadProgress(0);
+
     try {
       // Simulate upload progress
       const interval = setInterval(() => {
-        setUploadProgress(prev => {
+        setUploadProgress((prev) => {
           if (prev >= 90) {
-            clearInterval(interval)
-            return 90
+            clearInterval(interval);
+            return 90;
           }
-          return prev + 10
-        })
-      }, 100)
+          return prev + 10;
+        });
+      }, 100);
 
       // In real implementation, upload to storage service
       // For now, create a local URL
-      const imageUrl = URL.createObjectURL(file)
-      
-      setFormData(prev => ({ ...prev, image_url: imageUrl }))
-      setUploadProgress(100)
-      
-      setTimeout(() => setUploadProgress(0), 1000)
+      const imageUrl = URL.createObjectURL(file);
+
+      setFormData((prev) => ({ ...prev, image_url: imageUrl }));
+      setUploadProgress(100);
+
+      setTimeout(() => setUploadProgress(0), 1000);
     } catch (error) {
-      setErrors(prev => ({ ...prev, image_url: 'Błąd podczas przesyłania pliku' }))
-      setUploadProgress(0)
+      setErrors((prev) => ({
+        ...prev,
+        image_url: "Błąd podczas przesyłania pliku",
+      }));
+      setUploadProgress(0);
     }
-  }
+  };
 
   const addTag = (tag: string) => {
     if (tag && !formData.tags.includes(tag)) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        tags: [...prev.tags, tag]
-      }))
+        tags: [...prev.tags, tag],
+      }));
     }
-    setTagInput('')
-  }
+    setTagInput("");
+  };
 
   const removeTag = (tagToRemove: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }))
-  }
+      tags: prev.tags.filter((tag) => tag !== tagToRemove),
+    }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!validateForm()) return
+    e.preventDefault();
 
-    setIsSubmitting(true)
+    if (!validateForm()) return;
+
+    setIsSubmitting(true);
 
     try {
       const articleData = {
         ...formData,
-        excerpt: formData.excerpt || FormValidator.generateExcerpt(formData.content),
-        meta_description: formData.meta_description || FormValidator.generateMetaDescription(formData.content),
+        excerpt:
+          formData.excerpt || FormValidator.generateExcerpt(formData.content),
+        meta_description:
+          formData.meta_description ||
+          FormValidator.generateMetaDescription(formData.content),
         created_at: publishDate?.toISOString() || new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      }
+        updated_at: new Date().toISOString(),
+      };
 
       if (article) {
         // Update existing article
         const { data, error } = await supabase
-          .from('blog_posts')
+          .from("blog_posts")
           .update(articleData)
-          .eq('id', article.id)
+          .eq("id", article.id)
           .select()
-          .single()
+          .single();
 
-        if (error) throw error
-        onSave(data)
+        if (error) throw error;
+        onSave(data);
       } else {
         // Create new article
         const { data, error } = await supabase
-          .from('blog_posts')
+          .from("blog_posts")
           .insert([articleData])
           .select()
-          .single()
+          .single();
 
-        if (error) throw error
-        onSave(data)
+        if (error) throw error;
+        onSave(data);
       }
 
-      onClose()
+      onClose();
     } catch (error) {
-      console.error('Error saving article:', error)
-      setErrors({ title: 'Błąd podczas zapisywania artykułu' })
+      console.error("Error saving article:", error);
+      setErrors({ title: "Błąd podczas zapisywania artykułu" });
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
-  if (!isOpen) return null
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center p-4">
-        <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose} />
-        
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50"
+          onClick={onClose}
+        />
+
         <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200">
             <h2 className="text-2xl font-bold text-gray-900">
-              {article ? 'Edytuj artykuł' : 'Nowy artykuł'}
+              {article ? "Edytuj artykuł" : "Nowy artykuł"}
             </h2>
             <div className="flex items-center space-x-3">
               <button
@@ -299,7 +300,11 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
           {/* Content */}
           <div className="flex h-[calc(90vh-140px)]">
             {/* Form */}
-            <div className={`${showPreview ? 'w-1/2' : 'w-full'} overflow-y-auto p-6`}>
+            <div
+              className={`${
+                showPreview ? "w-1/2" : "w-full"
+              } overflow-y-auto p-6`}
+            >
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Title */}
                 <div>
@@ -309,9 +314,14 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   <input
                     type="text"
                     value={formData.title}
-                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
                     className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all ${
-                      errors.title ? 'border-red-500' : 'border-gray-300'
+                      errors.title ? "border-red-500" : "border-gray-300"
                     }`}
                     placeholder="Wprowadź tytuł artykułu..."
                     maxLength={100}
@@ -341,9 +351,14 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                     <input
                       type="text"
                       value={formData.slug}
-                      onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          slug: e.target.value,
+                        }))
+                      }
                       className={`flex-1 px-4 py-3 border rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all ${
-                        errors.slug ? 'border-red-500' : 'border-gray-300'
+                        errors.slug ? "border-red-500" : "border-gray-300"
                       }`}
                       placeholder="url-slug"
                     />
@@ -361,12 +376,18 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   <label className="block text-sm font-bold text-gray-900 mb-2">
                     Treść artykułu *
                   </label>
-                  <div className={`${errors.content ? 'border border-red-500 rounded-lg' : ''}`}>
+                  <div
+                    className={`${
+                      errors.content ? "border border-red-500 rounded-lg" : ""
+                    }`}
+                  >
                     <ReactQuill
                       ref={quillRef}
                       theme="snow"
                       value={formData.content}
-                      onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+                      onChange={(content) =>
+                        setFormData((prev) => ({ ...prev, content }))
+                      }
                       modules={modules}
                       formats={formats}
                       placeholder="Napisz treść artykułu..."
@@ -388,7 +409,12 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   </label>
                   <textarea
                     value={formData.excerpt}
-                    onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        excerpt: e.target.value,
+                      }))
+                    }
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
                     rows={3}
                     placeholder="Krótki opis artykułu (jeśli pusty, zostanie wygenerowany automatycznie)"
@@ -414,21 +440,25 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                         />
                         <button
                           type="button"
-                          onClick={() => setFormData(prev => ({ ...prev, image_url: '' }))}
+                          onClick={() =>
+                            setFormData((prev) => ({ ...prev, image_url: "" }))
+                          }
                           className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
                         >
                           <X className="h-4 w-4" />
                         </button>
                       </div>
                     )}
-                    
+
                     {!formData.image_url && (
                       <FileUpload
                         accept="image/*"
                         multiple={false}
                         maxSize={2 * 1024 * 1024} // 2MB
                         onFilesSelected={handleImageUpload}
-                        onError={(error) => setErrors(prev => ({ ...prev, image_url: error }))}
+                        onError={(error) =>
+                          setErrors((prev) => ({ ...prev, image_url: error }))
+                        }
                         preview={true}
                       />
                     )}
@@ -485,9 +515,9 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                         value={tagInput}
                         onChange={(e) => setTagInput(e.target.value)}
                         onKeyPress={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault()
-                            addTag(tagInput)
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            addTag(tagInput);
                           }
                         }}
                         className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
@@ -505,7 +535,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                     {/* Suggested tags */}
                     <div className="flex flex-wrap gap-2">
                       {availableTags
-                        .filter(tag => !formData.tags.includes(tag))
+                        .filter((tag) => !formData.tags.includes(tag))
                         .slice(0, 8)
                         .map((tag, index) => (
                           <button
@@ -528,9 +558,16 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                   </label>
                   <textarea
                     value={formData.meta_description}
-                    onChange={(e) => setFormData(prev => ({ ...prev, meta_description: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        meta_description: e.target.value,
+                      }))
+                    }
                     className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none ${
-                      errors.meta_description ? 'border-red-500' : 'border-gray-300'
+                      errors.meta_description
+                        ? "border-red-500"
+                        : "border-gray-300"
                     }`}
                     rows={3}
                     placeholder="Opis artykułu dla wyszukiwarek..."
@@ -576,7 +613,12 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                     <input
                       type="text"
                       value={formData.author}
-                      onChange={(e) => setFormData(prev => ({ ...prev, author: e.target.value }))}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          author: e.target.value,
+                        }))
+                      }
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     />
                   </div>
@@ -593,7 +635,9 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                         type="radio"
                         name="published"
                         checked={!formData.published}
-                        onChange={() => setFormData(prev => ({ ...prev, published: false }))}
+                        onChange={() =>
+                          setFormData((prev) => ({ ...prev, published: false }))
+                        }
                         className="mr-2"
                       />
                       <span className="text-gray-700">Szkic</span>
@@ -603,7 +647,9 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                         type="radio"
                         name="published"
                         checked={formData.published}
-                        onChange={() => setFormData(prev => ({ ...prev, published: true }))}
+                        onChange={() =>
+                          setFormData((prev) => ({ ...prev, published: true }))
+                        }
                         className="mr-2"
                       />
                       <span className="text-gray-700">Opublikowany</span>
@@ -616,7 +662,9 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
             {/* Preview */}
             {showPreview && (
               <div className="w-1/2 border-l border-gray-200 overflow-y-auto p-6 bg-gray-50">
-                <h3 className="text-lg font-bold text-gray-900 mb-4">Podgląd artykułu</h3>
+                <h3 className="text-lg font-bold text-gray-900 mb-4">
+                  Podgląd artykułu
+                </h3>
                 <div className="bg-white rounded-lg p-6 shadow-sm">
                   {formData.image_url && (
                     <img
@@ -625,10 +673,18 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                       className="w-full h-48 object-cover rounded-lg mb-4"
                     />
                   )}
-                  <h1 className="text-2xl font-bold text-gray-900 mb-2">{formData.title || 'Tytuł artykułu'}</h1>
-                  <p className="text-gray-600 mb-4">{formData.excerpt || 'Excerpt artykułu...'}</p>
+                  <h1 className="text-2xl font-bold text-gray-900 mb-2">
+                    {formData.title || "Tytuł artykułu"}
+                  </h1>
+                  <p className="text-gray-600 mb-4">
+                    {formData.excerpt || "Excerpt artykułu..."}
+                  </p>
                   <div className="prose max-w-none">
-                    <div dangerouslySetInnerHTML={{ __html: formData.content || 'Treść artykułu...' }} />
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: formData.content || "Treść artykułu...",
+                      }}
+                    />
                   </div>
                   {formData.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-6">
@@ -651,7 +707,9 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
           <div className="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50">
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">
-                {formData.published ? 'Artykuł zostanie opublikowany' : 'Artykuł zostanie zapisany jako szkic'}
+                {formData.published
+                  ? "Artykuł zostanie opublikowany"
+                  : "Artykuł zostanie zapisany jako szkic"}
               </span>
             </div>
             <div className="flex items-center space-x-3">
@@ -675,7 +733,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
                 ) : (
                   <>
                     <Save className="h-4 w-4" />
-                    <span>{article ? 'Zaktualizuj' : 'Zapisz'} artykuł</span>
+                    <span>{article ? "Zaktualizuj" : "Zapisz"} artykuł</span>
                   </>
                 )}
               </button>
@@ -684,7 +742,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({ article, isOpen, onClose, onS
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ArticleForm
+export default ArticleForm;
