@@ -69,7 +69,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
 
   // Auto-save functionality
   useEffect(() => {
-    if (markdown !== initialValue) {
+    if (markdown !== initialValue && !isInitialLoad.current) {
       if (autoSaveTimerRef.current) {
         clearTimeout(autoSaveTimerRef.current);
       }
@@ -85,7 +85,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         setTimeout(() => {
           setAutoSaveStatus("idle");
         }, 2000);
-      }, 1000);
+      }, 2000); // Increased delay to 2 seconds to reduce frequent saving
     }
 
     return () => {
@@ -540,13 +540,18 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
             <textarea
               ref={textareaRef}
               value={markdown}
-              onChange={(e) => setMarkdown(e.target.value)}
+              onChange={(e) => {
+                if (autoSaveStatus !== "saving") {
+                  setMarkdown(e.target.value);
+                }
+              }}
               onSelect={handleSelectionChange}
               onClick={handleSelectionChange}
               onKeyUp={handleSelectionChange}
               className="w-full h-full p-4 resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               style={{ height, minHeight: "200px" }}
               placeholder={placeholder}
+              readOnly={autoSaveStatus === "saving"}
             />
           </div>
         )}
