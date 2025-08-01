@@ -385,14 +385,16 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
                       ref={quillRef}
                       theme="snow"
                       value={formData.content}
-                      onChange={(content) =>
-                        setFormData((prev) => ({ ...prev, content }))
-                      }
+                      onChange={(content) => {
+                        if (!isSubmitting) {
+                          setFormData((prev) => ({ ...prev, content }))
+                        }
+                      }}
                       modules={modules}
                       formats={formats}
                       placeholder="Napisz treść artykułu..."
                       className="h-64"
-                      readOnly={false}
+                      readOnly={isSubmitting}
                     />
                   </div>
                   {errors.content && (
