@@ -1,12 +1,12 @@
-import { AlertCircle, Eye, Save, Tag, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { useState, useEffect, useRef } from "react";
+import { X, Save, Eye, Tag, AlertCircle } from "lucide-react";
+import { supabase, BlogPost } from "../../lib/supabase";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { BlogPost, supabase } from "../../lib/supabase";
-import FileUpload from "./FileUpload";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { FormValidator } from "./FormValidation";
+import FileUpload from "./FileUpload";
 
 interface ArticleFormProps {
   article?: BlogPost | null;
@@ -392,6 +392,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
                       formats={formats}
                       placeholder="Napisz treść artykułu..."
                       className="h-64"
+                      readOnly={false}
                     />
                   </div>
                   {errors.content && (
