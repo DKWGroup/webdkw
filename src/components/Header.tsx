@@ -20,12 +20,12 @@ const Header = () => {
   // }
 
   const services = [
+    { name: 'Pozycjonowanie AEO/GEO', path: '/uslugi/pozycjonowanie-ai', featured: true },
     { name: 'Tworzenie stron', path: '/uslugi/tworzenie-stron' },
     { name: 'Platformy internetowe', path: '/uslugi/platformy-internetowe' },
     { name: 'Sklepy internetowe', path: '/uslugi/sklepy-internetowe' },
     { name: 'Optymalizacja SEO', path: '/uslugi/seo' },
-    { name: 'Marketing i reklamy', path: '/uslugi/marketing' },
-    { name: 'Pozycjonowanie AEO/GEO', path: '/pozycjonowanie-aeo-geo' }
+    { name: 'Marketing i reklamy', path: '/uslugi/marketing' }
   ]
 
   return (
@@ -51,7 +51,7 @@ const Header = () => {
               
               {/* Dropdown menu */}
               <div 
-                className={`absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 transition-all duration-200 ${
+                className={`absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 transition-all duration-200 z-50 ${
                   isServicesOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
                 }`}
                 onMouseEnter={() => setIsServicesOpen(true)}
@@ -61,9 +61,14 @@ const Header = () => {
                   <Link
                     key={index}
                     to={service.path}
-                    className="block px-4 py-2 text-gray-700 hover:bg-orange-50 hover:text-orange-500 transition-colors"
+                    className={`block px-4 py-2 transition-colors ${
+                      service.featured 
+                        ? 'bg-gradient-to-r from-primary-50 to-orange-50 text-primary-600 font-semibold border-b border-primary-100 hover:from-primary-100 hover:to-orange-100' 
+                        : 'text-gray-700 hover:bg-orange-50 hover:text-orange-500'
+                    }`}
                   >
                     {service.name}
+                    {service.featured && <span className="ml-2 text-xs bg-primary-500 text-white px-2 py-0.5 rounded-full">NOWOŚĆ</span>}
                   </Link>
                 ))}
               </div>
@@ -128,13 +133,24 @@ const Header = () => {
         }`}>
           <div className="py-4 border-t border-gray-100">
             <nav className="flex flex-col space-y-4">
-              <Link
-                to="/uslugi"
-                className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Usługi
-              </Link>
+              <div className="space-y-2">
+                <span className="text-gray-500 text-sm font-semibold uppercase tracking-wide">Usługi</span>
+                {services.map((service, index) => (
+                  <Link
+                    key={index}
+                    to={service.path}
+                    className={`text-left transition-all duration-200 transform hover:translate-x-2 pl-4 ${
+                      service.featured 
+                        ? 'text-primary-600 font-semibold' 
+                        : 'text-gray-700 hover:text-orange-500'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {service.name}
+                    {service.featured && <span className="ml-2 text-xs bg-primary-500 text-white px-2 py-0.5 rounded-full">NOWOŚĆ</span>}
+                  </Link>
+                ))}
+              </div>
               <Link
                 to="/portfolio"
                 className="text-left text-gray-700 hover:text-orange-500 transition-all duration-200 transform hover:translate-x-2"

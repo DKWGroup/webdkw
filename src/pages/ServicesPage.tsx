@@ -8,6 +8,8 @@ import {
   Search,
   ShoppingCart,
   TrendingUp,
+  Target,
+  
 } from "lucide-react";
 import { HelmetProvider } from "react-helmet-async";
 import { Link } from "react-router-dom";
@@ -18,6 +20,23 @@ import StructuredData from "../components/StructuredData";
 
 const ServicesPage = () => {
   const services = [
+    {
+      icon: <Target className="h-12 w-12 text-primary-500" />,
+      title: "Pozycjonowanie AEO/GEO",
+      subtitle: "AI Overviews & Lokalne wyszukiwanie",
+      description:
+        "Pierwsza w Polsce usługa pozycjonowania pod AI Overviews i odpowiedzi Google AI. Zdominuj nową erę wyszukiwania.",
+      priceRange: "od 2 500 zł/mies",
+      timeframe: "wyniki po 3 miesiącach",
+      features: [
+        "Optymalizacja pod AI",
+        "Knowledge Assets",
+        "Answer Share™ Dashboard",
+        "Gwarancja wyników",
+      ],
+      link: "/uslugi/pozycjonowanie-ai",
+      featured: true,
+    },
     {
       icon: <Globe className="h-12 w-12 text-orange-500" />,
       title: "Tworzenie stron internetowych",
@@ -179,16 +198,25 @@ const ServicesPage = () => {
                 {services.map((service, index) => (
                   <div
                     key={index}
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
+                    className={`rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${
+                      service.featured 
+                        ? 'bg-gradient-to-br from-primary-50 to-white border-2 border-primary-200' 
+                        : 'bg-white'
+                    }`}
                   >
                     <div className="p-8">
+                      {service.featured && (
+                        <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                          NOWOŚĆ
+                        </div>
+                      )}
                       <div className="flex items-start space-x-4 mb-6">
                         <div className="flex-shrink-0">{service.icon}</div>
                         <div className="flex-1">
                           <h3 className="text-2xl font-bold text-gray-900 mb-1">
                             {service.title}
                           </h3>
-                          <p className="text-orange-500 font-semibold">
+                          <p className={`font-semibold ${service.featured ? 'text-primary-600' : 'text-orange-500'}`}>
                             {service.subtitle}
                           </p>
                         </div>
@@ -234,7 +262,11 @@ const ServicesPage = () => {
 
                       <Link
                         to={service.link}
-                        className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300 flex items-center justify-center space-x-2"
+                        className={`w-full px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${
+                          service.featured 
+                            ? 'bg-primary-500 text-white hover:bg-primary-600' 
+                            : 'bg-orange-500 text-white hover:bg-orange-600'
+                        }`}
                       >
                         <span>Dowiedz się więcej</span>
                         <ArrowRight className="h-5 w-5" />

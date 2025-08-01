@@ -1,8 +1,16 @@
-import { ArrowRight, Globe, Database, ShoppingCart, Search, TrendingUp } from 'lucide-react'
+import { ArrowRight, Globe, Database, ShoppingCart, Search, TrendingUp, Target } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 const ServicesSection = () => {
   const services = [
+    {
+      icon: <Target className="h-12 w-12 text-primary-500" />,
+      title: "Pozycjonowanie AEO/GEO",
+      description: "Pierwsza w Polsce usługa pozycjonowania pod AI Overviews i odpowiedzi Google AI. Zdominuj nową erę wyszukiwania zanim zrobi to konkurencja.",
+      link: "/uslugi/pozycjonowanie-ai",
+      features: ["AI Overviews", "Answer Share™", "Gwarancja wyników"],
+      featured: true
+    },
     {
       icon: <Globe className="h-12 w-12 text-orange-500" />,
       title: "Tworzenie stron internetowych",
@@ -37,13 +45,6 @@ const ServicesSection = () => {
       description: "Profesjonalne kampanie Google Ads i Facebook Ads generujące wysokiej jakości leady z mierzalnym ROI.",
       link: "/uslugi/marketing",
       features: ["Google Ads", "Facebook Ads", "Optymalizacja ROI"]
-    },
-    {
-      icon: <TrendingUp className="h-12 w-12 text-orange-500" />,
-      title: "Pozycjonowanie AEO/GEO",
-      description: "Pionierskie pozycjonowanie pod AI Overviews i odpowiedzi sztucznej inteligencji. Pierwsza agencja AEO/GEO w Polsce z gwarancją wyników.",
-      link: "/pozycjonowanie-aeo-geo",
-      features: ["AI Overviews", "Answer Share™", "Gwarancja wyników"]
     }
   ]
 
@@ -64,9 +65,18 @@ const ServicesSection = () => {
           {services.map((service, index) => (
             <div
               key={index}
-              className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group"
+              className={`rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group relative ${
+                service.featured 
+                  ? 'bg-gradient-to-br from-primary-50 to-white border-2 border-primary-200' 
+                  : 'bg-white'
+              }`}
             >
               <div className="p-8">
+                {service.featured && (
+                  <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                    NOWOŚĆ
+                  </div>
+                )}
                 <div className="flex justify-center mb-6">
                   {service.icon}
                 </div>
@@ -94,7 +104,11 @@ const ServicesSection = () => {
 
                 <Link
                   to={service.link}
-                  className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-orange-600 transition-all duration-300 flex items-center justify-center space-x-2 group-hover:transform group-hover:-translate-y-1"
+                  className={`w-full px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center justify-center space-x-2 group-hover:transform group-hover:-translate-y-1 ${
+                    service.featured 
+                      ? 'bg-primary-500 text-white hover:bg-primary-600' 
+                      : 'bg-orange-500 text-white hover:bg-orange-600'
+                  }`}
                 >
                   <span>Dowiedz się więcej</span>
                   <ArrowRight className="h-5 w-5" />

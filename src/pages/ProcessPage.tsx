@@ -20,7 +20,7 @@ const ProcessPage = () => {
     {
       phase: "Faza 1",
       title: "Audyt strategiczny i analiza konkurencji",
-      icon: <Search className="h-12 w-12 text-orange-500" />,
+      icon: <Search className="h-12 w-12 text-primary-500" />,
       duration: "1 tydzień",
       description:
         "Analizuję Twój biznes, konkurencję i cele. Definiujemy strategię konwersji i pozycjonowania.",
@@ -43,7 +43,7 @@ const ProcessPage = () => {
     {
       phase: "Faza 2",
       title: "Projektowanie UX/UI zoptymalizowane pod konwersję",
-      icon: <Palette className="h-12 w-12 text-orange-500" />,
+      icon: <Palette className="h-12 w-12 text-primary-500" />,
       duration: "1-2 tygodnie",
       description:
         "Tworzę design skupiony na konwersji, optymalizowany pod Twoją grupę docelową.",
@@ -66,7 +66,7 @@ const ProcessPage = () => {
     {
       phase: "Faza 3",
       title: "Programowanie i optymalizacja SEO",
-      icon: <Code className="h-12 w-12 text-orange-500" />,
+      icon: <Code className="h-12 w-12 text-primary-500" />,
       duration: "2-3 tygodnie",
       description:
         "Koduję stronę z naciskiem na wydajność, bezpieczeństwo i optymalizację pod wyszukiwarki.",
@@ -89,7 +89,7 @@ const ProcessPage = () => {
     {
       phase: "Faza 4",
       title: "Testy i wdrożenie",
-      icon: <Rocket className="h-12 w-12 text-orange-500" />,
+      icon: <Rocket className="h-12 w-12 text-primary-500" />,
       duration: "1 tydzień",
       description:
         "Testujemy wszystkie funkcjonalności, uruchamiamy stronę i przekazujemy Ci pełną kontrolę.",
@@ -112,7 +112,7 @@ const ProcessPage = () => {
     {
       phase: "Faza 5",
       title: "Wsparcie i optymalizacja wyników",
-      icon: <CheckCircle className="h-12 w-12 text-orange-500" />,
+      icon: <CheckCircle className="h-12 w-12 text-primary-500" />,
       duration: "3 miesiące",
       description:
         "3 miesiące bezpłatnego wsparcia technicznego i optymalizacji wyników.",
@@ -174,7 +174,7 @@ const ProcessPage = () => {
               <div className="flex items-center space-x-4 mb-8">
                 <Link
                   to="/"
-                  className="flex items-center space-x-2 text-gray-600 hover:text-orange-500 transition-colors"
+                  className="flex items-center space-x-2 text-gray-600 hover:text-primary-500 transition-colors"
                 >
                   <ArrowLeft className="h-5 w-5" />
                   <span>Powrót na stronę główną</span>
@@ -238,7 +238,7 @@ const ProcessPage = () => {
                         <div className="flex items-center space-x-4 mb-6">
                           {phase.icon}
                           <div>
-                            <div className="text-sm font-semibold text-orange-500 mb-1">
+                            <div className="text-sm font-semibold text-primary-500 mb-1">
                               {phase.phase}
                             </div>
                             <h3 className="text-2xl font-bold text-gray-900">
@@ -264,7 +264,7 @@ const ProcessPage = () => {
                                 key={idx}
                                 className="flex items-start space-x-3"
                               >
-                                <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                                <div className="w-2 h-2 bg-primary-500 rounded-full mt-2 flex-shrink-0"></div>
                                 <span className="text-gray-700">{step}</span>
                               </li>
                             ))}
@@ -294,7 +294,7 @@ const ProcessPage = () => {
 
                     {/* Phase number */}
                     <div className="flex-shrink-0 lg:w-32 flex justify-center">
-                      <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-lg">
+                      <div className="w-24 h-24 bg-gradient-to-br from-primary-500 to-primary-600 text-white rounded-full flex items-center justify-center text-3xl font-bold shadow-lg">
                         {index + 1}
                       </div>
                     </div>
@@ -314,7 +314,7 @@ const ProcessPage = () => {
               <div className="bg-white rounded-2xl shadow-xl p-8">
                 <div className="grid md:grid-cols-3 gap-8 text-center">
                   <div>
-                    <div className="text-4xl font-bold text-orange-500 mb-2">
+                    <div className="text-4xl font-bold text-primary-500 mb-2">
                       4-8
                     </div>
                     <div className="text-gray-600">tygodni realizacji</div>
@@ -323,7 +323,7 @@ const ProcessPage = () => {
                     </div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-orange-500 mb-2">
+                    <div className="text-4xl font-bold text-primary-500 mb-2">
                       5
                     </div>
                     <div className="text-gray-600">faz projektu</div>
@@ -332,7 +332,7 @@ const ProcessPage = () => {
                     </div>
                   </div>
                   <div>
-                    <div className="text-4xl font-bold text-orange-500 mb-2">
+                    <div className="text-4xl font-bold text-primary-500 mb-2">
                       24/7
                     </div>
                     <div className="text-gray-600">wsparcie</div>
@@ -358,7 +358,7 @@ const ProcessPage = () => {
           </section>
 
           {/* CTA Section */}
-          <section className="py-16 bg-gradient-to-r from-orange-500 to-orange-600">
+          <section className="py-16 bg-gradient-to-r from-primary-500 to-primary-600">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Gotowy rozpocząć swój projekt?
@@ -369,7 +369,7 @@ const ProcessPage = () => {
               </p>
               <Link
                 to="/kontakt"
-                className="inline-block bg-white text-orange-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                className="inline-block bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Umów bezpłatną konsultację
               </Link>

@@ -13,7 +13,6 @@ import PortfolioPage from './pages/PortfolioPage'
 import CaseStudiesPage from './pages/CaseStudiesPage'
 import CaseStudyPage from './pages/CaseStudyPage'
 import SilesianLandingPage from './pages/SilesianLandingPage'
-import AEOGEOLandingPage from './pages/AEOGEOLandingPage'
 import ProcessPage from './pages/ProcessPage'
 import AboutPage from './pages/AboutPage'
 import FAQPage from './pages/FAQPage'
@@ -22,13 +21,11 @@ import PrivacyPolicyPage from './pages/PrivacyPolicyPage'
 import AdminLoginPage from './pages/AdminLoginPage'
 import AdminPage from './pages/AdminPage'
 import PasswordResetPage from './pages/PasswordResetPage'
+import AEOManifestoPage from './pages/AEOManifestoPage'
 import NotFoundPage from './pages/NotFoundPage'
-import ScrollToTop from './components/ScrollToTop'
-
 function App() {
   return (
     <Router>
-      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<BlogPage />} />
@@ -44,12 +41,12 @@ function App() {
         <Route path="/case-studies" element={<CaseStudiesPage />} />
         <Route path="/case-studies/:slug" element={<CaseStudyPage />} />
         <Route path="/strony-internetowe-seo-slask" element={<SilesianLandingPage />} />
-        <Route path="/pozycjonowanie-aeo-geo" element={<AEOGEOLandingPage />} />
         <Route path="/proces-realizacji" element={<ProcessPage />} />
         <Route path="/o-nas" element={<AboutPage />} />
         <Route path="/faq" element={<FAQPage />} />
         <Route path="/kontakt" element={<ContactPage />} />
         <Route path="/polityka-prywatnosci" element={<PrivacyPolicyPage />} />
+        <Route path="/uslugi/pozycjonowanie-ai" element={<AEOManifestoPage />} />
         <Route path="/admin/login" element={<AdminLoginPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/reset-password" element={<PasswordResetPage />} />

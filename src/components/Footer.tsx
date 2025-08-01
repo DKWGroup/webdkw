@@ -71,11 +71,6 @@ const Footer = () => {
                   Kontakt
                 </Link>
               </li>
-              <li>
-                <Link to="/pozycjonowanie-aeo-geo" className="text-gray-300 hover:text-orange-500 transition-colors">
-                  Pozycjonowanie AEO/GEO
-                </Link>
-              </li>
             </ul>
           </div>
 
