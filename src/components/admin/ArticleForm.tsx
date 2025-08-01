@@ -371,6 +371,21 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
                   )}
                 </div>
 
+                <ReactQuill
+                  ref={quillRef}
+                  theme="snow"
+                  value={formData.content}
+                  onChange={(content) => {
+                    if (!isSubmitting) {
+                      setFormData((prev) => ({ ...prev, content }));
+                    }
+                  }}
+                  modules={modules}
+                  formats={formats}
+                  placeholder="Napisz treść artykułu..."
+                  className="h-64"
+                />
+
                 {/* Content Editor */}
                 <div>
                   <label className="block text-sm font-bold text-gray-900 mb-2">
@@ -387,7 +402,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
                       value={formData.content}
                       onChange={(content) => {
                         if (!isSubmitting) {
-                          setFormData((prev) => ({ ...prev, content }))
+                          setFormData((prev) => ({ ...prev, content }));
                         }
                       }}
                       modules={modules}
