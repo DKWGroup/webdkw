@@ -52,56 +52,22 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   const [showPreview, setShowPreview] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [autoSaveStatus, setAutoSaveStatus] = useState<
-    "idle" | "saving" | "saved"
-  >("idle");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const isInitialLoad = useRef(true);
 
-  // Initialize editor with initial value
+  // Update local state when initialValue changes
   useEffect(() => {
-    if (initialValue !== markdown) {
-      setMarkdown(initialValue);
-      isInitialLoad.current = true;
-    }
-  }, [initialValue, markdown]);
+    setMarkdown(initialValue);
+  }, [initialValue]);
 
-  // Auto-save functionality
+  // Notify parent of changes with debounce
   useEffect(() => {
-    if (markdown !== initialValue && !isInitialLoad.current) {
-      if (autoSaveTimerRef.current) {
-        clearTimeout(autoSaveTimerRef.current);
+    const timer = setTimeout(() => {
+      if (markdown !== initialValue) {
+        onChange(markdown);
       }
+    }, 300);
 
-      setAutoSaveStatus("saving");
-
-      autoSaveTimerRef.current = setTimeout(() => {
-        // In a real app, you would save to localStorage or backend here
-        localStorage.setItem("markdown-draft", markdown);
-        setAutoSaveStatus("saved");
-
-        // Reset status after 2 seconds
-        setTimeout(() => {
-          setAutoSaveStatus("idle");
-        }, 2000);
-      }, 2000); // Increased delay to 2 seconds to reduce frequent saving
-    }
-
-    return () => {
-      if (autoSaveTimerRef.current) {
-        clearTimeout(autoSaveTimerRef.current);
-      }
-    };
-  }, [markdown, initialValue]);
-
-  // Update parent component when markdown changes (but not on initial load)
-  useEffect(() => {
-    if (!isInitialLoad.current && markdown !== initialValue) {
-      onChange(markdown);
-    } else if (isInitialLoad.current) {
-      isInitialLoad.current = false;
-    }
+    return () => clearTimeout(timer);
   }, [markdown, onChange, initialValue]);
 
   // Auto-focus on mount if specified
@@ -466,21 +432,11 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
             type="button"
             onClick={handleSave}
             disabled={isSaving}
-            className="p-2 text-orange-600 hover:text-orange-700 hover:bg-orange-100 rounded transition-colors"
+            className="p-2 text-orange-600 hover:text-orange-700 hover:bg-orange-100 rounded transition-colors disabled:opacity-50"
             title="Zapisz"
           >
             <Save size={18} />
           </button>
-        )}
-
-        {autoSaveStatus !== "idle" && (
-          <span
-            className={`text-xs ${
-              autoSaveStatus === "saving" ? "text-gray-500" : "text-green-600"
-            }`}
-          >
-            {autoSaveStatus === "saving" ? "Zapisywanie..." : "Zapisano"}
-          </span>
         )}
       </div>
 
@@ -540,18 +496,14 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
             <textarea
               ref={textareaRef}
               value={markdown}
-              onChange={(e) => {
-                if (autoSaveStatus !== "saving") {
-                  setMarkdown(e.target.value);
-                }
-              }}
+              onChange={(e) => setMarkdown(e.target.value)}
               onSelect={handleSelectionChange}
               onClick={handleSelectionChange}
               onKeyUp={handleSelectionChange}
               className="w-full h-full p-4 resize-none focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               style={{ height, minHeight: "200px" }}
               placeholder={placeholder}
-              readOnly={autoSaveStatus === "saving"}
+              disabled={isSaving}
             />
           </div>
         )}
@@ -590,3 +542,4 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
 };
 
 export default MarkdownEditor;
+
