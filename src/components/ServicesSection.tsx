@@ -5,7 +5,7 @@ const ServicesSection = () => {
   const services = [
     {
       icon: <Target className="h-12 w-12 text-primary-500" />,
-      title: "Pozycjonowanie AEO/GEO",
+      title: "Pozycjonowanie AI",
       description: "Pierwsza w Polsce usługa pozycjonowania pod AI Overviews i odpowiedzi Google AI. Zdominuj nową erę wyszukiwania zanim zrobi to konkurencja.",
       link: "/uslugi/pozycjonowanie-ai",
       features: ["AI Overviews", "Answer Share™", "Gwarancja wyników"],

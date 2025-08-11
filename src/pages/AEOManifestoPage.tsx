@@ -1,17 +1,29 @@
 import { useState, useEffect } from 'react';
 import { CheckCircle, Shield, Target, BarChart3, Search, Brain, Zap, Download, Calendar, Clock, ArrowRight, Users, FileText, Award } from 'lucide-react';
-import { HelmetProvider } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import SEOHead from '../components/SEOHead';
 import AEOFAQSection from '../components/AEOFAQSection';
 import ContactSection from '../components/ContactSection';
+import AEOVsSEOSection from '../components/AEOVsSEOSection';
 import { BlogPost, supabase } from '../lib/supabase';
 
 const AEOManifestoPage = () => {
   const [showExitPopup, setShowExitPopup] = useState(false);
   const [featuredPosts, setFeaturedPosts] = useState<BlogPost[]>([]);
+  const [csIndex, setCsIndex] = useState(0);
+  const csImages = [
+    {
+      src: 'https://obeabrdrtlxhucegkkiq.supabase.co/storage/v1/object/public/files/blog/mkheli-w-gpt3.png',
+      alt: 'MK Helicopters - zrzut z odpowiedzi AI/ChatGPT (przykład 1)'
+    },
+    {
+      src: 'https://obeabrdrtlxhucegkkiq.supabase.co/storage/v1/object/public/files/blog/mkheli-w-gpt2.png',
+      alt: 'MK Helicopters - zrzut z odpowiedzi AI/ChatGPT (przykład 2)'
+    }
+  ];
 
   useEffect(() => {
     fetchFeaturedPosts();
@@ -78,9 +90,9 @@ const AEOManifestoPage = () => {
     <HelmetProvider>
       <div className="min-h-screen bg-white" onMouseLeave={handleMouseLeave}>
         <SEOHead
-          title="Pozycjonowanie AEO i GEO - Pierwsza Agencja AI w Polsce | WebDKW"
+          title="Pozycjonowanie AI - Pierwsza Agencja AI w Polsce | WebDKW"
           description="Specjalizujemy się w pozycjonowaniu pod AI Overviews. Pakiety GEO (lokalne) i AEO (krajowe). Gwarancja wyników. Audyt potencjału za 800 zł."
-          keywords="pozycjonowanie AEO, pozycjonowanie GEO, AI Overviews, pozycjonowanie pod sztuczną inteligencję, optymalizacja odpowiedzi AI"
+          keywords="pozycjonowanie AI, AI Overviews, pozycjonowanie pod sztuczną inteligencję, optymalizacja odpowiedzi AI"
           url="https://webdkw.net/pozycjonowanie-ai"
         />
 
@@ -102,7 +114,7 @@ const AEOManifestoPage = () => {
               {/* Badge with improved styling */}
               <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-100 to-primary-50 border border-primary-200 text-primary-700 rounded-full text-sm font-semibold mb-8 shadow-lg backdrop-blur-sm">
                 <span className="w-2 h-2 bg-primary-500 rounded-full mr-3 animate-pulse"></span>
-                🚀 Pierwsza agencja AEO/GEO w Polsce
+                🚀 Pierwsza agencja pozycjonowania AI w Polsce
               </div>
               
               {/* Main Headline with improved typography */}
@@ -160,7 +172,7 @@ const AEOManifestoPage = () => {
                   <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
                     <Shield className="h-6 w-6 text-primary-500" />
                   </div>
-                  <span className="font-semibold text-gray-700">Pierwsza agencja AEO/GEO w Polsce</span>
+                  <span className="font-semibold text-gray-700">Pierwsza agencja pozycjonowania AI w Polsce</span>
                 </div>
               </div>
               <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
@@ -183,151 +195,7 @@ const AEOManifestoPage = () => {
           </div>
         </section>
 
-        {/* Packages Section */}
-        <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">
-              Wybierz swój pakiet dominacji w erze AI
-            </h2>
-            
-            <div className="grid lg:grid-cols-2 gap-12">
-              {/* GEO Launchpad Package */}
-              <div className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-primary-500 transition-all duration-300 hover:shadow-lg">
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-                    <Search className="h-8 w-8 text-primary-600" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Lokalny Lider</h3>
-                  <h4 className="text-xl text-primary-600 font-semibold mb-4">Zdominuj lokalny rynek</h4>
-                  <p className="text-gray-600">
-                    Idealny dla firm usługowych takich jak prawnicy, lekarze czy restauratorzy, 
-                    które chcą być pierwszym wyborem AI dla klientów w swoim mieście.
-                  </p>
-                </div>
-
-                <div className="bg-primary-50 p-6 rounded-xl mb-8">
-                  <h5 className="font-bold text-gray-900 mb-2">Główna obietnica:</h5>
-                  <p className="text-gray-700">
-                    Sprawimy, że AI będzie polecać Twoją firmę lokalnym klientom gotowym do zakupu.
-                  </p>
-                </div>
-
-                <ul className="space-y-4 mb-8">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Mistrzowska optymalizacja Google Business Profile</strong> - pełna konfiguracja i optymalizacja wizytówki</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>10-15 "Knowledge Assets" miesięcznie</strong> - tworzenie i optymalizacja treści odpowiadających na kluczowe pytania klientów</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Wdrożenie danych strukturalnych schema.org</strong> - LocalBusiness, FAQPage i Review</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Strategia zarządzania reputacją</strong> - aktywne monitorowanie i pozyskiwanie opinii</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Answer Share™ Dashboard</strong> - widzi swój procentowy udział w odpowiedziach AI</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Monitoring pozycji w Local Pack</strong> na mapach Google</span>
-                  </li>
-                </ul>
-
-                <div className="bg-gray-50 p-6 rounded-xl mb-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-gray-900 mb-1">2 500 zł</div>
-                    <div className="text-gray-600 mb-2">miesięcznie</div>
-                    <div className="text-sm text-gray-500">+ 2 000 zł opłata startowa</div>
-                    <div className="text-sm text-gray-500">minimum 3 miesięcy</div>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={scrollToContact}
-                  className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300"
-                >
-                  Chcę zdominować rynek lokalny
-                </button>
-              </div>
-
-              {/* AEO Dominator Package */}
-              <div className="bg-gradient-to-b from-primary-50 to-white border-2 border-primary-300 rounded-2xl p-8 relative overflow-hidden">
-                <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
-                  NAJPOPULARNIEJSZY
-                </div>
-                
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-500 rounded-full mb-4">
-                    <Zap className="h-8 w-8 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Lider Branży</h3>
-                  <h4 className="text-xl text-primary-600 font-semibold mb-4">Zostań krajowym liderem myśli</h4>
-                  <p className="text-gray-600">
-                    Stworzony dla e-commerce, firm B2B i SaaS, które chcą osiągnąć status głównego źródła odpowiedzi dla AI w całej Polsce.
-                  </p>
-                </div>
-
-                <div className="bg-primary-100 p-6 rounded-xl mb-8">
-                  <h5 className="font-bold text-gray-900 mb-2">Główna obietnica:</h5>
-                  <p className="text-gray-700">
-                    Osiągnij status autorytetu, którego AI cytuje jako pierwsze i najważniejsze źródło w Twojej branży.
-                  </p>
-                </div>
-
-                <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Shield className="h-5 w-5 text-yellow-600" />
-                    <span className="font-semibold text-yellow-800">Gwarancja wyników:</span>
-                  </div>
-                  <p className="text-yellow-800 text-sm">
-                    Gwarantujemy, że Twoja strona pojawi się w co najmniej 30% odpowiedzi AI dla top 10 zapytań w Twojej branży w ciągu 6 miesięcy.
-                  </p>
-                </div>
-
-                <ul className="space-y-4 mb-8">
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Wszystko z pakietu Lokalny Lider</strong></span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Zaawansowany content marketing oparty na AI</strong> - projektowanie i wdrażanie strategii pillar page i klastrów tematycznych</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Strategiczne budowanie autorytetu E-E-A-T</strong> - wykraczające poza stronę</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700"><strong>Optymalizacja pod wyszukiwanie komercyjne</strong> - frazy prowadzące do sprzedaży</span>
-                  </li>
-                </ul>
-
-                <div className="bg-primary-600 text-white p-6 rounded-xl mb-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold mb-1">4 500 zł</div>
-                    <div className="text-primary-100 mb-2">miesięcznie</div>
-                    <div className="text-sm text-primary-200">+ 3 500 zł opłata startowa</div>
-                    <div className="text-sm text-primary-200">minimum 3 miesięcy</div>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={scrollToContact}
-                  className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300"
-                >
-                  Chcę być liderem w branży
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
+        <AEOVsSEOSection />
 
         {/* Audit Section */}
         <section className="py-20 bg-white">
@@ -484,59 +352,188 @@ const AEOManifestoPage = () => {
               AI-Growth Framework™ - Nasz autorski proces w 4 krokach do dominacji
             </h2>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center">
-                <div className="w-20 h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
+              <div className="relative text-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
                   1
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-lg h-full">
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
                   <Search className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">Discovery</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">Discovery</h3>
                   <p className="text-gray-600 text-sm">
                     Głębokie zrozumienie biznesu klienta, jego celów, analiza konkurencji i audyt potencjału.
                   </p>
                 </div>
               </div>
 
-              <div className="text-center">
-                <div className="w-20 h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              <div className="relative text-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
                   2
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-lg h-full">
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
                   <Target className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">Strategy</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">Strategy</h3>
                   <p className="text-gray-600 text-sm">
                     Stworzenie precyzyjnej mapy drogowej opartej na danych i zaplanowanie, jakie pytania zostaną zdobyte dla klienta.
                   </p>
                 </div>
               </div>
 
-              <div className="text-center">
-                <div className="w-20 h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              <div className="relative text-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
                   3
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-lg h-full">
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
                   <Zap className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">Implementation</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">Implementation</h3>
                   <p className="text-gray-600 text-sm">
                     Systematyczne wdrażanie strategii, od optymalizacji technicznej po tworzenie treści.
                   </p>
                 </div>
               </div>
 
-              <div className="text-center">
-                <div className="w-20 h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
+              <div className="relative text-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
                   4
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-lg h-full">
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
                   <BarChart3 className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-3">Monitoring & Optimization</h3>
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">Monitoring & Optimization</h3>
                   <p className="text-gray-600 text-sm">
                     Ciągły pomiar wskaźnika Answer Share™ i optymalizacja działań.
                   </p>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Case Study Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
+              Case Study: Jak MK Helicopters zwiększyło liczbę zapytań o 40% dzięki SEO i AEO
+            </h2>
+            <p className="text-center text-gray-600 max-w-3xl mx-auto mb-12">
+              Firma MK Helicopters, lider w branży ekskluzywnego transportu helikopterem, walczyła z niską widocznością w Google. 
+              Wdrożyliśmy precyzyjną strategię SEO i AEO, skoncentrowaną na intencjach użytkowników i odpowiedziach AI.
+            </p>
+
+            <article className="grid md:grid-cols-2 gap-10 items-start">
+              <figure className="relative bg-gray-50 rounded-2xl overflow-hidden border border-gray-200">
+                <div className="relative aspect-[819/662]">
+                  {csImages.map((img, idx) => (
+                    <img
+                      key={idx}
+                      src={img.src}
+                      alt={img.alt}
+                      className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ${idx === csIndex ? 'opacity-100' : 'opacity-0'}`}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  ))}
+
+                  <button
+                    type="button"
+                    onClick={() => setCsIndex((csIndex - 1 + csImages.length) % csImages.length)}
+                    aria-label="Poprzednie zdjęcie"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-700 border border-gray-200 rounded-full p-2 shadow-sm hover-scale"
+                  >
+                    <ArrowRight className="h-5 w-5 -scale-x-100" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCsIndex((csIndex + 1) % csImages.length)}
+                    aria-label="Następne zdjęcie"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-gray-700 border border-gray-200 rounded-full p-2 shadow-sm hover-scale"
+                  >
+                    <ArrowRight className="h-5 w-5" />
+                  </button>
+
+                  <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-2">
+                    {csImages.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setCsIndex(i)}
+                        aria-label={`Pokaż slajd ${i + 1}`}
+                        className={`h-2.5 w-2.5 rounded-full border border-white/60 ${i === csIndex ? 'bg-primary-500' : 'bg-white/70'}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <figcaption className="px-4 py-3 text-sm text-gray-500">Klient: MK Helicopters</figcaption>
+              </figure>
+
+              <div>
+                <div className="inline-flex items-center gap-2 bg-primary-50 text-primary-700 border border-primary-200 rounded-full px-4 py-2 mb-6">
+                  <span className="w-2 h-2 bg-primary-500 rounded-full"></span>
+                  40% więcej zapytań ofertowych w 3 miesiące
+                </div>
+
+                <div className="space-y-8">
+                  <section>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Nasze działania</h3>
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-3">
+                        <span className="mt-1 w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span>
+                        <p className="text-gray-700">Tworzenie treści Q&A: przygotowaliśmy artykuły odpowiadające na konkretne pytania osób szukających transportu helikopterem.</p>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="mt-1 w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span>
+                        <p className="text-gray-700">Rozbudowa sekcji FAQ: zbudowaliśmy wyczerpującą bazę wiedzy, która rozwiewa kluczowe wątpliwości klientów.</p>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="mt-1 w-2 h-2 bg-primary-500 rounded-full flex-shrink-0"></span>
+                        <p className="text-gray-700">Implementacja danych strukturalnych: wdrożyliśmy FAQPage (schema.org), aby odpowiedzi wyróżniały się w wynikach wyszukiwania.</p>
+                      </li>
+                    </ul>
+                  </section>
+
+                  <section>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Rezultaty w 3 miesiące</h3>
+                    <ul className="space-y-3">
+                      <li className="flex items-start gap-3">
+                        <span className="mt-1 w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></span>
+                        <p className="text-gray-700">Znaczący wzrost ruchu organicznego.</p>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="mt-1 w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></span>
+                        <p className="text-gray-700">Widoczność w AI Overviews i odpowiedziach ChatGPT – wzmocnienie autorytetu marki.</p>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="mt-1 w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></span>
+                        <p className="text-gray-700">Wzrost liczby zapytań ofertowych o <strong>40%</strong>.</p>
+                      </li>
+                    </ul>
+                  </section>
+
+                  <div className="pt-4">
+                    <Link to="/kontakt" className="inline-block bg-primary-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-600">
+                      Chcę podobne wyniki
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            {/* Structured Data for Case Study */}
+            <Helmet>
+              <script type="application/ld+json">
+                {JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "CaseStudy",
+                  "headline": "Jak MK Helicopters zwiększyło liczbę zapytań o 40% dzięki SEO i AEO",
+                  "description": "Strategia Q&A, rozbudowana sekcja FAQ i wdrożenie danych strukturalnych FAQPage przyniosły 40% wzrost zapytań w 3 miesiące.",
+                  "image": "https://webdkw.net/images/clients/mkhelicopters.webp",
+                  "author": { "@type": "Organization", "name": "WebDKW" },
+                  "publisher": { "@type": "Organization", "name": "WebDKW", "logo": { "@type": "ImageObject", "url": "https://webdkw.net/images/webdkw-logo.svg" } },
+                  "about": "MK Helicopters",
+                  "mainEntityOfPage": "https://webdkw.net/uslugi/pozycjonowanie-ai",
+                  "keywords": ["case study SEO", "AEO", "pozycjonowanie AI", "MK Helicopters", "FAQPage", "Q&A content"],
+                  "inLanguage": "pl-PL"
+                })}
+              </script>
+            </Helmet>
           </div>
         </section>
 
@@ -625,7 +622,7 @@ const AEOManifestoPage = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Pogłęb swoją wiedzę o AEO/GEO
+                Pogłęb swoją wiedzę o pozycjonowaniu AI
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
                 Odkryj nasze najlepsze artykuły o pozycjonowaniu pod AI i przygotuj swoją firmę na przyszłość wyszukiwania
@@ -693,7 +690,7 @@ const AEOManifestoPage = () => {
                     Artykuły wkrótce dostępne
                   </h3>
                   <p className="text-gray-600 mb-8">
-                    Pracujemy nad wartościowymi artykułami o AEO/GEO, które pomogą Ci zrozumieć przyszłość pozycjonowania.
+                    Pracujemy nad wartościowymi artykułami o pozycjonowaniu AI, które pomogą Ci zrozumieć przyszłość pozycjonowania.
                   </p>
                   <Link
                     to="/blog"
@@ -719,6 +716,151 @@ const AEOManifestoPage = () => {
           </div>
         </section>
 
+        {/* Packages Section */}
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">
+              Wybierz swój pakiet dominacji w erze AI
+            </h2>
+            
+            <div className="grid lg:grid-cols-2 gap-12">
+              {/* GEO Launchpad Package */}
+              <div className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-primary-500 transition-all duration-300 hover:shadow-lg">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
+                    <Search className="h-8 w-8 text-primary-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Lokalny Lider</h3>
+                  <h4 className="text-xl text-primary-600 font-semibold mb-4">Zdominuj lokalny rynek</h4>
+                  <p className="text-gray-600">
+                    Idealny dla firm usługowych takich jak prawnicy, lekarze czy restauratorzy, 
+                    które chcą być pierwszym wyborem AI dla klientów w swoim mieście.
+                  </p>
+                </div>
+
+                <div className="bg-primary-50 p-6 rounded-xl mb-8">
+                  <h5 className="font-bold text-gray-900 mb-2">Główna obietnica:</h5>
+                  <p className="text-gray-700">
+                    Sprawimy, że AI będzie polecać Twoją firmę lokalnym klientom gotowym do zakupu.
+                  </p>
+                </div>
+
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Mistrzowska optymalizacja Google Business Profile</strong> - pełna konfiguracja i optymalizacja wizytówki</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>10-15 "Knowledge Assets" miesięcznie</strong> - tworzenie i optymalizacja treści odpowiadających na kluczowe pytania klientów</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Wdrożenie danych strukturalnych schema.org</strong> - LocalBusiness, FAQPage i Review</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Strategia zarządzania reputacją</strong> - aktywne monitorowanie i pozyskiwanie opinii</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Answer Share™ Dashboard</strong> - widzi swój procentowy udział w odpowiedziach AI</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Monitoring pozycji w Local Pack</strong> na mapach Google</span>
+                  </li>
+                </ul>
+
+                <div className="bg-gray-50 p-6 rounded-xl mb-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold text-gray-900 mb-1">2 500 zł</div>
+                    <div className="text-gray-600 mb-2">miesięcznie</div>
+                    <div className="text-sm text-gray-500">+ 2 000 zł opłata startowa</div>
+                    <div className="text-sm text-gray-500">minimum 3 miesięcy</div>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={scrollToContact}
+                  className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300"
+                >
+                  Chcę zdominować rynek lokalny
+                </button>
+              </div>
+
+              {/* AEO Dominator Package */}
+              <div className="bg-gradient-to-b from-primary-50 to-white border-2 border-primary-300 rounded-2xl p-8 relative overflow-hidden">
+                <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  NAJPOPULARNIEJSZY
+                </div>
+                
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-500 rounded-full mb-4">
+                    <Zap className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Lider Branży</h3>
+                  <h4 className="text-xl text-primary-600 font-semibold mb-4">Zostań krajowym liderem myśli</h4>
+                  <p className="text-gray-600">
+                    Stworzony dla e-commerce, firm B2B i SaaS, które chcą osiągnąć status głównego źródła odpowiedzi dla AI w całej Polsce.
+                  </p>
+                </div>
+
+                <div className="bg-primary-100 p-6 rounded-xl mb-8">
+                  <h5 className="font-bold text-gray-900 mb-2">Główna obietnica:</h5>
+                  <p className="text-gray-700">
+                    Osiągnij status autorytetu, którego AI cytuje jako pierwsze i najważniejsze źródło w Twojej branży.
+                  </p>
+                </div>
+
+                <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Shield className="h-5 w-5 text-yellow-600" />
+                    <span className="font-semibold text-yellow-800">Gwarancja wyników:</span>
+                  </div>
+                  <p className="text-yellow-800 text-sm">
+                    Gwarantujemy, że Twoja strona pojawi się w co najmniej 30% odpowiedzi AI dla top 10 zapytań w Twojej branży w ciągu 6 miesięcy.
+                  </p>
+                </div>
+
+                <ul className="space-y-4 mb-8">
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Wszystko z pakietu Lokalny Lider</strong></span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Zaawansowany content marketing oparty na AI</strong> - projektowanie i wdrażanie strategii pillar page i klastrów tematycznych</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Strategiczne budowanie autorytetu E-E-A-T</strong> - wykraczające poza stronę</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-700"><strong>Optymalizacja pod wyszukiwanie komercyjne</strong> - frazy prowadzące do sprzedaży</span>
+                  </li>
+                </ul>
+
+                <div className="bg-primary-600 text-white p-6 rounded-xl mb-6">
+                  <div className="text-center">
+                    <div className="text-3xl font-bold mb-1">4 500 zł</div>
+                    <div className="text-primary-100 mb-2">miesięcznie</div>
+                    <div className="text-sm text-primary-200">+ 3 500 zł opłata startowa</div>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={scrollToContact}
+                  className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300"
+                >
+                  Chcę być liderem w branży
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+        
         <AEOFAQSection />
 
         <div data-contact-section>
