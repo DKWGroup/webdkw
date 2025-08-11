@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Mail, Phone, Clock, ArrowRight, CheckCircle, AlertTriangle } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { track } from '../lib/analytics'
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -74,6 +75,7 @@ const ContactSection = () => {
       }
 
       // Show success message regardless of email status
+      try { track({ event: 'form_submit', category: 'lead', label: 'contact_form', form_id: 'contact-form', page: window.location.pathname }); } catch {}
       setIsSubmitted(true)
       setFormData({
         name: '',
@@ -84,6 +86,7 @@ const ContactSection = () => {
       })
     } catch (error) {
       console.error('Error submitting form:', error)
+      try { track({ event: 'form_submit_error', category: 'lead', label: 'contact_form', form_id: 'contact-form', page: window.location.pathname, error: String(error) }); } catch {}
       setError('Wystąpił błąd podczas wysyłania formularza. Spróbuj ponownie lub napisz bezpośrednio na email.')
     } finally {
       setIsSubmitting(false)
@@ -135,7 +138,7 @@ const ContactSection = () => {
         <div className="grid lg:grid-cols-2 gap-16">
           {/* Contact Form */}
           <div>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form id="contact-form" data-gtm-form="contact_main" onSubmit={handleSubmit} className="space-y-6">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-bold text-gray-900 mb-2">
@@ -266,6 +269,9 @@ const ContactSection = () => {
               )}
 
               <button
+                id="contact-submit"
+                data-gtm="contact_submit"
+                data-gtm-location="contact_form"
                 type="submit"
                 disabled={isSubmitting || !rodoConsent}
                 className="w-full bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center space-x-2"
@@ -292,7 +298,7 @@ const ContactSection = () => {
                   <Mail className="h-6 w-6 text-orange-500 mt-1" />
                   <div>
                     <div className="font-semibold text-gray-900">Email</div>
-                    <a href="mailto:contact.dkwgroup@gmail.com" className="text-orange-500 hover:text-orange-600">
+                    <a id="contact-email" data-gtm="contact_email" data-gtm-location="contact_section" href="mailto:contact.dkwgroup@gmail.com" onClick={() => track({ event: 'contact_click', category: 'engagement', method: 'email', location: 'contact_section' })} className="text-orange-500 hover:text-orange-600">
                     contact.dkwgroup@gmail.com
                     </a>
                   </div>
@@ -301,7 +307,7 @@ const ContactSection = () => {
                   <Phone className="h-6 w-6 text-orange-500 mt-1" />
                   <div>
                     <div className="font-semibold text-gray-900">Telefon</div>
-                    <a href="tel:+48881046689" className="text-orange-500 hover:text-orange-600">
+                    <a id="contact-phone" data-gtm="contact_phone" data-gtm-location="contact_section" href="tel:+48881046689" onClick={() => track({ event: 'contact_click', category: 'engagement', method: 'phone', location: 'contact_section' })} className="text-orange-500 hover:text-orange-600">
                       +48 881 046 689
                     </a>
                   </div>

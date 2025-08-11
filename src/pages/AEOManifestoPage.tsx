@@ -9,6 +9,7 @@ import AEOFAQSection from '../components/AEOFAQSection';
 import ContactSection from '../components/ContactSection';
 import AEOVsSEOSection from '../components/AEOVsSEOSection';
 import { BlogPost, supabase } from '../lib/supabase';
+import { track } from '../lib/analytics';
 
 const AEOManifestoPage = () => {
   const [showExitPopup, setShowExitPopup] = useState(false);
@@ -88,7 +89,7 @@ const AEOManifestoPage = () => {
 
   return (
     <HelmetProvider>
-      <div className="min-h-screen bg-white" onMouseLeave={handleMouseLeave}>
+      <div className="min-h-screen bg-white" onMouseLeave={handleMouseLeave} data-gtm-page="pozycjonowanie-ai">
         <SEOHead
           title="Pozycjonowanie AI - Pierwsza Agencja AI w Polsce | WebDKW"
           description="Specjalizujemy się w pozycjonowaniu pod AI Overviews. Pakiety GEO (lokalne) i AEO (krajowe). Gwarancja wyników. Audyt potencjału za 800 zł."
@@ -155,8 +156,12 @@ const AEOManifestoPage = () => {
             
             {/* Enhanced CTA with gradient background */}
             <div className="flex justify-center mb-16">
-              <button 
-                onClick={handleAuditClick}
+              <button
+                id="cta-hero-audit"
+                data-gtm="cta_hero_audit"
+                data-gtm-location="hero"
+                aria-label="CTA: Audyt potencjału AEO"
+                onClick={() => { track({ event: 'cta_click', category: 'engagement', label: 'audyt_potencjalu', location: 'hero' }); handleAuditClick(); }}
                 className="relative group bg-gradient-to-r from-primary-500 to-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center justify-center gap-2 overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -166,7 +171,7 @@ const AEOManifestoPage = () => {
             </div>
 
             {/* Trust indicators with improved design */}
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-6" data-gtm-section="trust_indicators">
               <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
                 <div className="flex flex-col items-center text-center">
                   <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
@@ -328,8 +333,12 @@ const AEOManifestoPage = () => {
                   Nie czekaj, aż konkurencja zajmie Twoje miejsce w odpowiedziach AI. Zainwestuj w strategię, która da Ci przewagę na lata.
                 </p>
                 
-                <button 
-                  onClick={handleAuditClick}
+                <button
+                  id="cta-audit-box"
+                  data-gtm="cta_audit_box"
+                  data-gtm-location="audit_box"
+                  aria-label="CTA: Zamów audyt"
+                  onClick={() => { track({ event: 'cta_click', category: 'engagement', label: 'audyt_potencjalu', location: 'audit_box' }); handleAuditClick(); }}
                   className="bg-white text-primary-600 px-8 py-4 rounded-lg text-xl font-bold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 mb-4"
                 >
                   Zamawiam Audyt i Zyskuję Przewagę - 800 zł
@@ -508,7 +517,12 @@ const AEOManifestoPage = () => {
                   </section>
 
                   <div className="pt-4">
-                    <Link to="/kontakt" className="inline-block bg-primary-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-600">
+                    <Link
+                      id="cta-case-study-contact"
+                      data-gtm="cta_case_study_contact"
+                      data-gtm-location="case_study"
+                      onClick={() => track({ event: 'cta_click', category: 'engagement', label: 'case_study_contact', location: 'case_study' })}
+                      to="/kontakt" className="inline-block bg-primary-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-600">
                       Chcę podobne wyniki
                     </Link>
                   </div>
@@ -634,6 +648,10 @@ const AEOManifestoPage = () => {
                 {featuredPosts.map((post) => (
                   <Link 
                     key={post.id}
+                    id={`blog-card-${post.slug}`}
+                    data-gtm="blog_card"
+                    data-gtm-location="featured_articles"
+                    onClick={() => track({ event: 'blog_card_click', category: 'engagement', label: post.slug, location: 'featured_articles' })}
                     to={`/blog/${post.slug}`}
                     className="group"
                   >
@@ -693,6 +711,10 @@ const AEOManifestoPage = () => {
                     Pracujemy nad wartościowymi artykułami o pozycjonowaniu AI, które pomogą Ci zrozumieć przyszłość pozycjonowania.
                   </p>
                   <Link
+                    id="cta-blog-list"
+                    data-gtm="cta_blog_list"
+                    data-gtm-location="featured_articles"
+                    onClick={() => track({ event: 'cta_click', category: 'engagement', label: 'blog_list', location: 'featured_articles' })}
                     to="/blog"
                     className="inline-flex items-center px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors"
                   >
@@ -850,8 +872,11 @@ const AEOManifestoPage = () => {
                   </div>
                 </div>
 
-                <button 
-                  onClick={scrollToContact}
+                <button
+                  id="cta-pricing-contact"
+                  data-gtm="cta_pricing_contact"
+                  data-gtm-location="pricing"
+                  onClick={() => { track({ event: 'cta_click', category: 'engagement', label: 'pricing_contact', location: 'pricing' }); scrollToContact(); }}
                   className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300"
                 >
                   Chcę być liderem w branży
@@ -881,7 +906,10 @@ const AEOManifestoPage = () => {
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8">
               <div className="flex justify-center mb-6">
                 <button 
-                  onClick={handleAuditClick}
+                  id="cta-final-audit"
+                  data-gtm="cta_final_audit"
+                  data-gtm-location="final_cta"
+                  onClick={() => { track({ event: 'cta_click', category: 'engagement', label: 'audyt_potencjalu', location: 'final_cta' }); handleAuditClick(); }}
                   className="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-2"
                 >
                   <Target className="h-5 w-5" />
@@ -889,7 +917,7 @@ const AEOManifestoPage = () => {
                 </button>
               </div>
               <div className="text-center">
-                <a href="tel:+48881046689" className="text-white/90 hover:text-white transition-colors underline">
+                <a id="cta-final-phone" data-gtm="cta_final_phone" data-gtm-location="final_cta" href="tel:+48881046689" className="text-white/90 hover:text-white transition-colors underline" onClick={() => track({ event: 'contact_click', category: 'engagement', method: 'phone', location: 'final_cta' })}>
                   Lub zadzwoń: +48 881 046 689
                 </a>
               </div>
@@ -912,14 +940,20 @@ const AEOManifestoPage = () => {
                 Pobierz BEZPŁATNY przewodnik "5 sposobów na przygotowanie firmy na erę AI"
               </p>
               <button 
-                onClick={handleDownloadGuide}
+                id="cta-exit-download"
+                data-gtm="cta_exit_download"
+                data-gtm-location="exit_intent"
+                onClick={() => { track({ event: 'lead_magnet_download', category: 'engagement', label: 'exit_intent_guide', location: 'exit_intent' }); handleDownloadGuide(); }}
                 className="w-full bg-primary-500 text-white py-3 rounded-lg font-semibold hover:bg-primary-600 transition-colors mb-4 flex items-center justify-center gap-2"
               >
                 <Download className="h-5 w-5" />
                 Pobierz przewodnik za darmo
               </button>
               <button 
-                onClick={() => setShowExitPopup(false)}
+                id="cta-exit-dismiss"
+                data-gtm="cta_exit_dismiss"
+                data-gtm-location="exit_intent"
+                onClick={() => { track({ event: 'exit_intent_dismiss', category: 'engagement', location: 'exit_intent' }); setShowExitPopup(false); }}
                 className="text-gray-500 hover:text-gray-700 text-sm"
               >
                 Nie, dziękuję

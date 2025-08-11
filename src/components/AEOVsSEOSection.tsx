@@ -1,5 +1,6 @@
 import React from "react";
 import { Brain, MapPin, Search, ListChecks, BarChart3, ExternalLink, Sparkles, Rocket } from "lucide-react";
+import { track } from "../lib/analytics";
 
 const differences = [
   {
@@ -86,9 +87,13 @@ const AEOVsSEOSection: React.FC = () => {
               i szybciej doprowadzać realnych klientów – zanim klikną w wyniki.
             </p>
             <a
+              id="cta-aeo-guide"
+              data-gtm="cta_aeo_guide"
+              data-gtm-location="aeo_vs_seo_section"
               href="https://webdkw.net/blog/seo-ai-jak-zoptymalizowac-strone-pod-aeo-i-zamienic-odpowiedzi-ai-w-realnych-klientow"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => track({ event: 'blog_cta_click', category: 'engagement', label: 'seo_ai_przewodnik', location: 'aeo_vs_seo_section' })}
               className="inline-flex items-center font-semibold text-orange-600 hover:text-orange-700 underline underline-offset-4"
             >
               Przeczytaj przewodnik SEO + AI
