@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isServicesOpen, setIsServicesOpen] = useState(false)
+  const [isMobileServicesOpen, setIsMobileServicesOpen] = useState(false)
   // const location = useLocation()
 
   // const scrollToSection = (sectionId: string) => {
@@ -129,27 +130,42 @@ const Header = () => {
 
         {/* Mobile Navigation */}
         <div className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-          isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+          isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="py-4 border-t border-gray-100">
-            <nav className="flex flex-col space-y-4">
+          <div className="py-4 border-t border-gray-100 max-h-screen overflow-y-auto">
+            <nav className="flex flex-col space-y-4 pb-4">
               <div className="space-y-2">
-                <span className="text-gray-500 text-sm font-semibold uppercase tracking-wide">Usługi</span>
-                {services.map((service, index) => (
-                  <Link
-                    key={index}
-                    to={service.path}
-                    className={`text-left transition-all duration-200 transform hover:translate-x-2 pl-4 ${
-                      service.featured 
-                        ? 'text-primary-600 font-semibold' 
-                        : 'text-gray-700 hover:text-orange-500'
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {service.name}
-                    {service.featured && <span className="ml-2 text-xs bg-primary-500 text-white px-2 py-0.5 rounded-full">NOWOŚĆ</span>}
-                  </Link>
-                ))}
+                <button
+                  onClick={() => setIsMobileServicesOpen(!isMobileServicesOpen)}
+                  className="flex items-center justify-between w-full text-left text-gray-500 text-sm font-semibold uppercase tracking-wide py-2"
+                >
+                  <span>Usługi</span>
+                  <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isMobileServicesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  isMobileServicesOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'
+                }`}>
+                  <div className="space-y-2 pl-4">
+                    {services.map((service, index) => (
+                      <Link
+                        key={index}
+                        to={service.path}
+                        className={`block text-left transition-all duration-200 transform hover:translate-x-2 py-2 ${
+                          service.featured 
+                            ? 'text-primary-600 font-semibold' 
+                            : 'text-gray-700 hover:text-orange-500'
+                        }`}
+                        onClick={() => {
+                          setIsMenuOpen(false)
+                          setIsMobileServicesOpen(false)
+                        }}
+                      >
+                        {service.name}
+                        {service.featured && <span className="ml-2 text-xs bg-primary-500 text-white px-2 py-0.5 rounded-full">NOWOŚĆ</span>}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
               </div>
               <Link
                 to="/portfolio"
