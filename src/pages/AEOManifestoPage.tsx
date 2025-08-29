@@ -1,17 +1,14 @@
 import {
   ArrowRight,
-  Award,
   BarChart3,
   Brain,
   Calendar,
   CheckCircle,
   Clock,
   Download,
-  FileText,
   Search,
   Shield,
   Target,
-  Users,
   Zap,
 } from "lucide-react";
 import { useEffect, useState } from "react";
