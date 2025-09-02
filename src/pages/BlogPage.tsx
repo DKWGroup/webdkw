@@ -184,7 +184,7 @@ const BlogPage = () => {
                     <article
                       key={post.id}
                       className={`bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${
-                        index === 0 ? "lg:col-span-2 lg:row-span-2" : ""
+                        index === 0 ? "lg:col-span-2 lg:row-span-1" : ""
                       }`}
                     >
                       <div className="relative">

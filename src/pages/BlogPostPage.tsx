@@ -845,7 +845,7 @@ const BlogPostPage = () => {
               <div className="bg-gray-50 rounded-2xl p-8">
                 <div className="flex items-start space-x-6">
                   <img
-                    src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=200"
+                    src="/images/Kamil-Krukowski-small.webp"
                     alt={post.author}
                     className="w-20 h-20 rounded-full object-cover"
                   />
@@ -854,12 +854,12 @@ const BlogPostPage = () => {
                       {post.author}
                     </h3>
                     <p className="text-orange-500 font-semibold mb-3">
-                      Senior Web Developer & SEO Strategist
+                      Web Developer & SEO Strategist
                     </p>
                     <p className="text-gray-600 leading-relaxed">
                       Specjalista od tworzenia stron internetowych i
                       pozycjonowania. Pomagam firmom budować skuteczną obecność
-                      online od ponad 5 lat.
+                      online od ponad 4 lat.
                     </p>
                   </div>
                 </div>
