@@ -162,7 +162,7 @@ const AboutPage = () => {
                     <img
                       src="/images/Kamil-Krukowski.webp"
                       alt="Kamil Krukowski - Web Developer"
-                      className="w-full h-96 object-cover rounded-2xl shadow-2xl"
+                      className="w-full h-96 object-cover object-top rounded-2xl shadow-2xl"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl"></div>
                     <div className="absolute bottom-6 left-6 text-white">
