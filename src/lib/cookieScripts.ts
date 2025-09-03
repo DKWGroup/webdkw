@@ -13,48 +13,8 @@ declare global {
 const loadedScripts = new Set<string>();
 
 /**
- * Load Google Analytics 4 (GA4) script
- */
-export const loadGoogleAnalytics = (): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    if (loadedScripts.has("ga4")) {
-      resolve();
-      return;
-    }
-
-    try {
-      // Initialize dataLayer
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function () {
-        window.dataLayer.push(arguments);
-      };
-      window.gtag("js", new Date());
-      window.gtag("config", "G-4JP3FX6V5Z");
-
-      // Load GA4 script
-      const script = document.createElement("script");
-      script.async = true;
-      script.src = "https://www.googletagmanager.com/gtag/js?id=G-4JP3FX6V5Z";
-      script.onload = () => {
-        loadedScripts.add("ga4");
-        console.log("Google Analytics loaded successfully");
-        resolve();
-      };
-      script.onerror = () => {
-        console.error("Failed to load Google Analytics");
-        reject(new Error("Failed to load Google Analytics"));
-      };
-
-      document.head.appendChild(script);
-    } catch (error) {
-      console.error("Error loading Google Analytics:", error);
-      reject(error);
-    }
-  });
-};
-
-/**
  * Load Google Tag Manager (GTM) script
+ * GTM will be responsible for loading other tags like GA4.
  */
 export const loadGoogleTagManager = (): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -62,6 +22,8 @@ export const loadGoogleTagManager = (): Promise<void> => {
       resolve();
       return;
     }
+    // **POPRAWKA: Natychmiast oznacz skrypt jako ładowany, aby zapobiec race condition.**
+    loadedScripts.add("gtm");
 
     try {
       // Initialize dataLayer for GTM
@@ -76,7 +38,7 @@ export const loadGoogleTagManager = (): Promise<void> => {
       script.async = true;
       script.src = "https://www.googletagmanager.com/gtm.js?id=GTM-MFXMH6N9";
       script.onload = () => {
-        loadedScripts.add("gtm");
+        // loadedScripts.add("gtm"); // Usunięto stąd
         console.log("Google Tag Manager loaded successfully");
         resolve();
       };
@@ -108,47 +70,61 @@ export const loadFacebookPixel = (): Promise<void> => {
       resolve();
       return;
     }
+    // **POPRAWKA: Natychmiast oznacz skrypt jako ładowany.**
+    loadedScripts.add("fbpixel");
+
+    // Sprawdź, czy obiekt fbq już istnieje (może być zablokowany przez adblocker)
+    if (window.fbq) {
+      resolve();
+      return;
+    }
 
     try {
-      // Facebook Pixel code
-      (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
-        if (f.fbq) return;
-        n = f.fbq = function () {
-          n.callMethod
-            ? n.callMethod.apply(n, arguments)
-            : n.queue.push(arguments);
-        };
-        if (!f._fbq) f._fbq = n;
-        n.push = n;
-        n.loaded = !0;
-        n.version = "2.0";
-        n.queue = [];
-        t = b.createElement(e);
-        t.async = !0;
-        t.src = v;
-        t.onload = () => {
-          loadedScripts.add("fbpixel");
-          console.log("Facebook Pixel loaded successfully");
-          resolve();
-        };
-        t.onerror = () => {
-          console.error("Failed to load Facebook Pixel");
-          reject(new Error("Failed to load Facebook Pixel"));
-        };
-        s = b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t, s);
-      })(
-        window,
-        document,
-        "script",
-        "https://connect.facebook.net/en_US/fbevents.js"
-      );
+      // Definicja funkcji fbq
+      const n = (window.fbq = function () {
+        n.callMethod
+          ? n.callMethod.apply(n, arguments)
+          : n.queue.push(arguments);
+      });
+      if (!window._fbq) window._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = "2.0";
+      n.queue = [];
 
-      // Initialize Facebook Pixel (replace with your actual pixel ID)
-      window.fbq("init", "2184652248627111");
-      window.fbq("track", "PageView");
+      // Tworzenie i ładowanie skryptu
+      const script = document.createElement("script");
+      script.async = true;
+      script.src = "https://connect.facebook.net/en_US/fbevents.js";
+
+      // Inicjalizacja piksla PO załadowaniu skryptu
+      script.onload = () => {
+        try {
+          window.fbq("init", "2184652248627111");
+          window.fbq("track", "PageView");
+          // loadedScripts.add("fbpixel"); // Usunięto stąd
+          console.log("Facebook Pixel loaded and initialized successfully");
+          resolve();
+        } catch (initError) {
+          console.error("Error initializing Facebook Pixel:", initError);
+          reject(initError);
+        }
+      };
+
+      script.onerror = () => {
+        console.error("Failed to load Facebook Pixel script");
+        reject(new Error("Failed to load Facebook Pixel script"));
+      };
+
+      // Wstawienie skryptu do DOM
+      document.head.appendChild(script);
+
+      // Add Facebook Pixel noscript fallback
+      const noscript = document.createElement("noscript");
+      noscript.innerHTML = `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2184652248627111&ev=PageView&noscript=1" />`;
+      document.body.insertBefore(noscript, document.body.firstChild);
     } catch (error) {
-      console.error("Error loading Facebook Pixel:", error);
+      console.error("Error setting up Facebook Pixel:", error);
       reject(error);
     }
   });
@@ -162,7 +138,8 @@ export const loadAnalyticsScripts = async (
 ): Promise<void> => {
   try {
     if (consentLevel === "all" || consentLevel === "analytics") {
-      await Promise.all([loadGoogleAnalytics(), loadGoogleTagManager()]);
+      // Load only GTM. GTM will handle loading GA4.
+      await loadGoogleTagManager();
     }
 
     if (consentLevel === "all") {
@@ -179,7 +156,7 @@ export const loadAnalyticsScripts = async (
  * Check if analytics scripts are loaded
  */
 export const isAnalyticsLoaded = (): boolean => {
-  return loadedScripts.has("ga4") || loadedScripts.has("gtm");
+  return loadedScripts.has("gtm");
 };
 
 /**

@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import {
+import React, {
   createContext,
   ReactNode,
   useContext,
@@ -35,6 +35,7 @@ export const CookieConsentProvider = ({
   const [isBannerVisible, setIsBannerVisible] = useState(false);
   const [isPreferencesVisible, setIsPreferencesVisible] = useState(false);
 
+  // Efekt do sprawdzania i ładowania skryptów przy inicjalizacji
   useEffect(() => {
     const savedConsent = Cookies.get(COOKIE_CONSENT_KEY) as
       | ConsentLevel
@@ -42,20 +43,22 @@ export const CookieConsentProvider = ({
     if (savedConsent) {
       setConsentLevel(savedConsent);
       setIsBannerVisible(false);
+      // **NOWOŚĆ: Ładuj skrypty na podstawie zapisanej zgody**
+      loadAnalyticsScripts(savedConsent).catch(console.error);
     } else {
       setIsBannerVisible(true);
     }
   }, []);
 
+  // Funkcja centralna do stosowania zgody
   const applyConsent = (level: ConsentLevel) => {
     Cookies.set(COOKIE_CONSENT_KEY, level, { expires: 365 });
     setConsentLevel(level);
     setIsBannerVisible(false);
     setIsPreferencesVisible(false);
 
-    if (level === "all" || level === "analytics") {
-      loadAnalyticsScripts(level).catch(console.error);
-    }
+    // **NOWOŚĆ: Ładuj skrypty po udzieleniu nowej zgody**
+    loadAnalyticsScripts(level).catch(console.error);
   };
 
   const acceptConsent = (level: ConsentLevel) => {
@@ -64,12 +67,11 @@ export const CookieConsentProvider = ({
 
   const openPreferences = () => {
     setIsPreferencesVisible(true);
-    setIsBannerVisible(false); // Hide banner when modal is open
+    setIsBannerVisible(false);
   };
 
   const closePreferences = () => {
     setIsPreferencesVisible(false);
-    // If no consent has been given yet, show the banner again
     if (!consentLevel) {
       setIsBannerVisible(true);
     }
