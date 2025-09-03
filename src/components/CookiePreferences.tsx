@@ -1,47 +1,30 @@
-import React, { useState } from 'react';
-import { X, Cookie, Shield, BarChart3, Settings } from 'lucide-react';
-import { loadAnalyticsScripts } from '../lib/cookieScripts';
+import { BarChart3, Cookie, Settings, Shield, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useCookieConsent } from "../context/CookieConsentContext";
 
-interface CookiePreferencesProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+const CookiePreferences: React.FC = () => {
+  const {
+    isPreferencesVisible,
+    closePreferences,
+    savePreferences,
+    consentLevel,
+  } = useCookieConsent();
 
-const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }) => {
-  const [preferences, setPreferences] = useState(() => {
-    const consent = localStorage.getItem('cookie-consent');
-    return {
-      necessary: true, // Always true
-      analytics: consent === 'all',
-      marketing: consent === 'all',
-    };
-  });
+  const [analytics, setAnalytics] = useState(false);
+  const [marketing, setMarketing] = useState(false);
 
-  const handleSavePreferences = () => {
-    const consentLevel = preferences.analytics && preferences.marketing ? 'all' : 
-                        preferences.analytics ? 'analytics' : 'necessary';
-    localStorage.setItem('cookie-consent', consentLevel);
-    
-    // Load scripts immediately if analytics/marketing consent is given
-    if (consentLevel !== 'necessary') {
-      loadAnalyticsScripts(consentLevel).catch(console.error);
+  useEffect(() => {
+    if (consentLevel) {
+      setAnalytics(consentLevel === "all" || consentLevel === "analytics");
+      setMarketing(consentLevel === "all");
     }
-    
-    onClose();
-    // Only reload if no scripts were loaded (for necessary only scenario)
-    if (consentLevel === 'necessary') {
-      window.location.reload();
-    }
+  }, [consentLevel, isPreferencesVisible]);
+
+  const handleSave = () => {
+    savePreferences(analytics, marketing);
   };
 
-  const handleToggle = (type: 'analytics' | 'marketing') => {
-    setPreferences(prev => ({
-      ...prev,
-      [type]: !prev[type]
-    }));
-  };
-
-  if (!isOpen) return null;
+  if (!isPreferencesVisible) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -55,7 +38,7 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
             </h2>
           </div>
           <button
-            onClick={onClose}
+            onClick={closePreferences}
             className="p-2 hover:bg-gray-100 rounded-full transition-colors"
           >
             <X className="w-5 h-5 text-gray-500" />
@@ -65,8 +48,9 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
         {/* Content */}
         <div className="p-6 space-y-6">
           <p className="text-gray-600">
-            Zarządzaj swoimi preferencjami dotyczącymi plików cookies. 
-            Możesz włączyć lub wyłączyć różne kategorie zgodnie ze swoimi preferencjami.
+            Zarządzaj swoimi preferencjami dotyczącymi plików cookies. Możesz
+            włączyć lub wyłączyć różne kategorie zgodnie ze swoimi
+            preferencjami.
           </p>
 
           {/* Cookie Categories */}
@@ -81,8 +65,8 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
                       Cookies niezbędne
                     </h3>
                     <p className="text-sm text-gray-600 mb-3">
-                      Te pliki cookies są niezbędne do funkcjonowania strony internetowej 
-                      i nie można ich wyłączyć w naszych systemach.
+                      Te pliki cookies są niezbędne do funkcjonowania strony
+                      internetowej i nie można ich wyłączyć w naszych systemach.
                     </p>
                     <ul className="text-xs text-gray-500 space-y-1">
                       <li>• Preferencje cookies</li>
@@ -109,7 +93,7 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
                       Cookies analityczne
                     </h3>
                     <p className="text-sm text-gray-600 mb-3">
-                      Te pliki cookies pozwalają nam analizować ruch na stronie 
+                      Te pliki cookies pozwalają nam analizować ruch na stronie
                       i zrozumieć, jak użytkownicy korzystają z naszej witryny.
                     </p>
                     <ul className="text-xs text-gray-500 space-y-1">
@@ -123,11 +107,11 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={preferences.analytics}
-                      onChange={() => handleToggle('analytics')}
+                      checked={analytics}
+                      onChange={() => setAnalytics((v) => !v)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
                   </label>
                 </div>
               </div>
@@ -143,8 +127,9 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
                       Cookies marketingowe
                     </h3>
                     <p className="text-sm text-gray-600 mb-3">
-                      Te pliki cookies są używane do śledzenia użytkowników 
-                      między stronami w celu wyświetlania spersonalizowanych reklam.
+                      Te pliki cookies są używane do śledzenia użytkowników
+                      między stronami w celu wyświetlania spersonalizowanych
+                      reklam.
                     </p>
                     <ul className="text-xs text-gray-500 space-y-1">
                       <li>• Facebook Pixel</li>
@@ -157,11 +142,11 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={preferences.marketing}
-                      onChange={() => handleToggle('marketing')}
+                      checked={marketing}
+                      onChange={() => setMarketing((v) => !v)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
+                    <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-500"></div>
                   </label>
                 </div>
               </div>
@@ -169,23 +154,26 @@ const CookiePreferences: React.FC<CookiePreferencesProps> = ({ isOpen, onClose }
           </div>
 
           {/* Footer */}
-          <div className="pt-4 border-t border-gray-200">
+          <div className="p-6 pt-4 border-t border-gray-200">
             <p className="text-xs text-gray-500 mb-4">
-              Zmiany zostaną zastosowane po odświeżeniu strony. 
-              Więcej informacji znajdziesz w naszej{' '}
-              <a href="/polityka-prywatnosci" className="text-primary-500 hover:text-primary-600 underline">
+              Więcej informacji znajdziesz w naszej{" "}
+              <a
+                href="/polityka-prywatnosci"
+                className="text-primary-500 hover:text-primary-600 underline"
+              >
                 Polityce Prywatności
-              </a>.
+              </a>
+              .
             </p>
             <div className="flex gap-3">
               <button
-                onClick={onClose}
+                onClick={closePreferences}
                 className="btn-responsive bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-300"
               >
                 Anuluj
               </button>
               <button
-                onClick={handleSavePreferences}
+                onClick={handleSave}
                 className="btn-responsive bg-primary-500 hover:bg-primary-600 text-white font-medium"
               >
                 Zapisz preferencje
