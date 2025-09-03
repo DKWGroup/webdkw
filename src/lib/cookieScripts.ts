@@ -4,7 +4,7 @@ declare global {
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;
-    fbq: (...args: any[]) => void;
+    fbq: any;
     _fbq: any;
   }
 }
@@ -74,14 +74,14 @@ export const loadFacebookPixel = (): Promise<void> => {
     loadedScripts.add("fbpixel");
 
     // Sprawdź, czy obiekt fbq już istnieje (może być zablokowany przez adblocker)
-    if (window.fbq) {
+    if (window.fbq && typeof window.fbq === "function" && window.fbq.loaded) {
       resolve();
       return;
     }
 
     try {
       // Definicja funkcji fbq
-      const n = (window.fbq = function () {
+      const n: any = (window.fbq = function () {
         n.callMethod
           ? n.callMethod.apply(n, arguments)
           : n.queue.push(arguments);
