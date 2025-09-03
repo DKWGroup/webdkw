@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import React, {
+import {
   createContext,
   ReactNode,
   useContext,
