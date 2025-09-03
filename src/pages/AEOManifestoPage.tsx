@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import AEOFAQSection from "../components/AEOFAQSection";
-import AEOVsSEOSection from "../components/AEOVsSEOSection";
+// import AEOVsSEOSection from "../components/AEOVsSEOSection"; // Usunięto stary komponent
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import SEOContactForm from "../components/SEOContactForm";
@@ -108,7 +108,7 @@ const AEOManifestoPage = () => {
       >
         <SEOHead
           title="Pozycjonowanie AI - Kiedy AI Odpowiada Za Ciebie | WebDKW"
-          description="Specjalizujemy się w pozycjonowaniu pod AI Overviews. Pakiety GEO (lokalne) i AEO (krajowe). Rewolucja w wyszukiwaniu już się dzieje. Audyt potencjału za 800 zł."
+          description="Specjalizujemy się w pozycjonowaniu pod AI Overviews. Pakiety AI SEO dla firm lokalnych i krajowych. Rewolucja w wyszukiwaniu już się dzieje. Audyt potencjału za 800 zł."
           keywords="pozycjonowanie AI, AI Overviews, pozycjonowanie pod sztuczną inteligencję, optymalizacja odpowiedzi AI"
           url="https://webdkw.net/pozycjonowanie-ai"
         />
@@ -259,17 +259,213 @@ const AEOManifestoPage = () => {
           </div>
         </section>
 
+        {/* Benefits Section for SEO AI */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Eyebrow */}
+            <div className="text-center mb-4">
+              <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-100 to-primary-50 border border-primary-200 text-primary-700 rounded-full text-xs md:text-sm font-semibold">
+                ✨ AI SEO
+              </span>
+            </div>
+
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
+              Co Twoja firma zyska dzięki AI SEO
+            </h2>
+            <p className="text-lg text-gray-700 mb-10 max-w-4xl mx-auto text-center">
+              🤖 AI SEO to nie tylko „pozycje” w Google. To dominacja w
+              odpowiedziach generowanych przez AI — od{" "}
+              <strong>AI Overviews</strong> w Google, przez{" "}
+              <strong>ChatGPT</strong> i <strong>Gemini</strong>, po{" "}
+              <strong>Perplexity</strong> i <strong>Bing Copilot</strong>. 📈
+              Efekt? Więcej zapytań od klientów gotowych do zakupu i rosnący
+              udział Twojej marki w odpowiedziach AI.
+            </p>
+
+            {/* Benefits grid - simplified */}
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
+              {/* 1 */}
+              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      🚀 Pojawianie się w wynikach AI
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Twoja marka pojawia się w odpowiedziach AI (AI Overviews,
+                      ChatGPT, Gemini), docierając do klientów.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 2 */}
+              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      💡 Zdobywanie klientów bez kliknięć
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Gdy AI odpowiada za Ciebie, zdobywasz klientów, którzy nie
+                      muszą już klikać w linki.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 3 */}
+              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      ⏱️ Krótszy cykl sprzedaży
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Dostarczając precyzyjne odpowiedzi, skracasz drogę klienta
+                      od pytania do zakupu.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 4 */}
+              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      📊 Mierzalne rezultaty biznesowe
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Raportujemy wzrost zapytań i telefonów – metryki, które
+                      mają znaczenie dla sprzedaży.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 5 */}
+              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      🛡️ Odporność na zmiany algorytmów
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Budujemy autorytet Twojej marki, który jest odporny na
+                      przyszłe aktualizacje Google.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 6 */}
+              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      ⚡ Szybkie efekty i długa strategia
+                    </h3>
+                    <p className="text-sm text-gray-600">
+                      Zapewniamy szybkie wygrane w 30-45 dni oraz tworzymy
+                      długoterminową strategię AI SEO.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* New Section: AI SEO Explained */}
+        <section id="ai-seo-explained" className="py-20 bg-gray-50">
+          <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Czym jest AI SEO? To po prostu ewolucja.
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-12">
+                Wyobraź sobie, jak zmienił się sposób, w jaki szukamy
+                informacji. AI SEO to kolejny, naturalny krok w tej podróży.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* KIEDYŚ: Tradycyjne SEO */}
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 text-center h-full">
+                <div className="flex justify-center mb-4">
+                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                    <Search className="h-8 w-8 text-gray-600" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-semibold text-gray-800 mb-3">
+                  Kiedyś: Tradycyjne SEO
+                </h3>
+                <p className="text-gray-600">
+                  Celem było zdobycie jak najwyższej pozycji na liście{" "}
+                  <strong>10 niebieskich linków</strong>. Klient musiał sam
+                  klikać i szukać odpowiedzi na Twojej stronie.
+                </p>
+              </div>
+
+              {/* DZISIAJ: AI SEO */}
+              <div className="bg-primary-50 border border-primary-200 rounded-2xl p-8 text-center h-full">
+                <div className="flex justify-center mb-4">
+                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
+                    <Brain className="h-8 w-8 text-primary-600" />
+                  </div>
+                </div>
+                <h3 className="text-2xl font-semibold text-primary-700 mb-3">
+                  Dziś: AI SEO
+                </h3>
+                <p className="text-gray-700">
+                  Celem jest stanie się{" "}
+                  <strong>bezpośrednią odpowiedzią</strong>, której AI udziela
+                  klientowi. Twoja firma jest prezentowana jako gotowe
+                  rozwiązanie, budując zaufanie od pierwszego kontaktu.
+                </p>
+              </div>
+            </div>
+
+            <div className="text-center mt-12">
+              <p className="text-lg text-gray-700 bg-gray-100 p-6 rounded-xl inline-block shadow-sm">
+                <strong>AI SEO to nie magia.</strong> To dostosowanie
+                sprawdzonych metod SEO do świata, w którym AI jest nowym
+                pośrednikiem między Tobą a klientem.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Case Study Section */}
         <section className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-4">
               Case Study: Jak MK Helicopters zwiększyło liczbę zapytań o 40%
-              dzięki SEO i AEO
+              dzięki AI SEO
             </h2>
             <p className="text-center text-gray-600 max-w-3xl mx-auto mb-12">
               Firma MK Helicopters, lider w branży ekskluzywnego transportu
               helikopterem, walczyła z niską widocznością w Google. Wdrożyliśmy
-              precyzyjną strategię SEO i AEO, skoncentrowaną na intencjach
+              precyzyjną strategię AI SEO, skoncentrowaną na intencjach
               użytkowników i odpowiedziach AI.
             </p>
 
@@ -424,7 +620,7 @@ const AEOManifestoPage = () => {
                   "@context": "https://schema.org",
                   "@type": "CaseStudy",
                   headline:
-                    "Jak MK Helicopters zwiększyło liczbę zapytań o 40% dzięki SEO i AEO",
+                    "Jak MK Helicopters zwiększyło liczbę zapytań o 40% dzięki AI SEO",
                   description:
                     "Strategia Q&A, rozbudowana sekcja FAQ i wdrożenie danych strukturalnych FAQPage przyniosły 40% wzrost zapytań w 3 miesiące.",
                   image: "https://webdkw.net/images/clients/mkhelicopters.webp",
@@ -442,7 +638,7 @@ const AEOManifestoPage = () => {
                     "https://webdkw.net/uslugi/pozycjonowanie-ai",
                   keywords: [
                     "case study SEO",
-                    "AEO",
+                    "AI SEO",
                     "pozycjonowanie AI",
                     "MK Helicopters",
                     "FAQPage",
@@ -455,343 +651,104 @@ const AEOManifestoPage = () => {
           </div>
         </section>
 
-        {/* Benefits Section for SEO AI (AEO/GEO) */}
-        <section className="py-20 bg-gray-50">
+        {/* Methodology Section - Reworked */}
+        <section id="process-ai-growth" className="py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Eyebrow */}
-            <div className="text-center mb-4">
-              <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-100 to-primary-50 border border-primary-200 text-primary-700 rounded-full text-xs md:text-sm font-semibold">
-                ✨ SEO AI • AEO • GEO
-              </span>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 text-center">
-              Co Twoja firma zyska dzięki SEO AI (AEO/GEO)
-            </h2>
-            <p className="text-lg text-gray-700 mb-10 max-w-4xl mx-auto text-center">
-              🤖 SEO AI to nie tylko „pozycje" w Google. To dominacja w
-              odpowiedziach generowanych przez AI — od{" "}
-              <strong>AI Overviews</strong> w Google, przez{" "}
-              <strong>ChatGPT</strong> i <strong>Gemini</strong>, po{" "}
-              <strong>Perplexity</strong> i <strong>Bing Copilot</strong>. 📈
-              Efekt? Więcej zapytań od klientów gotowych do zakupu i rosnący{" "}
-              <strong>Answer Share™</strong> Twojej marki.
-            </p>
-
-            {/* Benefits grid */}
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-fade-in">
-              {/* 1 */}
-              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
-                      🚀 Widoczność tam, gdzie dziś decydują klienci
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Twoja marka pojawia się w odpowiedziach AI (AI Overviews,
-                      ChatGPT, Gemini, Perplexity, Bing Copilot). Zwiększasz{" "}
-                      <strong>Answer Share™</strong> na kluczowe zapytania.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 2 */}
-              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
-                      🖱️ Więcej zapytań bez klikania
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Gdy ~60% zapytań kończy się bez kliknięcia, wygrywa ten,
-                      kogo AI wskaże jako odpowiedź. My sprawiamy, że to
-                      będziesz <strong>Ty</strong>.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 3 */}
-              <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
-                    <CheckCircle className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">
-                      ⏱️ Krótszy cykl sprzedaży
-                    </h3>
-                    <p className="text-sm text-gray-600">
-                      Eksperckie odpowiedzi (AEO) + optymalizacja intencji
-                      zakupowych (GEO/AEO) skracają drogę od pytania do
-                      kontaktu.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {showMoreBenefits && (
-                <>
-                  {/* 4 */}
-                  <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale animate-fade-in">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">
-                          📊 Mierzalne KPI zamiast „próżnych metryk”
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          Raportujemy <strong>Answer Share™</strong>,{" "}
-                          <strong>Zero‑Click Wins</strong>, wzrost zapytań i
-                          telefonów — liczby, które czuje sprzedaż.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 5 */}
-                  <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale animate-fade-in">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">
-                          🛡️ Odporność na zmiany algorytmów
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          Budujemy autorytet encji (<strong>E‑E‑A‑T</strong>),
-                          dane strukturalne i <em>knowledge assets</em>, które
-                          AI chętnie cytuje.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 6 */}
-                  <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale animate-fade-in">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">
-                          🗺️ Lokalna i krajowa dominacja
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          <strong>GEO</strong> — mapa i Local Pack w Twoim
-                          mieście. <strong>AEO</strong> — „główne źródło
-                          odpowiedzi” w skali kraju.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* 7 */}
-                  <div className="group bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-all hover-scale animate-fade-in">
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center flex-shrink-0">
-                        <CheckCircle className="h-5 w-5" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-gray-900 mb-1">
-                          ⚡ Szybkie wygrane + strategia
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          <strong>Quick wins</strong> w 30–45 dni oraz{" "}
-                          <strong>roadmapa AI‑ready</strong> na kwartał do
-                          przodu.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Toggle */}
-            <div className="mt-6 text-center">
-              <button
-                type="button"
-                aria-expanded={showMoreBenefits}
-                onClick={() => setShowMoreBenefits((v) => !v)}
-                className="inline-flex items-center px-5 py-2 rounded-full border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 hover-scale text-sm font-semibold"
-              >
-                {showMoreBenefits ? "Zwiń korzyści" : "Pokaż więcej korzyści"}
-              </button>
-            </div>
-
-            {/* Micro social proof */}
-            <div className="mt-10 bg-orange-50 border border-orange-200 text-orange-900 rounded-2xl p-6">
-              <p className="text-sm md:text-base leading-relaxed">
-                "Średnio po <strong>3–4 miesiącach</strong> współpracy klienci
-                odnotowują <strong>20–35%</strong> udziału w odpowiedziach AI
-                dla kluczowych zapytań i <strong>+18–40%</strong> kontaktów z
-                wizytówki Google."
+            <div className="text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Jak wprowadzamy Twoją firmę do świata AI?
+              </h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto mb-16">
+                Nasz proces jest prosty i przejrzysty. W 4 krokach sprawiamy, że
+                Twoja firma staje się odpowiedzią na pytania klientów.
               </p>
             </div>
 
-            {/* Internal links */}
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <a
-                href="#process-ai-growth"
-                className="inline-flex items-center px-4 py-2 rounded-full bg-primary-50 text-primary-700 border border-primary-200 text-sm font-semibold hover:bg-primary-100 transition-colors"
-              >
-                Sprawdzony proces w 4 krokach{" "}
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </a>
-              <a
-                href="#pakiety-geo-aeo"
-                className="inline-flex items-center px-4 py-2 rounded-full bg-gray-50 text-gray-700 border border-gray-200 text-sm font-semibold hover:bg-gray-100 transition-colors"
-              >
-                Pakiety GEO/AEO <ArrowRight className="h-4 w-4 ml-2" />
-              </a>
-              <a
-                href="#faq-aeo-geo"
-                className="inline-flex items-center px-4 py-2 rounded-full bg-gray-50 text-gray-700 border border-gray-200 text-sm font-semibold hover:bg-gray-100 transition-colors"
-              >
-                FAQ AEO/GEO <ArrowRight className="h-4 w-4 ml-2" />
-              </a>
-            </div>
-          </div>
-        </section>
+            <div className="relative grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {/* Dashed line for desktop */}
+              <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 left-0 right-0 h-px">
+                <svg
+                  width="100%"
+                  height="100%"
+                  className="absolute inset-0"
+                  preserveAspectRatio="none"
+                >
+                  <line
+                    x1="0"
+                    y1="50%"
+                    x2="100%"
+                    y2="50%"
+                    stroke="#cbd5e1"
+                    strokeWidth="2"
+                    strokeDasharray="8 8"
+                  />
+                </svg>
+              </div>
 
-        <AEOVsSEOSection />
-
-        <section id="quickscan" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Eyebrow */}
-            <div className="text-center mb-4 animate-fade-in">
-              <span className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-100 to-primary-50 border border-primary-200 text-primary-700 rounded-full text-xs md:text-sm font-semibold">
-                🚀 Szybki audyt AI
-              </span>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 text-center">
-              Sprawdź, jak AI widzi Twoją firmę
-            </h2>
-            <p className="text-lg text-gray-700 mb-10 max-w-3xl mx-auto text-center">
-              Czy Twoja firma jest gotowa na erę AI? Nasz szybki audyt AI
-              ujawni, jak dobrze odpowiadasz na potrzeby klientów w
-              wyszukiwarce.
-            </p>
-
-            {/* Quick Scan Steps */}
-            <div className="bg-white rounded-2xl shadow-lg p-8 sm:p-10 mb-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">
-                Jak to działa?
-              </h3>
-              <ol className="list-decimal list-inside space-y-4">
-                <li className="flex gap-3">
-                  <span className="text-primary-500 font-semibold">1.</span>
-                  <p className="text-gray-700">
-                    Podajesz nam swoje dane kontaktowe i stronę www.
-                  </p>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary-500 font-semibold">2.</span>
-                  <p className="text-gray-700">
-                    Analizujemy Twoją widoczność w AI i przygotowujemy raport.
-                  </p>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary-500 font-semibold">3.</span>
-                  <p className="text-gray-700">
-                    Otrzymujesz spersonalizowany raport na maila.
-                  </p>
-                </li>
-              </ol>
-            </div>
-
-            <div className="text-center">
-              <Link
-                to="/quick-scan"
-                className="inline-flex items-center px-6 py-3 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors"
-              >
-                Rozpocznij szybki audyt AI
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Methodology Section */}
-        <section id="process-ai-growth" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">
-              Nasze sprawdzone podejście w 4 krokach do dominacji w AI
-            </h2>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-16">
-              <div className="relative text-center">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
+              {/* Step 1 */}
+              <div className="relative bg-white p-8 rounded-2xl shadow-lg border border-gray-200 text-center">
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold border-4 border-gray-50">
                   1
                 </div>
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
-                  <Search className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-                    Discovery
+                <div className="pt-8">
+                  <Search className="h-10 w-10 text-primary-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Analiza i Potencjał
                   </h3>
-                  <p className="text-gray-600 text-sm">
-                    Głębokie zrozumienie biznesu klienta, jego celów, analiza
-                    konkurencji i audyt potencjału.
+                  <p className="text-gray-600">
+                    Sprawdzamy, o co pytają Twoi klienci i gdzie tkwi największy
+                    potencjał, by AI polecało właśnie Ciebie.
                   </p>
                 </div>
               </div>
 
-              <div className="relative text-center">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
+              {/* Step 2 */}
+              <div className="relative bg-white p-8 rounded-2xl shadow-lg border border-gray-200 text-center">
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold border-4 border-gray-50">
                   2
                 </div>
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
-                  <Target className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-                    Strategy
+                <div className="pt-8">
+                  <Target className="h-10 w-10 text-primary-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Plan Działania
                   </h3>
-                  <p className="text-gray-600 text-sm">
-                    Stworzenie precyzyjnej mapy drogowej opartej na danych i
-                    zaplanowanie, jakie pytania zostaną zdobyte dla klienta.
+                  <p className="text-gray-600">
+                    Tworzymy jasny plan – wiemy, jakie treści przygotować, by
+                    Twoja firma stała się odpowiedzią na kluczowe pytania.
                   </p>
                 </div>
               </div>
 
-              <div className="relative text-center">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
+              {/* Step 3 */}
+              <div className="relative bg-white p-8 rounded-2xl shadow-lg border border-gray-200 text-center">
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold border-4 border-gray-50">
                   3
                 </div>
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
-                  <Zap className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-                    Implementation
+                <div className="pt-8">
+                  <Zap className="h-10 w-10 text-primary-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Wdrożenie i Tworzenie
                   </h3>
-                  <p className="text-gray-600 text-sm">
-                    Systematyczne wdrażanie strategii, od optymalizacji
-                    technicznej po tworzenie treści.
+                  <p className="text-gray-600">
+                    Zajmujemy się wszystkim: od poprawek na stronie, po
+                    tworzenie wartościowych treści, które pokocha AI.
                   </p>
                 </div>
               </div>
 
-              <div className="relative text-center">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-primary-500 text-white rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6 relative z-10">
+              {/* Step 4 */}
+              <div className="relative bg-white p-8 rounded-2xl shadow-lg border border-gray-200 text-center">
+                <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-16 h-16 bg-primary-500 text-white rounded-full flex items-center justify-center text-2xl font-bold border-4 border-gray-50">
                   4
                 </div>
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg h-auto pt-6 sm:pt-8">
-                  <BarChart3 className="h-8 w-8 text-primary-500 mx-auto mb-4" />
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-                    Monitoring & Optimization
+                <div className="pt-8">
+                  <BarChart3 className="h-10 w-10 text-primary-500 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">
+                    Wyniki i Optymalizacja
                   </h3>
-                  <p className="text-gray-600 text-sm">
-                    Ciągły pomiar wskaźnika Answer Share™ i optymalizacja
-                    działań.
+                  <p className="text-gray-600">
+                    Monitorujemy Twoją widoczność w AI i raportujemy konkretne
+                    wyniki – wzrost zapytań i telefonów.
                   </p>
                 </div>
               </div>
@@ -1006,10 +963,10 @@ const AEOManifestoPage = () => {
         </section>
 
         {/* Packages Section */}
-        <section id="pakiety-geo-aeo" className="py-20 bg-white">
+        <section id="pakiety-ai-seo" className="py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-16">
-              Wybierz swój pakiet dominacji w erze AI
+              Wybierz swój pakiet AI SEO
             </h2>
 
             <div className="grid lg:grid-cols-2 gap-12">
@@ -1077,7 +1034,7 @@ const AEOManifestoPage = () => {
                   <li className="flex items-start gap-3">
                     <CheckCircle className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
                     <span className="text-gray-700">
-                      <strong>Answer Share™ Dashboard</strong> - widzi swój
+                      <strong>Dashboard z wynikami</strong> - widzisz swój
                       procentowy udział w odpowiedziach AI
                     </span>
                   </li>
@@ -1090,31 +1047,16 @@ const AEOManifestoPage = () => {
                   </li>
                 </ul>
 
-                <div className="bg-gray-50 p-6 rounded-xl mb-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold text-gray-900 mb-1">
-                      2 500 zł
-                    </div>
-                    <div className="text-gray-600 mb-2">miesięcznie</div>
-                    <div className="text-sm text-gray-500">
-                      + 2 000 zł opłata startowa
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      minimum 3 miesięcy
-                    </div>
-                  </div>
-                </div>
-
                 <button
                   onClick={scrollToContact}
-                  className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300"
+                  className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300 mt-8"
                 >
                   Chcę zdominować rynek lokalny
                 </button>
               </div>
 
               {/* AEO Dominator Package */}
-              <div className="bg-gradient-to-b from-primary-50 to-white border-2 border-primary-300 rounded-2xl p-8 relative overflow-hidden">
+              <div className="bg-gradient-to-b from-primary-50 to-white border-2 border-primary-300 rounded-2xl p-8 relative overflow-hidden flex flex-col">
                 <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
                   NAJPOPULARNIEJSZY
                 </div>
@@ -1192,39 +1134,20 @@ const AEOManifestoPage = () => {
                   </li>
                 </ul>
 
-                <div className="bg-primary-600 text-white p-6 rounded-xl mb-6">
-                  <div className="text-center">
-                    <div className="text-3xl font-bold mb-1">4 500 zł</div>
-                    <div className="text-primary-100 mb-2">miesięcznie</div>
-                    <div className="text-sm text-primary-200">
-                      + 3 500 zł opłata startowa
-                    </div>
-                  </div>
+                <div className="mt-auto">
+                  <button
+                    onClick={scrollToContact}
+                    className="w-full bg-primary-600 text-white py-4 rounded-lg font-semibold hover:bg-primary-700 transition-colors duration-300 mt-8"
+                  >
+                    Chcę zostać liderem branży
+                  </button>
                 </div>
-
-                <button
-                  id="cta-pricing-contact"
-                  data-gtm="cta_pricing_contact"
-                  data-gtm-location="pricing"
-                  onClick={() => {
-                    track({
-                      event: "cta_click",
-                      category: "engagement",
-                      label: "pricing_contact",
-                      location: "pricing",
-                    });
-                    scrollToContact();
-                  }}
-                  className="w-full bg-primary-500 text-white py-4 rounded-lg font-semibold hover:bg-primary-600 transition-colors duration-300"
-                >
-                  Chcę być liderem w branży
-                </button>
               </div>
             </div>
           </div>
         </section>
 
-        <div id="faq-aeo-geo">
+        <div id="faq-ai-seo">
           <AEOFAQSection />
         </div>
 
@@ -1262,7 +1185,7 @@ const AEOManifestoPage = () => {
                   className="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-2"
                 >
                   <Target className="h-5 w-5" />
-                  Audyt Potencjału AEO - 800 zł
+                  Audyt Potencjału AI SEO - 800 zł
                 </button>
               </div>
               <div className="text-center">
