@@ -440,8 +440,7 @@ const SEOContactForm: React.FC = () => {
 
             <div className="bg-gray-50 p-8 rounded-2xl">
               <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <ListChecks className="h-6 w-6 text-orange-500" /> Jak
-                pracujemy
+                <ListChecks className="h-6 w-6 text-orange-500" /> Jak pracujemy
               </h3>
               <ul className="text-gray-700 text-sm space-y-2 list-disc pl-5">
                 <li>Szybka weryfikacja AI/SEO readiness</li>

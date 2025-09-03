@@ -15,7 +15,6 @@ import { useEffect, useState } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import AEOFAQSection from "../components/AEOFAQSection";
-// import AEOVsSEOSection from "../components/AEOVsSEOSection"; // Usunięto stary komponent
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import SEOContactForm from "../components/SEOContactForm";
@@ -37,8 +36,6 @@ const AEOManifestoPage = () => {
       alt: "MK Helicopters - zrzut z odpowiedzi AI/ChatGPT (przykład 2)",
     },
   ];
-
-  const [showMoreBenefits, setShowMoreBenefits] = useState(false);
 
   useEffect(() => {
     fetchFeaturedPosts();
