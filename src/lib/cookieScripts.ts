@@ -100,7 +100,7 @@ export const loadFacebookPixel = (): Promise<void> => {
       // Inicjalizacja piksla PO załadowaniu skryptu
       script.onload = () => {
         try {
-          window.fbq("init", "2184652248627111");
+          window.fbq("init", "1286130163154327");
           window.fbq("track", "PageView");
           // loadedScripts.add("fbpixel"); // Usunięto stąd
           console.log("Facebook Pixel loaded and initialized successfully");
@@ -121,7 +121,7 @@ export const loadFacebookPixel = (): Promise<void> => {
 
       // Add Facebook Pixel noscript fallback
       const noscript = document.createElement("noscript");
-      noscript.innerHTML = `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2184652248627111&ev=PageView&noscript=1" />`;
+      noscript.innerHTML = `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1286130163154327&ev=PageView&noscript=1" />`;
       document.body.insertBefore(noscript, document.body.firstChild);
     } catch (error) {
       console.error("Error setting up Facebook Pixel:", error);
