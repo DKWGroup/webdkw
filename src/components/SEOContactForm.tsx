@@ -1,25 +1,44 @@
-import {
-  AlertTriangle,
-  ArrowRight,
-  CheckCircle,
-  Clock,
-  Globe,
-  ListChecks,
-  Mail,
-  Phone,
-} from "lucide-react";
+import { CheckCircle, Mail, User } from "lucide-react";
 import React, { useState } from "react";
 import { track } from "../lib/analytics";
 import { supabase } from "../lib/supabase";
 
+const Loader = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
+  const sizeClasses = {
+    sm: "h-5 w-5",
+    md: "h-8 w-8",
+    lg: "h-12 w-12",
+  };
+  return (
+    <svg
+      className={`animate-spin ${sizeClasses[size]}`}
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        className="opacity-25"
+        cx="12"
+        cy="12"
+        r="10"
+        stroke="currentColor"
+        strokeWidth="4"
+      ></circle>
+      <path
+        className="opacity-75"
+        fill="currentColor"
+        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+      ></path>
+    </svg>
+  );
+};
+
 const INTEREST_OPTIONS = [
-  "SEO",
-  "Audyt SEO AI (darmowy)",
-  "Płatny Audyt AEO",
+  "Darmowy Audyt AI SEO",
+  "Płatny Audyt AI SEO",
+  "AI SEO",
   "GA4 / Analityka",
-  "Content / AI",
   "Google Ads",
-  "Local SEO / GBP",
   "Inne",
 ];
 
@@ -27,12 +46,12 @@ const SEOContactForm: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    company: "",
-    phone: "",
     website: "",
     message: "",
   });
-  const [interests, setInterests] = useState<string[]>([]);
+  const [interests, setInterests] = useState<string[]>([
+    "Darmowy Audyt AI SEO",
+  ]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -51,7 +70,7 @@ const SEOContactForm: React.FC = () => {
     setError("");
 
     if (!rodoConsent) {
-      setError("Wymagana jest zgoda na przetwarzanie danych osobowych");
+      setError("Zgoda na przetwarzanie danych jest wymagana");
       setIsSubmitting(false);
       return;
     }
@@ -70,8 +89,6 @@ const SEOContactForm: React.FC = () => {
           {
             name: formData.name,
             email: formData.email,
-            company: formData.company,
-            phone: formData.phone,
             message: enrichedMessage,
             lead_magnet: false,
           },
@@ -93,8 +110,6 @@ const SEOContactForm: React.FC = () => {
             body: JSON.stringify({
               name: formData.name,
               email: formData.email,
-              company: formData.company,
-              phone: formData.phone,
               message: enrichedMessage,
               lead_magnet: false,
             }),
@@ -123,8 +138,6 @@ const SEOContactForm: React.FC = () => {
       setFormData({
         name: "",
         email: "",
-        company: "",
-        phone: "",
         website: "",
         message: "",
       });
@@ -158,20 +171,32 @@ const SEOContactForm: React.FC = () => {
     });
   };
 
+  const isAuditSelected = interests.includes("Darmowy Audyt AI SEO");
+  const submitButtonText = isAuditSelected
+    ? "Zamów bezpłatny audyt AI SEO"
+    : "Wyślij wiadomość";
+
   if (isSubmitted) {
     return (
       <section id="kontakt" className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-12">
-            <CheckCircle className="h-16 w-16 text-green-500 mx-auto mb-6" />
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Dziękuję za wiadomość!
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-green-50 border border-green-200 rounded-2xl p-8 text-center max-w-3xl mx-auto">
+            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="h-8 w-8" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Dziękujemy za zgłoszenie!
             </h2>
-            <p className="text-xl text-gray-600 mb-6">
-              Otrzymałem Twoje zapytanie i odpowiem w ciągu 24 godzin.
+            <p className="text-gray-700 mb-2">
+              Otrzymaliśmy Twoją wiadomość i odpowiemy najszybciej jak to
+              możliwe.
             </p>
-            <p className="text-gray-500">
-              W pilnych sprawach dzwoń: <strong>+48 881 046 689</strong>
+            <p className="text-gray-700 mb-2">
+              Jeśli wybrałeś/aś audyt AI SEO, nasz specjalista skontaktuje się z
+              Tobą w ciągu 24 godzin roboczych, aby omówić szczegóły.
+            </p>
+            <p className="font-medium text-gray-900 mt-4">
+              Masz pilne pytanie? Zadzwoń: +48 881 046 689
             </p>
           </div>
         </div>
@@ -182,234 +207,211 @@ const SEOContactForm: React.FC = () => {
   return (
     <section id="kontakt" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Formularz SEO — bezpłatna konsultacja i wycena
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            Zamów bezpłatny audyt AI SEO dla swojej firmy
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Wypełnij formularz — sprawdzimy potencjał AI SEO Twojej strony i
-            wrócimy z rekomendacjami.
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Sprawdź, gdzie Twoja firma traci pozycje w odpowiedziach AI i jakie
+            możliwości wzrostu czekają na Ciebie.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16">
-          {/* Contact Form */}
-          <div>
+        <div className="grid md:grid-cols-3 gap-12">
+          <div className="md:col-span-2">
             <form
-              id="contact-form-seo"
-              data-gtm-form="contact_seo"
               onSubmit={handleSubmit}
-              className="space-y-6"
+              className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm"
             >
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-bold text-gray-900 mb-2"
-                  >
-                    Imię i nazwisko *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                    placeholder="Jan Kowalski"
-                  />
-                </div>
-                <div>
-                  <label
-                    htmlFor="company"
-                    className="block text-sm font-bold text-gray-900 mb-2"
-                  >
-                    Nazwa firmy
-                  </label>
-                  <input
-                    type="text"
-                    id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                    placeholder="ABC Sp. z o.o."
-                  />
-                </div>
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  Twoje dane
+                </h3>
+                <p className="text-gray-600">
+                  Wypełnij formularz, a skontaktujemy się w ciągu 24h
+                </p>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6">
-                <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-bold text-gray-900 mb-2"
-                  >
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                    placeholder="jan@firma.pl"
-                  />
+              <div className="grid gap-6 mb-8">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Imię i nazwisko *
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <User className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5"
+                        placeholder="Jan Kowalski"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Adres e-mail *
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <Mail className="h-5 w-5 text-gray-400" />
+                      </div>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2.5"
+                        placeholder="twoj@email.pl"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label
-                    htmlFor="phone"
-                    className="block text-sm font-bold text-gray-900 mb-2"
-                  >
-                    Telefon
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                    placeholder="+48 123 456 789"
-                  />
-                </div>
-              </div>
 
-              <div>
-                <label
-                  htmlFor="website"
-                  className="block text-sm font-bold text-gray-900 mb-2"
-                >
-                  Adres Twojej strony internetowej
-                </label>
-                <div className="relative">
+                <div>
+                  <label
+                    htmlFor="website"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Strona internetowa *
+                  </label>
                   <input
                     type="url"
                     id="website"
                     name="website"
                     value={formData.website}
                     onChange={handleChange}
-                    className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-                    placeholder="https://twojadomena.pl"
+                    required
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    placeholder="https://twojastrona.pl"
                   />
-                  <Globe className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Jakich wyników oczekujesz?
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleChange}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5"
+                    placeholder="Opisz krótko swoją firmę i czego oczekujesz od współpracy"
+                  ></textarea>
                 </div>
               </div>
 
-              {/* Interests checklist */}
-              <div>
-                <label className="block text-sm font-bold text-gray-900 mb-2">
-                  Czym jesteś zainteresowany?
-                </label>
-                <div className="grid sm:grid-cols-2 gap-3">
-                  {INTEREST_OPTIONS.map((opt) => (
-                    <label
-                      key={opt}
-                      className="flex items-center gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
-                        checked={interests.includes(opt)}
-                        onChange={() => toggleInterest(opt)}
-                      />
-                      <span className="text-sm text-gray-700">{opt}</span>
-                    </label>
-                  ))}
+              <div className="mb-8">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
+                  Co Cię interesuje?
+                </h3>
+                <div className="flex flex-wrap gap-3">
+                  {INTEREST_OPTIONS.map((option) => {
+                    const isSelected = interests.includes(option);
+                    const isSpecial = option === "Darmowy Audyt AI SEO";
+
+                    return (
+                      <button
+                        key={option}
+                        type="button"
+                        onClick={() => toggleInterest(option)}
+                        className={`
+                          px-4 py-2 rounded-full font-medium transition-all duration-200 border-2
+                          ${isSpecial ? "text-base font-semibold" : "text-sm"}
+                          ${
+                            isSelected
+                              ? "bg-primary-500 text-white border-primary-500" // Zaznaczony: border w kolorze tła (niewidoczny)
+                              : isSpecial
+                              ? "bg-primary-100 text-primary-800 hover:bg-primary-200 border-primary-500" // Specjalny: zawsze widoczny border
+                              : "bg-gray-100 text-gray-800 border-transparent hover:border-gray-300" // Zwykły: border tylko na hover
+                          }
+                        `}
+                      >
+                        {option}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-bold text-gray-900 mb-2"
-                >
-                  Opisz swój projekt *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={6}
-                  value={formData.message}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all resize-none"
-                  placeholder="Napisz, z czym potrzebujesz pomocy (SEO/AEO/GA4/Ads itd.)..."
-                />
-              </div>
-
-              {/* RODO */}
-              <div className="relative">
+              <div className="mb-8">
                 <div className="flex items-start">
                   <div className="flex items-center h-5">
                     <input
-                      id="rodo-consent-seo"
+                      id="rodo"
                       type="checkbox"
                       checked={rodoConsent}
                       onChange={(e) => setRodoConsent(e.target.checked)}
-                      className="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
                       required
                     />
                   </div>
-                  <div className="ml-3 text-sm">
-                    <label htmlFor="rodo-consent-seo" className="text-gray-600">
-                      Zapoznałem/am się z{" "}
-                      <button
-                        type="button"
-                        className="text-orange-500 hover:text-orange-700 underline"
-                        onClick={() => setShowRodoInfo(!showRodoInfo)}
-                        onMouseEnter={() => setShowRodoInfo(true)}
-                        onMouseLeave={() => setShowRodoInfo(false)}
-                      >
-                        informacją o administratorze i przetwarzaniu danych
-                      </button>
-                      . *
-                    </label>
-                  </div>
+                  <label htmlFor="rodo" className="ml-2 text-sm text-gray-600">
+                    Wyrażam zgodę na przetwarzanie moich danych osobowych w celu
+                    odpowiedzi na zapytanie*{" "}
+                    <button
+                      type="button"
+                      onClick={() => setShowRodoInfo(!showRodoInfo)}
+                      className="text-primary-600 hover:underline"
+                    >
+                      (więcej)
+                    </button>
+                  </label>
                 </div>
                 {showRodoInfo && (
-                  <div className="absolute z-10 mt-2 p-4 bg-white rounded-lg shadow-xl border border-gray-200 text-sm text-gray-700 max-w-md">
-                    <p>
-                      Wyrażam zgodę na przetwarzanie moich danych osobowych
-                      zgodnie z ustawą o ochronie danych osobowych w celu
-                      wysyłania informacji handlowej. Podanie danych osobowych
-                      jest dobrowolne. Zostałem poinformowany, że przysługuje mi
-                      prawo dostępu do swoich danych, możliwości ich
-                      poprawiania, żądania zaprzestania ich przetwarzania.
-                      Administratorem danych jest DM.me Dawid Myszka ul.
-                      Bolesława Chrobrego 32/103, Katowice 40-881.
-                    </p>
+                  <div className="mt-2 p-3 bg-gray-50 rounded-lg text-xs text-gray-600">
+                    Wyrażam zgodę na przetwarzanie moich danych osobowych
+                    zgodnie z ustawą o ochronie danych osobowych w celu
+                    wysyłania informacji handlowej. Podanie danych osobowych
+                    jest dobrowolne. Zostałem poinformowany, że przysługuje mi
+                    prawo dostępu do swoich danych, możliwości ich poprawiania,
+                    żądania zaprzestania ich przetwarzania. Administratorem
+                    danych jest DM.me Dawid Myszka ul. Bolesława Chrobrego
+                    32/103, Katowice 40-881.
                   </div>
                 )}
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                  <div className="flex items-center space-x-2">
-                    <AlertTriangle className="h-5 w-5 text-red-500" />
-                    <p className="text-red-800 text-sm">{error}</p>
-                  </div>
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-800">
+                  {error}
                 </div>
               )}
 
               <button
-                id="contact-seo-submit"
-                data-gtm="contact_seo_submit"
-                data-gtm-location="contact_form_seo"
                 type="submit"
-                disabled={isSubmitting || !rodoConsent}
-                className="w-full bg-orange-500 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
+                disabled={isSubmitting}
+                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-base px-5 py-4 text-center transition-colors"
               >
-                <span>
-                  {isSubmitting ? "Wysyłanie..." : "Wyślij zapytanie SEO"}
-                </span>
-                {!isSubmitting && <ArrowRight className="h-5 w-5" />}
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <Loader size="sm" /> Wysyłanie...
+                  </span>
+                ) : (
+                  submitButtonText
+                )}
               </button>
-
-              <p className="text-sm text-gray-500 text-center">
-                * Pola wymagane. Odpowiem w ciągu 24 godzin.
+              <p className="text-sm text-gray-500 text-center mt-4">
+                * Pola wymagane. Odpowiadamy w ciągu 24 godzin.
               </p>
             </form>
           </div>
@@ -438,78 +440,65 @@ const SEOContactForm: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <ListChecks className="h-6 w-6 text-orange-500" /> Jak pracujemy
+            {/* Process Timeline */}
+            <div className="bg-primary-50 border border-primary-100 p-8 rounded-2xl">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">
+                Co stanie się po wysłaniu formularza?
               </h3>
-              <ul className="text-gray-700 text-sm space-y-2 list-disc pl-5">
-                <li>Szybka weryfikacja AI/SEO readiness</li>
-                <li>Telefon zwrotny do 24h</li>
-                <li>
-                  Propozycja kolejnych kroków: Audyt SEO AI → Płatny Audyt AEO →
-                  abonament
-                </li>
-              </ul>
-            </div>
 
-            <div className="bg-gray-50 p-8 rounded-2xl">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Kontakt bezpośredni
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-4">
-                  <Mail className="h-6 w-6 text-orange-500 mt-1" />
-                  <div>
-                    <div className="font-semibold text-gray-900">Email</div>
-                    <a
-                      id="contact-email-seo"
-                      data-gtm="contact_email"
-                      data-gtm-location="contact_section_seo"
-                      href="mailto:contact.dkwgroup@gmail.com"
-                      onClick={() =>
-                        track({
-                          event: "contact_click",
-                          category: "engagement",
-                          method: "email",
-                          location: "contact_section_seo",
-                        })
-                      }
-                      className="text-orange-500 hover:text-orange-600"
-                    >
-                      contact.dkwgroup@gmail.com
-                    </a>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <Phone className="h-6 w-6 text-orange-500 mt-1" />
-                  <div>
-                    <div className="font-semibold text-gray-900">Telefon</div>
-                    <a
-                      id="contact-phone-seo"
-                      data-gtm="contact_phone"
-                      data-gtm-location="contact_section_seo"
-                      href="tel:+48881046689"
-                      onClick={() =>
-                        track({
-                          event: "contact_click",
-                          category: "engagement",
-                          method: "phone",
-                          location: "contact_section_seo",
-                        })
-                      }
-                      className="text-orange-500 hover:text-orange-600"
-                    >
-                      +48 881 046 689
-                    </a>
-                  </div>
-                </div>
-                <div className="flex items-start space-x-4">
-                  <Clock className="h-6 w-6 text-orange-500 mt-1" />
-                  <div>
-                    <div className="font-semibold text-gray-900">
-                      Godziny pracy
+              <div className="space-y-6">
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-bold text-sm">
+                      1
                     </div>
-                    <div className="text-gray-600">Pon-Pt: 9:00-17:00</div>
+                    <div className="w-0.5 h-full bg-primary-100 mt-2"></div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800">
+                      Potwierdzenie zgłoszenia
+                    </h4>
+                    <p className="text-gray-600 text-sm mt-1">
+                      W ciągu 24h roboczych potwierdzimy otrzymanie Twojego
+                      zgłoszenia i rozpoczęcie prac nad audytem.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-bold text-sm">
+                      2
+                    </div>
+                    <div className="w-0.5 h-full bg-primary-100 mt-2"></div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800">
+                      Przygotowanie audytu
+                    </h4>
+                    <p className="text-gray-600 text-sm mt-1">
+                      Przeanalizujemy Twoją stronę pod kątem AI SEO i
+                      przygotujemy raport z najważniejszymi wnioskami i
+                      rekomendacjami.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="w-8 h-8 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center font-bold text-sm">
+                      3
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-800">
+                      Omówienie wyników
+                    </h4>
+                    <p className="text-gray-600 text-sm mt-1">
+                      Zaproponujemy termin rozmowy, podczas której omówimy
+                      wyniki audytu i odpowiemy na Twoje pytania dotyczące
+                      możliwości współpracy.
+                    </p>
                   </div>
                 </div>
               </div>
