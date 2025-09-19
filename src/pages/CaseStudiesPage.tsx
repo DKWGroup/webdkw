@@ -196,7 +196,9 @@ const CaseStudiesPage = () => {
                           )}
 
                         <Link
-                          to={`/case-studies/${caseStudy.slug}`}
+                          to={`/case-studies/${
+                            caseStudy.case_study_slug || caseStudy.slug
+                          }`}
                           className="inline-flex items-center space-x-2 text-orange-500 hover:text-orange-600 font-semibold transition-colors"
                         >
                           <span>Przeczytaj pełny case study</span>

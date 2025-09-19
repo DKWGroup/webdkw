@@ -1,80 +1,95 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://demo-project.supabase.co'
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'demo-anon-key-placeholder'
+const supabaseUrl =
+  import.meta.env.VITE_SUPABASE_URL || "https://demo-project.supabase.co";
+const supabaseKey =
+  import.meta.env.VITE_SUPABASE_ANON_KEY || "demo-anon-key-placeholder";
 
-export const supabase = createClient(supabaseUrl, supabaseKey)
+export const supabase = createClient(supabaseUrl, supabaseKey);
 
 export interface BlogPost {
-  id: string
-  title: string
-  slug: string
-  excerpt: string
-  content: string
-  published: boolean
-  created_at: string
-  updated_at: string
-  author: string
-  image_url?: string
-  tags?: string[]
-  meta_description?: string
-  categories?: string[]
-  tldr_summary?: string
-  tldr_takeaways?: string[]
-  faqs?: Array<{ question: string; answer: string }>
-  ctas?: Array<{ title: string; url: string; color: string }>
-  seo_score?: number
- sources?: string[]
-  download_materials?: DownloadMaterial[]
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+  author: string;
+  image_url?: string;
+  tags?: string[];
+  meta_description?: string;
+  categories?: string[];
+  tldr_summary?: string;
+  tldr_takeaways?: string[];
+  faqs?: Array<{ question: string; answer: string }>;
+  ctas?: Array<{ title: string; url: string; color: string }>;
+  seo_score?: number;
+  sources?: string[];
+  download_materials?: DownloadMaterial[];
 }
 
 export interface DownloadMaterial {
-  id: string
-  title: string
-  description: string
-  file_url: string
-  file_size?: string
-  file_type?: string
-  button_color?: string
-  button_size?: string
-  download_count?: number
+  id: string;
+  title: string;
+  description: string;
+  file_url: string;
+  file_size?: string;
+  file_type?: string;
+  button_color?: string;
+  button_size?: string;
+  download_count?: number;
 }
 
 export interface ContactSubmission {
-  id: string
-  name: string
-  email: string
-  company?: string
-  phone?: string
-  message: string
-  lead_magnet?: boolean
-  created_at: string
+  id: string;
+  name: string;
+  email: string;
+  company?: string;
+  phone?: string;
+  message: string;
+  lead_magnet?: boolean;
+  created_at: string;
 }
 
 export interface Project {
-  id: string
-  title: string
-  slug: string
-  category: string
-  industry: string
-  description: string
-  image_url: string
-  technologies: string[]
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  industry: string;
+  description: string;
+  image_url: string;
+  technologies: string[];
   results: {
-    metric: string
-    value: string
-  }[]
-  completion_date: string
-  project_url?: string
-  featured: boolean
-  created_at: string
-  updated_at: string
-  case_study?: boolean
-  case_study_header?: string
-  case_study_introduction?: string
-  case_study_goals?: string
-  case_study_implementation?: string
-  case_study_results?: string
-  case_study_summary?: string
-  case_study_cta?: string
+    metric: string;
+    value: string;
+  }[];
+  completion_date: string;
+  project_url?: string;
+  featured: boolean;
+  created_at: string;
+  updated_at: string;
+  case_study?: boolean;
+  case_study_header?: string;
+  case_study_introduction?: string;
+  case_study_goals?: string;
+  case_study_implementation?: string;
+  case_study_results?: string;
+  case_study_summary?: string;
+  case_study_cta?: string;
+  // SEO and extended case study fields
+  case_study_seo_title?: string;
+  case_study_meta_description?: string;
+  case_study_slug?: string;
+  case_study_og_image?: string;
+  case_study_schema_jsonld?: any;
+  case_study_client_profile?: string;
+  case_study_objective?: string;
+  case_study_challenges?: string;
+  case_study_strategy?: string;
+  case_study_conclusions?: string;
+  case_study_links?: Array<{ title: string; url: string }>;
+  case_study_faqs?: Array<{ question: string; answer: string }>;
 }
