@@ -6,35 +6,35 @@ const AEOFAQSection = () => {
 
   const faqs = [
     {
-      question: "Czym różni się pozycjonowanie AEO od tradycyjnego SEO?",
+      question: "Czym jest AI SEO i dlaczego jest ważne dla mojej firmy?",
       answer:
-        "Tradycyjne SEO koncentruje się na wyświetlaniu w wynikach wyszukiwania Google. AEO (Answer Engine Optimization) to pozycjonowanie pod AI Overviews - nową funkcję Google, gdzie sztuczna inteligencja odpowiada bezpośrednio na pytania użytkowników. Gdy ktoś pyta Google o prawnika w Katowicach, AI może od razu polecić Twoją kancelarię, zamiast pokazywać listę linków. To oznacza, że użytkownicy mogą nigdy nie dotrzeć do tradycyjnych wyników SEO.",
+        "AI SEO to nowoczesne pozycjonowanie strony pod kątem wyszukiwarek wspieranych sztuczną inteligencją (np. Google AI Overview). Klasyczne SEO skupia się na frazach i linkach, a AI SEO dodatkowo dostosowuje treści pod nowe algorytmy AI, które dostarczają użytkownikowi gotowe odpowiedzi bez konieczności wchodzenia na stronę. Dlaczego to ważne? Bo jeśli Twoja firma nie pojawi się w tych wynikach, klienci trafią do konkurencji.",
     },
     {
-      question: "Czy moja firma rzeczywiście potrzebuje pozycjonowania pod AI?",
+      question: "Czy moja strona jest już niewidoczna w Google AI Overview?",
       answer:
-        "AI Overviews są już aktywne w Polsce i stale się rozwijają. Google oficjalnie potwierdził, że to przyszłość wyszukiwania. Firmy, które nie przygotują się na tę zmianę, staną się niewidoczne dla klientów szukających pomocy AI. To nie jest kwestia 'czy', ale 'kiedy' Twoja konkurencja zacznie dominować w odpowiedziach AI. Lepiej być pierwszym niż gonić.",
+        "Możliwe. Google AI Overview jest wdrażane stopniowo, ale w wielu branżach już teraz odpowiada zamiast strony firmowej, co oznacza, że użytkownicy nie klikają w Twój link. Prosty przykład: klient pyta w Google o usługę, a odpowiedź AI wyświetla dane konkurenta – a Ciebie tam nie ma. Możesz to sprawdzić już teraz w darmowym Raporcie AI SEO.",
     },
     {
-      question: "Jak szybko mogę spodziewać się pierwszych rezultatów?",
+      question: "Jakie konkretne efekty biznesowe mogę osiągnąć dzięki AI SEO?",
       answer:
-        "Pierwsze efekty w postaci pojawienia się w Answer Share™ (udział w odpowiedziach AI) możesz zobaczyć już po 2-4 tygodniach. Znaczące rezultaty - gdy AI będzie regularnie polecać Twoją firmę - osiągniesz w ciągu 2-4 miesięcy. Pełna dominacja w odpowiedziach AI dla kluczowych zapytań w Twojej branży następuje zwykle po 4-6 miesiącach systematycznej pracy.",
+        "AI SEO zwiększa szanse Twojej strony na widoczność w nowych wynikach Google, tworzonych przez sztuczną inteligencję. W praktyce przekłada się to na: większą liczbę odwiedzin strony, większe zainteresowanie Twoją ofertą i więcej zapytań od potencjalnych klientów. AI SEO pozwala także budować długoterminową przewagę nad konkurencją, która nie dostosowała się jeszcze do zmian w wyszukiwarce.",
     },
     {
       question:
-        "Dlaczego Audyt Potencjału AEO kosztuje 800 zł, skoro inne agencje oferują darmowe analizy?",
+        "Czy AI SEO zastąpi tradycyjne pozycjonowanie?",
       answer:
-        "Darmowe analizy to zwykle automatyczne raporty wygenerowane przez narzędzia. Nasz Audyt Potencjału AEO to 100% ręcznej pracy eksperta, który przez kilka dni analizuje Twoją branżę, konkurencję i potencjał dominacji w AI. Otrzymujesz konkretny plan działania na 90 dni, nie ogólniki. Plus gwarancja zwrotu, jeśli uznasz, że audyt nie dostarczył wartości.",
+        "Nie, AI SEO nie zastępuje, a uzupełnia tradycyjne SEO. Klasyczne działania nadal są potrzebne, ale dzisiaj to za mało. AI SEO to dodatkowa warstwa optymalizacji, która przygotowuje stronę do widoczności w nowych wynikach tworzonych przez sztuczną inteligencję. Firmy, które zatrzymają się tylko na „starym SEO”, mogą tracić klientów.",
     },
     {
-      question: "Czy gwarantujecie rezultaty opisane w pakietach?",
+      question: "Ile kosztuje usługa AI SEO i jak wygląda proces współpracy?",
       answer:
-        "Tak! W pakiecie 'Lider Branży' gwarantujemy, że Twoja firma pojawi się w minimum 30% odpowiedzi AI dla top 10 zapytań w Twojej branży w ciągu 6 miesięcy. To pierwsza taka gwarancja na polskim rynku. Jeśli nie osiągniemy tego rezultatu, przedłużamy współpracę bez dodatkowych kosztów lub zwracamy różnicę.",
+        "Koszt zależy od wielkości strony i konkurencji w branży. Przygotowaliśmy dwa modele: AI SEO Start – jednorazowy audyt i wdrożenie podstawowych zmian od 500 zł; AI SEO PRO – pełna usługa abonamentowa od 1500 zł miesięcznie. Proces wygląda następująco: darmowy raport AI SEO, konsultacja online, przygotowanie planu działań, wdrożenie i regularna optymalizacja.",
     },
     {
-      question: "Co się stanie z moją stroną, jeśli Google zmieni algorytm AI?",
+      question: "Po jakim czasie zobaczę pierwsze rezultaty AI SEO?",
       answer:
-        "Nasz AI-Growth Framework™ jest odporny na zmiany algorytmów, bo bazuje na fundamentalnych zasadach: tworzeniu wartościowej wiedzy, budowaniu autorytetu i odpowiadaniu na rzeczywiste pytania klientów. To samo podejście, które sprawdza się w SEO od lat. Dodatkowo stale monitorujemy zmiany w AI i dostosowujemy strategie.",
+        "Pierwsze zmiany w widoczności i CTR w Google zauważysz zwykle w ciągu kilku tygodni. Efekty sprzedażowe czy wzrost liczby zapytań najczęściej widoczne są w ciągu 2–3 miesięcy, w zależności od branży i konkurencji.",
     },
   ];
 

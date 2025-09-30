@@ -104,10 +104,10 @@ const AEOManifestoPage = () => {
         data-gtm-page="pozycjonowanie-ai"
       >
         <SEOHead
-          title="Pozycjonowanie AI - Kiedy AI Odpowiada Za Ciebie | WebDKW"
-          description="Specjalizujemy się w pozycjonowaniu pod AI Overviews. Pakiety AI SEO dla firm lokalnych i krajowych. Rewolucja w wyszukiwaniu już się dzieje. Audyt potencjału za 800 zł."
-          keywords="pozycjonowanie AI, AI Overviews, pozycjonowanie pod sztuczną inteligencję, optymalizacja odpowiedzi AI"
-          url="https://webdkw.net/pozycjonowanie-ai"
+          title="Nowa Era Google AI – Zwiększ Widoczność Swojej Firmy | WebDKW"
+          description="Google AI ukrywa Twoją stronę. 99% firm nie ma planu. Sprawdź ilu klientów tracisz – zamów darmowy Raport AI SEO w 24h!"
+          keywords="pozycjonowanie AI, AI Overviews, pozycjonowanie pod sztuczną inteligencję, ai seo, audyt seo ai, google ai seo, answer engine optimization"
+          url="https://webdkw.net/uslugi/pozycjonowanie-ai"
         />
 
         <Header />
@@ -140,25 +140,24 @@ const AEOManifestoPage = () => {
 
               {/* Main Headline with improved typography */}
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-                Nie pozwól, by AI ukryło{" "}
+                Odzyskaj{" "}
                 <span className="relative">
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600">
-                    Twoją firmę
+                    34,5% klientów
                   </span>
                   <div className="absolute -inset-1 bg-gradient-to-r from-primary-500/20 to-primary-600/20 blur-lg -z-10"></div>
-                </span>{" "}
-                przed klientami
+                </span>
+                , których dziś zabiera Google AI
               </h1>
 
               {/* Subtitle with enhanced styling */}
               <div className="relative mb-8">
                 <h2 className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed font-medium">
-                  Kiedy Google odpowiada za Ciebie –{" "}
+                  Google AI odpowiada zamiast Twojej strony –{" "}
                   <span className="text-primary-600 font-semibold">
-                    Twoi konkurenci tracą klientów.
+                    Tracisz klientów
                   </span>
-                  <br className="hidden md:block" />
-                  Rewolucja AI już się dzieje. Nie daj się wyprzedzić.
+                  , którzy powinni trafiać do Ciebie.
                 </h2>
               </div>
 
@@ -180,13 +179,12 @@ const AEOManifestoPage = () => {
                   </svg>
                 </div>
                 <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                  Rewolucja już się dzieje. AI Overviews zmieniają sposób, w
-                  jaki ludzie szukają usług.
+                  Nowe wyniki AI w Google już zabierają ruch większości firm.
                   <br className="hidden md:block" />
                   <span className="font-semibold text-gray-700">
-                    99% firm nie ma strategii na to, co nadchodzi.
+                    99% przedsiębiorców nie ma na to planu.
                   </span>{" "}
-                  Czy Twoja ma?
+                  Czy Ty masz?
                 </p>
               </div>
             </div>
@@ -212,7 +210,7 @@ const AEOManifestoPage = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <Search className="h-5 w-5 relative z-10" />
                 <span className="relative z-10">
-                  Zamów darmowy Audyt SEO AI
+                  Sprawdź swoją stronę teraz – darmowy audyt AI SEO
                 </span>
               </button>
             </div>
@@ -1182,7 +1180,7 @@ const AEOManifestoPage = () => {
                   className="bg-white text-primary-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center justify-center gap-2"
                 >
                   <Target className="h-5 w-5" />
-                  Audyt Potencjału AI SEO - 800 zł
+                  Darmowy Audyt SEO AI
                 </button>
               </div>
               <div className="text-center">
