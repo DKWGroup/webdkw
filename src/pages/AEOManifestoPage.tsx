@@ -15,10 +15,14 @@ import { useEffect, useState } from "react";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import AEOFAQSection from "../components/AEOFAQSection";
+import FAQSchema from "../components/FAQSchema";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
+import OrganizationSchema from "../components/OrganizationSchema";
 import SEOContactForm from "../components/SEOContactForm";
 import SEOHead from "../components/SEOHead";
+import ServiceSchema from "../components/ServiceSchema";
+import WebsiteSchema from "../components/WebsiteSchema";
 import { track } from "../lib/analytics";
 import { BlogPost, supabase } from "../lib/supabase";
 
@@ -34,6 +38,40 @@ const AEOManifestoPage = () => {
     {
       src: "https://obeabrdrtlxhucegkkiq.supabase.co/storage/v1/object/public/files/blog/mkheli-w-gpt2.png",
       alt: "MK Helicopters - zrzut z odpowiedzi AI/ChatGPT (przykład 2)",
+    },
+  ];
+
+  // FAQ data for schema
+  const faqItems = [
+    {
+      question: "Czym jest AI SEO i dlaczego jest ważne dla mojej firmy?",
+      answer:
+        "AI SEO to nowoczesne pozycjonowanie strony pod kątem wyszukiwarek wspieranych sztuczną inteligencją (np. Google AI Overview). Klasyczne SEO skupia się na frazach i linkach, a AI SEO dodatkowo dostosowuje treści pod nowe algorytmy AI, które dostarczają użytkownikowi gotowe odpowiedzi bez konieczności wchodzenia na stronę. Dlaczego to ważne? Bo jeśli Twoja firma nie pojawi się w tych wynikach, klienci trafią do konkurencji.",
+    },
+    {
+      question: "Czy moja strona jest już niewidoczna w Google AI Overview?",
+      answer:
+        "Możliwe. Google AI Overview jest wdrażane stopniowo, ale w wielu branżach już teraz odpowiada zamiast strony firmowej, co oznacza, że użytkownicy nie klikają w Twój link. Prosty przykład: klient pyta w Google o usługę, a odpowiedź AI wyświetla dane konkurenta – a Ciebie tam nie ma. Możesz to sprawdzić już teraz w darmowym Raporcie AI SEO.",
+    },
+    {
+      question: "Jakie konkretne efekty biznesowe mogę osiągnąć dzięki AI SEO?",
+      answer:
+        "AI SEO zwiększa szanse Twojej strony na widoczność w nowych wynikach Google, tworzonych przez sztuczną inteligencję. W praktyce przekłada się to na: większą liczbę odwiedzin strony, większe zainteresowanie Twoją ofertą i więcej zapytań od potencjalnych klientów. AI SEO pozwala także budować długoterminową przewagę nad konkurencją, która nie dostosowała się jeszcze do zmian w wyszukiwarce.",
+    },
+    {
+      question: "Czy AI SEO zastąpi tradycyjne pozycjonowanie?",
+      answer:
+        "Nie, AI SEO nie zastępuje, a uzupełnia tradycyjne SEO. Klasyczne działania nadal są potrzebne, ale dzisiaj to za mało. AI SEO to dodatkowa warstwa optymalizacji, która przygotowuje stronę do widoczności w nowych wynikach tworzonych przez sztuczną inteligencję. Firmy, które zatrzymają się tylko na „starym SEO\", mogą tracić klientów.",
+    },
+    {
+      question: "Ile kosztuje usługa AI SEO i jak wygląda proces współpracy?",
+      answer:
+        "Koszt zależy od wielkości strony i konkurencji w branży. Przygotowaliśmy dwa modele: AI SEO Start – jednorazowy audyt i wdrożenie podstawowych zmian od 500 zł; AI SEO PRO – pełna usługa abonamentowa od 1500 zł miesięcznie. Proces wygląda następująco: darmowy raport AI SEO, konsultacja online, przygotowanie planu działań, wdrożenie i regularna optymalizacja.",
+    },
+    {
+      question: "Po jakim czasie zobaczę pierwsze rezultaty AI SEO?",
+      answer:
+        "Pierwsze zmiany w widoczności i CTR w Google zauważysz zwykle w ciągu kilku tygodni. Efekty sprzedażowe czy wzrost liczby zapytań najczęściej widoczne są w ciągu 2–3 miesięcy, w zależności od branży i konkurencji.",
     },
   ];
 
@@ -110,6 +148,91 @@ const AEOManifestoPage = () => {
           url="https://webdkw.net/uslugi/pozycjonowanie-ai"
         />
 
+        {/* Structured Data - Schema.org */}
+        <WebsiteSchema baseUrl="https://webdkw.net" />
+        <OrganizationSchema baseUrl="https://webdkw.net" />
+
+        {/* Service Schema for AI SEO */}
+        <ServiceSchema
+          name="Pozycjonowanie AI SEO"
+          description="Profesjonalne pozycjonowanie stron internetowych pod sztuczną inteligencję Google AI Overview, ChatGPT, Gemini i Perplexity. Zwiększ widoczność swojej firmy w erze AI."
+          url="https://webdkw.net/uslugi/pozycjonowanie-ai"
+          provider="WebDKW"
+          price="1500"
+          priceCurrency="PLN"
+          areaServed="Poland"
+          serviceType="SEO Services"
+        />
+
+        {/* FAQ Schema */}
+        <FAQSchema items={faqItems} />
+
+        {/* Breadcrumb Schema */}
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Strona główna",
+                  "item": "https://webdkw.net"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Usługi",
+                  "item": "https://webdkw.net/uslugi"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 3,
+                  "name": "Pozycjonowanie AI",
+                  "item": "https://webdkw.net/uslugi/pozycjonowanie-ai"
+                }
+              ]
+            })}
+          </script>
+        </Helmet>
+
+        {/* WebPage Schema with detailed information */}
+        <Helmet>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebPage",
+              "name": "Pozycjonowanie AI SEO - Zwiększ Widoczność w Google AI",
+              "description": "Google AI ukrywa Twoją stronę. 99% firm nie ma planu. Sprawdź ilu klientów tracisz – zamów darmowy Raport AI SEO w 24h!",
+              "url": "https://webdkw.net/uslugi/pozycjonowanie-ai",
+              "inLanguage": "pl-PL",
+              "isPartOf": {
+                "@type": "WebSite",
+                "name": "WebDKW",
+                "url": "https://webdkw.net"
+              },
+              "about": {
+                "@type": "Thing",
+                "name": "AI SEO",
+                "description": "Pozycjonowanie stron internetowych pod sztuczną inteligencję"
+              },
+              "mainEntity": {
+                "@type": "Service",
+                "name": "Pozycjonowanie AI SEO",
+                "provider": {
+                  "@type": "Organization",
+                  "name": "WebDKW"
+                }
+              },
+              "speakable": {
+                "@type": "SpeakableSpecification",
+                "cssSelector": ["h1", "h2", ".faq-question"]
+              }
+            })}
+          </script>
+        </Helmet>
+
         <Header />
 
         {/* Hero Section */}
@@ -129,125 +252,176 @@ const AEOManifestoPage = () => {
             style={{ animationDelay: "2s" }}
           ></div>
 
-          <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center z-10">
-            <div className="mb-8 animate-fade-in">
-              {/* Badge with improved styling */}
-              <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-100 to-primary-50 border border-primary-200 text-primary-700 rounded-full text-sm font-semibold mb-8 shadow-lg backdrop-blur-sm">
-                <span className="w-2 h-2 bg-primary-500 rounded-full mr-3 animate-pulse"></span>
-                🔥 Przygotuj się na rewolucję w wyszukiwaniu - AI zmienia zasady
-                gry
-              </div>
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 z-10">
+            <div className="flex flex-col lg:flex-row items-center">
+              {/* Left Column - Text Content */}
+              <div className="text-center lg:text-left">
+                <div className="mb-8 animate-fade-in">
+                  {/* Badge with improved styling */}
+                  <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary-100 to-primary-50 border border-primary-200 text-primary-700 rounded-full text-sm font-semibold mb-8 shadow-lg backdrop-blur-sm">
+                    <span className="w-2 h-2 bg-primary-500 rounded-full mr-3 animate-pulse"></span>
+                    🔥 Przygotuj się na rewolucję w wyszukiwaniu - AI zmienia zasady
+                    gry
+                  </div>
 
-              {/* Main Headline with improved typography */}
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-                Odzyskaj{" "}
-                <span className="relative">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600">
-                    34,5% klientów
-                  </span>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-primary-500/20 to-primary-600/20 blur-lg -z-10"></div>
-                </span>
-                , których dziś zabiera Google AI
-              </h1>
+                  {/* Main Headline with improved typography */}
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+                    Odzyskaj{" "}
+                    <span className="relative">
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-500 to-primary-600">
+                        34,5% klientów
+                      </span>
+                      <div className="absolute -inset-1 bg-gradient-to-r from-primary-500/20 to-primary-600/20 blur-lg -z-10"></div>
+                    </span>
+                    , których dziś zabiera Google AI
+                  </h1>
 
-              {/* Subtitle with enhanced styling */}
-              <div className="relative mb-8">
-                <h2 className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl mx-auto leading-relaxed font-medium">
-                  Google AI odpowiada zamiast Twojej strony –{" "}
-                  <span className="text-primary-600 font-semibold">
-                    Tracisz klientów
-                  </span>
-                  , którzy powinni trafiać do Ciebie.
-                </h2>
-              </div>
+                  {/* Subtitle with enhanced styling */}
+                  <div className="relative mb-8">
+                    <h2 className="text-xl md:text-2xl text-gray-600 mb-8 max-w-4xl lg:max-w-none mx-auto lg:mx-0 leading-relaxed font-medium">
+                      Google AI odpowiada zamiast Twojej strony –{" "}
+                      <span className="text-primary-600 font-semibold">
+                        Tracisz klientów
+                      </span>
+                      , którzy powinni trafiać do Ciebie.
+                    </h2>
+                  </div>
 
-              {/* Lead paragraph with icon */}
-              <div className="flex flex-col items-center mb-12">
-                <div className="mb-4 p-3 bg-gradient-to-br from-primary-100 to-primary-50 rounded-full">
-                  <svg
-                    className="w-8 h-8 text-primary-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                  {/* Lead paragraph with icon */}
+                  <div className="flex flex-col items-center lg:items-start mb-12">
+                    <div className="mb-4 p-3 bg-gradient-to-br from-primary-100 to-primary-50 rounded-full">
+                      <svg
+                        className="w-8 h-8 text-primary-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                    <p className="text-lg md:text-xl text-gray-600 max-w-3xl lg:max-w-none mx-auto lg:mx-0 leading-relaxed">
+                      Nowe wyniki AI w Google już zabierają ruch większości firm.
+                      <br className="hidden md:block" />
+                      <span className="font-semibold text-gray-700">
+                        99% przedsiębiorców nie ma na to planu.
+                      </span>{" "}
+                      Czy Ty masz?
+                    </p>
+                  </div>
+                </div>
+
+                {/* Enhanced CTA with gradient background */}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-8">
+                  <button
+                    id="cta-hero-audyt-seo-ai"
+                    data-gtm="cta_hero_audyt_seo_ai"
+                    data-gtm-location="hero"
+                    aria-label="CTA: Darmowy Audyt SEO AI"
+                    onClick={() => {
+                      track({
+                        event: "cta_click",
+                        category: "engagement",
+                        label: "audyt_seo_ai_free",
+                        location: "hero",
+                      });
+                      scrollToContact();
+                    }}
+                    className="relative group bg-gradient-to-r from-primary-500 to-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center justify-center gap-2 overflow-hidden"
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 10V3L4 14h7v7l9-11h-7z"
-                    />
-                  </svg>
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <Search className="h-5 w-5 relative z-10" />
+                    <span className="relative z-10">
+                      Sprawdź swoją stronę teraz – darmowy audyt AI SEO
+                    </span>
+                  </button>
                 </div>
-                <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                  Nowe wyniki AI w Google już zabierają ruch większości firm.
-                  <br className="hidden md:block" />
-                  <span className="font-semibold text-gray-700">
-                    99% przedsiębiorców nie ma na to planu.
-                  </span>{" "}
-                  Czy Ty masz?
-                </p>
-              </div>
-            </div>
 
-            {/* Enhanced CTA with gradient background */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center mb-16">
-              <button
-                id="cta-hero-audyt-seo-ai"
-                data-gtm="cta_hero_audyt_seo_ai"
-                data-gtm-location="hero"
-                aria-label="CTA: Darmowy Audyt SEO AI"
-                onClick={() => {
-                  track({
-                    event: "cta_click",
-                    category: "engagement",
-                    label: "audyt_seo_ai_free",
-                    location: "hero",
-                  });
-                  scrollToContact();
-                }}
-                className="relative group bg-gradient-to-r from-primary-500 to-primary-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 flex items-center justify-center gap-2 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Search className="h-5 w-5 relative z-10" />
-                <span className="relative z-10">
-                  Sprawdź swoją stronę teraz – darmowy audyt AI SEO
-                </span>
-              </button>
-            </div>
+                {/* Trust indicators with improved design */}
+                <div
+                  className="grid md:grid-cols-3 gap-4 lg:gap-6"
+                  data-gtm-section="trust_indicators"
+                >
+                  <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
+                        <Shield className="h-6 w-6 text-primary-500" />
+                      </div>
+                      <span className="font-semibold text-gray-700 text-sm">
+                        Specjaliści od widoczności w ChatGPT, Gemini i Perplexity
+                      </span>
+                    </div>
+                  </div>
+                  <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
+                        <Brain className="h-6 w-6 text-primary-500" />
+                      </div>
+                      <span className="font-semibold text-gray-700 text-sm">
+                        Śledzenie trendów AI od początku rewolucji
+                      </span>
+                    </div>
+                  </div>
+                  <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-4 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
+                    <div className="flex flex-col items-center text-center">
+                      <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
+                        <CheckCircle className="h-6 w-6 text-primary-500" />
+                      </div>
+                      <span className="font-semibold text-gray-700 text-sm">
+                        Sprawdzone metody dla firm z różnych branż
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            {/* Trust indicators with improved design */}
-            <div
-              className="grid md:grid-cols-3 gap-6"
-              data-gtm-section="trust_indicators"
-            >
-              <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
-                    <Shield className="h-6 w-6 text-primary-500" />
+              {/* Right Column - Vertical Video */}
+              <div className="w-full max-w-sm mt-12 lg:mt-0 lg:ml-24">
+                <div className="relative">
+                  {/* Video Container with aspect ratio for vertical video (9:16) */}
+                  <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-gray-900 aspect-[9/16]">
+                    {/* Placeholder - Replace with actual video */}
+                    {/* <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary-500/20 to-primary-600/20">
+                      <div className="text-center p-8">
+                        <div className="w-20 h-20 mx-auto mb-4 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
+                          <svg
+                            className="w-10 h-10 text-white"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </div>
+                        <p className="text-white font-semibold text-lg">
+                          Miejsce na film pionowy
+                        </p>
+                        <p className="text-white/80 text-sm mt-2">
+                          Format 9:16 (1080x1920px)
+                        </p>
+                      </div>
+                    </div> */}
+
+                    {/* Uncomment and configure when video is ready */}
+                    
+                    <video
+                      className="w-full h-full object-cover"
+                      autoPlay
+                      controls
+                      loop
+                      playsInline
+                    >
+                      <source src="/videos/aiseo.webm" type="video/webm" />
+                      Twoja przeglądarka nie obsługuje odtwarzania wideo.
+                    </video>
+                   
                   </div>
-                  <span className="font-semibold text-gray-700">
-                    Specjaliści od widoczności w ChatGPT, Gemini i Perplexity
-                  </span>
-                </div>
-              </div>
-              <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
-                    <Brain className="h-6 w-6 text-primary-500" />
-                  </div>
-                  <span className="font-semibold text-gray-700">
-                    Śledzenie trendów AI od początku rewolucji
-                  </span>
-                </div>
-              </div>
-              <div className="group bg-white/60 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-white/80 transition-all duration-300 hover:shadow-lg">
-                <div className="flex flex-col items-center text-center">
-                  <div className="mb-3 p-2 bg-primary-100 rounded-full group-hover:bg-primary-200 transition-colors duration-300">
-                    <CheckCircle className="h-6 w-6 text-primary-500" />
-                  </div>
-                  <span className="font-semibold text-gray-700">
-                    Sprawdzone metody dla firm z różnych branż
-                  </span>
+
+                  {/* Decorative elements around video */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-primary-500/20 to-primary-600/20 rounded-3xl blur-2xl -z-10 opacity-50"></div>
                 </div>
               </div>
             </div>
@@ -954,6 +1128,48 @@ const AEOManifestoPage = () => {
                 </Link>
               </div>
             )}
+
+            {/* Blog Articles Schema */}
+            {featuredPosts.length > 0 && (
+              <Helmet>
+                <script type="application/ld+json">
+                  {JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "ItemList",
+                    "itemListElement": featuredPosts.map((post, index) => ({
+                      "@type": "ListItem",
+                      "position": index + 1,
+                      "item": {
+                        "@type": "BlogPosting",
+                        "headline": post.title,
+                        "description": post.excerpt,
+                        "image": post.image_url || "https://webdkw.net/images/webdkw-open-graph.png",
+                        "datePublished": post.created_at,
+                        "dateModified": post.updated_at || post.created_at,
+                        "author": {
+                          "@type": "Organization",
+                          "name": "WebDKW"
+                        },
+                        "publisher": {
+                          "@type": "Organization",
+                          "name": "WebDKW",
+                          "logo": {
+                            "@type": "ImageObject",
+                            "url": "https://webdkw.net/images/webdkw-logo.svg"
+                          }
+                        },
+                        "mainEntityOfPage": {
+                          "@type": "WebPage",
+                          "@id": `https://webdkw.net/blog/${post.slug}`
+                        },
+                        "url": `https://webdkw.net/blog/${post.slug}`,
+                        "keywords": post.tags?.join(", ") || "AI SEO, pozycjonowanie AI"
+                      }
+                    }))
+                  })}
+                </script>
+              </Helmet>
+            )}
           </div>
         </section>
 
@@ -1140,6 +1356,56 @@ const AEOManifestoPage = () => {
               </div>
             </div>
           </div>
+
+          {/* Offer Schema for Packages */}
+          <Helmet>
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "itemListElement": [
+                  {
+                    "@type": "Offer",
+                    "position": 1,
+                    "name": "Lokalny Lider - AI SEO",
+                    "description": "Idealny dla firm usługowych takich jak prawnicy, lekarze czy restauratorzy, które chcą być pierwszym wyborem AI dla klientów w swoim mieście.",
+                    "price": "1500",
+                    "priceCurrency": "PLN",
+                    "availability": "https://schema.org/InStock",
+                    "url": "https://webdkw.net/uslugi/pozycjonowanie-ai#pakiety-ai-seo",
+                    "seller": {
+                      "@type": "Organization",
+                      "name": "WebDKW"
+                    },
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Lokalny Lider - AI SEO",
+                      "serviceType": "Local AI SEO Optimization"
+                    }
+                  },
+                  {
+                    "@type": "Offer",
+                    "position": 2,
+                    "name": "Lider Branży - AI SEO",
+                    "description": "Stworzony dla e-commerce, firm B2B i SaaS, które chcą osiągnąć status głównego źródła odpowiedzi dla AI w całej Polsce.",
+                    "price": "3000",
+                    "priceCurrency": "PLN",
+                    "availability": "https://schema.org/InStock",
+                    "url": "https://webdkw.net/uslugi/pozycjonowanie-ai#pakiety-ai-seo",
+                    "seller": {
+                      "@type": "Organization",
+                      "name": "WebDKW"
+                    },
+                    "itemOffered": {
+                      "@type": "Service",
+                      "name": "Lider Branży - AI SEO",
+                      "serviceType": "National AI SEO Optimization"
+                    }
+                  }
+                ]
+              })}
+            </script>
+          </Helmet>
         </section>
 
         <div id="faq-ai-seo">
