@@ -410,6 +410,7 @@ const AEOManifestoPage = () => {
                     <video
                       className="w-full h-full object-cover"
                       autoPlay
+                      muted
                       controls
                       loop
                       playsInline
