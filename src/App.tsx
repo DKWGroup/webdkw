@@ -10,9 +10,12 @@ import BlogPage from "./pages/BlogPage";
 import BlogPostPage from "./pages/BlogPostPage";
 import CaseStudiesPage from "./pages/CaseStudiesPage";
 import CaseStudyPage from "./pages/CaseStudyPage";
+import ChorzowWebsitesPage from "./pages/ChorzowWebsitesPage";
 import ContactPage from "./pages/ContactPage";
 import FAQPage from "./pages/FAQPage";
+import GliwiceWebsitesPage from "./pages/GliwiceWebsitesPage";
 import HomePage from "./pages/HomePage";
+import KatowiceWebsitesPage from "./pages/KatowiceWebsitesPage";
 import LeadMagnetPage from "./pages/LeadMagnetPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import PasswordResetPage from "./pages/PasswordResetPage";
@@ -57,6 +60,18 @@ function App() {
           <Route
             path="/strony-internetowe-seo-slask"
             element={<SilesianLandingPage />}
+          />
+          <Route
+            path="/katowice-tworzenie-stron"
+            element={<KatowiceWebsitesPage />}
+          />
+          <Route
+            path="/chorzow-tworzenie-stron"
+            element={<ChorzowWebsitesPage />}
+          />
+          <Route
+            path="/gliwice-tworzenie-stron"
+            element={<GliwiceWebsitesPage />}
           />
           <Route path="/proces-realizacji" element={<ProcessPage />} />
           <Route path="/o-nas" element={<AboutPage />} />
